@@ -1,0 +1,63 @@
+<!--
+  ~ Copyright (C) 2012 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+-->
+
+<resources>
+    <!--电话主界面 底部默认背景-->
+    <color name="toro_tab_normal_backgroud">#F5F8FF</color>
+    <!--电话主界面底部选中背景-->
+    <color name="toro_tab_selected_backgroud">#ECEFF3</color>
+    <!--电话主界面拨号按钮颜色-->
+    <color name="toro_background_tint">#00C853</color>
+    <!--电话主界面底部文字默认颜色-->
+    <color name="toro_tab_text_normal">#858D97</color>
+    <!--电话主界面底部文字选中颜色-->
+    <color name="toro_tab_text_selected">#2D6EFA</color>
+    <!--电话主界面顶部action bar 按钮默认颜色-->
+    <color name="toro_action_bar_button_normal">#4C5159</color>
+    <!--电话主界面顶部action bar 按钮按下颜色-->
+    <color name="toro_action_bar_button_pressed">#9C5721</color>
+    <!--电话主界面顶部action bar 背景颜色-->
+    <color name="toro_action_bar_bg">#4A4F57</color>
+    <!--状态栏颜色-->
+    <color name="toro_statu_bar_bg">#2B2B33</color>
+    <!--电话主界面敌工部action bar 文字颜色-->
+    <color name="toro_action_bar_text">#E1E3E5</color>
+    <!--拨号盘底部两边button的颜色normal-->
+    <color name="toro_dialpad_button_normal">#FBFBFB</color>
+    <!--拨号盘拨号键绿色-->
+    <color name="toro_dialpad_call_normal">#00CB5F</color>
+    <!--电话列表Item背景色-->
+    <color name="toro_dialer_row_item_bg">#E1F0F6</color>
+    <!--通话记录 时间颜色-->
+    <color name="toro_calllog_date_text">#5844F8</color>
+    <!--未接电话文字颜色-->
+    <color name="toro_calllog_miss_call_color">#DD4738</color>
+    <!--通话记录编辑模式删除按钮文字颜色-->
+    <color name="toro_calllog_delete_text_color">#2D6EFA</color>
+    <!--通话详情背景-->
+    <color name="toro_call_details_bg_color">#F6F8FB</color>
+    <!--通话详情item 记录字体颜色-->
+    <color name="toro_call_details_item_text_color">#6D6D6D</color>
+    <!--通话详情黑色字体-->
+    <color name="toro_call_details_black_text_color">#000000</color>
+
+    <!--commom dialog-->
+    <color name="toro_colorPrimary">#3F51B5</color>
+    <color name="toro_colorPrimaryDark">#303F9F</color>
+    <color name="toro_colorAccent">#FF4081</color>
+    <color name="toro_divider_color">#e6e6e6</color>
+
+</resources>

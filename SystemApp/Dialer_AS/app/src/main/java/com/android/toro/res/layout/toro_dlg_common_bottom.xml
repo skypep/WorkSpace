@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    android:id="@+id/tv"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:gravity="center"
+    android:maxLines="1"
+    android:paddingBottom="@dimen/toro_common_dialog_margin_top"
+    android:paddingTop="@dimen/toro_common_dialog_margin_top"
+    android:textColor="@android:color/black"
+    android:textSize="@dimen/toro_common_dialog_text_size"
+    tools:drawablePadding="@dimen/toro_common_panding"
+    tools:paddingStart="@dimen/toro_common_panding"
+    tools:text="测试"
+    />

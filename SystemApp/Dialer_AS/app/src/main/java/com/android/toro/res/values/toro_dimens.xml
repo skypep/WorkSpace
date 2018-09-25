@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2012 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+-->
+<resources>
+    <!--电话底部tab高度-->
+    <dimen name="toro_tab_height">60dp</dimen>
+    <!--电话主界面拨号悬浮按钮离地距离 toro_tab_height + 16 -->
+    <dimen name="toro_floating_action_button_margin_bottom">76dp</dimen>
+    <!--电话主界面拨号悬浮按钮离右距离-->
+    <dimen name="toro_margin_right">16dp</dimen>
+    <!--电话主界面上下间隔距离-->
+    <dimen name="toro_margin_top">10dip</dimen>
+    <!--电话主界面底部tab文字大小-->
+    <dimen name="toro_tab_text_size">16dp</dimen>
+    <!--电话顶部Action bar 中间标题文字大小-->
+    <dimen name="toro_action_bar_title_size">25dp</dimen>
+    <!--action bar 两边button 字体大小-->
+    <dimen name="toro_action_bar_button_text_size">18dp</dimen>
+    <!--action bar + search bar 的高度-->
+    <dimen name="toro_action_bar_height">84dp</dimen>
+    <!--action bar butom height-->
+    <dimen name="toro_action_bar_button_height">40dp</dimen>
+    <dimen name="toro_action_bar_button_width">50dp</dimen>
+    <!--列表一行高度-->
+    <dimen name="toro_row_height">56dp</dimen>
+    <!--通话记录 左边图标大小-->
+    <dimen name="toro_calllog_left_img_size">30dp</dimen>
+    <!--通话详情姓名字体大小-->
+    <dimen name="toro_call_details_name_size">20dp</dimen>
+    <!--通话详情记录字体大小-->
+    <dimen name="toro_call_details_item_size">12dp</dimen>
+    <!--通话详情操作项字体大小-->
+    <dimen name="toro_call_details_action_item">20dp</dimen>
+    <!--通话详情头像大小-->
+    <dimen name="toro_call_details_photo_size">40dp</dimen>
+    <!--分割线的像素值-->
+    <dimen name="toro_line_sp">2sp</dimen>
+
+    <!--common dialog-->
+    <dimen name="toro_common_dialog_margin_top">20dp</dimen>
+    <dimen name="toro_common_dialog_text_size">24sp</dimen>
+    <dimen name="toro_common_panding">28dp</dimen>
+    <dimen name="toro_common_radio">6dp</dimen>
+</resources>

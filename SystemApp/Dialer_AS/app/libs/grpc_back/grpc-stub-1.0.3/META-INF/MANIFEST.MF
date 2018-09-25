@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Implementation-Title: grpc-stub
+Implementation-Version: 1.0.3
+Built-By: root
+Built-JDK: 1.8.0_45
+Source-Compatibility: 1.6
+Target-Compatibility: 1.6
+
