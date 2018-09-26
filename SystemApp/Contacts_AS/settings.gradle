@@ -1,1 +1,1 @@
-include ':app', ':phonecommon', ':telephony'
+include ':app', ':phonecommon', ':telephony', ':commondialog'

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+       android:shape="rectangle">
+    <corners
+        android:bottomLeftRadius="@dimen/toro_common_radio"
+        android:bottomRightRadius="@dimen/toro_common_radio"/>
+    <solid android:color="#ebebeb"/>
+</shape>

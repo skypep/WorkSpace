@@ -72,6 +72,8 @@ import com.android.contacts.model.AccountTypeManager;
 import com.android.contacts.model.account.AccountInfo;
 import com.android.contacts.model.account.AccountWithDataSet;
 import com.android.contacts.quickcontact.QuickContactActivity;
+import com.android.contacts.toro.common.dialog.ToroCommonBottomDialog;
+import com.android.contacts.toro.common.dialog.ToroCommonBottomDialogEntity;
 import com.android.contacts.util.AccountFilterUtil;
 import com.android.contacts.util.ImplicitIntentsUtil;
 import com.android.contacts.util.SharedPreferenceUtil;
@@ -401,7 +403,7 @@ public class DefaultContactBrowseListFragment extends ContactBrowseListFragment
     }
 
     @Override
-    protected ContactListAdapter createListAdapter() {
+    protected ContactListAdapter createListAdapter() {//liujia mark Adapter
         DefaultContactListAdapter adapter = new DefaultContactListAdapter(getContext());
         adapter.setSectionHeaderDisplayEnabled(isSectionHeaderDisplayEnabled());
         adapter.setDisplayPhotos(true);
@@ -520,6 +522,8 @@ public class DefaultContactBrowseListFragment extends ContactBrowseListFragment
         });
 
         mAlertContainer.setVisibility(View.GONE);
+
+        setHeaderViewOnclickListenr(searchHeaderOnclickListener); // liujia
     }
 
     private void turnSyncOn() {
@@ -666,6 +670,8 @@ public class DefaultContactBrowseListFragment extends ContactBrowseListFragment
                 mActivity.getSupportActionBar(), mActivity.getToolbar(),
                 R.string.enter_contact_name);
         mActionBarAdapter.setShowHomeIcon(true);
+        mActionBarAdapter.setAddContactListener(mAddContactListener);
+        mActionBarAdapter.setToroMoreActionListener(toroMoreActionListener);
         initializeActionBarAdapter(savedInstanceState);
         if (isSearchMode()) {
             mActionBarAdapter.setFocusOnSearchView();
@@ -1254,4 +1260,42 @@ public class DefaultContactBrowseListFragment extends ContactBrowseListFragment
     public boolean canSetActionBar() {
         return mCanSetActionBar;
     }
+
+    /*********************** liujia add **************************/
+    private View.OnClickListener toroMoreActionListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            final ToroCommonBottomDialogEntity del = new ToroCommonBottomDialogEntity(mActivity.getResources().getString(R.string.toro_select_delete));
+            final ToroCommonBottomDialogEntity de2 = new ToroCommonBottomDialogEntity(mActivity.getResources().getString(R.string.toro_import_contacts_from_sim));
+            final ToroCommonBottomDialogEntity de3 = new ToroCommonBottomDialogEntity(mActivity.getResources().getString(R.string.toro_export_contacts_to_sim));
+//            del.setColor(Color.RED);
+            ToroCommonBottomDialog dialog = new ToroCommonBottomDialog(mActivity, del,de2,de3);
+            dialog.setOnItemClickListener(new ToroCommonBottomDialog.OnItemClickListener()
+            {
+                @Override
+                public void onItemClick(String text, int listSize, int position)
+                {
+                    if(text.equals(mActivity.getResources().getString(R.string.toro_select_delete))) {
+                        dialog.dismiss();
+                    }else if(text.equals(mActivity.getResources().getString(R.string.toro_import_contacts_from_sim))){
+                        dialog.dismiss();
+                    }else if(text.equals(mActivity.getResources().getString(R.string.toro_export_contacts_to_sim))){
+                        dialog.dismiss();
+                    }
+                }
+            });
+            dialog.show();
+        }
+
+    };
+
+    private View.OnClickListener searchHeaderOnclickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            setHeaderVisible(false);
+            if (!mActionBarAdapter.isSelectionMode()) {
+                mActionBarAdapter.setSearchMode(true);
+            }
+        }
+    };
 }

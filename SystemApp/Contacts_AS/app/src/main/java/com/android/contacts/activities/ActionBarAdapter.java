@@ -21,6 +21,7 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -50,6 +51,8 @@ import com.android.contacts.activities.PeopleActivity;
 import com.android.contacts.compat.CompatUtils;
 import com.android.contacts.list.ContactsRequest;
 import com.android.contacts.toro.ToroActionBar;
+import com.android.contacts.toro.common.dialog.ToroCommonBottomDialog;
+import com.android.contacts.toro.common.dialog.ToroCommonBottomDialogEntity;
 import com.android.contacts.util.MaterialColorMapUtils;
 
 import java.util.ArrayList;
@@ -85,9 +88,6 @@ public class ActionBarAdapter implements OnCloseListener {
     private View mClearSearchView;
     private View mSearchContainer;
     private View mSelectionContainer;
-
-    private View mToroContainer;
-    private ToroActionBar toroActionBar;
 
     private int mMaxToolbarContentInsetStart;
     private int mActionBarAnimationDuration;
@@ -151,7 +151,7 @@ public class ActionBarAdapter implements OnCloseListener {
         mSearchContainer = inflater.inflate(R.layout.search_bar_expanded, mToolbar,
                 /* attachToRoot = */ false);
         mSearchContainer.setVisibility(View.VISIBLE);
-        mToolbar.addView(mSearchContainer);
+//        mToolbar.addView(mSearchContainer);
         mSearchContainer.setBackgroundColor(mActivity.getResources().getColor(
                 R.color.searchbox_background_color));
         mSearchView = (EditText) mSearchContainer.findViewById(R.id.search_view);
@@ -200,7 +200,7 @@ public class ActionBarAdapter implements OnCloseListener {
                 /* attachToRoot = */ false);
         toroActionBar = mToroContainer.findViewById(R.id.toro_action_view_container);
         toroActionBar.setTitleText(mActivity.getResources().getString(R.string.applicationLabel));
-        mToolBarFrame.addView(mToroContainer, 0);
+        mToolBarFrame.addView(mToroContainer,0);
         /***** liujia add end ******/
     }
 
@@ -343,15 +343,18 @@ public class ActionBarAdapter implements OnCloseListener {
             // the window.
             mToolbar.setContentInsetsRelative(0, mToolbar.getContentInsetEnd());
         }
-        if (!isSearchOrSelectionMode) {
-            newFlags |= ActionBar.DISPLAY_SHOW_TITLE;
-            mToolbar.setContentInsetsRelative(mMaxToolbarContentInsetStart,
-                    mToolbar.getContentInsetEnd());
-            mToolbar.setNavigationIcon(R.drawable.quantum_ic_menu_vd_theme_24);
-        } else {
-            mToolbar.setNavigationIcon(null);
-        }
-
+//        #if 0 // liujia fixed
+//        if (!isSearchOrSelectionMode) {
+//            newFlags |= ActionBar.DISPLAY_SHOW_TITLE;
+//            mToolbar.setContentInsetsRelative(mMaxToolbarContentInsetStart,
+//                    mToolbar.getContentInsetEnd());
+//            mToolbar.setNavigationIcon(R.drawable.quantum_ic_menu_vd_theme_24);
+//        } else {
+//            mToolbar.setNavigationIcon(null);
+//        }
+//        #else
+        mToolbar.setNavigationIcon(null);
+//        #endif
         if (mSelectionMode) {
             // Minimize the horizontal width of the Toolbar since the selection container is placed
             // behind the toolbar and its left hand side needs to be clickable.
@@ -394,6 +397,7 @@ public class ActionBarAdapter implements OnCloseListener {
             if (isTabHeightChanging || isSwitchingFromSearchToSelection) {
                 mToolbar.removeView(mSearchContainer);
                 mToolBarFrame.removeView(mSelectionContainer);
+                mToolBarFrame.removeView(mToroContainer);
                 if (mSelectionMode) {
                     addSelectionContainer();
                 } else if (mSearchMode) {
@@ -401,6 +405,9 @@ public class ActionBarAdapter implements OnCloseListener {
                 } else {
                     addToroContainer();
                 }
+                updateDisplayOptions(isSearchModeChanging);
+            } else {
+                addToroContainer();
                 updateDisplayOptions(isSearchModeChanging);
             }
             return;
@@ -444,6 +451,7 @@ public class ActionBarAdapter implements OnCloseListener {
                     public void run() {
                         updateDisplayOptions(isSearchModeChanging);
                         mToolbar.removeView(mSearchContainer);
+                        mToolbar.setVisibility(View.GONE);
                     }
                 });
             }
@@ -551,6 +559,7 @@ public class ActionBarAdapter implements OnCloseListener {
     }
 
     private void addSearchContainer() {
+        mToolbar.setVisibility(View.VISIBLE);
         mToolbar.removeView(mSearchContainer);
         mToolbar.addView(mSearchContainer);
         mSearchContainer.setAlpha(1);
@@ -560,12 +569,6 @@ public class ActionBarAdapter implements OnCloseListener {
         mToolBarFrame.removeView(mSelectionContainer);
         mToolBarFrame.addView(mSelectionContainer, 0);
         mSelectionContainer.setAlpha(1);
-    }
-
-    private void addToroContainer() {
-        mToolBarFrame.removeView(mToroContainer);
-        mToolBarFrame.addView(mToroContainer);
-        mToroContainer.setAlpha(1);
     }
 
     private void updateDisplayOptions(boolean isSearchModeChanging) {
@@ -617,6 +620,38 @@ public class ActionBarAdapter implements OnCloseListener {
                 Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
             imm.showSoftInput(view, 0);
+        }
+    }
+
+    /************ liujia add *************/
+    private View mToroContainer;
+    private ToroActionBar toroActionBar;
+    private View.OnClickListener mAddContactListener;
+    private boolean mEditMode;
+    private View.OnClickListener toroMoreActionListener;
+
+    public void setAddContactListener(View.OnClickListener mAddContactListener) {
+        this.mAddContactListener = mAddContactListener;
+    }
+
+    public void setToroMoreActionListener(View.OnClickListener toroMoreActionListener) {
+        this.toroMoreActionListener = toroMoreActionListener;
+    }
+
+    private void addToroContainer() {
+        mToolBarFrame.removeView(mToroContainer);
+        mToolBarFrame.addView(mToroContainer,0);
+        mToroContainer.setAlpha(1);
+        mToolbar.setVisibility(View.GONE);
+        updateToroAction();
+    }
+
+    private void updateToroAction() {
+        if(mEditMode) {
+
+        } else {
+            toroActionBar.setLeftButton(mActivity.getResources().getString(R.string.toro_add),mAddContactListener);
+            toroActionBar.setRightImageButton(R.drawable.toro_action_more,toroMoreActionListener);
         }
     }
 }

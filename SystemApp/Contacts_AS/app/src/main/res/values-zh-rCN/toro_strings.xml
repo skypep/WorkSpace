@@ -17,18 +17,16 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <!-- Toast shown when text is copied to the clipboard [CHAR LIMIT=64] -->
-    <string name="toro_edit">Edit</string>
-    <string name="toro_add">Add</string>
-    <string name="toro_search">Search</string>
-    <string name="toro_unknow">Unknow</string>
-    <string name="toro_cancel">Cancel</string>
-    <string name="toro_select_all">Select All</string>
-    <string name="toro_edit_delete">Delete(%1$d)</string>
-    <string name="toro_delete_selected">Delete Selected Items</string>
-    <string name="toro_back">Back</string>
-    <string name="toro_send_location">Send Location</string>
-
-    <string name="toro_select_delete">Select delete</string>
-    <string name="toro_import_contacts_from_sim">Import Contacts From Sim Card</string>
-    <string name="toro_export_contacts_to_sim">Export Contacts to Sim Card</string>
+    <string name="toro_edit">编辑</string>
+    <string name="toro_add">添加</string>
+    <string name="toro_search">搜索</string>
+    <string name="toro_cancel">取消</string>
+    <string name="toro_select_all">全选</string>
+    <string name="toro_edit_delete">删除(%1$d)</string>
+    <string name="toro_delete_selected">删除选中的通话记录</string>
+    <string name="toro_back">返回</string>
+    <string name="toro_send_location">发送位置</string>
+    <string name="toro_select_delete">选择删除</string>
+    <string name="toro_import_contacts_from_sim">导入手机卡联系人</string>
+    <string name="toro_export_contacts_to_sim">将联系人导出到手机卡</string>
 </resources>

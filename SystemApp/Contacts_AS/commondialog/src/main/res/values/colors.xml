@@ -1,0 +1,7 @@
+<resources>
+<!--commom dialog-->
+<color name="toro_colorPrimary">#3F51B5</color>
+<color name="toro_colorPrimaryDark">#303F9F</color>
+<color name="toro_colorAccent">#FF4081</color>
+<color name="toro_divider_color">#e6e6e6</color>
+</resources>

@@ -15,8 +15,6 @@
 -->
 
 <resources>
-    <!--电话主界面 底部默认背景-->
-    <color name="toro_tab_normal_backgroud">#F5F8FF</color>
     <!--电话主界面底部选中背景-->
     <color name="toro_tab_selected_backgroud">#ECEFF3</color>
     <!--电话主界面拨号按钮颜色-->
@@ -40,7 +38,7 @@
     <!--拨号盘拨号键绿色-->
     <color name="toro_dialpad_call_normal">#00CB5F</color>
     <!--电话列表Item背景色-->
-    <color name="toro_dialer_row_item_bg">#E1F0F6</color>
+    <color name="toro_dialer_row_item_bg">#E1F1F6</color>
     <!--通话记录 时间颜色-->
     <color name="toro_calllog_date_text">#5844F8</color>
     <!--未接电话文字颜色-->
@@ -53,6 +51,8 @@
     <color name="toro_call_details_item_text_color">#6D6D6D</color>
     <!--通话详情黑色字体-->
     <color name="toro_call_details_black_text_color">#000000</color>
+
+    <color name="toro_contact_normal_backgroup_color">#ECEFF3</color>
 
     <!--commom dialog-->
     <color name="toro_colorPrimary">#3F51B5</color>

@@ -50,6 +50,7 @@
     <dimen name="toro_line_sp">2sp</dimen>
 
     <dimen name="toro_box_elevation">3dp</dimen>
+    <dimen name="toro_search_box_left_padding">8dp</dimen>
 
     <!--common dialog-->
     <dimen name="toro_common_dialog_margin_top">20dp</dimen>

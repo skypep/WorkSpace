@@ -44,10 +44,12 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.android.common.widget.CompositeCursorAdapter.Partition;
 import com.android.contacts.ContactPhotoManager;
+import com.android.contacts.R;
 import com.android.contacts.logging.ListEvent.ActionType;
 import com.android.contacts.logging.Logger;
 import com.android.contacts.preference.ContactsPreferences;
@@ -791,6 +793,11 @@ public abstract class ContactEntryListFragment<T extends ContactEntryListAdapter
                     "'android.R.id.list'");
         }
 
+        /******** liujia add *******************/
+        View hearderView = inflater.inflate(R.layout.toro_search_contact_item,null);
+        headerEdit = hearderView.findViewById(R.id.toro_search_edit);
+        mListView.addHeaderView(hearderView);
+
         View emptyView = mView.findViewById(android.R.id.empty);
         if (emptyView != null) {
             mListView.setEmptyView(emptyView);
@@ -983,5 +990,21 @@ public abstract class ContactEntryListFragment<T extends ContactEntryListAdapter
 
     public void setLogListEvents(boolean logListEvents) {
         mLogListEvents = logListEvents;
+    }
+
+    /*********** liujia add *************/
+    private EditText headerEdit;
+    public void setHeaderViewOnclickListenr(View.OnClickListener listenr) {
+        if(listenr != null) {
+            headerEdit.setOnClickListener(listenr);
+        }
+    }
+
+    public void setHeaderVisible(boolean visible) {
+        if(visible) {
+            headerEdit.setVisibility(View.VISIBLE);
+        } else {
+            headerEdit.setVisibility(View.GONE);
+        }
     }
 }

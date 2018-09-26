@@ -368,6 +368,7 @@ public class PeopleActivity extends AppCompatContactsActivity implements
 
         // Set up the action bar.
         mToolbar = getView(R.id.toolbar);
+        mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
 
         // Add shadow under toolbar.
@@ -375,7 +376,7 @@ public class PeopleActivity extends AppCompatContactsActivity implements
 
         // Set up hamburger button.
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED); // liujia 禁用侧滑
+
         mDrawerFragment = (DrawerFragment) getFragmentManager().findFragmentById(R.id.drawer);
         mToggle = new ContactsActionBarDrawerToggle(this, mDrawerLayout, mToolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -415,6 +416,9 @@ public class PeopleActivity extends AppCompatContactsActivity implements
             Log.d(Constants.PERFORMANCE_TAG, "PeopleActivity.onCreate finish");
         }
         getWindow().setBackgroundDrawable(null);
+
+        setDrawerLockMode(false);
+//        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED); // liujia 禁用侧滑
     }
 
     @Override
@@ -853,6 +857,7 @@ public class PeopleActivity extends AppCompatContactsActivity implements
 
         if (isListFragmentInSearchMode()) {
             mContactsListFragment.getActionBarAdapter().setSearchMode(false);
+            mContactsListFragment.setHeaderVisible(true);// liujia
             if (mContactsListFragment.wasSearchResultClicked()) {
                 mContactsListFragment.resetSearchResultClicked();
             } else {

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/search_box_collapsed"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/toro_search_box_left_padding"
+    android:gravity="center_vertical"
+    android:background="@color/toro_contact_normal_backgroup_color"
+    android:orientation="horizontal">
+
+    <EditText
+        android:id="@+id/toro_search_edit"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/toro_margin_right"
+        android:layout_marginRight="@dimen/toro_margin_right"
+        android:layout_marginTop="@dimen/toro_margin_top"
+        android:layout_marginBottom="@dimen/toro_margin_top"
+        android:paddingLeft="@dimen/toro_margin_top"
+        android:drawablePadding="@dimen/toro_margin_right"
+        android:drawableLeft="@drawable/toro_search_icon"
+        android:background="@drawable/toro_search_edit_shape"
+        android:hint="@string/toro_search"
+        android:focusable="false"
+        />
+
+</LinearLayout>
+

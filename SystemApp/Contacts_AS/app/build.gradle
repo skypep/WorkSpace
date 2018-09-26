@@ -60,4 +60,5 @@ dependencies {
     implementation files('libs/jsr305.jar')
     implementation files('libs/libphonenumber.jar')
     implementation files('libs/vcard.jar')
+    implementation project(':commondialog')
 }
