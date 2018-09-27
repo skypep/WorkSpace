@@ -378,8 +378,22 @@ public class ActionBarAdapter implements OnCloseListener {
     private void update(boolean skipAnimation) {
         updateOverflowButtonColor();
 
-        final boolean isSelectionModeChanging
-                = (mSelectionContainer.getParent() == null) == mSelectionMode;
+        mToolbar.removeView(mSearchContainer);
+        mToolBarFrame.removeView(mSelectionContainer);
+        mToolBarFrame.removeView(mToroContainer);
+        mToolbar.setVisibility(View.GONE);
+        if(mSelectionMode) {
+            addToroContainer();
+        } else if(mSearchMode) {
+            mToolbar.setVisibility(View.VISIBLE);
+            addSearchContainer();
+        } else {
+            addToroContainer();
+        }
+        updateDisplayOptions(false);
+
+        /* final boolean isSelectionModeChanging
+                = (mToroContainer.getParent() == null) == mSelectionMode;
         final boolean isSwitchingFromSearchToSelection =
                 mSearchMode && isSelectionModeChanging || mSearchMode && mSelectionMode;
         final boolean isSearchModeChanging
@@ -416,23 +430,24 @@ public class ActionBarAdapter implements OnCloseListener {
         // Handle a switch to/from selection mode, due to UI interaction.
         if (isSelectionModeChanging) {
             if (mSelectionMode) {
-                addSelectionContainer();
-                mSelectionContainer.setAlpha(0);
-                mSelectionContainer.animate().alpha(1).setDuration(mActionBarAnimationDuration);
+                addToroContainer();
+                mToroContainer.setAlpha(0);
+                mToroContainer.animate().alpha(1).setDuration(mActionBarAnimationDuration);
                 updateDisplayOptions(isSearchModeChanging);
             } else {
                 if (mListener != null) {
                     mListener.onAction(Action.BEGIN_STOPPING_SEARCH_AND_SELECTION_MODE);
                 }
-                mSelectionContainer.setAlpha(1);
-                mSelectionContainer.animate().alpha(0).setDuration(mActionBarAnimationDuration)
-                        .withEndAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        updateDisplayOptions(isSearchModeChanging);
-                        mToolBarFrame.removeView(mSelectionContainer);
-                    }
-                });
+                addToroContainer();
+//                mSelectionContainer.setAlpha(1);
+//                mSelectionContainer.animate().alpha(0).setDuration(mActionBarAnimationDuration)
+//                        .withEndAction(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        updateDisplayOptions(isSearchModeChanging);
+//                        mToolBarFrame.removeView(mSelectionContainer);
+//                    }
+//                });
             }
         }
 
@@ -455,7 +470,7 @@ public class ActionBarAdapter implements OnCloseListener {
                     }
                 });
             }
-        }
+        }*/
     }
 
     /**
@@ -517,22 +532,22 @@ public class ActionBarAdapter implements OnCloseListener {
     }
 
     private void updateStatusBarColor(boolean shouldAnimate) {
-        if (!CompatUtils.isLollipopCompatible()) {
-            return; // we can't change the status bar color prior to Lollipop
-        }
-
-        if (mSelectionMode) {
-            final int cabStatusBarColor = ContextCompat.getColor(
-                    mActivity, R.color.contextual_selection_bar_status_bar_color);
-            runStatusBarAnimation(/* colorTo */ cabStatusBarColor);
-        } else {
-            if (shouldAnimate) {
-                runStatusBarAnimation(/* colorTo */
-                        MaterialColorMapUtils.getStatusBarColor(mActivity));
-            } else if (mActivity instanceof PeopleActivity) {
-                ((PeopleActivity) mActivity).updateStatusBarBackground();
-            }
-        }
+//        if (!CompatUtils.isLollipopCompatible()) {
+//            return; // we can't change the status bar color prior to Lollipop
+//        }
+//
+//        if (mSelectionMode) {
+//            final int cabStatusBarColor = ContextCompat.getColor(
+//                    mActivity, R.color.contextual_selection_bar_status_bar_color);
+//            runStatusBarAnimation(/* colorTo */ cabStatusBarColor);
+//        } else {
+//            if (shouldAnimate) {
+//                runStatusBarAnimation(/* colorTo */
+//                        MaterialColorMapUtils.getStatusBarColor(mActivity));
+//            } else if (mActivity instanceof PeopleActivity) {
+//                ((PeopleActivity) mActivity).updateStatusBarBackground();
+//            }
+//        }
     }
 
     private void runStatusBarAnimation(int colorTo) {
@@ -629,6 +644,8 @@ public class ActionBarAdapter implements OnCloseListener {
     private View.OnClickListener mAddContactListener;
     private boolean mEditMode;
     private View.OnClickListener toroMoreActionListener;
+    private View.OnClickListener onSelecteAllItemListener;
+    private View.OnClickListener onCancelSelectModeListener;
 
     public void setAddContactListener(View.OnClickListener mAddContactListener) {
         this.mAddContactListener = mAddContactListener;
@@ -636,6 +653,14 @@ public class ActionBarAdapter implements OnCloseListener {
 
     public void setToroMoreActionListener(View.OnClickListener toroMoreActionListener) {
         this.toroMoreActionListener = toroMoreActionListener;
+    }
+
+    public void setCancelSelectModeListener(View.OnClickListener onCancelSelectModeListener) {
+        this.onCancelSelectModeListener = onCancelSelectModeListener;
+    }
+
+    public void setSelecteAllItemListener(View.OnClickListener onSelecteAllItemListener) {
+        this.onSelecteAllItemListener = onSelecteAllItemListener;
     }
 
     private void addToroContainer() {
@@ -647,8 +672,10 @@ public class ActionBarAdapter implements OnCloseListener {
     }
 
     private void updateToroAction() {
-        if(mEditMode) {
+        if(mSelectionMode) {
 
+            toroActionBar.setLeftButton(mActivity.getResources().getString(R.string.toro_cancel),onCancelSelectModeListener);
+            toroActionBar.setRightButton(mActivity.getResources().getString(R.string.toro_select_all),onSelecteAllItemListener);
         } else {
             toroActionBar.setLeftButton(mActivity.getResources().getString(R.string.toro_add),mAddContactListener);
             toroActionBar.setRightImageButton(R.drawable.toro_action_more,toroMoreActionListener);

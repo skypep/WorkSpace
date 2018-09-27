@@ -25,6 +25,7 @@ import android.widget.CheckBox;
 
 import com.android.contacts.ContactPhotoManager;
 import com.android.contacts.group.GroupUtil;
+import com.android.contacts.model.account.SimAccountType;
 
 import java.util.TreeSet;
 
@@ -224,5 +225,44 @@ public abstract class MultiSelectEntryContactListAdapter extends ContactEntryLis
         checkBox.setChecked(mSelectedContactIds.contains(contactId));
         checkBox.setClickable(false);
         checkBox.setTag(contactId);
+    }
+
+    /************** liujia add ****************/
+    public void seleteAllData(){
+        int count = getCount();
+        for (int i = 0; i < count; i++) {
+            final int contactIdColumnIndex = getContactColumnIdIndex();
+            final Cursor cursor = (Cursor) getItem(i);
+            long contactId ;
+            if (cursor == null) {
+                return;
+            }
+            if (cursor.getColumnCount() > contactIdColumnIndex) {
+                contactId = cursor.getLong(contactIdColumnIndex);
+            }else{
+                return;
+            }
+            final boolean simContact = isSimContact(i);
+            if (contactId < 0) {
+                return;
+            }
+            if (isDisplayingCheckBoxes()) {
+                toggleSelectionOfContactId(contactId, simContact);
+            }
+        }
+    }
+
+    private boolean isSimContact(int position) {
+        final Cursor cursor = (Cursor) getItem(position);
+        final int accountTypeColumnIndex = cursor
+                .getColumnIndex(ContactsContract.RawContacts.ACCOUNT_TYPE);
+        if (cursor != null && accountTypeColumnIndex >= 0) {
+            if ((cursor.getColumnCount() > accountTypeColumnIndex)) {
+                final String accountType = cursor.getString(accountTypeColumnIndex);
+                return accountType != null
+                        && accountType.equals(SimAccountType.ACCOUNT_TYPE);
+            }
+        }
+        return false;
     }
 }

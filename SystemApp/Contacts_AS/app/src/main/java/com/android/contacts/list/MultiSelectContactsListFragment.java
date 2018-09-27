@@ -156,34 +156,35 @@ public abstract class MultiSelectContactsListFragment<T extends MultiSelectEntry
 
     @Override
     protected boolean onItemLongClick(int position, long id) {
-        final int previouslySelectedCount = getAdapter().getSelectedContactIds().size();
-        final long contactId = getContactId(position);
-        final int partition = getAdapter().getPartitionForPosition(position);
-        final boolean simContact = isSimContact(position);
-        if (contactId >= 0 && partition == ContactsContract.Directory.DEFAULT) {
-            if (mCheckBoxListListener != null) {
-                mCheckBoxListListener.onStartDisplayingCheckBoxes();
-            }
-            getAdapter().toggleSelectionOfContactId(contactId, simContact);
-            Logger.logListEvent(ActionType.SELECT, getListType(),
-                    /* count */ getAdapter().getCount(), /* clickedIndex */ position,
-                    /* numSelected */ 1);
-            // Manually send clicked event if there is a checkbox.
-            // See b/24098561. TalkBack will not read it otherwise.
-            final int index = position + getListView().getHeaderViewsCount() - getListView()
-                    .getFirstVisiblePosition();
-            if (index >= 0 && index < getListView().getChildCount()) {
-                getListView().getChildAt(index).sendAccessibilityEvent(AccessibilityEvent
-                        .TYPE_VIEW_CLICKED);
-            }
-        }
-        final int nowSelectedCount = getAdapter().getSelectedContactIds().size();
-        if (mCheckBoxListListener != null
-                && previouslySelectedCount != 0 && nowSelectedCount == 0) {
-            // Last checkbox has been unchecked. So we should stop displaying checkboxes.
-            mCheckBoxListListener.onStopDisplayingCheckBoxes();
-        }
-        return true;
+        // liujia fixed 不响应长按
+//        final int previouslySelectedCount = getAdapter().getSelectedContactIds().size();
+//        final long contactId = getContactId(position);
+//        final int partition = getAdapter().getPartitionForPosition(position);
+//        final boolean simContact = isSimContact(position);
+//        if (contactId >= 0 && partition == ContactsContract.Directory.DEFAULT) {
+//            if (mCheckBoxListListener != null) {
+//                mCheckBoxListListener.onStartDisplayingCheckBoxes();
+//            }
+//            getAdapter().toggleSelectionOfContactId(contactId, simContact);
+//            Logger.logListEvent(ActionType.SELECT, getListType(),
+//                    /* count */ getAdapter().getCount(), /* clickedIndex */ position,
+//                    /* numSelected */ 1);
+//            // Manually send clicked event if there is a checkbox.
+//            // See b/24098561. TalkBack will not read it otherwise.
+//            final int index = position + getListView().getHeaderViewsCount() - getListView()
+//                    .getFirstVisiblePosition();
+//            if (index >= 0 && index < getListView().getChildCount()) {
+//                getListView().getChildAt(index).sendAccessibilityEvent(AccessibilityEvent
+//                        .TYPE_VIEW_CLICKED);
+//            }
+//        }
+//        final int nowSelectedCount = getAdapter().getSelectedContactIds().size();
+//        if (mCheckBoxListListener != null
+//                && previouslySelectedCount != 0 && nowSelectedCount == 0) {
+//            // Last checkbox has been unchecked. So we should stop displaying checkboxes.
+//            mCheckBoxListListener.onStopDisplayingCheckBoxes();
+//        }
+        return false;
     }
 
     @Override
@@ -197,7 +198,7 @@ public abstract class MultiSelectContactsListFragment<T extends MultiSelectEntry
             getAdapter().toggleSelectionOfContactId(contactId, simContact);
         }
         if (mCheckBoxListListener != null && getAdapter().getSelectedContactIds().size() == 0) {
-            mCheckBoxListListener.onStopDisplayingCheckBoxes();
+//            mCheckBoxListListener.onStopDisplayingCheckBoxes(); // liujia fixed 没有选中任何项时，不退出选择模式
         }
     }
 

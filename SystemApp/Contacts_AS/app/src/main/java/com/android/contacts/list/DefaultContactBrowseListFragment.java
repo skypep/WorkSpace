@@ -52,6 +52,7 @@ import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,14 +62,18 @@ import com.android.contacts.Experiments;
 import com.android.contacts.R;
 import com.android.contacts.activities.ActionBarAdapter;
 import com.android.contacts.activities.PeopleActivity;
+import com.android.contacts.activities.SimImportActivity;
 import com.android.contacts.compat.CompatUtils;
+import com.android.contacts.database.SimContactDao;
 import com.android.contacts.interactions.ContactDeletionInteraction;
 import com.android.contacts.interactions.ContactMultiDeletionInteraction;
 import com.android.contacts.interactions.ContactMultiDeletionInteraction.MultiContactDeleteListener;
+import com.android.contacts.interactions.ExportDialogFragment;
 import com.android.contacts.logging.ListEvent;
 import com.android.contacts.logging.Logger;
 import com.android.contacts.logging.ScreenEvent;
 import com.android.contacts.model.AccountTypeManager;
+import com.android.contacts.model.SimCard;
 import com.android.contacts.model.account.AccountInfo;
 import com.android.contacts.model.account.AccountWithDataSet;
 import com.android.contacts.quickcontact.QuickContactActivity;
@@ -83,6 +88,7 @@ import com.android.contactsbind.FeatureHighlightHelper;
 import com.android.contactsbind.experiments.Flags;
 import com.google.common.util.concurrent.Futures;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Future;
@@ -420,6 +426,7 @@ public class DefaultContactBrowseListFragment extends ContactBrowseListFragment
     @Override
     protected View inflateView(LayoutInflater inflater, ViewGroup container) {
         final View view = inflater.inflate(R.layout.contact_list_content, null);
+        toroDeleteView = view.findViewById(R.id.toro_calllog_delete_view);
 
         mAccountFilterContainer = view.findViewById(R.id.account_filter_header_container);
 
@@ -672,6 +679,8 @@ public class DefaultContactBrowseListFragment extends ContactBrowseListFragment
         mActionBarAdapter.setShowHomeIcon(true);
         mActionBarAdapter.setAddContactListener(mAddContactListener);
         mActionBarAdapter.setToroMoreActionListener(toroMoreActionListener);
+        mActionBarAdapter.setCancelSelectModeListener(onCancelSelectModeListener);
+        mActionBarAdapter.setSelecteAllItemListener(onSelecteAllItemListener);
         initializeActionBarAdapter(savedInstanceState);
         if (isSearchMode()) {
             mActionBarAdapter.setFocusOnSearchView();
@@ -693,6 +702,9 @@ public class DefaultContactBrowseListFragment extends ContactBrowseListFragment
     public void initializeActionBarAdapter(Bundle savedInstanceState) {
         if (mActionBarAdapter != null) {
             mActionBarAdapter.initialize(savedInstanceState, mContactsRequest);
+            if(mActionBarAdapter.isSelectionMode()){
+                toroDeleteView.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -844,13 +856,15 @@ public class DefaultContactBrowseListFragment extends ContactBrowseListFragment
     private final class CheckBoxListListener implements OnCheckBoxListActionListener {
         @Override
         public void onStartDisplayingCheckBoxes() {
-            mActionBarAdapter.setSelectionMode(true);
+            enterSelectMode();
+//            mActionBarAdapter.setSelectionMode(true);
             mActivity.invalidateOptionsMenu();
         }
 
         @Override
         public void onSelectedContactIdsChanged() {
             mActionBarAdapter.setSelectionCount(getSelectedContactIds().size());
+            updateEditDeleteText(getSelectedContactIds().size());
             mActivity.invalidateOptionsMenu();
             mActionBarAdapter.updateOverflowButtonColor();
         }
@@ -1262,29 +1276,23 @@ public class DefaultContactBrowseListFragment extends ContactBrowseListFragment
     }
 
     /*********************** liujia add **************************/
+    private LinearLayout toroDeleteView;
+
+
+    private void enterSelectMode(){
+        mActionBarAdapter.setSelectionMode(true);
+        toroDeleteView.setVisibility(View.VISIBLE);
+    }
+
+    public void exitSelectMode(){
+        mActionBarAdapter.setSelectionMode(false);
+        toroDeleteView.setVisibility(View.GONE);
+    }
+
     private View.OnClickListener toroMoreActionListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            final ToroCommonBottomDialogEntity del = new ToroCommonBottomDialogEntity(mActivity.getResources().getString(R.string.toro_select_delete));
-            final ToroCommonBottomDialogEntity de2 = new ToroCommonBottomDialogEntity(mActivity.getResources().getString(R.string.toro_import_contacts_from_sim));
-            final ToroCommonBottomDialogEntity de3 = new ToroCommonBottomDialogEntity(mActivity.getResources().getString(R.string.toro_export_contacts_to_sim));
-//            del.setColor(Color.RED);
-            ToroCommonBottomDialog dialog = new ToroCommonBottomDialog(mActivity, del,de2,de3);
-            dialog.setOnItemClickListener(new ToroCommonBottomDialog.OnItemClickListener()
-            {
-                @Override
-                public void onItemClick(String text, int listSize, int position)
-                {
-                    if(text.equals(mActivity.getResources().getString(R.string.toro_select_delete))) {
-                        dialog.dismiss();
-                    }else if(text.equals(mActivity.getResources().getString(R.string.toro_import_contacts_from_sim))){
-                        dialog.dismiss();
-                    }else if(text.equals(mActivity.getResources().getString(R.string.toro_export_contacts_to_sim))){
-                        dialog.dismiss();
-                    }
-                }
-            });
-            dialog.show();
+            showMoreActionDialog();
         }
 
     };
@@ -1298,4 +1306,125 @@ public class DefaultContactBrowseListFragment extends ContactBrowseListFragment
             }
         }
     };
+
+    private View.OnClickListener onCancelSelectModeListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            exitSelectMode();
+        }
+    };
+
+    private View.OnClickListener onSelecteAllItemListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            getAdapter().seleteAllData();
+        }
+    };
+
+    public void updateEditDeleteText(int selectedCount) {
+        String editDeleteFormat = getResources().getString(R.string.toro_edit_delete);
+        String editDelete = String.format(editDeleteFormat,selectedCount);
+        ((TextView)toroDeleteView.findViewById(R.id.toro_calllog_delete_count_text)).setText(editDelete);
+    }
+
+    private void selectDeleteAction() {
+        final Intent intent = new Intent(
+                SimContactsConstants.ACTION_MULTI_PICK_CONTACT,
+                ContactsContract.Contacts.CONTENT_URI);
+        intent.putExtra(
+                AccountFilterActivity.EXTRA_CONTACT_LIST_FILTER, getFilter());
+        intent.putExtra("delete", true);
+        startActivity(intent);
+    }
+
+    class simEntry{
+        int subscriptionId;
+        CharSequence menuText;
+        simEntry(int id,CharSequence name) {
+            this.subscriptionId = id;
+            this.menuText = name;
+        }
+    }
+
+    private void showMoreActionDialog() {
+        ToroCommonBottomDialog dialog;
+        List<ToroCommonBottomDialogEntity> menuList = new ArrayList<>();
+        List<simEntry> exportEntries = new ArrayList<>();
+        List<simEntry> importEntries = new ArrayList<>();
+        final ToroCommonBottomDialogEntity del = new ToroCommonBottomDialogEntity(mActivity.getResources().getString(R.string.toro_select_delete));
+        menuList.add(del);
+        SimContactDao mSimDao = SimContactDao.create(getContext());
+        final List<SimCard> sims = mSimDao.getSimCards();
+        if (sims.size() == 1) {
+            int id = sims.get(0).getSubscriptionId();
+            final ToroCommonBottomDialogEntity de2 = new ToroCommonBottomDialogEntity(mActivity.getResources().getString(R.string.toro_import_contacts_from_sim));
+            final ToroCommonBottomDialogEntity de3 = new ToroCommonBottomDialogEntity(mActivity.getResources().getString(R.string.toro_export_contacts_to_sim));
+            menuList.add(de2);
+            menuList.add(de3);
+        } else {
+            for (int i = 0; i < sims.size(); i++) {
+                final SimCard sim = sims.get(i);
+                int id = sims.get(i).getSubscriptionId();
+                CharSequence importString = getString(R.string.toro_import_contacts_from_sim_X, i+1);
+                CharSequence exportString = getString(R.string.toro_export_contacts_to_sim_X, i+1);
+                simEntry importEntry = new simEntry(id,importString);
+                simEntry exportEntry = new simEntry(id,exportString);
+                final ToroCommonBottomDialogEntity de2 = new ToroCommonBottomDialogEntity(importString.toString());
+                final ToroCommonBottomDialogEntity de3 = new ToroCommonBottomDialogEntity(exportString.toString());
+                importEntries.add(importEntry);
+                exportEntries.add(exportEntry);
+                menuList.add(de2);
+                menuList.add(de3);
+            }
+        }
+        final ToroCommonBottomDialogEntity de2 = new ToroCommonBottomDialogEntity(mActivity.getResources().getString(R.string.toro_import_contacts_from_sim));
+        final ToroCommonBottomDialogEntity de3 = new ToroCommonBottomDialogEntity(mActivity.getResources().getString(R.string.toro_export_contacts_to_sim));
+//            del.setColor(Color.RED);
+        dialog = new ToroCommonBottomDialog(mActivity, menuList);
+
+        dialog.setOnItemClickListener(new ToroCommonBottomDialog.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(String text, int listSize, int position)
+            {
+                if(text.equals(mActivity.getResources().getString(R.string.toro_select_delete))) {
+//                        enterSelectMode();
+                    selectDeleteAction();
+                    dialog.dismiss();
+                }else if(text.equals(mActivity.getResources().getString(R.string.toro_import_contacts_from_sim))){
+                    importFromSim(sims.get(0).getSubscriptionId());
+                    dialog.dismiss();
+                }else if(text.equals(mActivity.getResources().getString(R.string.toro_export_contacts_to_sim))){
+                    exportToSim(sims.get(0).getSubscriptionId());
+                    dialog.dismiss();
+                }else {
+                    for(simEntry item : exportEntries){
+                        if(text.equals(item.menuText)) {
+                            exportToSim(item.subscriptionId);
+                        }
+                    }
+                    for(simEntry item : importEntries){
+                        if(text.equals(item.menuText)) {
+                            importFromSim(item.subscriptionId);
+                        }
+                    }
+                    dialog.dismiss();
+                }
+            }
+        });
+        dialog.show();
+    }
+
+    private void importFromSim(int id) {
+        startActivity(new Intent(getActivity(), SimImportActivity.class)
+                .putExtra(SimImportActivity.EXTRA_SUBSCRIPTION_ID, id));
+    }
+
+    private void exportToSim(int id) {
+        Intent pickContactIntent = new Intent(
+                SimContactsConstants.ACTION_MULTI_PICK_CONTACT,
+                ContactsContract.Contacts.CONTENT_URI);
+        pickContactIntent.putExtra("exportSub", id);
+        getActivity().startActivity(pickContactIntent);
+    }
 }

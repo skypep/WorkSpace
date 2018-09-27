@@ -53,6 +53,7 @@
     <color name="toro_call_details_black_text_color">#000000</color>
 
     <color name="toro_contact_normal_backgroup_color">#ECEFF3</color>
+    <color name="toro_tab_normal_backgroud">#F5F8FF</color>
 
     <!--commom dialog-->
     <color name="toro_colorPrimary">#3F51B5</color>

@@ -29,4 +29,7 @@
     <string name="toro_select_delete">选择删除</string>
     <string name="toro_import_contacts_from_sim">导入手机卡联系人</string>
     <string name="toro_export_contacts_to_sim">将联系人导出到手机卡</string>
+    <string name="toro_import_contacts_from_sim_X">导入手机卡%1$d联系人</string>
+    <string name="toro_export_contacts_to_sim_X">将联系人导出到手机卡%1$d</string>
+    <string name="toro_delete_btn">删除</string>
 </resources>

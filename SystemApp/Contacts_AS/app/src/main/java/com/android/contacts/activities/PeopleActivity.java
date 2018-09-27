@@ -851,7 +851,8 @@ public class PeopleActivity extends AppCompatContactsActivity implements
     // Returns true if back event is handled in this method.
     private boolean maybeHandleInListFragment() {
         if (isListFragmentInSelectionMode()) {
-            mContactsListFragment.getActionBarAdapter().setSelectionMode(false);
+//            mContactsListFragment.getActionBarAdapter().setSelectionMode(false);
+            mContactsListFragment.exitSelectMode();
             return true;
         }
 

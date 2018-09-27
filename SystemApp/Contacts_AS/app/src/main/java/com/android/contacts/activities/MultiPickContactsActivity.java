@@ -48,6 +48,7 @@ import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -169,6 +170,10 @@ public class MultiPickContactsActivity extends Activity implements
 
     private void initResource() {
         mOKButton = (TextView) findViewById(R.id.btn_ok);
+        if(mDelete) {
+            mOKButton.setText(R.string.toro_delete_btn);
+
+        }
         mOKButton.setOnClickListener(this);
         setOkStatus();
     }
@@ -363,8 +368,13 @@ public class MultiPickContactsActivity extends Activity implements
                     mContext.getResources().getColor(R.color.ok_or_clear_button_disable_color));
         } else {
             mOKButton.setEnabled(true);
-            mOKButton.setTextColor(
-                    mContext.getResources().getColor(R.color.ok_or_clear_button_normal_color));
+            if(mDelete) {
+                mOKButton.setTextColor(Color.RED);
+            } else {
+                mOKButton.setTextColor(
+                        mContext.getResources().getColor(R.color.ok_or_clear_button_normal_color));
+            }
+
         }
     }
 

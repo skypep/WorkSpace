@@ -101,6 +101,26 @@ public class ToroCommonBottomDialog
         init(context, l);
     }
 
+    public ToroCommonBottomDialog(
+            @NonNull
+                    Context context, List<ToroCommonBottomDialogEntity> list)
+    {
+        super(context, R.style.CustomBottomDialog);
+        mRealDataList.clear();
+        List<ToroCommonBottomDialogEntity> l = new ArrayList<>();
+        for (ToroCommonBottomDialogEntity s : list)
+        {
+            mRealDataList.add(s);
+
+            l.add(s);
+            l.add(null);
+        }
+        ToroCommonBottomDialogEntity entity = new ToroCommonBottomDialogEntity(
+                getContext().getString(R.string.toro_cancel));
+        l.add(entity);
+        init(context, l);
+    }
+
     public void setGravity(int gravity)
     {
         mGravity = gravity;
