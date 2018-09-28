@@ -1056,14 +1056,9 @@ public class RawContactEditorView extends LinearLayout implements View.OnClickLi
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String sformat = PhoneNumberUtilsCompat.formatNumber(
-                        phoneNumber, phone.getPhoneNormalizedNumber(),
-                        GeoUtil.getCurrentCountryIso(getContext()));
-                if(!sformat.equals(formattedNumber)){
+                if(!s.equals(formattedNumber)){
                     phone.setPhoneNumber(s.toString());
                 }
-                editText.setText(sformat);
-
             }
 
             @Override
