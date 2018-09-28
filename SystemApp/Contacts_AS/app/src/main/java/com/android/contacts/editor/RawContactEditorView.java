@@ -16,6 +16,7 @@
 
 package com.android.contacts.editor;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -24,6 +25,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Email;
 import android.provider.ContactsContract.CommonDataKinds.Event;
 import android.provider.ContactsContract.CommonDataKinds.GroupMembership;
@@ -38,13 +40,16 @@ import android.provider.ContactsContract.CommonDataKinds.SipAddress;
 import android.provider.ContactsContract.CommonDataKinds.StructuredName;
 import android.provider.ContactsContract.CommonDataKinds.StructuredPostal;
 import android.provider.ContactsContract.CommonDataKinds.Website;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListPopupWindow;
@@ -64,9 +69,11 @@ import com.android.contacts.model.account.AccountWithDataSet;
 import com.android.contacts.model.account.SimAccountType;
 import com.android.contacts.model.dataitem.CustomDataItem;
 import com.android.contacts.model.dataitem.DataKind;
+import com.android.contacts.toro.ToroPhotoEditorView;
 import com.android.contacts.util.AccountsListAdapter;
 import com.android.contacts.util.MaterialColorMapUtils;
 import com.android.contacts.util.UiClosables;
+import com.google.wireless.gdata.data.StringUtils;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -219,7 +226,7 @@ public class RawContactEditorView extends LinearLayout implements View.OnClickLi
     private ImageView mAccountHeaderIcon;
     private ImageView mAccountHeaderExpanderIcon;
 
-    private PhotoEditorView mPhotoView;
+    private ToroPhotoEditorView mPhotoView;
     private ViewGroup mKindSectionViews;
     private Map<String, KindSectionView> mKindSectionViewMap = new HashMap<>();
     private View mMoreFields;
@@ -260,7 +267,11 @@ public class RawContactEditorView extends LinearLayout implements View.OnClickLi
         mAccountHeaderIcon = (ImageView) findViewById(R.id.account_type_icon);
         mAccountHeaderExpanderIcon = (ImageView) findViewById(R.id.account_expander_icon);
 
-        mPhotoView = (PhotoEditorView) findViewById(R.id.photo_editor);
+        toroContentContainer = findViewById(R.id.toro_editor_content_container);
+        nameEditText = findViewById(R.id.toro_editor_nickname);
+        findViewById(R.id.toro_add_number).setOnClickListener(this);
+
+        mPhotoView = (ToroPhotoEditorView) findViewById(R.id.photo_editor);
         mKindSectionViews = (LinearLayout) findViewById(R.id.kind_section_views);
         mMoreFields = findViewById(R.id.more_fields);
         mMoreFields.setOnClickListener(this);
@@ -270,6 +281,9 @@ public class RawContactEditorView extends LinearLayout implements View.OnClickLi
     public void onClick(View view) {
         if (view.getId() == R.id.more_fields) {
             showAllFields();
+        }else if(view.getId() == R.id.toro_add_number) {
+//            addNumber("",true);
+            insertPhoneNumber();
         }
     }
 
@@ -307,7 +321,7 @@ public class RawContactEditorView extends LinearLayout implements View.OnClickLi
     /**
      * Pass through to {@link PhotoEditorView#setListener}.
      */
-    public void setPhotoListener(PhotoEditorView.Listener listener) {
+    public void setPhotoListener(ToroPhotoEditorView.Listener listener) {
         mPhotoView.setListener(listener);
     }
 
@@ -514,6 +528,14 @@ public class RawContactEditorView extends LinearLayout implements View.OnClickLi
             }
         }
         if (mListener != null) mListener.onEditorsBound();
+
+        if(useToroView){
+            mAccountHeaderContainer.setVisibility(View.GONE);// liujia add
+            setupToroContentView();
+        } else {
+            toroContentContainer.setVisibility(View.GONE);
+        }
+
     }
 
     public void setAccounts(List<AccountInfo> accounts) {
@@ -662,7 +684,7 @@ public class RawContactEditorView extends LinearLayout implements View.OnClickLi
         bindData(nameDrawable, nameContentDescription, name, /* type */ null,
                 /* isFirstEntry */ true);
 
-        // Phones
+        // Phones liujia mark
         final ArrayList<ValuesDelta> phones = mCurrentRawContactDelta
                 .getMimeEntries(Phone.CONTENT_ITEM_TYPE);
         final Drawable phoneDrawable = context.getDrawable(R.drawable.quantum_ic_phone_vd_theme_24);
@@ -870,24 +892,27 @@ public class RawContactEditorView extends LinearLayout implements View.OnClickLi
     }
 
     private void addKindSectionViews() {
-        int i = -1;
+//        liujia mark
+        if(!useToroView){
+            int i = -1;
 
-        for (String mimeType : mSortedMimetypes) {
-            i++;
-            // Ignore mime types that we've already handled
-            if (Photo.CONTENT_ITEM_TYPE.equals(mimeType)) {
-                if (Log.isLoggable(TAG, Log.VERBOSE)) {
-                    Log.v(TAG, "kind: " + i + " " + mimeType + " dropped");
+            for (String mimeType : mSortedMimetypes) {
+                i++;
+                // Ignore mime types that we've already handled
+                if (Photo.CONTENT_ITEM_TYPE.equals(mimeType)) {
+                    if (Log.isLoggable(TAG, Log.VERBOSE)) {
+                        Log.v(TAG, "kind: " + i + " " + mimeType + " dropped");
+                    }
+                    continue;
                 }
-                continue;
-            }
-            final KindSectionView kindSectionView;
-            final KindSectionData kindSectionData = mKindSectionDataMap.get(mimeType);
-            kindSectionView = inflateKindSectionView(mKindSectionViews, kindSectionData, mimeType);
-            mKindSectionViews.addView(kindSectionView);
+                final KindSectionView kindSectionView;
+                final KindSectionData kindSectionData = mKindSectionDataMap.get(mimeType);
+                kindSectionView = inflateKindSectionView(mKindSectionViews, kindSectionData, mimeType);
+                mKindSectionViews.addView(kindSectionView);
 
-            // Keep a pointer to the KindSectionView for each mimeType
-            mKindSectionViewMap.put(mimeType, kindSectionView);
+                // Keep a pointer to the KindSectionView for each mimeType
+                mKindSectionViewMap.put(mimeType, kindSectionView);
+            }
         }
     }
 
@@ -945,5 +970,122 @@ public class RawContactEditorView extends LinearLayout implements View.OnClickLi
 
     private static void elog(String message) {
         Log.e(TAG, message);
+    }
+
+    /******************** liujia add ********************/
+    private LinearLayout toroContentContainer;
+    private EditText nameEditText;
+    private List<EditText> toroEdits;
+    boolean useToroView = true;
+
+    private void setupToroContentView() {
+        toroEdits = new ArrayList<>();
+        //name
+        ValuesDelta primary;
+        final Context context = getContext();
+        final Resources res = context.getResources();
+        primary = mCurrentRawContactDelta.getPrimaryEntry(StructuredName.CONTENT_ITEM_TYPE);
+        final String name = primary != null ? primary.getAsString(StructuredName.DISPLAY_NAME) :
+                getContext().getString(R.string.missing_name);
+        final String nameContentDescription = res.getString(R.string.header_name_entry);
+        nameEditText.setText(name);
+        nameEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(!s.equals(name)){
+                    mCurrentRawContactDelta.getPrimaryEntry(StructuredName.CONTENT_ITEM_TYPE).setDisplayName(s.toString());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        // phone
+        toroContentContainer.removeAllViews();
+        final ArrayList<ValuesDelta> phones = mCurrentRawContactDelta
+                .getMimeEntries(Phone.CONTENT_ITEM_TYPE);
+        final String phoneContentDescription = res.getString(R.string.header_phone_entry);
+        if (phones != null) {
+            boolean isFirstPhoneBound = true;
+            for (ValuesDelta phone : phones) {
+                addNumber(phone,false);
+
+            }
+        } else {
+//            addNumber("",true);
+            insertPhoneNumber();
+        }
+    }
+
+    private void addNumber(ValuesDelta phone,boolean isEnd) {
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        View view = inflater.inflate(R.layout.toro_phone_number_edit, toroContentContainer,
+                /* attachToRoot = */ false);
+        EditText editText = view.findViewById(R.id.edit_text);
+        String phoneNumber = phone.getPhoneNumber();
+        String formattedNumber;
+        if (TextUtils.isEmpty(phoneNumber)) {
+            formattedNumber = "";
+        }else {
+            formattedNumber = PhoneNumberUtilsCompat.formatNumber(
+                    phoneNumber, phone.getPhoneNormalizedNumber(),
+                    GeoUtil.getCurrentCountryIso(getContext()));
+        }
+        if(!StringUtils.isEmpty(formattedNumber)){
+            editText.setText(formattedNumber);
+        }
+        if(isEnd) {
+            for(EditText et : toroEdits) {
+                et.setBackgroundResource(R.drawable.toro_editor_edittext_center_shape);
+            }
+            editText.setBackgroundResource(R.drawable.toro_editor_edittext_botton_shape);
+        }
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String sformat = PhoneNumberUtilsCompat.formatNumber(
+                        phoneNumber, phone.getPhoneNormalizedNumber(),
+                        GeoUtil.getCurrentCountryIso(getContext()));
+                if(!sformat.equals(formattedNumber)){
+                    phone.setPhoneNumber(s.toString());
+                }
+                editText.setText(sformat);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        toroEdits.add(editText);
+        toroContentContainer.addView(view);
+    }
+
+    private ValuesDelta insertPhoneNumber() {
+        final AccountType accountType =
+                mCurrentRawContactDelta.getRawContactAccountType(getContext());
+        final DataKind kind = accountType.getKindForMimetype(Phone.CONTENT_ITEM_TYPE);
+        final ContentValues after = new ContentValues();
+
+        // Our parent CONTACT_ID is provided later
+        after.put(ContactsContract.Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE);
+        final ValuesDelta child = ValuesDelta.fromAfter(after);
+        mCurrentRawContactDelta.addEntry(child);
+        setupToroContentView();
+        return child;
     }
 }

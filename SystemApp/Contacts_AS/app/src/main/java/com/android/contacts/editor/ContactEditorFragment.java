@@ -83,6 +83,7 @@ import com.android.contacts.model.account.AccountsLoader;
 import com.android.contacts.preference.ContactsPreferences;
 import com.android.contacts.quickcontact.InvisibleContactUtil;
 import com.android.contacts.quickcontact.QuickContactActivity;
+import com.android.contacts.toro.ToroPhotoEditorView;
 import com.android.contacts.util.ContactDisplayUtils;
 import com.android.contacts.util.ContactPhotoUtils;
 import com.android.contacts.util.ImplicitIntentsUtil;
@@ -110,7 +111,7 @@ public class ContactEditorFragment extends Fragment implements
         JoinContactConfirmationDialogFragment.Listener,
         AggregationSuggestionEngine.Listener, AggregationSuggestionView.Listener,
         CancelEditDialogFragment.Listener,
-        RawContactEditorView.Listener, PhotoEditorView.Listener,
+        RawContactEditorView.Listener, ToroPhotoEditorView.Listener,
         AccountsLoader.AccountsListener {
 
     static final String TAG = "ContactEditor";

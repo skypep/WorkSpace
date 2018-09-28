@@ -596,4 +596,9 @@ public class ValuesDelta implements Parcelable {
     public String getEmailLabel() {
         return getAsString(ContactsContract.CommonDataKinds.Email.LABEL);
     }
+
+    /*** liujia add *****/
+    public void setPhoneNumber(String phoneNumber) {
+        put(ContactsContract.CommonDataKinds.Phone.NUMBER, phoneNumber);
+    }
 }

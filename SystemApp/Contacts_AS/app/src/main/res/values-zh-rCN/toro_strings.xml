@@ -32,4 +32,6 @@
     <string name="toro_import_contacts_from_sim_X">导入手机卡%1$d联系人</string>
     <string name="toro_export_contacts_to_sim_X">将联系人导出到手机卡%1$d</string>
     <string name="toro_delete_btn">删除</string>
+    <string name="toro_photo_editor">修改头像</string>
+    <string name="toro_add_new_number">添加新号码</string>
 </resources>

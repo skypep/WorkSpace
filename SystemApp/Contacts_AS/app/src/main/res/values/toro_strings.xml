@@ -34,4 +34,6 @@
     <string name="toro_import_contacts_from_sim_X">Import Contacts From Sim Card %1$d</string>
     <string name="toro_export_contacts_to_sim_X">Export Contacts to Sim Card %1$d</string>
     <string name="toro_delete_btn">Delete</string>
+    <string name="toro_photo_editor">Amend the photo</string>
+    <string name="toro_add_new_number">Add new number</string>
 </resources>
