@@ -76,6 +76,7 @@
             android:launchMode="singleTop"
             android:resizeableActivity="true"
             android:theme="@style/LaunchScreenTheme"
+            android:screenOrientation="portrait"
             android:visibleToInstantApps="true"
             >
             <intent-filter>
@@ -186,6 +187,7 @@
             android:theme="@style/ContactPickerTheme"
             android:uiOptions="splitActionBarWhenNarrow"
             android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"
             android:visibleToInstantApps="true">
             <meta-data android:name="android.app.shortcuts.new_config"
                 android:value="true" />
@@ -256,43 +258,51 @@
             android:exported="false"
             android:label="@string/activity_title_settings"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:theme="@style/ContactsPreferencesTheme"/>
 
         <activity
             android:name=".activities.LicenseActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:label="@string/activity_title_licenses"
             android:theme="@style/ContactsPreferencesTheme"/>
 
         <!-- Used to filter contacts list by account -->
         <activity
             android:name=".list.AccountFilterActivity"
+            android:screenOrientation="portrait"
             android:label="@string/activity_title_contacts_filter"
             android:theme="@style/ContactListFilterTheme"/>
 
         <!-- Used to select display and sync groups -->
         <activity
             android:name=".list.CustomContactListFilterActivity"
+            android:screenOrientation="portrait"
             android:label="@string/custom_list_filter"
             android:theme="@style/ContactListFilterTheme"/>
 
         <activity
             android:name=".activities.RequestPermissionsActivity"
+            android:screenOrientation="portrait"
             android:exported="false"
             android:theme="@style/PeopleTheme"/>
 
         <activity
             android:name=".activities.RequestDesiredPermissionsActivity"
+            android:screenOrientation="portrait"
             android:exported="false"
             android:theme="@style/PeopleTheme"/>
 
         <activity
             android:name=".activities.RequestImportVCardPermissionsActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/PeopleTheme"/>
 
         <activity
             android:name=".activities.ShowOrCreateActivity"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Material.Light.Dialog.NoActionBar">
 
             <intent-filter>
@@ -306,6 +316,7 @@
 
         <activity
             android:name=".quickcontact.QuickContactActivity"
+            android:screenOrientation="portrait"
             android:excludeFromRecents="true"
             android:launchMode="singleTop"
             android:taskAffinity=""
@@ -390,12 +401,14 @@
         <activity
             android:name=".activities.ContactEditorAccountsChangedActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/ContactEditorAccountsChangedActivityTheme"
             android:windowSoftInputMode="adjustResize"/>
 
         <!-- Edit or create a contact with only the most important fields displayed initially. -->
         <activity
             android:name=".activities.ContactEditorActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/EditorActivityTheme">
 
             <intent-filter>
@@ -425,6 +438,7 @@
 
         <activity
             android:name=".activities.ContactEditorSpringBoardActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/TransparentThemeAppCompat">
 
             <intent-filter>
@@ -437,7 +451,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".test.FragmentTestActivity">
+        <activity android:name=".test.FragmentTestActivity"
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <category android:name="android.intent.category.TEST"/>
             </intent-filter>
@@ -462,6 +478,7 @@
         <!-- Attaches a photo to a contact. Started from external applications -->
         <activity
             android:name=".activities.AttachPhotoActivity"
+            android:screenOrientation="portrait"
             android:label="@string/attach_photo_dialog_title"
             android:taskAffinity="">
             <intent-filter>
@@ -474,6 +491,7 @@
         <!-- vCard related -->
         <activity
             android:name=".vcard.ImportVCardActivity"
+            android:screenOrientation="portrait"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:theme="@style/BackgroundOnlyTheme">
             <intent-filter>
@@ -489,6 +507,7 @@
 
         <activity
             android:name=".vcard.NfcImportVCardActivity"
+            android:screenOrientation="portrait"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:theme="@style/BackgroundOnlyTheme">
             <intent-filter>
@@ -503,22 +522,27 @@
 
         <activity
             android:name=".vcard.CancelActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/BackgroundOnlyTheme"/>
 
         <activity
             android:name=".vcard.SelectAccountActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/BackgroundOnlyTheme"/>
 
         <activity
             android:name=".vcard.ExportVCardActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/BackgroundOnlyTheme"/>
 
         <activity
             android:name=".vcard.ShareVCardActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/BackgroundOnlyTheme"/>
 
         <activity
             android:name=".activities.SimImportActivity"
+            android:screenOrientation="portrait"
             android:label="@string/sim_import_title"
             android:theme="@style/PeopleThemeAppCompat.FullScreenDialog.SimImportActivity"/>
 
@@ -563,6 +587,7 @@
              are set lower, so that the user does not see a disambig dialog -->
         <activity
             android:name="com.android.contacts.NonPhoneActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/NonPhoneActivityTheme">
             <intent-filter android:priority="-1">
                 <action android:name="android.intent.action.MAIN"/>
@@ -590,6 +615,7 @@
 
         <activity
             android:name="com.android.contacts.dialog.CallSubjectDialog"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.CallSubjectDialogTheme"
             android:windowSoftInputMode="stateVisible|adjustResize">
             <intent-filter>

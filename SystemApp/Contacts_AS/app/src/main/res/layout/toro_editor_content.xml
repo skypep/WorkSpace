@@ -33,6 +33,7 @@
         <EditText
             android:id="@+id/toro_editor_nickname"
             android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/toro_margin_top"
             android:hint="@string/header_name_entry"
             android:textColor="#000000"
             android:textSize="@dimen/toro_editor_text_size"

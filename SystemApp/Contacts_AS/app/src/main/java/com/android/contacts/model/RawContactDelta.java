@@ -288,6 +288,14 @@ public class RawContactDelta implements Parcelable {
         return entry;
     }
 
+    public void removeEntry(ValuesDelta entry) {
+        final String mimeType = entry.getMimetype();
+        ArrayList<ValuesDelta> list = getMimeEntries(mimeType, false);
+        if(list != null) {
+            list.remove(entry);
+        }
+    }
+
     public ArrayList<ContentValues> getContentValues() {
         ArrayList<ContentValues> values = Lists.newArrayList();
         for (ArrayList<ValuesDelta> mimeEntries : mEntries.values()) {

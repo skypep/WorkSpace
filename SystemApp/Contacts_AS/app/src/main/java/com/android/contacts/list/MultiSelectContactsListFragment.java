@@ -198,7 +198,7 @@ public abstract class MultiSelectContactsListFragment<T extends MultiSelectEntry
             getAdapter().toggleSelectionOfContactId(contactId, simContact);
         }
         if (mCheckBoxListListener != null && getAdapter().getSelectedContactIds().size() == 0) {
-//            mCheckBoxListListener.onStopDisplayingCheckBoxes(); // liujia fixed 没有选中任何项时，不退出选择模式
+            mCheckBoxListListener.onStopDisplayingCheckBoxes();
         }
     }
 

@@ -14,14 +14,36 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/toro_editor_content_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
     <EditText
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/edit_text"
+        android:background="@drawable/toro_editor_edittext_center_shape"
         android:layout_width="match_parent"
         android:textColor="#000000"
+        android:inputType="phone"
         android:textSize="@dimen/toro_editor_text_size"
         android:layout_height="@dimen/toro_editor_text_heigh"
         android:paddingLeft="@dimen/toro_margin_right"
         android:hint="@string/phoneLabelsGroup"
-        android:background="@drawable/toro_editor_edittext_center_shape"
         />
+
+    <ImageView
+        android:id="@+id/delete_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/toro_margin_right"
+        android:scaleType="fitCenter"
+        android:visibility="gone"
+        android:src="@drawable/toro_delete_phone_icon"
+        />
+
+</RelativeLayout>
+

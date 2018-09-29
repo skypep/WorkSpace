@@ -52,7 +52,6 @@ public class ToroPhotoEditorView extends RelativeLayout implements View.OnClickL
 
     public ToroPhotoEditorView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
         mLandscapePhotoRatio = getTypedFloat(R.dimen.quickcontact_landscape_photo_ratio);
         mPortraitPhotoRatio = getTypedFloat(R.dimen.editor_portrait_photo_ratio);
         mIsTwoPanel = getResources().getBoolean(R.bool.contacteditor_two_panel);

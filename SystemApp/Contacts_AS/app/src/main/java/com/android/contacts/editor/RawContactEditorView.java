@@ -283,7 +283,7 @@ public class RawContactEditorView extends LinearLayout implements View.OnClickLi
             showAllFields();
         }else if(view.getId() == R.id.toro_add_number) {
 //            addNumber("",true);
-            insertPhoneNumber();
+            insertPhoneNumber(true);
         }
     }
 
@@ -531,7 +531,7 @@ public class RawContactEditorView extends LinearLayout implements View.OnClickLi
 
         if(useToroView){
             mAccountHeaderContainer.setVisibility(View.GONE);// liujia add
-            setupToroContentView();
+            setupToroContentView(false);
         } else {
             toroContentContainer.setVisibility(View.GONE);
         }
@@ -975,10 +975,11 @@ public class RawContactEditorView extends LinearLayout implements View.OnClickLi
     /******************** liujia add ********************/
     private LinearLayout toroContentContainer;
     private EditText nameEditText;
-    private List<EditText> toroEdits;
-    boolean useToroView = true;
+    private List<View> toroEdits;// 此字段仅仅用来更改追加电话后的 边角
+    private boolean useToroView = true;
+    private int phonesCount;
 
-    private void setupToroContentView() {
+    private void setupToroContentView(boolean isAddNumber) {
         toroEdits = new ArrayList<>();
         //name
         ValuesDelta primary;
@@ -987,18 +988,16 @@ public class RawContactEditorView extends LinearLayout implements View.OnClickLi
         primary = mCurrentRawContactDelta.getPrimaryEntry(StructuredName.CONTENT_ITEM_TYPE);
         final String name = primary != null ? primary.getAsString(StructuredName.DISPLAY_NAME) :
                 getContext().getString(R.string.missing_name);
-        final String nameContentDescription = res.getString(R.string.header_name_entry);
         nameEditText.setText(name);
         nameEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(!s.equals(name)){
-                    mCurrentRawContactDelta.getPrimaryEntry(StructuredName.CONTENT_ITEM_TYPE).setDisplayName(s.toString());
+                    mCurrentRawContactDelta.getPrimaryEntry(StructuredName.CONTENT_ITEM_TYPE).setName(s.toString());
                 }
             }
 
@@ -1012,24 +1011,28 @@ public class RawContactEditorView extends LinearLayout implements View.OnClickLi
         toroContentContainer.removeAllViews();
         final ArrayList<ValuesDelta> phones = mCurrentRawContactDelta
                 .getMimeEntries(Phone.CONTENT_ITEM_TYPE);
-        final String phoneContentDescription = res.getString(R.string.header_phone_entry);
         if (phones != null) {
-            boolean isFirstPhoneBound = true;
-            for (ValuesDelta phone : phones) {
-                addNumber(phone,false);
+            for (int i = 0; i < phones.size(); i ++) {
+                ValuesDelta phone = phones.get(i);
+                if(i == phones.size() - 1){
+                    addNumber(phone,false,true);
+                } else {
+                    addNumber(phone,false,false);
+                }
 
             }
         } else {
-//            addNumber("",true);
-            insertPhoneNumber();
+            insertPhoneNumber(false);
         }
     }
 
-    private void addNumber(ValuesDelta phone,boolean isEnd) {
+    private void addNumber(ValuesDelta phone,boolean focusable,boolean isEnd) {
+        phonesCount++;
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View view = inflater.inflate(R.layout.toro_phone_number_edit, toroContentContainer,
                 /* attachToRoot = */ false);
         EditText editText = view.findViewById(R.id.edit_text);
+        ImageView deleteImage = view.findViewById(R.id.delete_image);
         String phoneNumber = phone.getPhoneNumber();
         String formattedNumber;
         if (TextUtils.isEmpty(phoneNumber)) {
@@ -1043,10 +1046,18 @@ public class RawContactEditorView extends LinearLayout implements View.OnClickLi
             editText.setText(formattedNumber);
         }
         if(isEnd) {
-            for(EditText et : toroEdits) {
-                et.setBackgroundResource(R.drawable.toro_editor_edittext_center_shape);
-            }
             editText.setBackgroundResource(R.drawable.toro_editor_edittext_botton_shape);
+            editText.setPadding(getResources().getDimensionPixelOffset(R.dimen.toro_margin_right),0,0,0);
+            if(focusable) {
+                editText.setFocusable(true);
+                editText.setFocusableInTouchMode(true);
+                editText.requestFocus();
+            }
+            if(phonesCount > 1){
+                EditText pet = toroEdits.get(toroEdits.size()-1).findViewById(R.id.edit_text);
+                pet.setBackgroundResource(R.drawable.toro_editor_edittext_center_shape);
+                pet.setPadding(getResources().getDimensionPixelOffset(R.dimen.toro_margin_right),0,0,0);
+            }
         }
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -1066,11 +1077,23 @@ public class RawContactEditorView extends LinearLayout implements View.OnClickLi
 
             }
         });
-        toroEdits.add(editText);
+        toroEdits.add(view);
+        if(phonesCount > 0) {
+            deleteImage.setVisibility(View.VISIBLE);
+            deleteImage.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    deletePhoneNumber(view,phone);
+
+                }
+            });
+        } else {
+            deleteImage.setVisibility(View.GONE);
+        }
         toroContentContainer.addView(view);
     }
 
-    private ValuesDelta insertPhoneNumber() {
+    private void insertPhoneNumber(boolean focusable) {
         final AccountType accountType =
                 mCurrentRawContactDelta.getRawContactAccountType(getContext());
         final DataKind kind = accountType.getKindForMimetype(Phone.CONTENT_ITEM_TYPE);
@@ -1080,7 +1103,19 @@ public class RawContactEditorView extends LinearLayout implements View.OnClickLi
         after.put(ContactsContract.Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE);
         final ValuesDelta child = ValuesDelta.fromAfter(after);
         mCurrentRawContactDelta.addEntry(child);
-        setupToroContentView();
-        return child;
+        addNumber(child,focusable,true);
+//        setupToroContentView(true);
+    }
+
+    private void deletePhoneNumber(View view,ValuesDelta child) {
+        if(phonesCount > 1) {
+            child.markDeleted();
+            toroContentContainer.removeView(view);
+            toroEdits.remove(view);
+            phonesCount--;
+        } else {
+            child.setPhoneNumber("");
+            ((EditText)view.findViewById(R.id.edit_text)).setText("");
+        }
     }
 }

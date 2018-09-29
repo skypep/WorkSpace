@@ -29,6 +29,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -84,10 +85,13 @@ import com.android.contacts.preference.ContactsPreferences;
 import com.android.contacts.quickcontact.InvisibleContactUtil;
 import com.android.contacts.quickcontact.QuickContactActivity;
 import com.android.contacts.toro.ToroPhotoEditorView;
+import com.android.contacts.toro.common.dialog.ToroCommonBottomDialog;
+import com.android.contacts.toro.common.dialog.ToroCommonBottomDialogEntity;
 import com.android.contacts.util.ContactDisplayUtils;
 import com.android.contacts.util.ContactPhotoUtils;
 import com.android.contacts.util.ImplicitIntentsUtil;
 import com.android.contacts.util.MaterialColorMapUtils;
+import com.android.contacts.util.PhoneCapabilityTester;
 import com.android.contacts.util.UiClosables;
 import com.android.contactsbind.HelpUtils;
 
@@ -1738,7 +1742,8 @@ public class ContactEditorFragment extends Fragment implements
     public void onPhotoEditorViewClicked() {
         // For contacts composed of a single writable raw contact, or raw contacts have no more
         // than 1 photo, clicking the photo view simply opens the source photo dialog
-        getEditorActivity().changePhoto(getPhotoMode());
+//        getEditorActivity().changePhoto(getPhotoMode());
+        showPhotoEditorDialog();
     }
 
     @Override
@@ -1757,5 +1762,46 @@ public class ContactEditorFragment extends Fragment implements
 
     private RawContactEditorView getContent() {
         return (RawContactEditorView) mContent;
+    }
+
+    /************* liujia add ******************/
+    private void showPhotoEditorDialog() {
+        int mode = getPhotoMode();
+        ToroCommonBottomDialog dialog;
+        List<ToroCommonBottomDialogEntity> menuList = new ArrayList<>();
+
+        if ((mode & PhotoActionPopup.Flags.REMOVE_PHOTO) > 0) {
+            menuList.add(new ToroCommonBottomDialogEntity(getString(R.string.removePhoto)));
+        }
+        boolean replace = (mode & PhotoActionPopup.Flags.TAKE_OR_PICK_PHOTO_REPLACE_WORDING) > 0;
+        final int takePhotoResId = replace ? R.string.take_new_photo : R.string.take_photo;
+        final String takePhotoString = getString(takePhotoResId);
+        final int pickPhotoResId = replace ? R.string.pick_new_photo : R.string.pick_photo;
+        final String pickPhotoString = getString(pickPhotoResId);
+        if (PhoneCapabilityTester.isCameraIntentRegistered(getContext())) {
+            menuList.add(new ToroCommonBottomDialogEntity(takePhotoString));
+        }
+        menuList.add(new ToroCommonBottomDialogEntity(pickPhotoString));
+        final ToroCommonBottomDialogEntity del = new ToroCommonBottomDialogEntity(getResources().getString(R.string.toro_delete_selected));
+        dialog = new ToroCommonBottomDialog(getActivity(), menuList);
+        dialog.setOnItemClickListener(new ToroCommonBottomDialog.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(String text, int listSize, int position)
+            {
+                final PhotoSourceDialogFragment.Listener listener = (PhotoSourceDialogFragment.Listener) getActivity();
+                if(text.equals(getString(R.string.removePhoto))) {
+                    listener.onRemovePictureChosen();
+                    dialog.dismiss();
+                } else if(text.equals(getString(R.string.take_new_photo)) || text.equals(getString(R.string.take_photo))) {
+                    listener.onTakePhotoChosen();
+                    dialog.dismiss();
+                }else if(text.equals(getString(R.string.pick_new_photo)) || text.equals(getString(R.string.pick_photo))) {
+                    listener.onPickFromGalleryChosen();
+                    dialog.dismiss();
+                }
+            }
+        });
+        dialog.show();
     }
 }

@@ -601,4 +601,20 @@ public class ValuesDelta implements Parcelable {
     public void setPhoneNumber(String phoneNumber) {
         put(ContactsContract.CommonDataKinds.Phone.NUMBER, phoneNumber);
     }
+
+    /**
+     * 统一存入名字字段 GIVEN_NAME
+     * 其他字段清空
+     * @param name
+     */
+    public void setName(String name) {
+        put(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME,"");
+        put(ContactsContract.CommonDataKinds.StructuredName.MIDDLE_NAME,"");
+        put(ContactsContract.CommonDataKinds.StructuredName.SUFFIX,"");
+        put(ContactsContract.CommonDataKinds.StructuredName.PREFIX,"");
+
+        put(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME,name);
+        put(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME,name);
+
+    }
 }
