@@ -1446,7 +1446,20 @@ public class QuickContactActivity extends ContactsActivity {
     }
 
     private void setToroPhotoView() {
-
+        ContactPhotoManager mContactPhotoManager;
+        mContactPhotoManager = ContactPhotoManager.getInstance(this);
+        if (mContactData.getPhotoId() != 0) {
+            mContactPhotoManager.loadThumbnail(toroPhoto, mContactData.getPhotoId(), false, true,
+                    null);
+        } else {
+            final Uri photoUri = mContactData.getPhotoUri() == null ? null : Uri.parse(mContactData.getPhotoUri());
+            ContactPhotoManager.DefaultImageRequest request = null;
+            if (photoUri == null) {
+                request = new ContactPhotoManager.DefaultImageRequest(mContactData.getDisplayName(), mContactData.getLookupKey(), true);
+            }
+            mContactPhotoManager.loadDirectoryPhoto(toroPhoto, photoUri, false, false,
+                    request);
+        }
     }
 
     private Intent getEditContactIntent() {
