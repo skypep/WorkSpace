@@ -34,4 +34,5 @@
     <string name="toro_delete_btn">删除</string>
     <string name="toro_photo_editor">修改头像</string>
     <string name="toro_add_new_number">添加新号码</string>
+    <string name="toro_more">更多</string>
 </resources>

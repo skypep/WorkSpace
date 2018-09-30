@@ -503,7 +503,11 @@ public class ContactsFragment extends ListFragment {
                 final String customLabel = cursor.getString(DATA_DATA3_COLUMN);
                 label = Phone.getTypeLabel(mContext.getResources(), type, customLabel);
             }
-            labelView.setText(label);
+//            #if toro liujia fixe  不需要显示号码类型 默认全是电话号码
+            labelView.setText("");
+//            #else
+//            labelView.setText(label);
+//            #endif
         }
 
         private void setItemView(View view, Cursor cursor, ContactItemCache cache) {

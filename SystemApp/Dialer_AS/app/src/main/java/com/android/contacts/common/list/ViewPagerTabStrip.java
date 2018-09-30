@@ -39,7 +39,7 @@ public class ViewPagerTabStrip extends LinearLayout {
   public ViewPagerTabStrip(Context context, AttributeSet attrs) {
     super(context, attrs);
 
-    setOrientation(ViewPagerTabStrip.HORIZONTAL);
+    setOrientation(ViewPagerTabStrip.HORIZONTAL);// liujia add
     final Resources res = context.getResources();
 
     mSelectedUnderlineThickness = res.getDimensionPixelSize(R.dimen.tab_selected_underline_height);
@@ -63,7 +63,7 @@ public class ViewPagerTabStrip extends LinearLayout {
     invalidate();
   }
 
-//  @Override
+//  @Override liujia delete
 //  protected void onDraw(Canvas canvas) {
 //    int childCount = getChildCount();
 //

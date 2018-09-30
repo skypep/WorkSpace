@@ -36,4 +36,5 @@
     <string name="toro_delete_btn">Delete</string>
     <string name="toro_photo_editor">Amend the photo</string>
     <string name="toro_add_new_number">Add new number</string>
+    <string name="toro_more">More</string>
 </resources>

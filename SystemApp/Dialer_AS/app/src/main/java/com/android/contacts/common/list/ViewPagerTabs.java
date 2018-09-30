@@ -73,7 +73,7 @@ public class ViewPagerTabs extends HorizontalScrollView implements ViewPager.OnP
   int mSidePadding;
   private ViewPagerTabStrip mTabStrip;
   private int[] mTabIcons;
-  private String[] mTabTexts;
+  private String[] mTabTexts;// liujia add
   // For displaying the unread count next to the tab icon.
   private int[] mUnreadCounts;
 
@@ -122,6 +122,7 @@ public class ViewPagerTabs extends HorizontalScrollView implements ViewPager.OnP
     mUnreadCounts = new int[tabIcons.length];
   }
 
+/**  liujia add **/
   public void configureTabText(String[] tabTexts) {
     mTabTexts = tabTexts;
   }
@@ -146,8 +147,10 @@ public class ViewPagerTabs extends HorizontalScrollView implements ViewPager.OnP
     View tabView;
     if (mTabIcons != null && position < mTabIcons.length) {
       View layout = LayoutInflater.from(getContext()).inflate(R.layout.unread_count_tab, null);
+	  // liujia add
       TextView titleView = layout.findViewById(R.id.title_text);
       titleView.setText(mTabTexts[position]);
+	  
       View iconView = layout.findViewById(R.id.icon);
       iconView.setBackgroundResource(mTabIcons[position]);
       iconView.setContentDescription(tabTitle);
@@ -205,7 +208,7 @@ public class ViewPagerTabs extends HorizontalScrollView implements ViewPager.OnP
         position,
         new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT, 1));
 
-    // Default to the first child being selected
+    // Default to the first child being selected liujia fixed
     if (mPrevSelected == -1) {
         mPrevSelected = 0;
 //      tabView.setSelected(true);

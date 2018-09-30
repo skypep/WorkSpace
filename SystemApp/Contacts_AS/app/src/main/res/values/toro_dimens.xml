@@ -29,6 +29,7 @@
     <dimen name="toro_action_bar_title_size">25dp</dimen>
     <!--action bar 两边button 字体大小-->
     <dimen name="toro_action_bar_button_text_size">18dp</dimen>
+    <dimen name="toro_tools_bar_height">65dp</dimen>
     <!--action bar + search bar 的高度-->
     <dimen name="toro_action_bar_height">84dp</dimen>
     <!--action bar butom height-->
