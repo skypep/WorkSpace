@@ -32,7 +32,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.QuickContactBadge;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.contacts.CallUtil;
@@ -1419,11 +1421,13 @@ public class QuickContactActivity extends ContactsActivity {
 
     /****************** liujia add *******************/
     private ToroContactDetailsToolbar toroBar;
-    private QuickContactBadge toroPhoto;
+    private ImageView toroPhoto;
+    private TextView toroName;
 
     private void setupToroView(){
         toroBar = findViewById(R.id.toolbar);
         toroPhoto = findViewById(R.id.toro_photo);
+        toroName = findViewById(R.id.toro_detail_name);
     }
 
     private void updateToroView(){
@@ -1443,13 +1447,14 @@ public class QuickContactActivity extends ContactsActivity {
             }
         });
         setToroPhotoView();
+        toroName.setText(displayName);
     }
 
     private void setToroPhotoView() {
         ContactPhotoManager mContactPhotoManager;
         mContactPhotoManager = ContactPhotoManager.getInstance(this);
         if (mContactData.getPhotoId() != 0) {
-            mContactPhotoManager.loadThumbnail(toroPhoto, mContactData.getPhotoId(), false, true,
+            mContactPhotoManager.loadThumbnail(toroPhoto, mContactData.getPhotoId(), false, false,
                     null);
         } else {
             final Uri photoUri = mContactData.getPhotoUri() == null ? null : Uri.parse(mContactData.getPhotoUri());
