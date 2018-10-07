@@ -41,6 +41,22 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    // 签名信息
+    signingConfigs {
+        release {
+            keyAlias 'st801_keystore'
+            keyPassword 'st801_keystore'
+            storeFile file('../st801_keystore.keystore')
+            storePassword 'st801_keystore'
+        }
+        debug {
+            keyAlias 'st801_keystore'
+            keyPassword 'st801_keystore'
+            storeFile file('../st801_keystore.keystore')
+            storePassword 'st801_keystore'
+        }
+    }
 }
 
 dependencies {

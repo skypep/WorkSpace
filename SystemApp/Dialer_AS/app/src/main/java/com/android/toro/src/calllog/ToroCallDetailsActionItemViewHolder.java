@@ -126,6 +126,18 @@ public class ToroCallDetailsActionItemViewHolder extends RecyclerView.ViewHolder
                     .logImpression(DialerImpression.Type.CALL_LOG_CONTEXT_MENU_UNBLOCK_NUMBER);
             mBlockReportSpamListener.onUnblock(
                     contact.getDisplayNumber(), contact.getNumber(), callDetails.countryIso, callDetails.callTypes[0], callDetails.sourceType, callDetails.isSpam, blockId);
+        }else if(actionText.getText().equals(context.getResources().getString(R.string.search_shortcut_create_new_contact))){
+            IntentProvider intentProvider = IntentProvider.getAddContactIntentProvider(
+                    callDetails.cachedContactInfo.lookupUri, callDetails.cachedContactInfo.name, callDetails.cachedContactInfo.number, callDetails.cachedContactInfo.type, true /* isNewContact */);
+            final Intent intent = intentProvider.getIntent(context);
+            DialerUtils.startActivityWithErrorToast(context, intent);
+
+        } else if(actionText.getText().equals(context.getResources().getString(R.string.search_shortcut_add_to_contact))) {
+            IntentProvider intentProvider = IntentProvider.getAddContactIntentProvider(
+                    callDetails.cachedContactInfo.lookupUri, callDetails.cachedContactInfo.name, callDetails.cachedContactInfo.number, callDetails.cachedContactInfo.type, false /* isNewContact */);
+            final Intent intent = intentProvider.getIntent(context);
+            DialerUtils.startActivityWithErrorToast(context, intent);
+
         }
     }
 

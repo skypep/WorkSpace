@@ -623,6 +623,7 @@ public class DialtactsActivity extends TransactionSafeActivity
 
   /********************************* liujia add start *********************************************************/
   private final static int EDIT_MODE = -1;
+  private boolean isEditMode = false;
   private View.OnClickListener settingClickHandler = new View.OnClickListener() {
     @Override
     public void onClick(View v) {
@@ -709,6 +710,7 @@ public class DialtactsActivity extends TransactionSafeActivity
   }
 
   private void enterCalllogEditModle(boolean animate) {
+    isEditMode = true;
     mListsFragment.enterEditModle();
     if (animate) {
       mFloatingActionButtonController.scaleOut();
@@ -724,6 +726,7 @@ public class DialtactsActivity extends TransactionSafeActivity
   }
 
   public void exitCalllogEditModle(boolean animate) {
+    isEditMode = false;
     int tabIndex = mListsFragment.getCurrentTabIndex();
     mListsFragment.exitEditModle();
     mFloatingActionButtonController.align(getFabAlignment(), animate);
@@ -1070,6 +1073,8 @@ public class DialtactsActivity extends TransactionSafeActivity
       if (TextUtils.isEmpty(mSearchQuery)) {
         exitSearchUi();
       }
+    }else {
+      mToroActionBar.setVisibility(View.VISIBLE);
     }
     //reset the title to normal.
     setTitle(R.string.launcherActivityLabel);
@@ -1579,7 +1584,7 @@ public class DialtactsActivity extends TransactionSafeActivity
   public void enableFloatingButton(boolean enabled) {
     LogUtil.d("DialtactsActivity.enableFloatingButton", "enable: %b", enabled);
     // Floating button shouldn't be enabled when dialpad is shown.
-    if (!isDialpadShown() || !enabled) {
+    if (!isDialpadShown() && !isEditMode && enabled) {
       mFloatingActionButtonController.setVisible(enabled);
     }
   }

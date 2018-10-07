@@ -440,7 +440,13 @@ public class ListsFragment extends Fragment implements OnPageChangeListener, Lis
   /***************************************  liujia add start *************************/
   public boolean enterEditModle() {
     showMultiSelectRemoveView(true);
-    return ((CallLogFragment) getmCurrentPage()).enterEditModle();
+    Fragment fragment = getmCurrentPage();
+    if(fragment instanceof CallLogFragment) {
+      return ((CallLogFragment) fragment).enterEditModle();
+    }else {
+      return false;
+    }
+
   }
 
   public boolean exitEditModle() {
