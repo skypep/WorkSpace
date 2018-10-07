@@ -26,6 +26,9 @@ import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -42,6 +45,7 @@ import com.android.contacts.Collapser;
 import com.android.contacts.ContactPhotoManager;
 import com.android.contacts.ContactSaveService;
 import com.android.contacts.ContactsActivity;
+import com.android.contacts.ContactsUtils;
 import com.android.contacts.DynamicShortcuts;
 import com.android.contacts.NfcHandler;
 import com.android.contacts.R;
@@ -74,9 +78,11 @@ import com.android.contacts.model.dataitem.EmailDataItem;
 import com.android.contacts.model.dataitem.PhoneDataItem;
 import com.android.contacts.model.dataitem.SipAddressDataItem;
 import com.android.contacts.toro.ToroActionBar;
+import com.android.contacts.toro.activity.ToroCallDetailsAdapter;
 import com.android.contacts.toro.activity.ToroContactDetailsToolbar;
 import com.android.contacts.toro.common.dialog.ToroCommonBottomDialog;
 import com.android.contacts.toro.common.dialog.ToroCommonBottomDialogEntity;
+import com.android.contacts.util.ImplicitIntentsUtil;
 import com.android.contacts.util.MaterialColorMapUtils;
 import com.android.contacts.util.PermissionsUtil;
 import com.android.contacts.util.PhoneCapabilityTester;
@@ -682,6 +688,7 @@ public class QuickContactActivity extends ContactsActivity {
     }
 
     private void bindDataToCards(Cp2DataCardModel cp2DataCardModel) {
+        updateToroNumber(cp2DataCardModel);
         startInteractionLoaders(cp2DataCardModel);
         populateContactAndAboutCard(cp2DataCardModel, /* shouldAddPhoneticName */ true);
     }
@@ -1421,19 +1428,21 @@ public class QuickContactActivity extends ContactsActivity {
 
     /****************** liujia add *******************/
     private ToroContactDetailsToolbar toroBar;
-    private ImageView toroPhoto;
+    private ImageView toroPhoto,toroCallAction;
     private TextView toroName;
+    private RecyclerView recyclerView;
 
     private void setupToroView(){
         toroBar = findViewById(R.id.toolbar);
         toroPhoto = findViewById(R.id.toro_photo);
+        toroCallAction = findViewById(R.id.toro_all_action);
         toroName = findViewById(R.id.toro_detail_name);
+        recyclerView = findViewById(R.id.recycler_view);
     }
 
     private void updateToroView(){
         final String displayName = ContactDisplayUtils.getDisplayName(this, mContactData).toString();
 
-        toroBar.setTitleText(displayName);
         toroBar.setLeftButton(getString(R.string.toro_back), new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1448,6 +1457,27 @@ public class QuickContactActivity extends ContactsActivity {
         });
         setToroPhotoView();
         toroName.setText(displayName);
+
+    }
+
+    private void updateToroNumber(Cp2DataCardModel cp2DataCardModel) {
+        final Map<String, List<DataItem>> dataItemsMap = cp2DataCardModel.dataItemsMap;
+        final List<DataItem> phoneDataItems = dataItemsMap.get(ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE);
+        final List<DataItem> sipCallDataItems = dataItemsMap.get(ContactsContract.CommonDataKinds.SipAddress.CONTENT_ITEM_TYPE);
+        if (phoneDataItems != null && phoneDataItems.size() == 1) {
+            mOnlyOnePhoneNumber = true;
+        }
+        List<String> phoneNumbers = new ArrayList<>();
+        if (phoneDataItems != null) {
+            for (int i = 0; i < phoneDataItems.size(); ++i) {
+                phoneNumbers.add(((PhoneDataItem) phoneDataItems.get(i)).getNumber());
+            }
+        }
+        ToroCallDetailsAdapter adapter = new ToroCallDetailsAdapter(this,phoneNumbers);
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+        toroCallAction.setOnClickListener(new ToroOnclickListener(phoneNumbers,ToroOnclickListener.ACTION_OUT_CALL));
     }
 
     private void setToroPhotoView() {
@@ -1465,6 +1495,7 @@ public class QuickContactActivity extends ContactsActivity {
             mContactPhotoManager.loadDirectoryPhoto(toroPhoto, photoUri, false, false,
                     request);
         }
+        toroBar.setTitleText(getString(R.string.toro_contact_details));
     }
 
     private Intent getEditContactIntent() {
@@ -1492,73 +1523,7 @@ public class QuickContactActivity extends ContactsActivity {
             public void onItemClick(String text, int listSize, int position)
             {
                 if(text.equals(getString(R.string.toro_edit))) {
-                    if (DirectoryContactUtil.isDirectoryContact(mContactData)) {
-                        Logger.logQuickContactEvent(mReferrer, mContactType, QuickContactEvent.CardType.UNKNOWN_CARD,
-                                QuickContactEvent.ActionType.ADD, /* thirdPartyAction */ null);
-
-                        // This action is used to launch the contact selector, with the option of
-                        // creating a new contact. Creating a new contact is an INSERT, while selecting
-                        // an exisiting one is an edit. The fields in the edit screen will be
-                        // prepopulated with data.
-
-                        final Intent intent = new Intent(Intent.ACTION_INSERT_OR_EDIT);
-                        intent.setType(ContactsContract.Contacts.CONTENT_ITEM_TYPE);
-
-                        ArrayList<ContentValues> values = mContactData.getContentValues();
-
-                        // Only pre-fill the name field if the provided display name is an nickname
-                        // or better (e.g. structured name, nickname)
-                        if (mContactData.getDisplayNameSource() >= ContactsContract.DisplayNameSources.NICKNAME) {
-                            intent.putExtra(ContactsContract.Intents.Insert.NAME, mContactData.getDisplayName());
-                        } else if (mContactData.getDisplayNameSource()
-                                == ContactsContract.DisplayNameSources.ORGANIZATION) {
-                            // This is probably an organization. Instead of copying the organization
-                            // name into a name entry, copy it into the organization entry. This
-                            // way we will still consider the contact an organization.
-                            final ContentValues organization = new ContentValues();
-                            organization.put(ContactsContract.CommonDataKinds.Organization.COMPANY, mContactData.getDisplayName());
-                            organization.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE);
-                            values.add(organization);
-                        }
-
-                        // Last time used and times used are aggregated values from the usage stat
-                        // table. They need to be removed from data values so the SQL table can insert
-                        // properly
-                        for (ContentValues value : values) {
-                            value.remove(ContactsContract.Data.LAST_TIME_USED);
-                            value.remove(ContactsContract.Data.TIMES_USED);
-                        }
-                        intent.putExtra(ContactsContract.Intents.Insert.DATA, values);
-
-                        // If the contact can only export to the same account, add it to the intent.
-                        // Otherwise the ContactEditorFragment will show a dialog for selecting
-                        // an account.
-                        if (mContactData.getDirectoryExportSupport() ==
-                                ContactsContract.Directory.EXPORT_SUPPORT_SAME_ACCOUNT_ONLY) {
-                            intent.putExtra(ContactsContract.Intents.Insert.EXTRA_ACCOUNT,
-                                    new Account(mContactData.getDirectoryAccountName(),
-                                            mContactData.getDirectoryAccountType()));
-                            intent.putExtra(ContactsContract.Intents.Insert.EXTRA_DATA_SET,
-                                    mContactData.getRawContacts().get(0).getDataSet());
-                        }
-
-                        // Add this flag to disable the delete menu option on directory contact joins
-                        // with local contacts. The delete option is ambiguous when joining contacts.
-                        intent.putExtra(
-                                ContactEditorFragment.INTENT_EXTRA_DISABLE_DELETE_MENU_OPTION,
-                                true);
-
-                        intent.setPackage(getPackageName());
-                        startActivityForResult(intent, REQUEST_CODE_CONTACT_SELECTION_ACTIVITY);
-                    } else if (InvisibleContactUtil.isInvisibleAndAddable(mContactData, QuickContactActivity.this)) {
-                        Logger.logQuickContactEvent(mReferrer, mContactType, QuickContactEvent.CardType.UNKNOWN_CARD,
-                                QuickContactEvent.ActionType.ADD, /* thirdPartyAction */ null);
-                        InvisibleContactUtil.addToDefaultGroup(mContactData, QuickContactActivity.this);
-                    } else if (isContactEditable()) {
-                        Logger.logQuickContactEvent(mReferrer, mContactType, QuickContactEvent.CardType.UNKNOWN_CARD,
-                                QuickContactEvent.ActionType.EDIT, /* thirdPartyAction */ null);
-                        editContact();
-                    }
+                    totoEdit();
                     dialog.dismiss();
                 }else if(text.equals(getString(R.string.menu_deleteContact))){
                     Logger.logQuickContactEvent(mReferrer, mContactType, QuickContactEvent.CardType.UNKNOWN_CARD,
@@ -1571,6 +1536,76 @@ public class QuickContactActivity extends ContactsActivity {
             }
         });
         dialog.show();
+    }
+
+    private void totoEdit() {
+        if (DirectoryContactUtil.isDirectoryContact(mContactData)) {
+            Logger.logQuickContactEvent(mReferrer, mContactType, QuickContactEvent.CardType.UNKNOWN_CARD,
+                    QuickContactEvent.ActionType.ADD, /* thirdPartyAction */ null);
+
+            // This action is used to launch the contact selector, with the option of
+            // creating a new contact. Creating a new contact is an INSERT, while selecting
+            // an exisiting one is an edit. The fields in the edit screen will be
+            // prepopulated with data.
+
+            final Intent intent = new Intent(Intent.ACTION_INSERT_OR_EDIT);
+            intent.setType(ContactsContract.Contacts.CONTENT_ITEM_TYPE);
+
+            ArrayList<ContentValues> values = mContactData.getContentValues();
+
+            // Only pre-fill the name field if the provided display name is an nickname
+            // or better (e.g. structured name, nickname)
+            if (mContactData.getDisplayNameSource() >= ContactsContract.DisplayNameSources.NICKNAME) {
+                intent.putExtra(ContactsContract.Intents.Insert.NAME, mContactData.getDisplayName());
+            } else if (mContactData.getDisplayNameSource()
+                    == ContactsContract.DisplayNameSources.ORGANIZATION) {
+                // This is probably an organization. Instead of copying the organization
+                // name into a name entry, copy it into the organization entry. This
+                // way we will still consider the contact an organization.
+                final ContentValues organization = new ContentValues();
+                organization.put(ContactsContract.CommonDataKinds.Organization.COMPANY, mContactData.getDisplayName());
+                organization.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE);
+                values.add(organization);
+            }
+
+            // Last time used and times used are aggregated values from the usage stat
+            // table. They need to be removed from data values so the SQL table can insert
+            // properly
+            for (ContentValues value : values) {
+                value.remove(ContactsContract.Data.LAST_TIME_USED);
+                value.remove(ContactsContract.Data.TIMES_USED);
+            }
+            intent.putExtra(ContactsContract.Intents.Insert.DATA, values);
+
+            // If the contact can only export to the same account, add it to the intent.
+            // Otherwise the ContactEditorFragment will show a dialog for selecting
+            // an account.
+            if (mContactData.getDirectoryExportSupport() ==
+                    ContactsContract.Directory.EXPORT_SUPPORT_SAME_ACCOUNT_ONLY) {
+                intent.putExtra(ContactsContract.Intents.Insert.EXTRA_ACCOUNT,
+                        new Account(mContactData.getDirectoryAccountName(),
+                                mContactData.getDirectoryAccountType()));
+                intent.putExtra(ContactsContract.Intents.Insert.EXTRA_DATA_SET,
+                        mContactData.getRawContacts().get(0).getDataSet());
+            }
+
+            // Add this flag to disable the delete menu option on directory contact joins
+            // with local contacts. The delete option is ambiguous when joining contacts.
+            intent.putExtra(
+                    ContactEditorFragment.INTENT_EXTRA_DISABLE_DELETE_MENU_OPTION,
+                    true);
+
+            intent.setPackage(getPackageName());
+            startActivityForResult(intent, REQUEST_CODE_CONTACT_SELECTION_ACTIVITY);
+        } else if (InvisibleContactUtil.isInvisibleAndAddable(mContactData, QuickContactActivity.this)) {
+            Logger.logQuickContactEvent(mReferrer, mContactType, QuickContactEvent.CardType.UNKNOWN_CARD,
+                    QuickContactEvent.ActionType.ADD, /* thirdPartyAction */ null);
+            InvisibleContactUtil.addToDefaultGroup(mContactData, QuickContactActivity.this);
+        } else if (isContactEditable()) {
+            Logger.logQuickContactEvent(mReferrer, mContactType, QuickContactEvent.CardType.UNKNOWN_CARD,
+                    QuickContactEvent.ActionType.EDIT, /* thirdPartyAction */ null);
+            editContact();
+        }
     }
 
     private void deleteContactDialogShow() {
@@ -1604,5 +1639,90 @@ public class QuickContactActivity extends ContactsActivity {
         });
         dialog.show();
 
+    }
+
+    public View.OnClickListener getNumbersMessageListener(List<String> numbers) {
+        return new ToroOnclickListener(numbers,ToroOnclickListener.ACTION_SEND_MESSAGE);
+    }
+
+    public View.OnClickListener getNumbersLocationListener(List<String> numbers) {
+        return new ToroOnclickListener(numbers,ToroOnclickListener.ACTION_SEND_LOCALTION);
+    }
+
+    public View.OnClickListener getNumberCallListener(String number) {
+        return new ToroOnclickListener(number,ToroOnclickListener.ACTION_OUT_CALL);
+    }
+
+    class ToroOnclickListener implements View.OnClickListener{
+
+        public static final String ACTION_SEND_MESSAGE = "send message";
+        public static final String ACTION_SEND_LOCALTION = "send location";
+        public static final String ACTION_OUT_CALL = "out call";
+
+        private List<String> numbers;
+        private String action;
+
+        public ToroOnclickListener(String number,String action) {
+            numbers = new ArrayList<>();
+            numbers.add(number);
+            this.action = action;
+        }
+
+        public ToroOnclickListener(List<String> numbers,String action) {
+            this.numbers = numbers;
+            this.action = action;
+        }
+
+        @Override
+        public void onClick(View v) {
+            if(numbers == null || numbers.size() < 1) {
+                totoEdit();
+            } else if(numbers.size() == 1) {
+                doAction(numbers.get(0));
+            }else {
+                ToroCommonBottomDialog dialog;
+                List<ToroCommonBottomDialogEntity> entitys = new ArrayList<>();
+                for(String number:numbers) {
+                    ToroCommonBottomDialogEntity entity = new ToroCommonBottomDialogEntity(number);
+                    entitys.add(entity);
+                }
+                dialog = new ToroCommonBottomDialog(QuickContactActivity.this, entitys);
+
+                dialog.setOnItemClickListener(new ToroCommonBottomDialog.OnItemClickListener()
+                {
+                    @Override
+                    public void onItemClick(String text, int listSize, int position)
+                    {
+                        doAction(text);
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
+            }
+        }
+
+        private void doAction(String number){
+            Intent intent;
+            if(ACTION_SEND_MESSAGE.equals(action)) {
+                intent = new Intent(Intent.ACTION_SENDTO,
+                        Uri.fromParts(ContactsUtils.SCHEME_SMSTO, number, null));
+                intent.putExtra(EXTRA_ACTION_TYPE, QuickContactEvent.ActionType.SMS);
+            } else if(ACTION_SEND_LOCALTION.equals(action)) {
+                intent = new Intent(Intent.ACTION_SENDTO,
+                        Uri.fromParts(ContactsUtils.SCHEME_SMSTO, number, null));
+                intent.putExtra(EXTRA_ACTION_TYPE, QuickContactEvent.ActionType.SMS);
+            } else if(ACTION_OUT_CALL.equals(action)) {
+                intent = CallUtil.getCallIntent(number);
+                intent.putExtra(EXTRA_ACTION_TYPE, QuickContactEvent.ActionType.CALL);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                ImplicitIntentsUtil.startActivityInAppIfPossible(QuickContactActivity.this,
+                        intent);
+            }else {
+                return;
+            }
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            ImplicitIntentsUtil.startActivityInAppIfPossible(QuickContactActivity.this,
+                    intent);
+        }
     }
 }

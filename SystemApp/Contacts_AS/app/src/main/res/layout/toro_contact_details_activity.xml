@@ -74,7 +74,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/toro_line_sp"
         android:background="#EFF1F5"
-        android:layout_marginBottom="@dimen/toro_margin_top"
         />
 
     <android.support.v7.widget.RecyclerView
