@@ -1711,6 +1711,7 @@ public class QuickContactActivity extends ContactsActivity {
                 intent = new Intent(Intent.ACTION_SENDTO,
                         Uri.fromParts(ContactsUtils.SCHEME_SMSTO, number, null));
                 intent.putExtra(EXTRA_ACTION_TYPE, QuickContactEvent.ActionType.SMS);
+                intent.putExtra("sms_body", "我的位置是：广东省深圳市龙岗区天安数码城A座");
             } else if(ACTION_OUT_CALL.equals(action)) {
                 intent = CallUtil.getCallIntent(number);
                 intent.putExtra(EXTRA_ACTION_TYPE, QuickContactEvent.ActionType.CALL);

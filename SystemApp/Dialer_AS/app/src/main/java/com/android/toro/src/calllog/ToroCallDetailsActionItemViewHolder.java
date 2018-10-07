@@ -3,6 +3,7 @@ package com.android.toro.src.calllog;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -107,7 +108,9 @@ public class ToroCallDetailsActionItemViewHolder extends RecyclerView.ViewHolder
         if(actionText.getText().equals(context.getResources().getString(R.string.call_log_action_send_message))) {
             DialerUtils.startActivityWithErrorToast(context, IntentUtil.getSendSmsIntent(contact.getNumber()));
         }else if(actionText.getText().equals(context.getResources().getString(R.string.toro_send_location))) {
-
+            Intent intent = IntentUtil.getSendSmsIntent(contact.getNumber());
+            intent.putExtra("sms_body", "我的位置是：广东省深圳市龙岗区天安数码城A座");
+            DialerUtils.startActivityWithErrorToast(context, intent);
         } else if(actionText.getText().equals(context.getResources().getString(R.string.call_log_action_block_number))) {
             Logger.get(context).logImpression(DialerImpression.Type.CALL_LOG_CONTEXT_MENU_BLOCK_NUMBER);
             maybeShowBlockNumberMigrationDialog(
