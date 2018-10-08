@@ -714,8 +714,7 @@ public class CallLogFragment extends Fragment
 
   public boolean editSelectAll() {
       try{
-          getAdapter().editSelectAll();
-          return true;
+          return getAdapter().editSelectAll();
       }catch (Exception e) {
           e.printStackTrace();
       }

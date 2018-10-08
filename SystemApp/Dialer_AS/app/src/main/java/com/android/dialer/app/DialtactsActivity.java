@@ -621,140 +621,6 @@ public class DialtactsActivity extends TransactionSafeActivity
     Trace.endSection();
   }
 
-  /********************************* liujia add start *********************************************************/
-  private final static int EDIT_MODE = -1;
-  private boolean isEditMode = false;
-  private View.OnClickListener settingClickHandler = new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-      handleMenuSettings();
-      Logger.get(DialtactsActivity.this).logScreenView(ScreenEvent.Type.SETTINGS, DialtactsActivity.this);
-    }
-  };
-
-  private View.OnClickListener addContactListener = new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-      DialerUtils.startActivityWithErrorToast(
-              DialtactsActivity.this, IntentUtil.getNewContactIntent(), R.string.add_contact_not_available);
-    }
-  };
-
-  private View.OnClickListener editCallLogListener = new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-      enterCalllogEditModle(false);
-    }
-  };
-
-  private View.OnClickListener cancelEditCallLogListener = new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-      exitCalllogEditModle(false);
-    }
-  };
-
-  private View.OnClickListener selectAllCallLogListener = new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-      mListsFragment.editSelectAll();
-    }
-  };
-
-  private View.OnClickListener deleteSelectedlistener = new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-      final ToroCommonBottomDialogEntity del = new ToroCommonBottomDialogEntity(getResources().getString(R.string.toro_delete_selected));
-      del.setColor(Color.RED);
-      ToroCommonBottomDialog dialog = new ToroCommonBottomDialog(DialtactsActivity.this, del);
-      dialog.setOnItemClickListener(new ToroCommonBottomDialog.OnItemClickListener()
-      {
-        @Override
-        public void onItemClick(String text, int listSize, int position)
-        {
-          if(text.equals(getResources().getString(R.string.toro_delete_selected))) {
-            mListsFragment.deleteSelected();
-            dialog.dismiss();
-          }
-        }
-      });
-      dialog.show();
-    }
-
-  };
-
-  private void updateToroActionBar(int tabIndex) {
-    if(tabIndex == EDIT_MODE) {
-      mToroActionBar.setTitleText(getResources().getString(R.string.toro_edit));
-      mToroActionBar.setLeftButton(getResources().getString(R.string.toro_cancel),cancelEditCallLogListener);
-      mToroActionBar.setRightButton(getResources().getString(R.string.toro_select_all),selectAllCallLogListener);
-    } else if(tabIndex == DialtactsPagerAdapter.TAB_INDEX_HISTORY) {
-      mToroActionBar.setTitleText(getResources().getString(R.string.tab_history));
-      mToroActionBar.setLeftButton(getResources().getString(R.string.toro_edit),editCallLogListener);
-      mToroActionBar.setRightImageButton(R.drawable.toro_settings,settingClickHandler);
-    } else if(tabIndex == DialtactsPagerAdapter.TAB_INDEX_ALL_CONTACTS) {
-      mToroActionBar.setTitleText(getResources().getString(R.string.tab_all_contacts));
-      mToroActionBar.setLeftButton(getResources().getString(R.string.toro_add),addContactListener);
-      mToroActionBar.setRightImageButton(R.drawable.toro_settings,settingClickHandler);
-    }
-  }
-
-  public void onToroSearchClick() {
-    if (!isInSearchUi()) {
-      PerformanceReport.recordClick(UiAction.Type.OPEN_SEARCH);
-      mActionBarController.onSearchBoxTapped();
-      enterSearchUi(
-              false /* smartDialSearch */, mSearchView.getText().toString(), true /* animate */);
-      mToroActionBar.setVisibility(View.GONE);
-    }
-  }
-
-  private void enterCalllogEditModle(boolean animate) {
-    isEditMode = true;
-    mListsFragment.enterEditModle();
-    if (animate) {
-      mFloatingActionButtonController.scaleOut();
-    } else {
-      mFloatingActionButtonController.setVisible(false);
-    }
-
-    findViewById(R.id.toro_calllog_delete_view).setVisibility(View.VISIBLE);
-    findViewById(R.id.toro_calllog_delete_view).setOnClickListener(deleteSelectedlistener);
-    ((TextView)findViewById(R.id.toro_calllog_delete_count_text)).setText(getEditDeleteString(0));
-
-    updateToroActionBar(EDIT_MODE);
-  }
-
-  public void exitCalllogEditModle(boolean animate) {
-    isEditMode = false;
-    int tabIndex = mListsFragment.getCurrentTabIndex();
-    mListsFragment.exitEditModle();
-    mFloatingActionButtonController.align(getFabAlignment(), animate);
-    if (animate) {
-      mDialpadFragment.getView().startAnimation(mSlideOut);
-    } else {
-      mFloatingActionButtonController.scaleIn(AnimUtils.NO_DELAY);
-    }
-
-    findViewById(R.id.toro_calllog_delete_view).setVisibility(View.GONE);
-
-    updateToroActionBar(tabIndex);
-  }
-
-  private String getEditDeleteString(int selectedCount) {
-    String editDeleteFormat = getResources().getString(R.string.toro_edit_delete);
-    String editDelete = String.format(editDeleteFormat,selectedCount);
-    return editDelete;
-  }
-
-  public void updateEditDeleteText(int selectedCount) {
-    String editDeleteFormat = getResources().getString(R.string.toro_edit_delete);
-    String editDelete = String.format(editDeleteFormat,selectedCount);
-    ((TextView)findViewById(R.id.toro_calllog_delete_count_text)).setText(editDelete);
-  }
-
-  /********************************* liujia add end *********************************************************/
-
   @Override
   protected void onRestart() {
     super.onRestart();
@@ -1787,4 +1653,142 @@ public class DialtactsActivity extends TransactionSafeActivity
       return true;
     }
   }
+
+  /********************************* liujia add start *********************************************************/
+  private final static int EDIT_MODE = -1;
+  private boolean isEditMode = false;
+  private View.OnClickListener settingClickHandler = new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+      handleMenuSettings();
+      Logger.get(DialtactsActivity.this).logScreenView(ScreenEvent.Type.SETTINGS, DialtactsActivity.this);
+    }
+  };
+
+  private View.OnClickListener addContactListener = new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+      DialerUtils.startActivityWithErrorToast(
+              DialtactsActivity.this, IntentUtil.getNewContactIntent(), R.string.add_contact_not_available);
+    }
+  };
+
+  private View.OnClickListener editCallLogListener = new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+      enterCalllogEditModle(false);
+    }
+  };
+
+  private View.OnClickListener cancelEditCallLogListener = new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+      exitCalllogEditModle(false);
+    }
+  };
+
+  private View.OnClickListener selectAllCallLogListener = new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+      if(mListsFragment.editSelectAll()){
+        mToroActionBar.setRightButton(getResources().getString(R.string.toro_un_select_all),selectAllCallLogListener);
+      } else {
+        mToroActionBar.setRightButton(getResources().getString(R.string.toro_select_all),selectAllCallLogListener);
+      }
+    }
+  };
+
+  private View.OnClickListener deleteSelectedlistener = new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+      final ToroCommonBottomDialogEntity del = new ToroCommonBottomDialogEntity(getResources().getString(R.string.toro_delete_selected));
+      del.setColor(Color.RED);
+      ToroCommonBottomDialog dialog = new ToroCommonBottomDialog(DialtactsActivity.this, del);
+      dialog.setOnItemClickListener(new ToroCommonBottomDialog.OnItemClickListener()
+      {
+        @Override
+        public void onItemClick(String text, int listSize, int position)
+        {
+          if(text.equals(getResources().getString(R.string.toro_delete_selected))) {
+            mListsFragment.deleteSelected();
+            dialog.dismiss();
+          }
+        }
+      });
+      dialog.show();
+    }
+
+  };
+
+  private void updateToroActionBar(int tabIndex) {
+    if(tabIndex == EDIT_MODE) {
+      mToroActionBar.setTitleText(getResources().getString(R.string.toro_edit));
+      mToroActionBar.setLeftButton(getResources().getString(R.string.toro_cancel),cancelEditCallLogListener);
+      mToroActionBar.setRightButton(getResources().getString(R.string.toro_select_all),selectAllCallLogListener);
+    } else if(tabIndex == DialtactsPagerAdapter.TAB_INDEX_HISTORY) {
+      mToroActionBar.setTitleText(getResources().getString(R.string.tab_history));
+      mToroActionBar.setLeftButton(getResources().getString(R.string.toro_edit),editCallLogListener);
+      mToroActionBar.setRightImageButton(R.drawable.toro_settings,settingClickHandler);
+    } else if(tabIndex == DialtactsPagerAdapter.TAB_INDEX_ALL_CONTACTS) {
+      mToroActionBar.setTitleText(getResources().getString(R.string.tab_all_contacts));
+      mToroActionBar.setLeftButton(getResources().getString(R.string.toro_add),addContactListener);
+      mToroActionBar.setRightImageButton(R.drawable.toro_settings,settingClickHandler);
+    }
+  }
+
+  public void onToroSearchClick() {
+    if (!isInSearchUi()) {
+      PerformanceReport.recordClick(UiAction.Type.OPEN_SEARCH);
+      mActionBarController.onSearchBoxTapped();
+      enterSearchUi(
+              false /* smartDialSearch */, mSearchView.getText().toString(), true /* animate */);
+      mToroActionBar.setVisibility(View.GONE);
+    }
+  }
+
+  private void enterCalllogEditModle(boolean animate) {
+    isEditMode = true;
+    mListsFragment.enterEditModle();
+    if (animate) {
+      mFloatingActionButtonController.scaleOut();
+    } else {
+      mFloatingActionButtonController.setVisible(false);
+    }
+
+    findViewById(R.id.toro_calllog_delete_view).setVisibility(View.VISIBLE);
+    findViewById(R.id.toro_calllog_delete_view).setOnClickListener(deleteSelectedlistener);
+    ((TextView)findViewById(R.id.toro_calllog_delete_count_text)).setText(getEditDeleteString(0));
+
+    updateToroActionBar(EDIT_MODE);
+  }
+
+  public void exitCalllogEditModle(boolean animate) {
+    isEditMode = false;
+    int tabIndex = mListsFragment.getCurrentTabIndex();
+    mListsFragment.exitEditModle();
+    mFloatingActionButtonController.align(getFabAlignment(), animate);
+    if (animate) {
+      mDialpadFragment.getView().startAnimation(mSlideOut);
+    } else {
+      mFloatingActionButtonController.scaleIn(AnimUtils.NO_DELAY);
+    }
+
+    findViewById(R.id.toro_calllog_delete_view).setVisibility(View.GONE);
+
+    updateToroActionBar(tabIndex);
+  }
+
+  private String getEditDeleteString(int selectedCount) {
+    String editDeleteFormat = getResources().getString(R.string.toro_edit_delete);
+    String editDelete = String.format(editDeleteFormat,selectedCount);
+    return editDelete;
+  }
+
+  public void updateEditDeleteText(int selectedCount) {
+    String editDeleteFormat = getResources().getString(R.string.toro_edit_delete);
+    String editDelete = String.format(editDeleteFormat,selectedCount);
+    ((TextView)findViewById(R.id.toro_calllog_delete_count_text)).setText(editDelete);
+  }
+
+  /********************************* liujia add end *********************************************************/
 }

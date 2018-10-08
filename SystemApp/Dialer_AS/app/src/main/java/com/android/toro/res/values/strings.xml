@@ -23,6 +23,7 @@
     <string name="toro_unknow">Unknow</string>
     <string name="toro_cancel">Cancel</string>
     <string name="toro_select_all">Select All</string>
+    <string name="toro_un_select_all">Unselect All</string>
     <string name="toro_edit_delete">Delete(%1$d)</string>
     <string name="toro_delete_selected">Delete Selected Items</string>
     <string name="toro_back">Back</string>

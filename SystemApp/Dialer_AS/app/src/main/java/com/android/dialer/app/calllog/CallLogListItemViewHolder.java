@@ -516,7 +516,7 @@ public final class CallLogListItemViewHolder extends RecyclerView.ViewHolder
 
       this.toroActionButtonView.setTag(
               IntentProvider.getToroCallDetailIntentProvider(
-                      callDetailsEntries, buildContact(),blockId,details));
+                      callDetailsEntries, buildContact(),blockId,details,rowId));
 
 //    this.toroActionButtonView.setTag(IntentProvider.getCallDetailIntentProvider(
 //            callDetailsEntries, buildContact(), false));

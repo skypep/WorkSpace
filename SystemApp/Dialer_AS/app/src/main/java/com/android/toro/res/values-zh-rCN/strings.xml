@@ -23,6 +23,7 @@
     <string name="toro_unknow">未知</string>
     <string name="toro_cancel">取消</string>
     <string name="toro_select_all">全选</string>
+    <string name="toro_un_select_all">全不选</string>
     <string name="toro_edit_delete">删除(%1$d)</string>
     <string name="toro_delete_selected">删除选中的通话记录</string>
     <string name="toro_back">返回</string>

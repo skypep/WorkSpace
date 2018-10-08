@@ -1482,6 +1482,7 @@ public class CallLogAdapter extends GroupingListAdapter
 
   /******************************** liujia add start ***************************************/
   private boolean isEditModle = false;
+  private boolean toroSelectAllMode = false;
 //  private boolean[] radioArrays;
   private List<ToroEditModleData> toroEditModleDatas;
 
@@ -1520,13 +1521,19 @@ public class CallLogAdapter extends GroupingListAdapter
     notifyDataSetChanged();
   }
 
-  public void editSelectAll() {
+  public boolean editSelectAll() {
     for(int i =0; i< toroEditModleDatas.size(); i++) {
-//      radioArrays[i] = !radioArrays[i];
-      toroEditModleDatas.get(i).isSelected = !toroEditModleDatas.get(i).isSelected;
+      if(toroSelectAllMode) {
+        toroEditModleDatas.get(i).isSelected = false;
+      } else {
+        toroEditModleDatas.get(i).isSelected = true;
+      }
+//      toroEditModleDatas.get(i).isSelected = !toroEditModleDatas.get(i).isSelected;
     }
+    toroSelectAllMode = !toroSelectAllMode;
     ((DialtactsActivity)mActivity).updateEditDeleteText(getSelectedRadioCounts());
     notifyDataSetChanged();
+    return toroSelectAllMode;
   }
 
   public boolean deleteSelected() {

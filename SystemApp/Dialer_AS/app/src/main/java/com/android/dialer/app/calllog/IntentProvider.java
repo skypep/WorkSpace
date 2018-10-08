@@ -127,12 +127,12 @@ public abstract class IntentProvider {
   }
 
   public static IntentProvider getToroCallDetailIntentProvider(
-          CallDetailsEntries callDetailsEntries, DialerContact contact, Integer blockId,PhoneCallDetails details) {
+          CallDetailsEntries callDetailsEntries, DialerContact contact, Integer blockId,PhoneCallDetails details,long startRowID) {
     return new IntentProvider() {
       @Override
       public Intent getIntent(Context context) {
         return ToroCallDetailsActivity.newInstance(
-                context, callDetailsEntries, contact,blockId,details);
+                context, callDetailsEntries, contact,blockId,details,startRowID);
       }
     };
   }

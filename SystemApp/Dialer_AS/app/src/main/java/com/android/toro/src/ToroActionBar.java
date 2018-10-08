@@ -59,6 +59,7 @@ public class ToroActionBar extends FrameLayout {
     public void setRightButton(String text,OnClickListener listener) {
         rightButton.setVisibility(View.VISIBLE);
         rightImageButton.setVisibility(View.GONE);
+        int wid = rightButton.getWidth();
         rightButton.setText(text);
         if(listener != null) {
             rightButton.setOnClickListener(listener);
