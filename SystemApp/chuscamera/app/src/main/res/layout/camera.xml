@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2013 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/camera_root_frame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    <com.android.camera.ui.CameraRootView
+        android:id="@+id/camera_photo_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+		>
+    </com.android.camera.ui.CameraRootView>
+    <com.android.camera.ui.CameraRootView
+        android:id="@+id/camera_video_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+		>
+    </com.android.camera.ui.CameraRootView>
+    <com.android.camera.ui.CameraRootView
+        android:id="@+id/camera_pano_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </com.android.camera.ui.CameraRootView>
+    <com.android.camera.ui.CameraRootView
+        android:id="@+id/camera_capture_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </com.android.camera.ui.CameraRootView>
+    <com.android.camera.ui.CameraRootView
+        android:id="@+id/camera_scan_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </com.android.camera.ui.CameraRootView>
+
+	<!-- // frankie, 2017.06 add start -->
+    <RelativeLayout
+    	android:id="@+id/slide_mode_switcher_1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+		android:visibility="invisible"
+        >
+	    <com.android.camera.module.ui.SlideTab1
+	        android:id="@+id/slide_tab1"
+	        android:layout_alignParentBottom="true"
+	        android:layout_marginBottom="150dip"
+	        android:layout_width="match_parent"
+	        android:layout_height="30dip"
+			android:padding="2dp"
+	        >
+	        <TextView
+	            android:id="@+id/text01"
+	            android:textSize="15dp"
+	            android:textColor="#a0ffffff"
+	            android:text="@string/my_text01"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" />
+	        <TextView
+	            android:id="@+id/text02"
+	            android:textSize="15dp"
+	            android:textColor="#ffffffff"
+	            android:text="@string/my_text02"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" />
+	        <TextView
+	            android:id="@+id/text03"
+	            android:textSize="15dp"
+	            android:textColor="#ffffffff"
+	            android:text="@string/my_text03"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" />
+	        <TextView
+	            android:id="@+id/text04"
+	            android:textSize="15dp"
+	            android:textColor="#ffffffff"
+	            android:text="@string/my_text04"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" />
+	    </com.android.camera.module.ui.SlideTab1>
+	    <!--<ImageView-->
+	        <!--android:id="@+id/indicator01"-->
+	        <!--android:layout_centerHorizontal="true"-->
+	        <!--android:layout_above="@id/slide_tab1"-->
+	        <!--android:layout_width="8dip"-->
+	        <!--android:layout_height="8dip"-->
+	        <!--android:src="@drawable/camera_crop"-->
+			<!--android:alpha="0.8"-->
+	        <!--/>-->
+    </RelativeLayout>
+	<!-- // frankie, 2017.06 add end -->
+
+	
+</FrameLayout>

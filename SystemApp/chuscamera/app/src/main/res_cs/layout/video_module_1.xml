@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2013 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+--><!-- This layout is shared by phone and tablet in landscape orientation. -->
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center">
+
+    <!-- // SurfaceView for preview -->
+    <FrameLayout
+        android:id="@+id/preview_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical|center_horizontal">
+
+        <SurfaceView
+            android:id="@+id/mdp_preview_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+
+    <!-- ///////////////////////////////////////////////////////////////////// -->
+    <!-- // frankie, add start 
+    	android:layout_gravity="center_vertical|center_horizontal"
+    	-->
+    <FrameLayout
+        android:id="@+id/preview_container_1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+			<!--// android:background="@color/module_layout_background_normal_color" 
+				// android:background="#ff00ff00"-->
+        <com.android.camera.module.MyFrameLayoutVideo
+            android:id="@+id/my_framelayout_1"
+            android:background="@color/module_layout_background_normal_color"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></com.android.camera.module.MyFrameLayoutVideo>
+    </FrameLayout>
+    <!-- // frankie, add end -->
+    <!-- ///////////////////////////////////////////////////////////////////// -->
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ViewStub
+            android:id="@+id/face_view_stub"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inflatedId="@+id/face_view"
+            android:layout="@layout/face_view"
+            android:visibility="gone" />
+    </FrameLayout>
+    <!-- // frankie, rm
+    <View
+        android:id="@+id/preview_cover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black" />
+        -->
+    <View
+        android:id="@+id/flash_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0"
+        android:background="@android:color/white"
+        android:visibility="gone" />
+
+    <FrameLayout
+        android:id="@+id/preview_border"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/ic_snapshot_border"
+        android:visibility="gone" />
+
+    <com.android.camera.ui.RenderOverlay
+        android:id="@+id/render_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- // -->
+    <!--
+    <com.android.camera.ui.RotateLayout
+        android:id="@+id/recording_time_rect"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="horizontal"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent">
+            <com.android.camera.PauseButton android:id="@+id/video_pause"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:padding="38dp"
+                android:src="@drawable/btn_pause_recording"/>
+            <include layout="@layout/viewfinder_labels_video"
+                android:id="@+id/labels" />
+        </LinearLayout>
+    </com.android.camera.ui.RotateLayout>
+    -->
+    <!-- // frankie, 2017.07.11, re-adjust later -->
+    <FrameLayout
+        android:id="@+id/recording_time_rect"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/toro_video_margin_top"
+            >
+
+            <View
+                android:id="@+id/base_line_1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:visibility="invisible" />
+
+            <LinearLayout
+                android:id="@+id/labels"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/base_line_1"
+                android:gravity="center"
+                android:background="@drawable/bg_text_on_preview"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/reddot_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_recording_indicator"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/recording_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:layout_marginLeft="5dp"
+                    android:text="@string/initial_recording_seconds"
+                    android:textColor="@android:color/white"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
+            <!--liujia move-->
+            <include
+                style="@style/CameraControls"
+                layout="@layout/camera_controls_4video"
+                android:layout_gravity="center" />
+
+            <com.android.camera.PauseButton
+                android:id="@+id/video_pause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/base_line_1"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@id/labels"
+                android:src="@drawable/btn_pause_recording"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/review_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+        android:visibility="gone" />
+
+    <!--<ImageView-->
+        <!--android:id="@+id/btn_play"-->
+        <!--style="@style/ReviewControlIcon"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:onClick="onReviewPlayClicked"-->
+        <!--android:scaleType="center"-->
+        <!--android:src="@drawable/ic_gallery_play_big"-->
+        <!--android:visibility="gone" />-->
+
+    <!-- // frankie, add start -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+		<!-- rm android:background="@color/camera_control_bottom_background_color" 
+		android:src="@drawable/chus_bottom_background_gradient"
+		-->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="150dip"
+            android:layout_alignParentBottom="true"
+            android:background="@color/camera_control_bottom_background_color"
+            android:scaleType="fitXY" />
+    </RelativeLayout>
+    <!-- // frankie, add end -->
+
+    <!-- // frankie, add root view for grid filter view -->
+    <FrameLayout
+        android:id="@+id/color_effect_root_1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- // frankie, add start for preference fragment -->
+    <LinearLayout
+        android:id="@+id/prefs_setting_layout"
+        android:background="@drawable/pref_layout_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        android:orientation="vertical"
+        android:clickable="true">
+        
+        <include layout="@layout/pref_layout_titlebar" />
+
+	    <FrameLayout
+	        android:id="@+id/prefs_container_4video"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:layout_centerInParent="true">
+        </FrameLayout>
+        <!-- // frankie, following layout can not be seen -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="100dip"
+            android:background="#cccccc" />
+    </LinearLayout>
+    <!-- // frankie, add end -->
+    
+    <!-- // frankie, move cover on the top most -->
+    <com.android.camera.module.ui.PreviewMaskView
+        android:id="@+id/preview_cover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+        android:alpha="0.00001"
+        />
+
+</merge>

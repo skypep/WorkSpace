@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="46dp"
+    android:background="#50000000"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/top_menu_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#00000000"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.android.camera.ui.RotateImageView
+            android:id="@+id/flash_mode_iv"
+            style="@style/MenuButton_1"
+            android:layout_weight="1"
+            android:src="@drawable/chus_flashlight_on"
+            android:visibility="gone" />
+
+        <com.android.camera.ui.RotateImageView
+            android:id="@+id/hrd_mode_iv"
+            style="@style/MenuButton_1"
+            android:layout_weight="1"
+            android:visibility="gone" />
+        <!--chus_ic_settings_hdr_on-->
+        <com.android.camera.ui.RotateImageView
+            android:id="@+id/fillin_iv"
+            style="@style/MenuButton_1"
+            android:layout_weight="1" />
+
+        <com.android.camera.ui.RotateImageView
+            android:id="@+id/mirror_iv"
+            style="@style/MenuButton_1"
+            android:layout_weight="1" />
+
+        <com.android.camera.ui.RotateImageView
+            android:id="@+id/filter_mode_iv"
+            style="@style/MenuButton_1"
+            android:layout_weight="1"
+            android:src="@drawable/chus_filter_button" />
+
+        <com.android.camera.ui.RotateImageView
+            android:id="@+id/face_beauty_iv"
+            style="@style/MenuButton_1"
+            android:layout_weight="1" />
+
+        <com.android.camera.ui.RotateImageView
+            android:id="@+id/setting_iv"
+            style="@style/MenuButton_1"
+            android:layout_weight="1"
+            android:src="@drawable/chus_ic_settings_more" />
+
+    </LinearLayout>
+
+</RelativeLayout>

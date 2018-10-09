@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory
+        android:key="preference_category_camera_controls"
+        android:title="@string/pref_camera_settings_category">
+        <!--  if we move this to another PreferenceGroup, we should update code for the findPreference() call -->
+        <SwitchPreference
+            android:key="preference_face_detection"
+            android:title="@string/pref_camera_flashmode_title"
+            android:summary="@string/pref_camera_flashmode_title"
+            android:defaultValue="false"
+            />
+	    <ListPreference
+	        android:key="preference_timer"
+	        android:title="@string/pref_camera_scenemode_title"
+	        android:summary="@string/pref_camera_scenemode_title"
+	        android:icon="@drawable/ic_settings_scenemode"
+	        android:entries="@array/pref_camera_scenemode_entries"
+	        android:entryValues="@array/pref_camera_scenemode_entryvalues"
+	        android:defaultValue="0"
+	        />
+	    <PreferenceScreen
+	        android:key="preference_screen_camera_controls_more"
+	        android:title="@string/pref_camera_settings_category"
+	        android:icon="@drawable/ic_settings_exposure"
+	        android:persistent="false">
+
+		    <ListPreference
+		        android:key="preference_touch_capture"
+		        android:title="@string/pref_camera_scenemode_title"
+		        android:summary="@string/pref_camera_scenemode_title"
+		        android:icon="@drawable/ic_settings_scenemode"
+	            android:entries="@array/pref_camera_scenemode_entries"
+	            android:entryValues="@array/pref_camera_scenemode_entryvalues"
+		        android:defaultValue="none"
+		        />
+	        <!--  if we move this to another PreferenceGroup, we should update code to remove this Preference -->
+		    <SwitchPreference
+		        android:key="preference_shutter_sound"
+		        android:title="@string/pref_camera_flashmode_title"
+		        android:summary="@string/pref_camera_flashmode_title"
+		        android:defaultValue="true"
+		        />
+		</PreferenceScreen>
+
+	    <PreferenceScreen
+            android:key="preference_screen_gui"
+            android:title="@string/pref_camera_settings_category"
+	        android:icon="@drawable/ic_settings_exposure"
+            android:persistent="false">
+            <ListPreference 
+                android:key="preference_preview_size"
+                android:title="@string/pref_camera_scenemode_title"
+                android:summary="@string/pref_camera_scenemode_title"
+                android:entries="@array/pref_camera_scenemode_entries"
+                android:entryValues="@array/pref_camera_scenemode_entryvalues"
+                android:defaultValue="preference_preview_size_wysiwyg"
+                />
+	    </PreferenceScreen>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="preference_category_camera_quality"
+        android:title="@string/pref_camera_settings_category">
+	    <PreferenceScreen
+	        android:key="preference_screen_video_settings"
+	        android:title="@string/pref_camera_settings_category"
+	        android:icon="@drawable/ic_settings_exposure"
+	        android:persistent="false">
+	        <!--  if we move this to another PreferenceGroup, we should update code to remove this Preference -->
+	        <ListPreference 
+	            android:key="preference_video_quality"
+	            android:title="@string/pref_camera_scenemode_title"
+	            android:summary="@string/pref_camera_scenemode_title"
+	            />
+            <!--  if we move this to another PreferenceGroup, we should update code for the findPreference() call -->
+            <SwitchPreference
+                android:key="preference_video_stabilization"
+                android:title="@string/pref_camera_flashmode_title"
+                android:summary="@string/pref_camera_flashmode_title"
+                android:defaultValue="false"
+                />
+		</PreferenceScreen>
+	</PreferenceCategory>
+
+</PreferenceScreen>

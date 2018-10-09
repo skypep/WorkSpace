@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2012 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources>
+    <color name="camera_control_bottom_background_color">#40000000</color>
+
+	<!-- // for bubble seekbar -->
+    <color name="seekbar_colorPrimary">#3F51B5</color>
+    <color name="seekbar_colorAccent">#FF4081</color>
+	<color name="seekbar_color_gray">#B4B4B4</color>
+    <color name="seekbar_color_green">#00b4aa</color>
+    <color name="seekbar_color_red">#FF6A6E</color>
+    <color name="seekbar_color_red_light">#FFB4B6</color>
+    <color name="seekbar_color_blue">#03A9F4</color>
+    <color name="seekbar_color_white">#FFFFFF</color>
+	
+	<color name="grid_line">#33FFFFFF</color>
+
+    <color name="transparent">#00000000</color>
+
+    <color name="pref_layout_background_normal_color">#ffeff2f3</color>
+    <color name="pref_layout_title_normal_color">#475259</color>
+    <color name="pref_layout_title_disable_color">#ffababab</color>
+    <color name="pref_layout_summary_normal_color">#999999</color>
+    <color name="pref_layout_summary_disable_color">#ffababab</color>
+    <color name="pref_layout_category_title_color">#7d7d7d</color>
+    <color name="pref_layout_diver_line_color">#ffababab</color>
+
+    <color name="panorama_dialog_front_color">#475259</color>
+    <color name="panorama_dialog_split_line">#aeaeae</color>
+
+    <color name="filter_grid_type_name_color">#ffffffff</color>
+    <color name="filter_grid_type_name_background">#80000000</color>
+
+    <color name="module_layout_background_normal_color">#ff000000</color>
+
+    <color name="pref_layout_set_back_color">#6b6f74</color>
+
+    <color name="space_color_dialog">#adbdc5</color>
+    <color name="title_color_dialog">#333333</color>
+
+    <color name="color_4f4f4f">#4f4f4f</color>
+    <color name="panorama_dialog_split_line_aeaeae">#aeaeae</color>
+    
+    <color name="color_aeaeae">#aeaeae</color>
+    <color name="color_656565">#656565</color>
+    <color name="color_929292">#929292</color>
+    <color name="color_475259">#475259</color>
+</resources>

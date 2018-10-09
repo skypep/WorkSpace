@@ -1,0 +1,111 @@
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+        config {
+            keyAlias 'key1'
+            keyPassword '123456'
+            storeFile file('../yangjianyingReleaseKey.jks')
+            storePassword '123456'
+        }
+    }
+    compileSdkVersion 25
+    buildToolsVersion '28.0.2'
+    defaultConfig {
+        applicationId "com.chus.camera"
+        minSdkVersion 23
+        targetSdkVersion 25
+
+        // frankie, use AnoroidManifest version settings
+        //versionCode 1
+        //versionName "1.0"
+
+        // frankie, no need to set this for support RenderScript !
+        //renderscriptTargetApi 19
+        //renderscriptSupportModeEnabled true
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+//        externalNativeBuild {
+//            cmake {
+//                cppFlags ""
+//            }
+//        }
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a"
+        }
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.config
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            externalNativeBuild {
+                ndkBuild {
+                }
+            }
+        }
+        debug {
+            minifyEnabled false
+            signingConfig signingConfigs.config
+            externalNativeBuild {
+                ndkBuild {
+                }
+            }
+        }
+    }
+//    externalNativeBuild {
+//        cmake {
+//            path "CMakeLists.txt"
+//        }
+//    }
+    // frankie, add ndk build using Android.mk
+    externalNativeBuild {
+        ndkBuild {
+            path file("src\\main\\jni\\Android.mk")
+        }
+    }
+    // frankie, add src/main/java, src/main/src etc ... dir as java files
+    sourceSets {
+        main {
+            java.srcDirs = ["src/main/src",
+                            "src/main/src_pd",
+                            "src/main/src_pd_gcam",
+                            "src/main/rs",
+                            "src/main/src_ext",
+            ]
+            aidl.srcDirs = ["src/main/src",
+                            "src/main/src_pd",
+                            "src/main/src_pd_gcam",
+                            "src/main/src_ext",
+            ]
+            res.srcDirs = ['src/main/res',
+                           'src/main/res_cs',
+                           'src/main/res_ext'
+            ]
+        }
+    }
+    // frankie, disable lint check
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+    // frankie, add end
+}
+
+dependencies {
+    //provided files('thirdLibs/qcom_framework.jar')
+    provided files('thirdLibs/qcom71_classes.jar')
+    compile files('thirdLibs/xmp_toolkit.jar')
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:support-v13:26.0.0-alpha1'
+    compile 'com.android.support:appcompat-v7:26.0.0-alpha1'
+    testCompile 'junit:junit:4.12'
+    compile 'com.google.zxing:core:3.3.0'
+    compile 'net.qiujuer.genius:blur:2.0.0'
+    compile 'de.greenrobot:eventbus:3.0.0-beta1'
+    compile project(path: ':hellocharts-library')
+}

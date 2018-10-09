@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+tools:context="lecho.lib.hellocharts.samples.LineChartActivity$PlaceholderFragment"
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#8000ff00"
+    android:paddingBottom="@dimen/sensor_debug_chart_view_vertical_margin"
+    android:paddingLeft="@dimen/sensor_debug_chart_view_horizontal_margin"
+    android:paddingRight="@dimen/sensor_debug_chart_view_horizontal_margin"
+    android:paddingTop="@dimen/sensor_debug_chart_view_vertical_margin"
+    >
+    <lecho.lib.hellocharts.view.LineChartView
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </lecho.lib.hellocharts.view.LineChartView>
+
+    <TextView
+        android:id="@+id/info_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dip"
+        android:textColor="#ffff0000"
+        />
+
+</RelativeLayout>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.android.camera.ui.RotateLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="20dp"
+    android:gravity="center">
+    <!--android:background="@drawable/bg_round_white"-->
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/panorama_diglog_background"
+        android:gravity="center"
+        android:minHeight="162dp"
+        android:minWidth="100dp"
+        android:orientation="vertical">
+        <!-- // title -->
+        <LinearLayout
+            android:id="@+id/dialog_title_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/dialog_title_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="13dp"
+                android:text="@string/pref_reset_default_title"
+                android:textColor="@color/panorama_dialog_front_color"
+                android:textSize="21sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="5dp"
+                android:background="@color/panorama_dialog_split_line" />
+        </LinearLayout>
+
+        <!-- // text -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="13dp"
+            android:layout_marginTop="13dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="29dp"
+                android:layout_height="26dp"
+                android:src="@drawable/panorama_dialog_warn_icon" />
+
+            <TextView
+                android:id="@+id/dialog_content_tv"
+                style="@style/TextAppearance.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="11dp"
+                android:text="@string/pref_reset_default_content"
+                android:textColor="@color/panorama_dialog_front_color"
+                android:textSize="17sp" />
+        </LinearLayout>
+        <!-- // confirm button -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@color/panorama_dialog_split_line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:padding="3dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/dialog_cancel_btn"
+                style="@style/Widget.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_pressed"
+                android:text="@string/pref_reset_default_cancel"
+                android:textColor="@color/panorama_dialog_front_color"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="20dp"
+                android:background="#ffcccccc" />
+
+            <Button
+                android:id="@+id/dialog_confirm_btn"
+                style="@style/Widget.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_pressed"
+                android:text="@string/pref_reset_default_confirm"
+                android:textColor="@color/panorama_dialog_front_color"
+                android:textSize="15sp" />
+        </LinearLayout>
+    </LinearLayout>
+    <!--android:background="@drawable/bg_dialog_right_white"-->
+
+</com.android.camera.ui.RotateLayout>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--<LinearLayout-->
+<!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--style="@style/profile_item_style"-->
+<!--android:paddingLeft="0dp"-->
+<!--android:paddingRight="0dp">-->
+
+<!--<TextView-->
+<!--android:id="@android:id/title"-->
+<!--style="@style/profile_text_style"/>-->
+
+<Switch
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/checkbox"
+    android:layout_width="wrap_content"
+    android:switchMinWidth="108px"
+    android:minWidth="108px"
+    android:layout_height="55px"
+    android:paddingLeft="0px"
+    android:paddingRight="0px"
+    android:focusable="false"
+    android:clickable="false"
+    android:textSize="0sp"
+    android:textOff=""
+    android:showText="false"
+    android:textOn=""
+    android:thumb="@drawable/chus_pref_fragment_thumb"
+    android:track="@drawable/chus_pref_fragment_checkbox_track"
+    android:background="@null"/>
+
+    <!--</LinearLayout>-->

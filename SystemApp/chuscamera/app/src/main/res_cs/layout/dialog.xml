@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dialog"
+    android:layout_width="match_parent"
+    android:layout_height="182dp">
+
+    <ImageView
+        android:id="@+id/dialog_img"
+        android:layout_width="290dp"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/bg_dialog" />
+
+    <TextView
+        android:id="@+id/dialog_title_tv"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="@string/pref_reset_default_title"
+        android:textColor="@color/color_4f4f4f"
+        android:textSize="13sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/line"
+        android:layout_width="290dp"
+        android:layout_height="0.5dp"
+        android:layout_below="@+id/dialog_title_tv"
+        android:layout_centerHorizontal="true"
+        android:background="@color/color_aeaeae"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/dialog_content_tv"
+        android:layout_width="290dp"
+        android:layout_height="42dp"
+        android:layout_below="@+id/line"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_weight="3"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="@string/pref_reset_default_content"
+        android:textColor="@color/color_656565"
+        android:textSize="13sp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/dialog_content_tv"
+        android:layout_alignRight="@+id/dialog_content_tv"
+        android:layout_below="@+id/dialog_content_tv"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/dialog_cancel_btn"
+            android:layout_width="101dp"
+            android:layout_height="32dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="25dp"
+            android:background="@drawable/sl_transparent_gray"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="@string/pref_reset_default_cancel"
+            android:textColor="@color/color_475259"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/dialog_confirm_btn"
+            android:layout_width="101dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="25dp"
+            android:layout_toRightOf="@id/dialog_cancel_btn"
+            android:background="@drawable/sl_transparent_gray"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="@string/pref_reset_default_confirm"
+            android:textColor="@color/color_475259"
+            android:textSize="13sp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

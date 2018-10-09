@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- // frankie, note parent is FrameLayout -->
+
+<com.android.camera.ui.RotateLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/waitingDialog"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
+    <!-- android:background="@color/pano_progress_empty" -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_dialog"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ProgressBar
+            style="@style/mProgress_circle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:indeterminateDuration="1200" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="10dp"
+            android:text="@string/pano_dialog_prepare_preview"
+            android:textColor="@color/color_4f4f4f"
+            android:textSize="13sp" />
+    </LinearLayout>
+</com.android.camera.ui.RotateLayout>
+

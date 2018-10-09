@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+android:background="#800000ff"
+-->
+<com.android.camera.module.MyColorEffectTopLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/color_effect_top_container_1"
+    android:background="#ff000000"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- // rm android:layout_alignParentTop="true" -->
+    <LinearLayout
+        android:id="@+id/color_effect_top_container_2"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <com.android.camera.module.MyTextureView
+                android:id="@+id/color_effect_1"
+
+                android:layout_marginLeft="8dip"
+                android:layout_marginRight="4dip"
+                android:layout_width="0dip"
+                android:layout_height="1dip"
+                android:layout_weight="1" />
+            <com.android.camera.module.MyTextureView
+                android:id="@+id/color_effect_2"
+
+                android:layout_marginLeft="4dip"
+                android:layout_marginRight="4dip"
+                android:layout_width="0dip"
+                android:layout_height="1dip"
+                android:layout_weight="1" />
+            <com.android.camera.module.MyTextureView
+                android:id="@+id/color_effect_3"
+
+                android:layout_marginLeft="4dip"
+                android:layout_marginRight="8dip"
+                android:layout_width="0dip"
+                android:layout_height="1dip"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="8dip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <com.android.camera.module.MyTextureView
+                android:id="@+id/color_effect_4"
+
+                android:layout_marginLeft="8dip"
+                android:layout_marginRight="4dip"
+                android:layout_width="0dip"
+                android:layout_height="1dip"
+                android:layout_weight="1" />
+            <com.android.camera.module.MyTextureView
+                android:id="@+id/color_effect_5"
+
+                android:layout_marginLeft="4dip"
+                android:layout_marginRight="4dip"
+                android:layout_width="0dip"
+                android:layout_height="1dip"
+                android:layout_weight="1" />
+            <com.android.camera.module.MyTextureView
+                android:id="@+id/color_effect_6"
+
+                android:layout_marginLeft="4dip"
+                android:layout_marginRight="8dip"
+                android:layout_width="0dip"
+                android:layout_height="1dip"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="8dip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <com.android.camera.module.MyTextureView
+                android:id="@+id/color_effect_7"
+
+                android:layout_marginLeft="8dip"
+                android:layout_marginRight="4dip"
+                android:layout_width="0dip"
+                android:layout_height="1dip"
+                android:layout_weight="1" />
+            <com.android.camera.module.MyTextureView
+                android:id="@+id/color_effect_8"
+
+                android:layout_marginLeft="4dip"
+                android:layout_marginRight="4dip"
+                android:layout_width="0dip"
+                android:layout_height="1dip"
+                android:layout_weight="1" />
+            <com.android.camera.module.MyTextureView
+                android:id="@+id/color_effect_9"
+
+                android:layout_marginLeft="4dip"
+                android:layout_marginRight="8dip"
+                android:layout_width="0dip"
+                android:layout_height="1dip"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- ////////////////////////////////////////////////////////// -->
+    <!-- // frankie, 2017.08.18, text on top of textureView
+        android:layout_alignParentTop="true"
+        -->
+    <LinearLayout
+        android:id="@+id/color_effect_top_text_container"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:layout_centerVertical="true"
+        >
+        <!-- // line 1 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <com.android.camera.module.MyRelativeLayout
+                android:id="@+id/color_effect_text_1"
+                android:layout_marginLeft="8dip"
+                android:layout_marginRight="4dip"
+                android:layout_width="0dip"
+                android:layout_height="1dip"
+                android:layout_weight="1" >
+                <com.android.camera.module.MyBackground
+                    android:id="@+id/color_effect_selected"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                	/>
+                <TextView
+                    android:id="@+id/color_effect_name"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="0dip"
+                    android:background="@color/filter_grid_type_name_background"
+                    android:gravity="center"
+                    android:text="@string/app_name"
+                    android:textSize="11sp"
+                    android:textColor="@color/filter_grid_type_name_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.android.camera.module.MyRelativeLayout>
+            <com.android.camera.module.MyRelativeLayout
+                android:id="@+id/color_effect_text_2"
+                android:layout_marginLeft="4dip"
+                android:layout_marginRight="4dip"
+                android:layout_width="0dip"
+                android:layout_height="1dip"
+                android:layout_weight="1" >
+                <com.android.camera.module.MyBackground
+                    android:id="@+id/color_effect_selected"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+                <TextView
+                    android:id="@+id/color_effect_name"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="0dip"
+                    android:background="@color/filter_grid_type_name_background"
+                    android:gravity="center"
+                    android:text="@string/app_name"
+                    android:textSize="11sp"
+                    android:textColor="@color/filter_grid_type_name_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.android.camera.module.MyRelativeLayout>
+            <com.android.camera.module.MyRelativeLayout
+                android:id="@+id/color_effect_text_3"
+                android:layout_marginLeft="4dip"
+                android:layout_marginRight="8dip"
+                android:layout_width="0dip"
+                android:layout_height="1dip"
+                android:layout_weight="1" >
+                <com.android.camera.module.MyBackground
+                    android:id="@+id/color_effect_selected"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+                <TextView
+                    android:id="@+id/color_effect_name"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="0dip"
+                    android:background="@color/filter_grid_type_name_background"
+                    android:gravity="center"
+                    android:text="@string/app_name"
+                    android:textSize="11sp"
+                    android:textColor="@color/filter_grid_type_name_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.android.camera.module.MyRelativeLayout>
+        </LinearLayout>
+
+        <!-- // line 1 -->
+        <LinearLayout
+            android:layout_marginTop="8dip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <com.android.camera.module.MyRelativeLayout
+                android:id="@+id/color_effect_text_4"
+                android:layout_marginLeft="8dip"
+                android:layout_marginRight="4dip"
+                android:layout_width="0dip"
+                android:layout_height="1dip"
+                android:layout_weight="1" >
+                <com.android.camera.module.MyBackground
+                    android:id="@+id/color_effect_selected"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+                <TextView
+                    android:id="@+id/color_effect_name"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="0dip"
+                    android:background="@color/filter_grid_type_name_background"
+                    android:gravity="center"
+                    android:text="@string/app_name"
+                    android:textSize="11sp"
+                    android:textColor="@color/filter_grid_type_name_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.android.camera.module.MyRelativeLayout>
+            <com.android.camera.module.MyRelativeLayout
+                android:id="@+id/color_effect_text_5"
+                android:layout_marginLeft="4dip"
+                android:layout_marginRight="4dip"
+                android:layout_width="0dip"
+                android:layout_height="1dip"
+                android:layout_weight="1" >
+                <com.android.camera.module.MyBackground
+                    android:id="@+id/color_effect_selected"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+                <TextView
+                    android:id="@+id/color_effect_name"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="0dip"
+                    android:background="@color/filter_grid_type_name_background"
+                    android:gravity="center"
+                    android:text="@string/app_name"
+                    android:textSize="11sp"
+                    android:textColor="@color/filter_grid_type_name_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.android.camera.module.MyRelativeLayout>
+            <com.android.camera.module.MyRelativeLayout
+                android:id="@+id/color_effect_text_6"
+                android:layout_marginLeft="4dip"
+                android:layout_marginRight="8dip"
+                android:layout_width="0dip"
+                android:layout_height="1dip"
+                android:layout_weight="1" >
+                <com.android.camera.module.MyBackground
+                    android:id="@+id/color_effect_selected"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+                <TextView
+                    android:id="@+id/color_effect_name"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="0dip"
+                    android:background="@color/filter_grid_type_name_background"
+                    android:gravity="center"
+                    android:text="@string/app_name"
+                    android:textSize="11sp"
+                    android:textColor="@color/filter_grid_type_name_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.android.camera.module.MyRelativeLayout>
+        </LinearLayout>
+
+        <!-- // line 1 -->
+        <LinearLayout
+            android:layout_marginTop="8dip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <com.android.camera.module.MyRelativeLayout
+                android:id="@+id/color_effect_text_7"
+                android:layout_marginLeft="8dip"
+                android:layout_marginRight="4dip"
+                android:layout_width="0dip"
+                android:layout_height="1dip"
+                android:layout_weight="1" >
+                <com.android.camera.module.MyBackground
+                    android:id="@+id/color_effect_selected"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+                <TextView
+                    android:id="@+id/color_effect_name"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="0dip"
+                    android:gravity="center"
+                    android:background="@color/filter_grid_type_name_background"
+                    android:text="@string/app_name"
+                    android:textSize="11sp"
+                    android:textColor="@color/filter_grid_type_name_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.android.camera.module.MyRelativeLayout>
+            <com.android.camera.module.MyRelativeLayout
+                android:id="@+id/color_effect_text_8"
+                android:layout_marginLeft="4dip"
+                android:layout_marginRight="4dip"
+                android:layout_width="0dip"
+                android:layout_height="1dip"
+                android:layout_weight="1" >
+                <com.android.camera.module.MyBackground
+                    android:id="@+id/color_effect_selected"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+                <TextView
+                    android:id="@+id/color_effect_name"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="0dip"
+                    android:gravity="center"
+                    android:background="@color/filter_grid_type_name_background"
+                    android:text="@string/app_name"
+                    android:textSize="11sp"
+                    android:textColor="@color/filter_grid_type_name_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.android.camera.module.MyRelativeLayout>
+            <com.android.camera.module.MyRelativeLayout
+                android:id="@+id/color_effect_text_9"
+                android:layout_marginLeft="4dip"
+                android:layout_marginRight="8dip"
+                android:layout_width="0dip"
+                android:layout_height="1dip"
+                android:layout_weight="1" >
+                <com.android.camera.module.MyBackground
+                    android:id="@+id/color_effect_selected"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+                <TextView
+                    android:id="@+id/color_effect_name"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="0dip"
+                    android:gravity="center"
+                    android:background="@color/filter_grid_type_name_background"
+                    android:text="@string/app_name"
+                    android:textSize="11sp"
+                    android:textColor="@color/filter_grid_type_name_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.android.camera.module.MyRelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- ////////////////////////////////////////////////////////// -->
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dip"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:alpha="0.6"
+        >
+        <View
+            android:layout_weight="1"
+            android:layout_marginLeft="1dip"
+            android:layout_marginRight="1dip"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            />
+
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/change_group_button_01"
+            android:text="@string/filter_grid_button_change_next"
+            android:layout_marginLeft="1dip"
+            android:layout_marginRight="1dip"
+            android:textSize="10sp"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:background="@drawable/filter_grid_button_frame"
+            android:visibility="invisible"
+            />
+        <ImageView
+            android:layout_weight="1"
+            android:id="@+id/exit_button_01"
+            android:layout_marginLeft="1dip"
+            android:layout_marginRight="1dip"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:src="@drawable/chus_ic_filter_grid_button_back"
+            />
+        <!--android:background="@drawable/filter_grid_button_frame"-->
+    </LinearLayout>
+
+</com.android.camera.module.MyColorEffectTopLinearLayout>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_titlebar"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:background="@drawable/chus_pref_title_bg">
+
+<!--    <LinearLayout
+        android:id="@+id/pref_header_backward_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/chus_bg_pressed"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <ImageView
+            android:id="@+id/pref_header_button_backward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/chus_pref_fragment_back_normal"
+            android:visibility="visible" />
+    </LinearLayout>-->
+    <TextView
+        android:id="@+id/pref_header_backward_tv"
+        android:layout_width="55dp"
+        android:layout_height="35dp"
+        android:padding="5dp"
+        android:text="@string/pref_set_back"
+        android:layout_marginLeft="17dp"
+        android:textSize="13sp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:textColor="@color/pref_layout_set_back_color"
+        android:gravity="center"
+        android:background="@drawable/chus_button_bg"/>
+
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/chus_settings_fragment_title_bar_title"
+        android:textColor="@color/pref_layout_title_normal_color"
+        android:textSize="20sp" />
+
+
+</RelativeLayout>

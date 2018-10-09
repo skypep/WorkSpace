@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  Copyright (C) 2007 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+ -->
+
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+	
+	<!-- // frankie, add start -->
+	<string name="my_text01">"扫一扫"</string>
+	<string name="my_text02">"拍照"</string>
+	<string name="my_text03">"视频"</string>
+	<string name="my_text04">"全景"</string>
+	<!-- // frankie, add end -->
+
+	<string name="pref_aux_grid_title">"网格辅助"</string>
+	<string name="pref_aux_grid_entry_off">"关闭"</string>
+	<string name="pref_aux_grid_entry_on">"打开"</string>
+		
+	<string name="pref_chus_face_beauty_title">"美颜"</string>
+	<string name="pref_chus_face_beauty_entry_off">"禁用"</string>
+	<string name="pref_chus_face_beauty_entry_on">"使能"</string>
+
+
+    <!-- // frankie, 2017.07.12, add chus touch to take photo setting. -->
+    <string name="pref_chus_touch_take_photo_title">"触摸拍照"</string>
+    <string name="pref_chus_touch_take_photo_entry_off">"关闭"</string>
+    <string name="pref_chus_touch_take_photo_entry_on">"打开"</string>
+
+	<string name="filter_grid_button_change_next">"换一组"</string>
+	<string name="filter_grid_button_exit">"退出"</string>
+
+	<string name="pref_camera_dis_title">"防抖动"</string>
+	
+	<!-- // frankie, 2017.08.12, -->
+	<string name="pref_chus_camera_pictureratio_title">"照片比率"</string>
+	
+	<string name="chus_settings_fragment_title_bar_title">"设置"</string>
+	<string name="chus_settings_pref_cate_camera_specific_title">摄像头设置</string>
+	<string name="chus_settings_pref_cate_general_title">通用设置</string>
+
+	<string name="pref_camera_selfiemirror_title">"自拍镜像"</string>
+	<string name="pref_camera_selfiemirror_entry_enable">"开"</string>
+	<string name="pref_camera_selfiemirror_entry_disable">"关"</string>
+
+	<string name="chus_photo_module_longshot_toast">连拍数量:%1$d/%2$d张</string>
+	<string name="chus_photo_module_longshot_toast_max"> 连拍数量不能超过%1$d张</string>
+
+	<string name="chus_filter_type_name_none">无</string>
+	<string name="chus_filter_type_name_fairytale">童话</string>
+	<string name="chus_filter_type_name_sunrise">日出</string>
+	<string name="chus_filter_type_name_sunset">日落</string>
+	<string name="chus_filter_type_name_whitecat">白猫</string>
+	<string name="chus_filter_type_name_blackcat">黑猫</string>
+	<string name="chus_filter_type_name_skinwhiten">美白</string>
+	<string name="chus_filter_type_name_healthy">健康</string>
+	<string name="chus_filter_type_name_sweets">糖果</string>
+
+	<string name="chus_filter_type_name_romance">浪漫</string>
+	<string name="chus_filter_type_name_sakura">樱花</string>
+	<string name="chus_filter_type_name_warm">温暖</string>
+	<string name="chus_filter_type_name_antique">复古</string>
+	<string name="chus_filter_type_name_nostalgia">怀旧</string>
+	<string name="chus_filter_type_name_calm">平静</string>
+	<string name="chus_filter_type_name_latte">拿铁</string>
+	<string name="chus_filter_type_name_tender">温柔</string>
+	<string name="chus_filter_type_name_cool">冷静</string>
+
+	<string name="chus_filter_type_name_emerald">翠绿</string>
+	<string name="chus_filter_type_name_evergreen">常绿</string>
+	<string name="chus_filter_type_name_crayon">蜡笔</string>
+	<string name="chus_filter_type_name_sketch">素描</string>
+	<string name="chus_filter_type_name_amaro">苦涩</string>
+	<string name="chus_filter_type_name_brannan">布兰南</string>
+	<string name="chus_filter_type_name_brooklyn">布鲁克林</string>
+	<string name="chus_filter_type_name_earlybird">清爽轻快</string>
+	<string name="chus_filter_type_name_freud">佛洛伊德</string>
+
+	<string name="chus_filter_type_name_hefe">发酵</string>
+	<string name="chus_filter_type_name_hudson">哈得孙河</string>
+	<string name="chus_filter_type_name_inkwell">墨水池</string>
+	<string name="chus_filter_type_name_kevin">凯文</string>
+	<string name="chus_filter_type_name_lomo">明信片</string>
+	<string name="chus_filter_type_name_n1977">N1977</string>
+	<string name="chus_filter_type_name_nashville">那什维尔</string>
+	<string name="chus_filter_type_name_pixar">皮克斯</string>
+	<string name="chus_filter_type_name_rise">上升</string>
+
+	<string name="chus_filter_type_name_sierra">起伏</string>
+	<string name="chus_filter_type_name_sutro">眼镜</string>
+	<string name="chus_filter_type_name_toaster2">烤箱</string>
+	<string name="chus_filter_type_name_valencia">巴伦西亚</string>
+	<string name="chus_filter_type_name_walden">瓦尔登湖</string>
+	<string name="chus_filter_type_name_xproii">胶卷</string>
+	<string name="chus_filter_type_name_contrast">对比</string>
+	<string name="chus_filter_type_name_brightness">鲜艳</string>
+	<string name="chus_filter_type_name_exposure">暴露</string>
+
+	<string name="chus_filter_type_name_hue">色彩</string>
+	<string name="chus_filter_type_name_saturation">饱和</string>
+	<string name="chus_filter_type_name_sharpen">尖锐</string>
+	<string name="chus_filter_type_name_imageadjust">影像配准</string>
+	<string name="chus_filter_type_name_max_type">极大值</string>
+
+	<string name="chus_self_flash_enable_hint">别人眼中的你</string>
+	<string name="chus_self_flash_disable_hint">镜子里的你</string>
+
+	<string name="chus_face_beauty_enable_hint">开启美颜模式</string>
+	<string name="chus_face_beauty_disable_hint">关闭美颜模式</string>
+	<string name="chus_hdr_enable_hint">开启 HDR</string>
+	<string name="chus_hdr_disable_hint">关闭 HDR</string>
+
+	<string name="chus_delay_timer_3s_hint">已开启3秒倒计时拍摄</string>
+	<string name="chus_delay_timer_5s_hint">已开启5秒倒计时拍摄</string>
+	<string name="chus_delay_timer_10s_hint">已开启10秒倒计时拍摄</string>
+	<string name="chus_delay_timer_0s_hint">已关闭倒计时拍摄</string>
+
+	<!-- reset to default -->
+	<string name="pref_reset_default_title">"还原默认设置"</string>
+	<string name="pref_reset_default_default">"确认"</string>
+	<string name="pref_reset_default_hint">"设置项已恢复默认"</string>
+
+	<string name="pref_reset_default_entry_confirm">"确认"</string>
+	<string name="pref_reset_default_value_confirm">"确认"</string>
+
+	<string name="pref_reset_default_content">"是否确定恢复默认设置？"</string>
+	<string name="pref_reset_default_confirm">"确定"</string>
+	<string name="pref_reset_default_cancel">"取消"</string>
+
+	<string name="pref_catogary_specific_title_front">"前摄像头"</string>
+	<string name="pref_catogary_specific_title">"后摄像头"</string>
+
+	<string name="pref_set_back">"返回"</string>
+    <!--fix 4909 无法启动媒体记录器。\n 不能开始录像。-->
+	<string name="chus_video_recording_hint">"音频被占用。\n 请先关闭录音等类似应用。"</string>
+	<string name="chus_video_dis_hint">"4k以上画质不可用"</string>
+	
+	<string name="chus_take_picture_fatal_err_title">"未知错误"</string>
+	<string name="chus_take_picture_fatal_err_confirm">"确认"</string>
+	<string name="chus_take_picture_fatal_err_message">"拍照失败，将关闭相机！"</string>
+
+	<string name="msg_generate_final_mosaic_error">"无法生成全景图片"</string>
+	
+</resources>

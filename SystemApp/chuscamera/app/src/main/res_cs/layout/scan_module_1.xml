@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2013 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<!-- This layout is shared by phone and tablet in both landscape and portrait
+ orientation. The purpose of having this layout is to eventually not manually
+ recreate views when the orientation changes, by migrating the views that do not
+ need to be recreated in onConfigurationChanged from old photo_module to this
+ layout. -->
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center" >
+
+    <!--
+    <FrameLayout
+        android:id="@+id/preview_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical|center_horizontal" >
+        <SurfaceView
+            android:id="@+id/mdp_preview_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+    -->
+
+    <!-- //////////////////////////////////////////////// frankie, add for zxing start -->
+    <SurfaceView
+        android:id="@+id/capture_preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.android.camera.ui.RenderOverlay
+        android:id="@+id/render_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+        
+    <RelativeLayout
+        android:id="@+id/capture_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/capture_mask_top"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/shadow" />
+
+        <RelativeLayout
+            android:id="@+id/capture_crop_view"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_below="@id/capture_mask_top"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/zxing_code_bg_1">
+
+            <ImageView
+                android:id="@+id/capture_scan_line"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/zxing_line" />
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/flashlight_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dip"
+            android:layout_below="@id/capture_crop_view"
+            android:clickable="true"
+            />
+        <!-- test only
+        <Button
+            android:id="@+id/test_button_01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/flashlight_1"
+            android:layout_marginTop="5dip"
+            android:text="hello,world"
+            />
+        -->
+        <ImageView
+            android:id="@+id/capture_mask_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@id/capture_crop_view"
+            android:background="@drawable/shadow" />
+        <ImageView
+            android:id="@+id/capture_mask_left"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_above="@id/capture_mask_bottom"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/capture_mask_top"
+            android:layout_toLeftOf="@id/capture_crop_view"
+            android:background="@drawable/shadow" />
+        <ImageView
+            android:id="@+id/capture_mask_right"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_above="@id/capture_mask_bottom"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/capture_mask_top"
+            android:layout_toRightOf="@id/capture_crop_view"
+            android:background="@drawable/shadow" />
+    </RelativeLayout>
+    <!-- //////////////////////////////////////////////// frankie, add for zxing start -->
+    
+    <!-- // cover -->
+    <!-- // frankie, rm -->
+    <!--
+    <View
+        android:id="@+id/preview_cover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black" />
+	-->
+
+    <!-- // frankie, add start
+    android:src="@drawable/scan_bottom_mask_bg"
+    -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!-- rm android:background="@color/camera_control_bottom_background_color" 
+        	android:src="@drawable/chus_bottom_background_gradient"
+        	-->
+        <ImageView
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="150dip"
+            android:background="@color/camera_control_bottom_background_color" 
+            android:alpha="0.5"
+            android:scaleType="fitXY"
+        />
+    </RelativeLayout>
+    <!-- // frankie, add end -->
+    <include layout="@layout/camera_controls_4scan"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/preview_debug_imageview_1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+
+	<!-- // frankie, move to the top most -->
+    <View
+        android:id="@+id/preview_cover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black" />
+        
+</merge>

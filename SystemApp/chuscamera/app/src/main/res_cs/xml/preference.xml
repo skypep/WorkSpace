@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:key="display_category"
+        android:title="摄像头">
+        <!--<EditTextPreference-->
+        <!--android:defaultValue="10"-->
+        <!--android:dialogTitle="请输入连发数量"-->
+        <!--android:inputType="number"-->
+        <!--android:key="edittext_preference"-->
+        <!--android:layout="@layout/layout_preference"-->
+        <!--android:persistent="true"-->
+        <!--android:summary="10"-->
+        <!--android:title="连发数量" />-->
+        <!--<ListPreference-->
+            <!--android:dialogTitle="请选择照片比例"-->
+            <!--android:key="list_preference_ratio"-->
+            <!--android:layout="@layout/layout_preference"-->
+            <!--android:persistent="true"-->
+            <!--android:summary=""-->
+            <!--android:title="照片比例" />-->
+        <!--&lt;!&ndash;   android:defaultValue="0"-->
+           <!--android:entries="@array/pref_camera_pictureratio_entries"-->
+           <!--android:entryValues="@array/pref_camera_pictureratio_entryvalues"&ndash;&gt;-->
+        <!--<ListPreference-->
+            <!--android:dialogTitle="请选择照片尺寸"-->
+            <!--android:entries="@array/pref_camera_picturesize_entries"-->
+            <!--android:entryValues="@array/pref_camera_picturesize_entryvalues"-->
+            <!--android:key="list_preference"-->
+            <!--android:layout="@layout/layout_preference"-->
+            <!--android:persistent="true"-->
+            <!--android:summary=""-->
+            <!--android:title="照片尺寸" />-->
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="switch_category"
+        android:title="通用设置">
+        <!--<CheckBoxPreference-->
+            <!--android:key="switch_preference"-->
+            <!--android:layout="@layout/layout_preference_other"-->
+            <!--android:title="网格"-->
+            <!--android:widgetLayout="@layout/switch_preference" />-->
+
+        <!--<CheckBoxPreference-->
+            <!--android:defaultValue="true"-->
+            <!--android:key="location_switch_key"-->
+            <!--android:layout="@layout/layout_preference_other"-->
+            <!--android:title="定位"-->
+            <!--android:widgetLayout="@layout/switch_preference" />-->
+        <!--<CheckBoxPreference-->
+            <!--android:defaultValue="true"-->
+            <!--android:key="shutter_voice_key"-->
+            <!--android:layout="@layout/layout_preference_other"-->
+            <!--android:title="快门静音"-->
+            <!--android:widgetLayout="@layout/switch_preference" />-->
+    </PreferenceCategory>
+</PreferenceScreen>

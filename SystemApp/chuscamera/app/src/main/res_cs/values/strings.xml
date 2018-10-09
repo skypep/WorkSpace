@@ -1,0 +1,141 @@
+
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+	
+    <string name="zxing_bar_name">ZxingLib</string>
+	
+
+    <!-- // frankie, add start -->
+    <string name="my_text01">"Scan"</string>
+    <string name="my_text02">"Photo"</string>
+    <string name="my_text03">"Video"</string>
+    <string name="my_text04">"Panorama"</string>
+    <!-- // frankie, add end -->
+	
+	    <!-- // frankie, 2017.07.12, add aux grid setting. -->
+    <string name="pref_aux_grid_default" translatable="false">off</string>
+    <string name="pref_aux_grid_title">Aux Grid</string>
+    <string name="pref_aux_grid_entry_off">Off</string>
+    <string name="pref_aux_grid_entry_on">On</string>
+    
+    <!-- // frankie, 2017.07.12, add chus face beauty setting. -->
+    <string name="pref_chus_face_beauty_default" translatable="false">enable</string>
+    <string name="pref_chus_face_beauty_title">Face Beauty</string>
+    <string name="pref_chus_face_beauty_entry_off">disable</string>
+    <string name="pref_chus_face_beauty_entry_on">enable</string>
+	
+    <!-- // frankie, 2017.07.12, add chus touch to take photo setting. -->
+    <string name="pref_chus_touch_take_photo_default" translatable="false">disable</string>
+    <string name="pref_chus_touch_take_photo_title">Touch to take photo</string>
+    <string name="pref_chus_touch_take_photo_entry_off">disable</string>
+    <string name="pref_chus_touch_take_photo_entry_on">enable</string>
+	
+	<string name="filter_grid_button_change_next">Next</string>
+	<string name="filter_grid_button_exit">Exit</string>
+	
+	<!-- // frankie, 2017.08.12, -->
+	<string name="pref_chus_camera_pictureratio_default_value" translatable="false">1.3333</string>
+	<string name="pref_chus_camera_pictureratio_entry_value_16_9" translatable="false">1.7777</string>
+	<string name="pref_chus_camera_pictureratio_entry_value_4_3" translatable="false">1.3333</string>
+	<string name="pref_chus_camera_pictureratio_entry_value_1_1" translatable="false">1.0</string>
+	<string name="pref_chus_camera_pictureratio_title">Picture ratio</string>
+	<string name="pref_chus_camera_pictureratio_entry_16_9">"16:9"</string>
+	<string name="pref_chus_camera_pictureratio_entry_4_3">"4:3"</string>
+	<string name="pref_chus_camera_pictureratio_entry_1_1">"1:1"</string>
+	
+	<string name="chus_settings_fragment_title_bar_title">Settings</string>
+	<string name="chus_settings_pref_cate_camera_specific_title">Camera Settings</string>
+	<string name="chus_settings_pref_cate_general_title">General Settings</string>
+
+    <string name="chus_filter_type_name_none">none</string>
+    <string name="chus_filter_type_name_fairytale">fairytale</string>
+    <string name="chus_filter_type_name_sunrise">sunrise</string>
+    <string name="chus_filter_type_name_sunset">sunset</string>
+    <string name="chus_filter_type_name_whitecat">whitecat</string>
+    <string name="chus_filter_type_name_blackcat">blackcat</string>
+    <string name="chus_filter_type_name_skinwhiten">skinwhiten</string>
+    <string name="chus_filter_type_name_healthy">healthy</string>
+    <string name="chus_filter_type_name_sweets">sweets</string>
+
+    <string name="chus_filter_type_name_romance">romance</string>
+    <string name="chus_filter_type_name_sakura">sakura</string>
+    <string name="chus_filter_type_name_warm">warm</string>
+    <string name="chus_filter_type_name_antique">antique</string>
+    <string name="chus_filter_type_name_nostalgia">nostalgia</string>
+    <string name="chus_filter_type_name_calm">calm</string>
+    <string name="chus_filter_type_name_latte">latte</string>
+    <string name="chus_filter_type_name_tender">tender</string>
+    <string name="chus_filter_type_name_cool">cool</string>
+
+    <string name="chus_filter_type_name_emerald">emerald</string>
+    <string name="chus_filter_type_name_evergreen">evergreen</string>
+    <string name="chus_filter_type_name_crayon">crayon</string>
+    <string name="chus_filter_type_name_sketch">sketch</string>
+    <string name="chus_filter_type_name_amaro">amaro</string>
+    <string name="chus_filter_type_name_brannan">brannan</string>
+    <string name="chus_filter_type_name_brooklyn">brooklyn</string>
+    <string name="chus_filter_type_name_earlybird">earlybird</string>
+    <string name="chus_filter_type_name_freud">freud</string>
+
+    <string name="chus_filter_type_name_hefe">hefe</string>
+    <string name="chus_filter_type_name_hudson">hudson</string>
+    <string name="chus_filter_type_name_inkwell">inkwell</string>
+    <string name="chus_filter_type_name_kevin">kevin</string>
+    <string name="chus_filter_type_name_lomo">lomo</string>
+    <string name="chus_filter_type_name_n1977">N1977</string>
+    <string name="chus_filter_type_name_nashville">nashville</string>
+    <string name="chus_filter_type_name_pixar">pixar</string>
+    <string name="chus_filter_type_name_rise">rise</string>
+
+    <string name="chus_filter_type_name_sierra">sierra</string>
+    <string name="chus_filter_type_name_sutro">sutro</string>
+    <string name="chus_filter_type_name_toaster2">toaster2</string>
+    <string name="chus_filter_type_name_valencia">valencia</string>
+    <string name="chus_filter_type_name_walden">walden</string>
+    <string name="chus_filter_type_name_xproii">xproii</string>
+    <string name="chus_filter_type_name_contrast">contrast</string>
+    <string name="chus_filter_type_name_brightness">brightness</string>
+    <string name="chus_filter_type_name_exposure">exposure</string>
+
+    <string name="chus_filter_type_name_hue">hue</string>
+    <string name="chus_filter_type_name_saturation">saturation</string>
+    <string name="chus_filter_type_name_sharpen">sharpen</string>
+    <string name="chus_filter_type_name_imageadjust">imageadjust</string>
+    <string name="chus_filter_type_name_max_type">max_type</string>
+
+    <string name="chus_self_flash_enable_hint">What others think of you</string>
+    <string name="chus_self_flash_disable_hint">You in the mirror</string>
+
+    <string name="chus_face_beauty_enable_hint">open face beauty mode</string>
+    <string name="chus_face_beauty_disable_hint">close face beauty mode</string>
+
+    <string name="chus_photo_module_longshot_toast">Shoot number:%1$d/%2$d photos</string>
+    <string name="chus_photo_module_longshot_toast_max">You can not exceed the number of  %1$d photos</string>
+
+    <string name="chus_hdr_enable_hint">open HDR</string>
+    <string name="chus_hdr_disable_hint">close HDR</string>
+
+    <string name="chus_delay_timer_3s_hint">open 3s countdown to shoot</string>
+    <string name="chus_delay_timer_5s_hint">open 5s countdown to shoot</string>
+    <string name="chus_delay_timer_10s_hint">open 10s countdown to shoot</string>
+    <string name="chus_delay_timer_0s_hint">close down the countdown</string>
+
+    <string name="pref_catogary_specific_title_front">"front-facing camera"</string>
+    <string name="pref_catogary_specific_title">"rear camera"</string>
+
+    <string name="pref_reset_default_content">"Determine whether to restore the default Settings ?"</string>
+    <string name="pref_reset_default_confirm">"confirm"</string>
+    <string name="pref_reset_default_cancel">"cancel"</string>
+    <string name="pref_reset_default_hint">"The Settings item has been restored by default."</string>
+
+    <string name="pref_set_back">"back"</string>
+    <!--Could not start media recorder.\n Can't start video recording.-->
+    <string name="chus_video_recording_hint">"Audio is occupied.\n please turn off the recording and other similar applications."</string>
+    <string name="chus_video_dis_hint">"The quality of the painting above 4k is not available"</string>
+	
+	<string name="chus_take_picture_fatal_err_title">"Fatal Error"</string>
+	<string name="chus_take_picture_fatal_err_confirm">"OK"</string>
+	<string name="chus_take_picture_fatal_err_message">"Take picture failed.Will shutdown camera!"</string>
+
+    <string name="msg_generate_final_mosaic_error">"Unable to generate panoramic image"</string>
+</resources>

@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2013 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<!-- This layout is shared by phone and tablet in both landscape and portrait
+ orientation. The purpose of having this layout is to eventually not manually
+ recreate views when the orientation changes, by migrating the views that do not
+ need to be recreated in onConfigurationChanged from old photo_module to this
+ layout. -->
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center" >
+    <include layout="@layout/count_down_to_capture" />
+    <include layout="@layout/selfie_flash_view" />
+
+	<!-- ///////////////////////////////////////////////////////////////////// -->
+    <!-- // frankie, rm 
+		android:id="@+id/preview_container"
+    	-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical|center_horizontal" >
+        <SurfaceView
+            android:id="@+id/mdp_preview_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+
+	<!-- ///////////////////////////////////////////////////////////////////// -->
+    <!-- // frankie, add start -->
+    <FrameLayout
+        android:id="@+id/preview_container_1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+	    <com.android.camera.module.MyFrameLayout
+	        android:id="@+id/my_framelayout_1"
+	        android:background="@color/module_layout_background_normal_color"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"></com.android.camera.module.MyFrameLayout>
+	    
+    </FrameLayout>
+
+    <!-- // frankie, add end -->
+	<!-- ///////////////////////////////////////////////////////////////////// -->
+	
+    <!-- // android:background="@android:color/black"  -->
+    <!--
+    <View
+        android:id="@+id/preview_cover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#8000ff00"
+        />
+    -->
+
+    <!-- // android:layout_marginTop="14dip" -->
+    <RelativeLayout android:id="@+id/linear"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:id="@+id/progress_1"
+            android:orientation="vertical"
+            android:layout_width="200dip"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="214dip"
+            android:layout_marginBottom="14dip"
+            android:layout_marginLeft="30dip"
+            android:layout_marginRight="30dip"
+            android:visibility="invisible"
+            />
+        <com.android.camera.module.GraphView
+            android:id="@+id/graph_view"
+            android:layout_width="200dip"
+            android:layout_height="200dip"
+            android:layout_marginTop="60dip"
+            android:layout_marginLeft="90dip" />
+        <com.android.camera.module.DrawAutoHDR
+            android:id="@+id/autohdr_view"
+            android:layout_width="200dip"
+            android:layout_height="200dip"
+            android:layout_marginTop="50dip"
+            android:layout_marginLeft="15dip" />
+    </RelativeLayout>
+    <com.android.camera.ui.RotateImageView
+        android:id="@+id/review_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:clickable="true"
+        android:background="@android:color/black"
+        android:scaleType="fitCenter"/>
+    <View
+        android:id="@+id/flash_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:visibility="gone"
+        android:alpha="0" />
+        
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+	    <ViewStub android:id="@+id/face_view_stub"
+	        android:inflatedId="@+id/face_view"
+	        android:layout="@layout/face_view_1"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:visibility="gone"/>
+    </FrameLayout>
+
+    <!-- // frankie, -->
+    <com.android.camera.module.GridLines
+        android:id="@+id/grid_lines"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:visibility="invisible" />
+
+    <com.android.camera.ui.RenderOverlay
+        android:id="@+id/render_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- // frankie, add start -->
+    <RelativeLayout
+    	android:id="@+id/bottom_background_mask_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- rm android:background="@color/camera_control_bottom_background_color" 
+        	android:src="@drawable/chus_bottom_background_gradient"
+        	-->
+        <ImageView
+            android:id="@+id/bottom_mask_background"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="150dip"
+            android:background="@color/camera_control_bottom_background_color" 
+            android:scaleType="fitXY"
+            />
+        <!-- // frankie, 2017.06.26, sometimes this control show abnormal , should call relayout every ui changed -->
+        <!--
+		<com.android.camera.module.BubbleSeekBar
+	        android:id="@+id/bubble_seek_bar_1"
+            android:layout_above="@id/bottom_mask_background"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginBottom="10dip"
+            android:layout_marginLeft="20dip"
+            android:layout_marginRight="20dip"
+	        app:bsb_max="5"
+	        app:bsb_min="0"
+	        app:bsb_auto_adjust_section_mark="true"
+
+	        app:bsb_section_count="5"
+	        app:bsb_show_progress_in_float="false"
+	        app:bsb_show_section_mark="false"
+            app:bsb_second_track_size="1dp"
+            app:bsb_second_track_color="@color/seekbar_color_white"
+            app:bsb_track_size="1dp"
+            app:bsb_track_color="@color/seekbar_color_white"
+            app:bsb_bubble_text_color="@color/seekbar_color_red_light"
+            app:bsb_show_text="true"
+	        app:bsb_text_position="bottom"
+            app:bsb_text_color="@color/seekbar_color_white"
+            app:bsb_thumb_radius="10dp"
+            app:bsb_thumb_radius_on_dragging="15dp"
+            app:bsb_show_thumb_text="false"
+	        app:bsb_thumb_text_color="@color/seekbar_colorPrimary"
+	        app:bsb_thumb_text_size="18sp"/>
+			-->
+			<!-- // rm android:background="#ff00ff00" -->
+	    <com.android.camera.module.ui.VerticalSeekBarLinearLayout
+	        android:id="@+id/vertical_seek_bar_layout"
+	        android:layout_width="40dip"
+	        android:layout_height="match_parent"
+	        android:layout_marginTop="100dip"
+	        android:layout_marginBottom="150dip"
+	        android:layout_alignParentRight="true"
+	        android:layout_marginRight="30dip"
+	        android:orientation="vertical"
+	        android:visibility="invisible"
+	        >
+	        <com.android.camera.module.ui.VerticalSeekBar3
+	            android:id="@+id/vertical_seek_bar_3"
+	            android:layout_width="wrap_content"
+	            android:layout_height="350dip"
+	            android:layout_marginTop="5dip"
+	            android:layout_marginBottom="0dip"
+	            android:layout_gravity="center_horizontal"
+	            android:layout_centerHorizontal="true"
+	            android:max="100"
+	            android:progress="80"
+	            android:maxHeight="2dp"
+	            android:minHeight="2dp"
+	            android:progressDrawable="@drawable/vertical_seekbar_progress_background"
+	            android:thumb="@drawable/vertical_seekbar_thumb"
+	            />
+	        <TextView
+	            android:id="@+id/vertical_seek_bar_percent_text"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="0dip"
+	            android:layout_marginBottom="3dip"
+	            android:layout_gravity="center_horizontal"
+	            android:layout_centerHorizontal="true"
+	            android:text="@string/app_name"
+	            android:textColor="#ffffffff"
+	            android:textSize="10sp"
+	            />
+	    </com.android.camera.module.ui.VerticalSeekBarLinearLayout>
+	    
+    </RelativeLayout>
+    <!-- // frankie, add end -->
+	<include layout="@layout/camera_controls_4photo"
+		android:layout_gravity="center"
+		style="@style/CameraControls"/>
+    <!-- // frankie, start -->
+
+    <!-- // frankie, end -->
+
+    <!-- // frankie, 2017.07.16, rm 
+    <include layout="@layout/menu_help"
+        android:layout_gravity="center"
+        style="@style/CameraControls"/>
+	-->
+    <RelativeLayout
+        android:id="@+id/id_tsmakeup_level_layout_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+	<!-- // frankie, add test -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <Button
+            android:id="@+id/aspect_ratio_test"
+            android:layout_gravity="center"
+            android:visibility="invisible"
+            android:text="AspectRatioTest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </FrameLayout>
+
+    <!-- // frankie, add for test -->
+    <RelativeLayout android:id="@+id/linear"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <SeekBar
+            android:id="@+id/progress"
+            android:layout_width="200dip"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="314dip"
+            android:layout_marginBottom="14dip"
+            android:layout_marginLeft="30dip"
+            android:layout_marginRight="30dip"
+            android:max="6"
+            android:progress="3"
+            />
+    </RelativeLayout>
+
+	<include layout="@layout/layout_camera_controls_top"
+		android:id="@+id/layout_top_menu"
+		android:layout_width="match_parent"
+		android:layout_height="46dp"
+		android:visibility="gone"/>
+	<include layout="@layout/layout_camera_flashlight"
+		android:id="@+id/layout_top_flashlight"
+		android:layout_width="match_parent"
+		android:layout_height="46dp"
+		android:visibility="gone"/>
+	<include layout="@layout/layout_camera_setting"
+		android:id="@+id/layout_top_setting"
+		android:layout_width="match_parent"
+		android:layout_height="46dp"
+		android:visibility="gone"/>
+	<TextView
+		android:id="@+id/mode_tv"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="52dp"
+		android:layout_gravity="center_horizontal"
+		android:background="#50000000"
+		android:padding="5dp"
+		android:textColor="@android:color/white"
+		android:visibility="gone"/>
+
+	<!-- // frankie, add root view for grid filter view -->
+    <FrameLayout
+        android:id="@+id/color_effect_root_1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+
+    <!-- // frankie, add start for preference fragment -->
+    <LinearLayout
+        android:id="@+id/prefs_setting_layout"
+        android:background="@drawable/pref_layout_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        android:orientation="vertical"
+        android:clickable="true">
+        
+        <include layout="@layout/pref_layout_titlebar" />
+
+	    <FrameLayout
+	        android:id="@+id/prefs_container"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:layout_centerInParent="true">
+	        <!--
+	            <fragment android:name="com.android.camera.module.prefs.SettingsFragment2"
+	                android:id="@+id/settings_fragment2"
+	                android:tag="PREFERENCE_FRAGMENT"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_gravity="center" />
+                	-->
+        </FrameLayout>
+        <!-- // frankie, following layout can not be seen -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="100dip"
+            android:background="#cccccc" />
+    </LinearLayout>
+    <!-- // frankie, add end -->
+    
+    <!-- // add cover at top most -->
+    <!-- 
+    		android:background="#ff00ff00"
+		android:background="@android:color/black"  
+    	-->
+    <com.android.camera.module.ui.PreviewMaskView
+        android:id="@+id/preview_cover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black"  
+        android:alpha="0.00001"
+        />
+
+</merge>

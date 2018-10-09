@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<!-- // simulate a failed dialog --> <!-- // frankie, note parent is FrameLayout 
+	android:layout_margin="20dp"
+	android:background="@drawable/bg_dialog_dot9"
+-->
+<com.android.camera.ui.RotateLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pano_dialog_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#00ff00"
+    android:layout_gravity="center"
+    android:gravity="center">
+
+    <RelativeLayout
+        android:layout_width="870px"
+        android:layout_height="446px">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/bg_dialog"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+        
+        <!-- // title -->
+        <RelativeLayout
+            android:id="@+id/pano_dialog_title_layout"
+            android:layout_width="match_parent"
+            android:layout_height="151px"
+            >
+
+            <TextView
+                android:id="@+id/pano_dialog_title"
+                android:layout_marginTop="60px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="@string/pano_dialog_title"
+                android:textStyle="bold"
+                android:textColor="@color/color_4f4f4f"
+                android:textSize="13sp"
+                />
+
+        </RelativeLayout>
+        
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+            android:layout_marginLeft="0dip"
+            android:layout_marginRight="0dip"
+                android:background="@color/panorama_dialog_split_line_aeaeae" />
+                
+        <!-- // text -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="29dp"
+                android:layout_height="26dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/panorama_dialog_warn_icon" />
+
+            <TextView
+                android:id="@+id/pano_dialog_text"
+                style="@style/TextAppearance.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="11dp"
+                android:text="@string/pano_dialog_panorama_failed"
+                android:textColor="@color/color_4f4f4f"
+                android:textSize="13sp"/>
+        </LinearLayout>
+        
+        <!-- // confirm button -->
+        <!--<ImageView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@drawable/list_divider" />-->
+        <!--
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="5dip"
+            android:layout_marginRight="5dip"
+            android:background="@color/panorama_dialog_split_line_aeaeae" /> -->
+
+        <!-- // style="@style/Widget.Button.Borderless"
+            android:background="@drawable/bg_pressed"-->
+        <Button
+            android:id="@+id/pano_dialog_button1"
+            android:layout_width="303px"
+            android:layout_height="97px"
+            android:layout_marginBottom="60px"
+            android:layout_marginTop="50px"
+            android:gravity="center"
+            android:text="@string/dialog_ok"
+            android:background="@drawable/chus_button_bg_1"
+            android:textColor="@color/color_4f4f4f"
+            android:textSize="13sp" />
+            
+    </LinearLayout>
+    </RelativeLayout>
+
+</com.android.camera.ui.RotateLayout>

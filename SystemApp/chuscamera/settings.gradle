@@ -1,0 +1,1 @@
+include ':app', ':canvasgl', ':cameratest', ':hellocharts-library', ':hellocharts-samples'
