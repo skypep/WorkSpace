@@ -223,9 +223,11 @@ public class ContactListItemView extends ViewGroup implements SelectionBoundsAdj
       mTextIndent =
           a.getDimensionPixelOffset(
               R.styleable.ContactListItemView_list_item_text_indent, mTextIndent);
-      mTextOffsetTop =
-          a.getDimensionPixelOffset(
-              R.styleable.ContactListItemView_list_item_text_offset_top, mTextOffsetTop);
+//      mTextOffsetTop =
+//          a.getDimensionPixelOffset(
+//              R.styleable.ContactListItemView_list_item_text_offset_top, mTextOffsetTop);
+      // liujia fixed 20181010
+      mTextOffsetTop = 0;
       mDataViewWidthWeight =
           a.getInteger(
               R.styleable.ContactListItemView_list_item_data_width_weight, mDataViewWidthWeight);

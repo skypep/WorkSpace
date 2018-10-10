@@ -932,7 +932,7 @@ public class DialtactsActivity extends TransactionSafeActivity
 //    mActionBarController.onDialpadDown();
 //    mActionBarController.setVisable(true);
     mActionBarController.onDialpadDown();
-    mToroActionBar.setVisibility(View.GONE);
+    mToroActionBar.setVisible(false);
 //    mToroActionBarController.onDialpadDown();// liujia
 
     if (isInSearchUi()) {
@@ -940,7 +940,7 @@ public class DialtactsActivity extends TransactionSafeActivity
         exitSearchUi();
       }
     }else {
-      mToroActionBar.setVisibility(View.VISIBLE);
+      mToroActionBar.setVisible(true);
     }
     //reset the title to normal.
     setTitle(R.string.launcherActivityLabel);
@@ -1238,7 +1238,7 @@ public class DialtactsActivity extends TransactionSafeActivity
     if (getFragmentManager().isDestroyed() || mStateSaved) {
       return;
     }
-    mToroActionBar.setVisibility(View.VISIBLE);
+    mToroActionBar.setVisible(true);
     mToroActionBarController.onDialpadDown(); // liujia add 推出搜索后显示标题栏
 
     mSearchView.setText(null);
@@ -1506,7 +1506,7 @@ public class DialtactsActivity extends TransactionSafeActivity
     updateMissedCalls();
     int tabIndex = mListsFragment.getCurrentTabIndex();
     mPreviouslySelectedTabIndex = tabIndex;
-    mFloatingActionButtonController.setVisible(true);
+    mFloatingActionButtonController.setVisible(true);  // liujia mark
     timeTabSelected = SystemClock.elapsedRealtime();
   }
 
@@ -1742,7 +1742,7 @@ public class DialtactsActivity extends TransactionSafeActivity
       mActionBarController.onSearchBoxTapped();
       enterSearchUi(
               false /* smartDialSearch */, mSearchView.getText().toString(), true /* animate */);
-      mToroActionBar.setVisibility(View.GONE);
+      mToroActionBar.setVisible(false);
     }
   }
 

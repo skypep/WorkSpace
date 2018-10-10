@@ -1,0 +1,8 @@
+out/target/common/obj/JAVA_LIBRARIES/telephony-common_intermediates/src/java/com/android/internal/telephony/IIccPhoneBook.java : \
+  frameworks/opt/telephony/src/java/com/android/internal/telephony/IIccPhoneBook.aidl \
+  frameworks/base/core/java/android/content/ContentValues.aidl \
+  frameworks/opt/telephony/src/java/com/android/internal/telephony/uicc/AdnRecord.aidl
+
+frameworks/opt/telephony/src/java/com/android/internal/telephony/IIccPhoneBook.aidl :
+frameworks/base/core/java/android/content/ContentValues.aidl :
+frameworks/opt/telephony/src/java/com/android/internal/telephony/uicc/AdnRecord.aidl :

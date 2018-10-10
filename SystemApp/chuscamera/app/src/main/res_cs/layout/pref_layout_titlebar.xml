@@ -5,7 +5,7 @@
     android:layout_height="60dp"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:background="@drawable/chus_pref_title_bg">
+    android:background="#4D525A">
 
 <!--    <LinearLayout
         android:id="@+id/pref_header_backward_layout"
@@ -34,9 +34,9 @@
         android:textSize="13sp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:textColor="@color/pref_layout_set_back_color"
+        android:textColor="#FFFFFF"
         android:gravity="center"
-        android:background="@drawable/chus_button_bg"/>
+        android:background="@drawable/toro_button_bg"/>
 
     <TextView
         android:id="@+id/text_title"
@@ -44,7 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="@string/chus_settings_fragment_title_bar_title"
-        android:textColor="@color/pref_layout_title_normal_color"
+        android:textColor="#FFFFFF"
         android:textSize="20sp" />
 
 

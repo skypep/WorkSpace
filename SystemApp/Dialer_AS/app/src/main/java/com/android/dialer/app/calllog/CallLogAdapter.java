@@ -73,6 +73,7 @@ import com.android.dialer.common.Assert;
 import com.android.dialer.common.LogUtil;
 import com.android.dialer.common.concurrent.AsyncTaskExecutor;
 import com.android.dialer.common.concurrent.AsyncTaskExecutors;
+import com.android.dialer.compat.AppCompatConstants;
 import com.android.dialer.configprovider.ConfigProviderBindings;
 import com.android.dialer.enrichedcall.EnrichedCallCapabilities;
 import com.android.dialer.enrichedcall.EnrichedCallComponent;
@@ -808,18 +809,42 @@ public class CallLogAdapter extends GroupingListAdapter
             DateUtils.FORMAT_ABBREV_RELATIVE);
     views.toroCallDateText.setText(callDateText);
     int type = c.getInt(CallLogQuery.CALL_TYPE);
+//    switch (type) {
+//      case CallLog.Calls.INCOMING_TYPE:
+//      case CallLog.Calls.REJECTED_TYPE:
+//      case CallLog.Calls.BLOCKED_TYPE:
+//        views.toroCallTypeIcon.setImageResource(R.drawable.toro_in_call);
+//        break;
+//      case CallLog.Calls.OUTGOING_TYPE:
+//        views.toroCallTypeIcon.setImageResource(R.drawable.toro_out_call);
+//        break;
+//      case CallLog.Calls.MISSED_TYPE:
+//        views.toroCallTypeIcon.setImageResource(R.drawable.toro_miss_call);
+//        break;
+//    }
     switch (type) {
-      case CallLog.Calls.INCOMING_TYPE:
-      case CallLog.Calls.REJECTED_TYPE:
-      case CallLog.Calls.BLOCKED_TYPE:
+      case AppCompatConstants.CALLS_INCOMING_TYPE:
+      case AppCompatConstants.CALLS_ANSWERED_EXTERNALLY_TYPE:
+      case AppCompatConstants.CALLS_BLOCKED_TYPE:
+      case AppCompatConstants.CALLS_REJECTED_TYPE:
         views.toroCallTypeIcon.setImageResource(R.drawable.toro_in_call);
         break;
-      case CallLog.Calls.OUTGOING_TYPE:
+      case AppCompatConstants.CALLS_OUTGOING_TYPE:
+      case 1001:
         views.toroCallTypeIcon.setImageResource(R.drawable.toro_out_call);
         break;
-      case CallLog.Calls.MISSED_TYPE:
+      case AppCompatConstants.CALLS_MISSED_TYPE:
         views.toroCallTypeIcon.setImageResource(R.drawable.toro_miss_call);
         break;
+      case AppCompatConstants.CALLS_VOICEMAIL_TYPE:
+        views.toroCallTypeIcon.setImageResource(R.drawable.toro_in_call);
+        break;
+      default:
+        // It is possible for users to end up with calls with unknown call types in their
+        // call history, possibly due to 3rd party call log implementations (e.g. to
+        // distinguish between rejected and missed calls). Instead of crashing, just
+        // assume that all unknown call types are missed calls.
+        views.toroCallTypeIcon.setImageResource(R.drawable.toro_miss_call);
     }
     if(isEditModle) {
       views.toroActionButtonView.setVisibility(View.GONE);
