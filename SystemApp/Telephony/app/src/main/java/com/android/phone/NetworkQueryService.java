@@ -218,10 +218,10 @@ public class NetworkQueryService extends Service {
             for (int i = (mCallbacks.beginBroadcast() - 1); i >= 0; i--) {
                 INetworkQueryServiceCallback cb = mCallbacks.getBroadcastItem(i); 
                 if (DBG) log("broadcasting results to " + cb.getClass().toString());
-                try {
-                    cb.onQueryComplete((ArrayList<OperatorInfo>) ar.result, exception);
-                } catch (RemoteException e) {
-                }
+//                try {
+//                    cb.onQueryComplete((ArrayList<OperatorInfo>) ar.result, exception);
+//                } catch (RemoteException e) {
+//                }  liujia test
             }
             
             // finish up.

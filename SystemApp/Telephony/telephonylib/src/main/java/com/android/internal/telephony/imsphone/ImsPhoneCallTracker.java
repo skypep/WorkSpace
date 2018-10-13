@@ -97,7 +97,6 @@ import com.android.internal.telephony.metrics.TelephonyMetrics;
 import com.android.internal.telephony.nano.TelephonyProto.ImsConnectionState;
 import com.android.internal.telephony.nano.TelephonyProto.TelephonyCallSession;
 import com.android.internal.telephony.nano.TelephonyProto.TelephonyCallSession.Event.ImsCommand;
-import com.android.server.net.NetworkStatsService;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -3341,8 +3340,11 @@ public class ImsPhoneCallTracker extends CallTracker implements ImsPullCall {
         // Since the modem only reports the total vt data usage rather than rx/tx separately,
         // the only thing we can do here is splitting the usage into half rx and half tx.
         // Uid -1 indicates this is for the overall device data usage.
+//        vtDataUsageSnapshot.combineValues(new NetworkStats.Entry(
+//                NetworkStatsService.VT_INTERFACE, -1, NetworkStats.SET_FOREGROUND,
+//                NetworkStats.TAG_NONE, 1, isRoaming, delta / 2, 0, delta / 2, 0, 0)); liujia test
         vtDataUsageSnapshot.combineValues(new NetworkStats.Entry(
-                NetworkStatsService.VT_INTERFACE, -1, NetworkStats.SET_FOREGROUND,
+                "liujia test", -1, NetworkStats.SET_FOREGROUND,
                 NetworkStats.TAG_NONE, 1, isRoaming, delta / 2, 0, delta / 2, 0, 0));
         mVtDataUsageSnapshot = vtDataUsageSnapshot;
 
@@ -3363,8 +3365,12 @@ public class ImsPhoneCallTracker extends CallTracker implements ImsPullCall {
 
         // Since the modem only reports the total vt data usage rather than rx/tx separately,
         // the only thing we can do here is splitting the usage into half rx and half tx.
+//        vtDataUsageUidSnapshot.combineValues(new NetworkStats.Entry(
+//                NetworkStatsService.VT_INTERFACE, mDefaultDialerUid.get(),
+//                NetworkStats.SET_FOREGROUND, NetworkStats.TAG_NONE, 1, isRoaming, delta / 2,
+//                0, delta / 2, 0, 0));
         vtDataUsageUidSnapshot.combineValues(new NetworkStats.Entry(
-                NetworkStatsService.VT_INTERFACE, mDefaultDialerUid.get(),
+                "liujia test", mDefaultDialerUid.get(),
                 NetworkStats.SET_FOREGROUND, NetworkStats.TAG_NONE, 1, isRoaming, delta / 2,
                 0, delta / 2, 0, 0));
         mVtDataUsageUidSnapshot = vtDataUsageUidSnapshot;

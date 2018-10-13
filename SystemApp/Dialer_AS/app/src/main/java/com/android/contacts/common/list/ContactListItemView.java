@@ -534,7 +534,7 @@ public class ContactListItemView extends ViewGroup implements SelectionBoundsAdj
           MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
     }
 
-    setMeasuredDimension(specWidth, height);
+    setMeasuredDimension(specWidth, height + 10);// liujia fixed +10
   }
 
   @Override

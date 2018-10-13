@@ -26,8 +26,8 @@ import android.telephony.TelephonyManager;
 import android.text.format.Formatter;
 import android.util.AttributeSet;
 
-import com.android.settingslib.drawer.SettingsDrawerActivity;
-import com.android.settingslib.net.DataUsageController;
+//import com.android.settingslib.drawer.SettingsDrawerActivity;
+//import com.android.settingslib.net.DataUsageController;
 
 /**
  * The preference that shows mobile data usage summary and
@@ -52,18 +52,18 @@ public class DataUsagePreference extends Preference {
         mSubId = subId;
         mTemplate = getNetworkTemplate(activity, subId);
 
-        DataUsageController controller = new DataUsageController(activity);
-
-        DataUsageController.DataUsageInfo usageInfo = controller.getDataUsageInfo(mTemplate);
-        setSummary(activity.getString(R.string.data_usage_template,
-                Formatter.formatFileSize(activity, usageInfo.usageLevel), usageInfo.period));
+//        DataUsageController controller = new DataUsageController(activity); liujia test
+//
+//        DataUsageController.DataUsageInfo usageInfo = controller.getDataUsageInfo(mTemplate);
+//        setSummary(activity.getString(R.string.data_usage_template,
+//                Formatter.formatFileSize(activity, usageInfo.usageLevel), usageInfo.period));
         setIntent(getIntent());
     }
 
     @Override
     public Intent getIntent() {
         Intent intent = new Intent(Settings.ACTION_MOBILE_DATA_USAGE);
-        intent.putExtra(SettingsDrawerActivity.EXTRA_SHOW_MENU, true);
+//        intent.putExtra(SettingsDrawerActivity.EXTRA_SHOW_MENU, true);// liujia etest
 
         intent.putExtra(Settings.EXTRA_NETWORK_TEMPLATE, mTemplate);
         intent.putExtra(Settings.EXTRA_SUB_ID, mSubId);

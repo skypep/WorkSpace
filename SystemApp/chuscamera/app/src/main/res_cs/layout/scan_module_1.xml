@@ -80,6 +80,15 @@
 
         </RelativeLayout>
 
+        <!-- liujia add 扫码后定格二维码-->
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_below="@id/capture_mask_top"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/preview_debug_imageview_1"
+            />
+
         <ImageView
             android:id="@+id/flashlight_1"
             android:layout_width="wrap_content"
@@ -163,14 +172,15 @@
         android:layout_height="match_parent"
         />
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <ImageView
-            android:id="@+id/preview_debug_imageview_1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </FrameLayout>
+    <!-- liujia delete -->
+    <!--<FrameLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+        <!--<ImageView-->
+            <!--android:id="@+id/preview_debug_imageview_1"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent" />-->
+    <!--</FrameLayout>-->
 
 	<!-- // frankie, move to the top most -->
     <View

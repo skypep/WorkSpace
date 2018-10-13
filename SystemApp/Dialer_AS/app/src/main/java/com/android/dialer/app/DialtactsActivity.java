@@ -1107,6 +1107,8 @@ public class DialtactsActivity extends TransactionSafeActivity
       } else {
         PerformanceReport.setStartingTabIndex(DialtactsPagerAdapter.TAB_INDEX_HISTORY);
       }
+    }else if(mIsDialpadShown || isInSearchUi()) {
+        mToroActionBar.setVisible(false);
     }
   }
 
@@ -1506,7 +1508,12 @@ public class DialtactsActivity extends TransactionSafeActivity
     updateMissedCalls();
     int tabIndex = mListsFragment.getCurrentTabIndex();
     mPreviouslySelectedTabIndex = tabIndex;
-    mFloatingActionButtonController.setVisible(true);  // liujia mark
+    if(isInSearchUi()) {  // liujia add if
+        mFloatingActionButtonController.setVisible(false);
+    } else {
+        mFloatingActionButtonController.setVisible(true);
+    }
+
     timeTabSelected = SystemClock.elapsedRealtime();
   }
 

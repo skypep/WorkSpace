@@ -72,7 +72,6 @@ import com.android.internal.telephony.PhoneConstants;
 import com.android.internal.telephony.PhoneFactory;
 import com.android.internal.telephony.TelephonyIntents;
 import com.android.phone.settings.PhoneAccountSettingsFragment;
-import com.android.settingslib.RestrictedLockUtils;
 
 
 import java.util.ArrayList;
@@ -777,13 +776,15 @@ public class MobileNetworkSettings extends Activity  {
             mButtonDataRoam.setChecked(mPhone.getDataRoamingEnabled());
             mButtonDataRoam.setDisabledByAdmin(false);
             if (mButtonDataRoam.isEnabled()) {
-                if (RestrictedLockUtils.hasBaseUserRestriction(context,
-                        UserManager.DISALLOW_DATA_ROAMING, UserHandle.myUserId())) {
-                    mButtonDataRoam.setEnabled(false);
-                } else {
-                    mButtonDataRoam.checkRestrictionAndSetDisabled(
-                            UserManager.DISALLOW_DATA_ROAMING);
-                }
+//                if (RestrictedLockUtils.hasBaseUserRestriction(context,
+//                        UserManager.DISALLOW_DATA_ROAMING, UserHandle.myUserId())) {
+//                    mButtonDataRoam.setEnabled(false);
+//                } else {
+//                    mButtonDataRoam.checkRestrictionAndSetDisabled(
+//                            UserManager.DISALLOW_DATA_ROAMING);
+//                } liujia test
+                mButtonDataRoam.checkRestrictionAndSetDisabled(
+                        UserManager.DISALLOW_DATA_ROAMING);
             }
         }
 

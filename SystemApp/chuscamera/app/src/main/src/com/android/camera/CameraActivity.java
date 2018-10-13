@@ -143,8 +143,8 @@ public class CameraActivity extends Activity
     public static final String ACTION_TRIM_VIDEO =
             "com.android.camera.action.TRIM";
 
-    public static final String ACTION_VOICE_MODULE_CAMERA_TAKE_PHOTO = "chushang.intent.action.camera.take.photo";                  // Ïà»úÄ£¿é(×ÔÅÄ)
-    public static final String ACTION_VOICE_MODULE_CAMERA_TAKE_PA_PHOTO = "chushang.intent.action.camera.take.panoramic.photo";     // Ïà»úÄ£¿é(È«¾°ÅÄÉã)
+    public static final String ACTION_VOICE_MODULE_CAMERA_TAKE_PHOTO = "chushang.intent.action.camera.take.photo";                  // ï¿½ï¿½ï¿½Ä£ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½)
+    public static final String ACTION_VOICE_MODULE_CAMERA_TAKE_PA_PHOTO = "chushang.intent.action.camera.take.panoramic.photo";     // ï¿½ï¿½ï¿½Ä£ï¿½ï¿½(È«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
 
     public static final String MEDIA_ITEM_PATH = "media-item-path";
     public static final String KEY_TOTAL_NUMBER = "total-number";
@@ -2463,12 +2463,12 @@ public class CameraActivity extends Activity
 	};
 	private int[] module_prev_map = new int[] {
 		ModuleSwitcher.SCAN_MODULE_INDEX, 	// PHOTO_MODULE_INDEX
+        ModuleSwitcher.WIDE_ANGLE_PANO_MODULE_INDEX,// if open scan liujia add
 		ModuleSwitcher.PHOTO_MODULE_INDEX, // VIDEO_MODULE_INDEX
 		ModuleSwitcher.VIDEO_MODULE_INDEX, // WIDE_ANGLE_PANO_MODULE_INDEX
 		-1, // LIGHTCYCLE_MODULE_INDEX
 		-1, // GCAM_MODULE_INDEX
 		-1, // CAPTURE_MODULE_INDEX
-		-1, //
 		-1, //
 		-1, //
 		-1, //
@@ -2483,14 +2483,15 @@ public class CameraActivity extends Activity
 		-1, // GCAM_MODULE_INDEX
 		-1, // CAPTURE_MODULE_INDEX
 		-1, //
-		-1, //
+        -1, //
 		-1, //
 		-1, // 
-		-1, // SCAN_MODULE_INDEX
+        ModuleSwitcher.WIDE_ANGLE_PANO_MODULE_INDEX, // SCAN_MODULE_INDEX liujia add
 	};
 	private int[] module_prev_map_1 = new int[] {
 		ModuleSwitcher.WIDE_ANGLE_PANO_MODULE_INDEX, 	// PHOTO_MODULE_INDEX
 		ModuleSwitcher.PHOTO_MODULE_INDEX, // VIDEO_MODULE_INDEX
+        ModuleSwitcher.SCAN_MODULE_INDEX,// if open scan liujia add
 		-1, // WIDE_ANGLE_PANO_MODULE_INDEX
 		-1, // LIGHTCYCLE_MODULE_INDEX
 		-1, // GCAM_MODULE_INDEX

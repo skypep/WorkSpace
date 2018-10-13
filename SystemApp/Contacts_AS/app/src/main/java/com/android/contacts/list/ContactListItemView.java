@@ -306,8 +306,9 @@ public class ContactListItemView extends ViewGroup
                     R.styleable.ContactListItemView_list_item_photo_size, mDefaultPhotoViewSize);
             mTextIndent = a.getDimensionPixelOffset(
                     R.styleable.ContactListItemView_list_item_text_indent, mTextIndent);
-            mTextOffsetTop = a.getDimensionPixelOffset(
-                    R.styleable.ContactListItemView_list_item_text_offset_top, mTextOffsetTop);
+//            mTextOffsetTop = a.getDimensionPixelOffset(
+//                    R.styleable.ContactListItemView_list_item_text_offset_top, mTextOffsetTop);
+            mTextOffsetTop = 0; // liujia 20181011
             mAvatarOffsetTop = a.getDimensionPixelOffset(
                     R.styleable.ContactListItemView_list_item_avatar_offset_top, mAvatarOffsetTop);
             mDataViewWidthWeight = a.getInteger(

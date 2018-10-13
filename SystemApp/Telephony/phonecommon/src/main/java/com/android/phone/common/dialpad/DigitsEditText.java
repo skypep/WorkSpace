@@ -27,7 +27,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import com.android.phone.common.R;
+import com.android.phone.R;// liujia test
 import com.android.phone.common.widget.ResizingTextEditText;
 
 /**

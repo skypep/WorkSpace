@@ -26,7 +26,7 @@ import android.telephony.CarrierConfigManager;
 import com.android.internal.telephony.Call;
 import com.android.internal.telephony.CallStateException;
 import com.android.phone.PhoneGlobals;
-import com.android.phone.common.R;
+import com.android.phone.R;// liujia test
 
 import java.util.List;
 

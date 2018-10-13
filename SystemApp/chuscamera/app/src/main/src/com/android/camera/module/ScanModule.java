@@ -363,7 +363,7 @@ public class ScanModule implements CameraModule {
          */
         public void handleDecode(Result rawResult, Bundle bundle) {
             beepManager.playBeepSoundAndVibrate();
-
+            // liujia mark 二维码扫码结果
             //Intent resultIntent = new Intent();
             //bundle.putInt("width", getCropRect().width());
             //bundle.putInt("height", getCropRect().height());

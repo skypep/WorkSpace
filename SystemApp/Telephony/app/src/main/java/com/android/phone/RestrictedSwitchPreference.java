@@ -25,9 +25,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 
-import com.android.settingslib.RestrictedLockUtils;
-import com.android.settingslib.RestrictedLockUtils.EnforcedAdmin;
-
 public class RestrictedSwitchPreference extends SwitchPreference {
     private final Context mContext;
     private boolean mDisabledByAdmin;
@@ -60,8 +57,7 @@ public class RestrictedSwitchPreference extends SwitchPreference {
         }
         final TextView summaryView = (TextView) view.findViewById(android.R.id.summary);
         if (summaryView != null && mDisabledByAdmin) {
-            summaryView.setText(
-                    isChecked() ? R.string.enabled_by_admin : R.string.disabled_by_admin);
+            summaryView.setText("liujia test");//isChecked() ? R.string.enabled_by_admin : R.string.disabled_by_admin
             summaryView.setVisibility(View.VISIBLE);
         }
     }
@@ -86,18 +82,20 @@ public class RestrictedSwitchPreference extends SwitchPreference {
     public void setDisabledByAdmin(boolean disabled) {
         if (mDisabledByAdmin != disabled) {
             mDisabledByAdmin = disabled;
-            setWidgetLayoutResource(disabled ? R.layout.restricted_icon : mSwitchWidgetResId);
+//            setWidgetLayoutResource(disabled ? R.layout.restricted_icon : mSwitchWidgetResId);
+            setWidgetLayoutResource(mSwitchWidgetResId); // liujia test
             setEnabled(!disabled);
         }
     }
 
     @Override
     public void performClick(PreferenceScreen preferenceScreen) {
-        if (mDisabledByAdmin) {
-            RestrictedLockUtils.sendShowAdminSupportDetailsIntent(mContext,
-                    new EnforcedAdmin());
-        } else {
-            super.performClick(preferenceScreen);
-        }
+//        if (mDisabledByAdmin) {
+//            RestrictedLockUtils.sendShowAdminSupportDetailsIntent(mContext,
+//                    new EnforcedAdmin());
+//        } else {
+//            super.performClick(preferenceScreen);
+//        } liujia test
+        super.performClick(preferenceScreen);
     }
 }

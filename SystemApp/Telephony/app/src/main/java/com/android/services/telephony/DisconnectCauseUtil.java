@@ -23,7 +23,7 @@ import android.telecom.DisconnectCause;
 
 import com.android.phone.ImsUtil;
 import com.android.phone.PhoneGlobals;
-import com.android.phone.common.R;
+import com.android.phone.R;// liujia test
 
 import com.android.internal.telephony.gsm.SuppServiceNotification;
 import com.android.internal.telephony.Phone;

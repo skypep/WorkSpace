@@ -171,7 +171,7 @@ public class SlideTab1 extends FrameLayout {
 			-1, // 
 			-1, // 
 			-1, // 
-			-1, // SCAN_MODULE_INDEX
+			0, // SCAN_MODULE_INDEX // liujia fixed
 	};
     public void setIndex(int index) {
 		if(AGlobalConfig.config_slidetab_reorder_en) {

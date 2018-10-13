@@ -31,7 +31,7 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.text.TextUtils;
 
-import com.android.phone.common.R;
+import com.android.phone.R;// liujia test
 
 import java.lang.CharSequence;
 import java.lang.String;

@@ -38,6 +38,7 @@ import java.io.FileDescriptor;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import android.net.LinkProperties;
 
 /**
  * Data Connection Controller which is a package visible class and controls
@@ -301,7 +302,7 @@ public class DcController extends StateMachine {
                                         ! result.oldLp.isIdenticalAddresses(result.newLp)) {
                                     // If the same address type was removed and
                                     // added we need to cleanup
-                                    CompareResult<LinkAddress> car =
+                                    LinkProperties.CompareResult<LinkAddress> car =
                                         result.oldLp.compareAddresses(result.newLp);
                                     if (DBG) {
                                         log("onDataStateChanged: oldLp=" + result.oldLp +

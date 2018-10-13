@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.android.camera.libzxing.zxing.activity.ActivityController;
@@ -130,7 +131,10 @@ public class DecodeThread extends Thread {
             this.activity = activity;
         }
 
-        private static void bundleThumbnail(PlanarYUVLuminanceSource source, Bundle bundle) {
+        private void bundleThumbnail(PlanarYUVLuminanceSource source, Bundle bundle) {
+//            DisplayMetrics dm = activity.getc.getDisplayMetrics();
+//            int heigth = dm.heightPixels;
+//            int width = dm.widthPixels;
             int[] pixels = source.renderThumbnail();
             int width = source.getThumbnailWidth();
             int height = source.getThumbnailHeight();

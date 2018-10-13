@@ -196,7 +196,7 @@
             android:directBootAware="true">
 
         <provider android:name="IccProvider"
-                android:authorities="icc"
+                android:authorities="bjia"
                 android:multiprocess="true"
                 android:exported="true"
                 android:readPermission="android.permission.READ_CONTACTS"
@@ -207,6 +207,10 @@
             android:label="@string/emergencyDialerIconLabel"
             android:theme="@style/EmergencyDialerTheme"
             android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
             <intent-filter>
                 <action android:name="com.android.phone.EmergencyDialer.DIAL" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -635,8 +639,8 @@
             </intent-filter>
         </service>
         <provider
-                android:name="PhoneSearchIndexablesProvider"
-                android:authorities="com.android.phone"
+                android:name=".PhoneSearchIndexablesProvider"
+                android:authorities="bjia.phone"
                 android:multiprocess="false"
                 android:grantUriPermissions="true"
                 android:permission="android.permission.READ_SEARCH_INDEXABLES"

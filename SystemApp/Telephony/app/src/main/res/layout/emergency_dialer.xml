@@ -117,7 +117,7 @@
 
         </com.android.phone.EmergencyActionGroup>
 
-        <include layout="@layout/dialpad_view_unthemed"
+        <include layout="@layout/toro_view_unthemed"
                 android:theme="?attr/dialpadTheme" />
 
     </LinearLayout>

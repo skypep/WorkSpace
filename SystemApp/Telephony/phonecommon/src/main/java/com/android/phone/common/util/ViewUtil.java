@@ -26,7 +26,7 @@ import android.view.ViewOutlineProvider;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.android.phone.common.R;
+import com.android.phone.R;// liujia test
 
 /**
  * Provides static functions to work with views
