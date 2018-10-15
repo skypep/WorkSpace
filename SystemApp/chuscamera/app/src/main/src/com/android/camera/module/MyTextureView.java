@@ -28,7 +28,7 @@ import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLContext;
 import javax.microedition.khronos.opengles.GL10;
 
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 /**
  * Created by THINK on 2017/6/26.

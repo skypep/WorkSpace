@@ -37,7 +37,7 @@ import android.widget.LinearLayout;
 import com.android.camera.util.CameraUtil;
 import com.android.camera.util.PhotoSphereHelper;
 import com.android.camera.util.UsageStatistics;
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 public class ModuleSwitcher extends RotateImageView
         implements OnTouchListener {

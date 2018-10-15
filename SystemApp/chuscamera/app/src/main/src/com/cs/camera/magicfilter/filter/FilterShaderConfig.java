@@ -7,7 +7,7 @@ package com.cs.camera.magicfilter.filter;
 
 
 //import com.android.camera2.R;
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 public class FilterShaderConfig {
 

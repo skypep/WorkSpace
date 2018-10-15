@@ -37,7 +37,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.hardware.Camera;
-import android.hardware.Camera.Face;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -74,7 +73,6 @@ import com.android.camera.CameraPreference;
 import com.android.camera.CameraSettings;
 import com.android.camera.ComboPreferences;
 import com.android.camera.FocusOverlayManager;
-import com.android.camera.IconListPreference;
 import com.android.camera.OnScreenIndicators;
 import com.android.camera.PreferenceGroup;
 import com.android.camera.PreviewGestures;
@@ -98,13 +96,11 @@ import com.android.camera.ui.RotateTextToast;
 import com.android.camera.ui.SelfieFlashView;
 import com.android.camera.ui.ZoomRenderer;
 import com.android.camera.util.CameraUtil;
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 import java.util.List;
 
 import javax.microedition.khronos.egl.EGLContext;
-
-import static java.lang.System.currentTimeMillis;
 
 //import com.android.camera.CameraPreference.OnPreferenceChangedListener;
 //import com.android.camera.FocusOverlayManager.FocusUI;
@@ -894,7 +890,7 @@ public class PhotoUI implements
 						.commitAllowingStateLoss();
 
 //                    Intent intent = new Intent();
-//                    intent.setClassName("com.chus.camera", "com.android.camera.module.prefs.SettingsActivity1");
+//                    intent.setClassName("com.toro.camera", "com.android.camera.module.prefs.SettingsActivity1");
 //                    mActivity.startActivity(intent);
 
 				} else {
@@ -1033,7 +1029,7 @@ public class PhotoUI implements
     public void initializeFirstTime() {
         // Initialize shutter button.
         mShutterButton.setImageResource(R.drawable.chus_shutter_button_anim_1);
-		mShutterButton.setImageResource(R.drawable.chus_shutter_button_photo);	// frankie, add
+		mShutterButton.setImageResource(R.drawable.toro_shutter_button_photo);	// frankie, add
         mShutterButton.setOnClickListener(new OnClickListener()
         {
             @Override

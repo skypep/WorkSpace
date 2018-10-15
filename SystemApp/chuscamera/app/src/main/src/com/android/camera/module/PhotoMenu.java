@@ -74,7 +74,7 @@ import com.android.camera.ui.ModuleSwitcher;
 import com.android.camera.ui.RotateLayout;
 import com.android.camera.ui.RotateTextToast;
 import com.android.camera.util.CameraUtil;
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 import java.util.HashSet;
 import java.util.Locale;

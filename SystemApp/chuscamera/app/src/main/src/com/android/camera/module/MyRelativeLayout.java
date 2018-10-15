@@ -6,7 +6,7 @@ import android.util.Log;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.chus.camera.R;
+import com.toro.camera.R;
 import com.cs.camera.magicfilter.filter.FilterType;
 
 /**

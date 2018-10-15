@@ -120,7 +120,7 @@ import com.android.camera.util.GcamHelper;
 import com.android.camera.util.IntentHelper;
 import com.android.camera.util.PhotoSphereHelper.PanoramaViewHelper;
 import com.android.camera.util.UsageStatistics;
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 import java.io.File;
 import java.io.IOException;
@@ -918,28 +918,42 @@ public class CameraActivity extends Activity
     public void updateThumbnail(Bitmap bitmap) { 
 		Log.v(TAG, "updateThumbnail, bitmap");
         if (bitmap == null) return;
-        Bitmap bottomBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.chus_circular_bottom).copy(Bitmap.Config.ARGB_8888, true) ;
-        Drawable[] array = new Drawable[2];
-        array[1] =new BitmapDrawable(toRoundBitmap(bitmap));//new CircularDrawable(bitmap)
-//        BitmapDrawable m = new BitmapDrawable(bitmap);
-
-        array[0] = new BitmapDrawable(bottomBitmap);
-        LayerDrawable la = new LayerDrawable(array);
-        la.setLayerInset(0, 0, 0, 0, 0);
-        la.setLayerInset(1, 17, 17, 17, 17);
-        //    mThumbnailDrawable = new CircularDrawable(bitmap);
-        mThumbnailDrawable = la; // frankie, add 
+        //#if liujia fixed
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+        final int color = Color.RED;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        final RectF rectF = new RectF(rect);
+        final float roundPx = 20;
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        mThumbnailDrawable = new BitmapDrawable(output);
         if (mThumbnail != null) {
-            mThumbnail.setImageDrawable(la);
-//            mThumbnail.setClickable(true);
-//            if (!isSecureCamera()) {
-//                mThumbnail.setVisibility(View.VISIBLE);
-//            } else {
-//                //mThumbnail.setVisibility(View.GONE);
-//				mThumbnail.setVisibility(View.INVISIBLE);
-//            }
-			mCurrentModule.updateThumbnail_condition();
-       }
+            mThumbnail.setImageDrawable(mThumbnailDrawable);
+            mCurrentModule.updateThumbnail_condition();
+        }
+        //#else
+//        Bitmap bottomBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.chus_circular_bottom).copy(Bitmap.Config.ARGB_8888, true) ;
+//        Drawable[] array = new Drawable[2];
+//        array[1] =new BitmapDrawable(toRoundBitmap(bitmap));//new CircularDrawable(bitmap)
+////        BitmapDrawable m = new BitmapDrawable(bitmap);
+//
+//        array[0] = new BitmapDrawable(bottomBitmap);
+//        LayerDrawable la = new LayerDrawable(array);
+//        la.setLayerInset(0, 0, 0, 0, 0);
+//        la.setLayerInset(1, 17, 17, 17, 17);
+//        //    mThumbnailDrawable = new CircularDrawable(bitmap);
+//        mThumbnailDrawable = la; // frankie
+//        if (mThumbnail != null) {
+//            mThumbnail.setImageDrawable(la);
+//            mCurrentModule.updateThumbnail_condition();
+//        }
+        //#endif
     }
 
 	// frankie, to be called when module preview UI ready 

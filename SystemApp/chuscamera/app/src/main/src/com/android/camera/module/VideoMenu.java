@@ -51,7 +51,7 @@ import com.android.camera.ui.ListMenu;
 import com.android.camera.ui.ListSubMenu;
 import com.android.camera.ui.RotateTextToast;
 import com.android.camera.ui.TimeIntervalPopup;
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 import java.util.Locale;
 

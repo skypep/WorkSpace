@@ -61,7 +61,7 @@ import android.widget.FrameLayout;
 
 import com.android.camera.exif.ExifInterface;
 
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 public class RefocusActivity extends Activity {
     private static final String TAG = "RefocusActivity";

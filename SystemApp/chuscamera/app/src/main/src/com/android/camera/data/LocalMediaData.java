@@ -41,7 +41,7 @@ import android.widget.ImageView;
 import com.android.camera.ui.FilmStripView;
 import com.android.camera.util.CameraUtil;
 import com.android.camera.util.PhotoSphereHelper;
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 import java.io.File;
 import java.text.DateFormat;

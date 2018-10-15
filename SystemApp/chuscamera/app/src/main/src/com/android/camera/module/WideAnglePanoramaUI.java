@@ -43,7 +43,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.camera.CameraActivity;
@@ -57,7 +56,7 @@ import com.android.camera.ui.RenderOverlay;
 import com.android.camera.ui.RotateLayout;
 import com.android.camera.ui.RotateTextToast;
 import com.android.camera.util.CameraUtil;
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 import java.lang.reflect.Method;
 
@@ -419,7 +418,7 @@ public class WideAnglePanoramaUI implements
 		
     public void onStartCapture() {
         hideSwitcher();
-        mShutterButton.setImageResource(R.drawable.shutter_button_stop);
+        mShutterButton.setImageResource(R.drawable.toro_shutter_button_stop);
         mCaptureIndicator.setVisibility(View.VISIBLE);
         indicatorLyt.setVisibility(View.VISIBLE);
         showDirectionIndicators(PanoProgressBar.DIRECTION_NONE);
@@ -564,8 +563,8 @@ public class WideAnglePanoramaUI implements
         mRightIndicator.setVisibility(View.INVISIBLE);
     }
     public void reset() {
-        mShutterButton.setImageResource(R.drawable.btn_new_shutter_panorama);
-		mShutterButton.setImageResource(R.drawable.chus_shutter_button_photo); // frankie, add 
+//        mShutterButton.setImageResource(R.drawable.btn_new_shutter_panorama);
+		mShutterButton.setImageResource(R.drawable.toro_shutter_button_photo); // frankie, add
         mReviewLayout.setVisibility(View.GONE);
         mCaptureProgressBar.setVisibility(View.INVISIBLE);
     }
@@ -909,7 +908,7 @@ public class WideAnglePanoramaUI implements
                 }
                 return -1;
             }
-            private static final String TEST_DIALOG_ACTION = "com.chus.camera.test.ACTION.panoui";
+            private static final String TEST_DIALOG_ACTION = "com.toro.camera.test.ACTION.panoui";
             private BroadcastReceiver mTestReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {

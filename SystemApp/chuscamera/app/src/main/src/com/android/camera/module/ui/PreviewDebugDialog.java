@@ -4,7 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 /**
  * Created by THINK on 2017/7/11.

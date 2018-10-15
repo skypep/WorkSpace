@@ -3,15 +3,9 @@ package com.android.camera.module;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
-import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -25,17 +19,12 @@ import com.android.camera.CameraActivity;
 import com.android.camera.PreviewGestures;
 
 import com.android.camera.ShutterButton;
-import com.android.camera.libzxing.zxing.activity.ActivityController;
-import com.android.camera.libzxing.zxing.decode.DecodeThread;
 import com.android.camera.libzxing.zxing.utils.BeepManager;
 import com.android.camera.libzxing.zxing.utils.InactivityTimer;
-import com.android.camera.ui.CameraControls;
 import com.android.camera.ui.RenderOverlay;
-import com.google.zxing.Result;
 
-import com.chus.camera.R;
+import com.toro.camera.R;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 
 /**
@@ -81,7 +70,7 @@ public class ScanUI implements SurfaceHolder.Callback
 
 		mShutterButton = (ShutterButton) mRootView.findViewById(R.id.shutter_button); // frankie, add
 		mShutterButton.setImageResource(R.drawable.btn_new_shutter_video);	
-		mShutterButton.setImageResource(R.drawable.chus_shutter_button_photo);	
+		mShutterButton.setImageResource(R.drawable.toro_shutter_button_photo);
 		//mShutterButton.setImageResource(R.drawable.chus_shutter_button_photo_normal);	
 		mShutterButton.setVisibility(View.VISIBLE);
 		
@@ -132,9 +121,9 @@ public class ScanUI implements SurfaceHolder.Callback
     private void setFlashLightImage() {
         if(mFlashLightButton != null) {
             if (mFlashLightOnOff == false) {
-                mFlashLightButton.setBackgroundResource(R.drawable.ic_signal_flashlight_disable_2);
+                mFlashLightButton.setBackgroundResource(R.drawable.toro_flashlight_enable);
             } else {
-                mFlashLightButton.setBackgroundResource(R.drawable.ic_signal_flashlight_enable_2);
+                mFlashLightButton.setBackgroundResource(R.drawable.toro_flashlight_disable);
             }
         }
     }

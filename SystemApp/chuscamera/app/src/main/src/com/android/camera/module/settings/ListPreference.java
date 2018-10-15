@@ -28,7 +28,7 @@ import android.util.TypedValue;
 
 import com.android.camera.util.CameraUtil;
 import com.android.camera.util.UsageStatistics;
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 /**
  * A type of <code>CameraPreference</code> whose number of possible values

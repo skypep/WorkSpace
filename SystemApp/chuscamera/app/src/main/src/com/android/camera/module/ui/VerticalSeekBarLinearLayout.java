@@ -7,7 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 /**
  * Created by THINK on 2017/9/7.

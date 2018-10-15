@@ -55,7 +55,7 @@ import com.android.camera.util.CameraUtil;
 import android.text.TextUtils;
 import java.util.Locale;
 
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 public class VideoMenu extends MenuController
         implements ListMenu.Listener,

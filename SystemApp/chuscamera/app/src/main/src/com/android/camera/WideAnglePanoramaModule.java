@@ -53,7 +53,7 @@ import com.android.camera.exif.ExifInterface;
 import com.android.camera.ui.RotateTextToast;
 import com.android.camera.util.CameraUtil;
 import com.android.camera.util.UsageStatistics;
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

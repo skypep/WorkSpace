@@ -2,6 +2,8 @@ package com.android.camera.module;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -16,6 +18,7 @@ import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.graphics.drawable.BitmapDrawable;
 import android.hardware.Camera;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -32,6 +35,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.android.camera.CameraActivity;
 import com.android.camera.CameraHolder;
@@ -47,7 +51,8 @@ import com.android.camera.util.MiscUtil;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 
-import com.chus.camera.R;
+import com.toro.ToroBottonDialog;
+import com.toro.camera.R;
 
 import com.android.camera.AGlobalConfig;
 
@@ -384,25 +389,10 @@ public class ScanModule implements CameraModule {
                 }
             }
 
+            String title,content;
 
-			// frankie, debug show result on dialog
-            AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-            builder.setTitle(mActivity.getString(R.string.zxing_bar_name));
-            builder.setMessage("Result:[" + rawResult.getText() + "]");
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    if(DEBUG_FINAL_THUMBNAIL_EN) {
-                        if(imageView != null) {
-                            imageView.setBackground(null);
-                        }
-                    }
-                    if(mScanHandler!=null) {
-                        mScanHandler.restartPreviewAndDecodeChecked();
-                    }
-                }
-            });
-            builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            final ToroBottonDialog dialog = new ToroBottonDialog(mActivity);
+            dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialog) {
                     if(DEBUG_FINAL_THUMBNAIL_EN) {
@@ -415,7 +405,77 @@ public class ScanModule implements CameraModule {
                     }
                 }
             });
-            builder.show();
+            final String result = rawResult.getText();
+            if(result.contains("http://")) {
+                dialog.setTitle(mActivity.getString(R.string.toro_scan_url));
+                dialog.setAction(mActivity.getString(R.string.toro_goto_browser),
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                try{
+                                    Intent intent= new Intent();
+                                    intent.setAction("android.intent.action.VIEW");
+                                    Uri content_url = Uri.parse(result);
+                                    intent.setData(content_url);
+                                    mActivity.startActivity(intent);
+                                } catch (Exception e) {
+                                    Toast.makeText(mActivity,mActivity.getString(R.string.toro_open_browser_failed),Toast.LENGTH_LONG).show();
+                                }
+
+                            }
+                        });
+            } else {
+                dialog.setTitle(mActivity.getString(R.string.toro_scan_file));
+                dialog.setAction(mActivity.getString(R.string.toro_copy),
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                try{
+                                    ClipboardManager cm = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
+                                    // 将文本内容放到系统剪贴板里。
+                                    cm.setText(result);
+                                    Toast.makeText(mActivity,mActivity.getString(R.string.toro_copy_done),Toast.LENGTH_LONG).show();
+                                    dialog.cancel();
+                                }catch (Exception e) {
+                                    Toast.makeText(mActivity,mActivity.getString(R.string.toro_open_browser_failed),Toast.LENGTH_LONG).show();
+                                }
+
+                            }
+                        });
+            }
+            dialog.setContent(rawResult.getText());
+            dialog.show();
+			// frankie, debug show result on dialog
+//            AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+//            builder.setTitle(mActivity.getString(R.string.zxing_bar_name));
+//            builder.setMessage("Result:[" + rawResult.getText() + "]");
+//            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    if(DEBUG_FINAL_THUMBNAIL_EN) {
+//                        if(imageView != null) {
+//                            imageView.setBackground(null);
+//                        }
+//                    }
+//                    if(mScanHandler!=null) {
+//                        mScanHandler.restartPreviewAndDecodeChecked();
+//                    }
+//                }
+//            });
+//            builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+//                @Override
+//                public void onCancel(DialogInterface dialog) {
+//                    if(DEBUG_FINAL_THUMBNAIL_EN) {
+//                        if(imageView != null) {
+//                            imageView.setBackground(null);
+//                        }
+//                    }
+//                    if(mScanHandler!=null) {
+//                        mScanHandler.restartPreviewAndDecodeChecked();
+//                    }
+//                }
+//            });
+//            builder.show();
 			
         }
         @Override

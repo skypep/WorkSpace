@@ -19,7 +19,7 @@ package com.android.camera.module.settings;
 import android.content.Context;
 import android.util.AttributeSet;
 
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 public class CountDownTimerPreference extends IconListPreference {
     private static final int[] DURATIONS = {

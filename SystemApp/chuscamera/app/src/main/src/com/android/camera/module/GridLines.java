@@ -23,7 +23,7 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 /**
  * GridLines is a view which directly overlays the preview and draws

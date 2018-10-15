@@ -1,6 +1,6 @@
 package com.cs.camera.magicfilter.filter;
 
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 /**
  * Created by why8222 on 2016/2/25.

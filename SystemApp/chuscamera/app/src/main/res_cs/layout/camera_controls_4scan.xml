@@ -89,7 +89,7 @@ android:paddingBottom="50dip"
 	<!-- // frankie, modify 
 	android:layout_marginBottom="@dimen/shutter_offset"
 	android:background="#ffff0000"
-	android:src="@drawable/chus_shutter_button_photo"
+	android:src="@drawable/toro_shutter_button_photo"
 	android:layout_marginBottom="@dimen/shutter_offset"
 	-->
     <com.android.camera.ShutterButton

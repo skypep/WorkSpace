@@ -107,7 +107,7 @@ import com.android.camera.util.GcamHelper;
 import com.android.camera.util.MiscUtil;
 import com.android.camera.util.UsageStatistics;
 import com.android.internal.util.MemInfoReader;
-import com.chus.camera.R;
+import com.toro.camera.R;
 import com.cs.camera.util.Util;
 
 import net.qiujuer.genius.blur.StackBlur;
@@ -505,7 +505,7 @@ public class PhotoModule
 	// frankie, add start
 /* fix
 	01-08 00:13:13.569: E/AndroidRuntime(6272): FATAL EXCEPTION: RendererThread
-	01-08 00:13:13.569: E/AndroidRuntime(6272): Process: com.chus.camera, PID: 6272
+	01-08 00:13:13.569: E/AndroidRuntime(6272): Process: com.toro.camera, PID: 6272
 	01-08 00:13:13.569: E/AndroidRuntime(6272): java.lang.NullPointerException: Attempt to read from field 'int com.android.camera.module.InnerCameraController$CameraPreviewInfo.width' on a null object reference
 	01-08 00:13:13.569: E/AndroidRuntime(6272): 	at com.android.camera.module.MyFrameLayout$RendererHandler.handleMessage_inner(MyFrameLayout.java:981)
 	01-08 00:13:13.569: E/AndroidRuntime(6272): 	at com.android.camera.module.MyFrameLayout$RendererHandler.handleMessage(MyFrameLayout.java:907)
@@ -882,18 +882,18 @@ public class PhotoModule
             Camera.CameraInfo info = CameraHolder.instance().getCameraInfo()[i];
             if(info.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
                 iconIds[i] = R.drawable.ic_switch_back;
-				iconIds[i] = R.drawable.chus_ic_camera_switcher; // frankie, add 
+				iconIds[i] = R.drawable.toro_ic_camera_switcher; // frankie, add
                 entries[i] = mActivity.getResources().getString(R.string.pref_camera_id_entry_back);
                 labels[i] = mActivity.getResources().getString(R.string.pref_camera_id_label_back);
                 largeIconIds[i] = R.drawable.ic_switch_back;
-				largeIconIds[i] = R.drawable.chus_ic_camera_switcher; // frankie, add
+				largeIconIds[i] = R.drawable.toro_ic_camera_switcher; // frankie, add
             } else {
                 iconIds[i] = R.drawable.ic_switch_front;
-				iconIds[i] = R.drawable.chus_ic_camera_switcher; // frankie, add
+				iconIds[i] = R.drawable.toro_ic_camera_switcher; // frankie, add
                 entries[i] = mActivity.getResources().getString(R.string.pref_camera_id_entry_front);
                 labels[i] = mActivity.getResources().getString(R.string.pref_camera_id_label_front);
                 largeIconIds[i] = R.drawable.ic_switch_front;
-				largeIconIds[i] = R.drawable.chus_ic_camera_switcher; // frankie, add
+				largeIconIds[i] = R.drawable.toro_ic_camera_switcher; // frankie, add
             }
         }
 

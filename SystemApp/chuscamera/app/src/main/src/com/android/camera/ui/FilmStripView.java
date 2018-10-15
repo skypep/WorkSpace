@@ -50,7 +50,7 @@ import com.android.camera.PhotoMenu;
 import com.android.camera.VideoMenu;
 import com.android.camera.PreviewGestures;
 
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 import java.util.Arrays;
 

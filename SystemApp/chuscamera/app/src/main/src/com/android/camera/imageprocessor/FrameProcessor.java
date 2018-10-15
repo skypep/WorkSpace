@@ -54,7 +54,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 public class FrameProcessor {
 

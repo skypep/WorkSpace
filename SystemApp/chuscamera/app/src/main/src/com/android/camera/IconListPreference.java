@@ -23,7 +23,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 /** A {@code ListPreference} where each entry has a corresponding icon. */
 public class IconListPreference extends ListPreference {

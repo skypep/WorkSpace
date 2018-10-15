@@ -2,7 +2,7 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.chus.camera"
+    package="com.toro.camera"
 	android:versionCode="10001"
 	android:versionName="chus-00.00.001">
 
@@ -59,7 +59,7 @@
             android:launchMode="singleTop"
             android:logo="@mipmap/ic_launcher_gallery"
             android:screenOrientation="portrait"
-            android:taskAffinity="com.chus.camera.CameraActivity"
+            android:taskAffinity="com.toro.camera.CameraActivity"
             android:theme="@style/Theme.Camera"
             android:exported="true"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" >
@@ -140,7 +140,7 @@
             android:launchMode="singleInstance"
             android:logo="@mipmap/ic_launcher_gallery"
             android:screenOrientation="portrait"
-            android:taskAffinity="com.chus.camera.SecureCameraActivity"
+            android:taskAffinity="com.toro.camera.SecureCameraActivity"
             android:theme="@style/Theme.Camera"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" >
             <intent-filter>

@@ -594,12 +594,12 @@
         <item>@drawable/ic_switch_front</item>
     </array>
     <array name="chus_camera_id_icons" translatable="false">
-        <item>@drawable/chus_ic_camera_switcher</item>
-        <item>@drawable/chus_ic_camera_switcher</item>
+        <item>@drawable/toro_ic_camera_switcher</item>
+        <item>@drawable/toro_ic_camera_switcher</item>
     </array>
     <array name="chus_camera_id_largeicons" translatable="false">
-        <item>@drawable/chus_ic_camera_switcher</item>
-        <item>@drawable/chus_ic_camera_switcher</item>
+        <item>@drawable/toro_ic_camera_switcher</item>
+        <item>@drawable/toro_ic_camera_switcher</item>
     </array>
     
     <string-array name="pref_video_effect_entries" translatable="false">

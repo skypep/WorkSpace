@@ -16,7 +16,7 @@ import com.cs.camera.magicfilter.filter.FilterType;
 
 import javax.microedition.khronos.egl.EGLContext;
 
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 /**
  * Created by THINK on 2017/6/26.

@@ -45,7 +45,7 @@ import com.android.camera.Storage;
 import com.android.camera.util.CameraUtil;
 import com.android.camera.TsMakeupManager;
 
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 public class CameraControlsPano extends RotatableLayout {
 

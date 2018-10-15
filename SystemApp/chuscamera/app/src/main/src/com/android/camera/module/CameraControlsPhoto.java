@@ -38,7 +38,7 @@ import com.android.camera.Storage;
 import com.android.camera.ui.RotatableLayout;
 import com.android.camera.ui.RotateImageView;
 import com.android.camera.util.CameraUtil;
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 import java.util.ArrayList;
 

@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.hardware.Camera;
 import android.util.Log;
 
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 /**
  * Created by THINK on 2017/7/1.

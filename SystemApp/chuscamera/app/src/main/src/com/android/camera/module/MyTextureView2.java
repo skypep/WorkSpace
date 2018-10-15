@@ -13,7 +13,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.TextureView;
 
-import com.chus.camera.R;
+import com.toro.camera.R;
 import com.cs.camera.magicfilter.Rotation;
 import com.cs.camera.magicfilter.TextureRotationUtil;
 import com.cs.camera.magicfilter.filter.FilterCameraInput;

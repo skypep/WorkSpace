@@ -52,7 +52,7 @@ import com.android.camera.imageprocessor.filter.UbifocusFilter;
 import com.android.camera.ui.ListMenu;
 import com.android.camera.util.SettingTranslation;
 
-import com.chus.camera.R;
+import com.toro.camera.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 

@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 public class CommomDialog extends Dialog implements View.OnClickListener {
     private TextView contentTxt;

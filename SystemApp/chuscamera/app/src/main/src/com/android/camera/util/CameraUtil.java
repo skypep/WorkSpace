@@ -61,7 +61,7 @@ import com.android.camera.CameraHolder;
 import com.android.camera.CameraManager;
 import com.android.camera.CameraSettings;
 import com.android.camera.ui.RotateTextToast;
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 import java.io.Closeable;
 import java.io.IOException;

@@ -78,7 +78,7 @@ import com.android.camera.ui.SelfieFlashView;
 import com.android.camera.ui.ZoomRenderer;
 import com.android.camera.util.CameraUtil;
 
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 import java.util.List;
 

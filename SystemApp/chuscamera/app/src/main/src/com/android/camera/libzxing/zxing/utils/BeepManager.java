@@ -26,7 +26,7 @@ import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 import java.io.Closeable;
 import java.io.IOException;

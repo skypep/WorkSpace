@@ -12,7 +12,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion '28.0.2'
     defaultConfig {
-        applicationId "com.chus.camera"
+        applicationId "com.toro.camera"
         minSdkVersion 23
         targetSdkVersion 25
 
@@ -81,7 +81,8 @@ android {
             ]
             res.srcDirs = ['src/main/res',
                            'src/main/res_cs',
-                           'src/main/res_ext'
+                           'src/main/res_ext',
+                           'src/main/res_toro'
             ]
         }
     }

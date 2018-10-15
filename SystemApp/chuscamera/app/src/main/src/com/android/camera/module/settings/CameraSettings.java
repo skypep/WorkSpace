@@ -39,7 +39,7 @@ import com.android.camera.SDCard;
 import com.android.camera.util.ApiHelper;
 import com.android.camera.util.CameraUtil;
 import com.android.camera.util.GcamHelper;
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 import java.util.ArrayList;
 import java.util.List;

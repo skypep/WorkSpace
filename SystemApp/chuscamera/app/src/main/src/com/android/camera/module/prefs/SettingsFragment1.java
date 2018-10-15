@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.util.Log;
 
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 /**
  * Created by THINK on 2017/7/11.

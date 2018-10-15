@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2013, The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources>
+
+    <string name="toro_scan_hint">请对准二维码</string>
+    <string name="toro_cancel">取消</string>
+    <string name="toro_goto_browser">前往浏览器</string>
+    <string name="toro_copy">复制</string>
+    <string name="toro_scan_url">扫描到网址</string>
+    <string name="toro_scan_file">扫描到文件</string>
+    <string name="toro_copy_done">已拷贝到粘贴板</string>
+    <string name="toro_open_browser_failed">打开浏览器失败</string>
+    <string name="toro_copy_failed">复制失败</string>
+
+</resources>

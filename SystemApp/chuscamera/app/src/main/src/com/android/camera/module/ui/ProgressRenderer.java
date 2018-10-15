@@ -22,7 +22,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 /**
  * Renders a circular progress bar on the screen.

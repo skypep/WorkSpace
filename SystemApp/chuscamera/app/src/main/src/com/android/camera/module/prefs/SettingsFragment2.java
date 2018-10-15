@@ -16,7 +16,7 @@ import android.widget.ListView;
 import com.android.camera.CameraSettings;
 import com.android.camera.ListPreference;
 import com.android.camera.PreferenceGroup;
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;

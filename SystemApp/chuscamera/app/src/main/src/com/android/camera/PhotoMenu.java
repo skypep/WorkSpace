@@ -60,7 +60,7 @@ import com.android.camera.ui.ModuleSwitcher;
 import com.android.camera.ui.RotateLayout;
 import com.android.camera.ui.RotateImageView;
 import com.android.camera.ui.RotateTextToast;
-import com.chus.camera.R;
+import com.toro.camera.R;
 import android.widget.HorizontalScrollView;
 import android.view.ViewGroup;
 import android.view.WindowManager;

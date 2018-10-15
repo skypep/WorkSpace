@@ -55,7 +55,7 @@ import com.android.camera.ui.DotsViewItem;
 import com.android.camera.ui.RotateTextToast;
 import com.android.camera.util.CameraUtil;
 
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 import java.io.File;
 import java.io.FileInputStream;

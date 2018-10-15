@@ -13,7 +13,7 @@ import android.graphics.Paint;
 import android.util.Log;
 import android.view.MotionEvent;
 
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 /**
  * Created by THINK on 2017/8/23.

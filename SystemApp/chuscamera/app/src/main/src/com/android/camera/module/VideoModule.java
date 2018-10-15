@@ -16,9 +16,7 @@
 
 package com.android.camera.module;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.CsAlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
@@ -89,16 +87,14 @@ import com.android.camera.Storage;
 import com.android.camera.app.OrientationManager;
 import com.android.camera.exif.ExifInterface;
 import com.android.camera.module.settings.SettingsTest;
-import com.android.camera.ui.RotateImageView;
 import com.android.camera.module.ui.RotateTextToast; // frankie, add
 import com.android.camera.util.AccessibilityUtils;
 import com.android.camera.util.ApiHelper;
 import com.android.camera.util.CameraUtil;
 import com.android.camera.util.MiscUtil;
 import com.android.camera.util.UsageStatistics;
-import com.chus.camera.R;
+import com.toro.camera.R;
 import com.android.camera.PhotoModule;
-import com.cs.camera.util.Util;
 
 import net.qiujuer.genius.blur.StackBlur;
 
@@ -933,18 +929,18 @@ public class VideoModule implements CameraModule,
             CameraInfo info = CameraHolder.instance().getCameraInfo()[i];
             if(info.facing == CameraInfo.CAMERA_FACING_BACK) {
                 iconIds[i] = R.drawable.ic_switch_back;
-				iconIds[i] = R.drawable.chus_ic_camera_switcher;// frankie, add
+				iconIds[i] = R.drawable.toro_ic_camera_switcher;// frankie, add
                 entries[i] = mActivity.getResources().getString(R.string.pref_camera_id_entry_back);
                 labels[i] = mActivity.getResources().getString(R.string.pref_camera_id_label_back);
                 largeIconIds[i] = R.drawable.ic_switch_back;
-				largeIconIds[i] = R.drawable.chus_ic_camera_switcher; // frankie, add
+				largeIconIds[i] = R.drawable.toro_ic_camera_switcher; // frankie, add
             } else {
                 iconIds[i] = R.drawable.ic_switch_front;
-				iconIds[i] = R.drawable.chus_ic_camera_switcher; // frankie, add
+				iconIds[i] = R.drawable.toro_ic_camera_switcher; // frankie, add
                 entries[i] = mActivity.getResources().getString(R.string.pref_camera_id_entry_front);
                 labels[i] = mActivity.getResources().getString(R.string.pref_camera_id_label_front);
                 largeIconIds[i] = R.drawable.ic_switch_front;
-				largeIconIds[i] = R.drawable.chus_ic_camera_switcher; // frankie, add
+				largeIconIds[i] = R.drawable.toro_ic_camera_switcher; // frankie, add
             }
         }
         switchIconPref.setIconIds(iconIds);

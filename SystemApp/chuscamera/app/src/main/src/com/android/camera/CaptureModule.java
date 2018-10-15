@@ -91,7 +91,7 @@ import com.android.camera.util.PersistUtil;
 import com.android.camera.util.SettingTranslation;
 import com.android.internal.util.MemInfoReader;
 
-import com.chus.camera.R;
+import com.toro.camera.R;
 import org.codeaurora.snapcam.filter.ClearSightImageProcessor;
 
 import java.io.File;

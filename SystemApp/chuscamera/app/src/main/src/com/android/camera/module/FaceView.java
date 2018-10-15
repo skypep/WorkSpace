@@ -35,7 +35,7 @@ import com.android.camera.module.PhotoUI;
 import com.android.camera.ui.FocusIndicator;
 import com.android.camera.ui.Rotatable;
 import com.android.camera.util.CameraUtil;
-import com.chus.camera.R;
+import com.toro.camera.R;
 import org.codeaurora.camera.ExtendedFace;
 
 public class FaceView extends View

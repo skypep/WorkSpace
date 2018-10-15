@@ -24,7 +24,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 /**
  * The on-screen indicators of the pie menu button. They show the camera

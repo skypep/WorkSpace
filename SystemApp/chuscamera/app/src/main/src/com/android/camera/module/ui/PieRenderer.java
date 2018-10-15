@@ -42,7 +42,7 @@ import com.android.camera.drawable.TextDrawable;
 import com.android.camera.ui.FocusIndicator;
 import com.android.camera.ui.OverlayRenderer;
 //import com.android.camera.ui.ProgressRenderer.VisibilityListener;
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 import java.util.ArrayList;
 import java.util.List;

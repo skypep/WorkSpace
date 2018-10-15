@@ -40,7 +40,7 @@ import android.view.animation.Transformation;
 import com.android.camera.CameraActivity;
 import com.android.camera.drawable.TextDrawable;
 import com.android.camera.ui.ProgressRenderer.VisibilityListener;
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 import java.util.ArrayList;
 import java.util.List;

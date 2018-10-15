@@ -83,7 +83,7 @@ import com.android.camera.util.GcamHelper;
 import com.android.camera.util.UsageStatistics;
 import com.android.camera.util.MiscUtil; // frankie, add 
 
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 import android.widget.EditText;
 import android.app.AlertDialog;

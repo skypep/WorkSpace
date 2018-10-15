@@ -29,7 +29,7 @@ import android.widget.Toast;
 import com.android.camera.ui.RotateLayout;
 import com.android.camera.util.CameraUtil;
 
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 public class RotateTextToast {
     private static final int LONG_DELAY = 3500;

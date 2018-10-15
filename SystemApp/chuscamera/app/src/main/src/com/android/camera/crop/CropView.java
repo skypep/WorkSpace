@@ -32,7 +32,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 public class CropView extends View {
     private static final String LOGTAG = "CropView";

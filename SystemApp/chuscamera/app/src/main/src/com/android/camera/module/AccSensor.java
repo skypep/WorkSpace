@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 import java.util.ArrayList;
 import java.util.Iterator;

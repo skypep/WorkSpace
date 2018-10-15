@@ -59,7 +59,7 @@ import com.android.camera.ui.RotateLayout;
 import com.android.camera.ui.RotateTextToast;
 import com.android.camera.util.CameraUtil;
 
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 /**
  * The UI of {@link WideAnglePanoramaModule}.

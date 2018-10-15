@@ -28,7 +28,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

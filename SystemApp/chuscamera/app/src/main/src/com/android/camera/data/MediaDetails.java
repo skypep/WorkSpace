@@ -22,7 +22,7 @@ import android.util.SparseIntArray;
 
 import com.android.camera.exif.ExifInterface;
 import com.android.camera.exif.ExifTag;
-import com.chus.camera.R;
+import com.toro.camera.R;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
