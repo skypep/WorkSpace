@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#50000000"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/top_menu_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#00000000"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
+            <com.android.camera.ui.RotateImageView
+                android:id="@+id/flash_mode_iv"
+                style="@style/MenuButton_1"
+                android:layout_weight="1"
+                android:src="@drawable/chus_flashlight_on"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
+            <com.android.camera.ui.RotateImageView
+                android:id="@+id/menu_countdown_iv"
+                style="@style/MenuButton_1"
+                android:src="@drawable/toro_delay_shutter_off" />
+            <TextView
+                android:id="@+id/countdown_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
+            <com.android.camera.ui.RotateImageView
+                android:id="@+id/menu_more_iv"
+                style="@style/MenuButton_1"
+                android:src="@drawable/toro_settings_button" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/top_flash_action_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#00000000"
+        android:gravity="center"
+        android:visibility="gone"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/flash_on"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#FFFFFF"
+            android:textSize="18dp"
+            android:gravity="center"
+            android:text="@string/pref_camera_flashmode_entry_on"
+            />
+
+        <TextView
+            android:id="@+id/flash_off"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#FFFFFF"
+            android:textSize="18dp"
+            android:gravity="center"
+            android:text="@string/pref_camera_flashmode_entry_off"
+            />
+
+        <TextView
+            android:id="@+id/flash_auto"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#FFFFFF"
+            android:textSize="18dp"
+            android:gravity="center"
+            android:text="@string/pref_camera_flashmode_entry_auto"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/top_delay_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#00000000"
+        android:visibility="gone"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/delay_close"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#FFFFFF"
+            android:textSize="18dp"
+            android:gravity="center"
+            android:text="@string/pref_camera_shutter_delay_timer_off"
+            />
+
+        <TextView
+            android:id="@+id/delay_3s"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#FFFFFF"
+            android:textSize="18dp"
+            android:gravity="center"
+            android:text="@string/pref_camera_shutter_delay_timer_3s"
+            />
+
+        <TextView
+            android:id="@+id/delay_5s"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#FFFFFF"
+            android:textSize="18dp"
+            android:gravity="center"
+            android:text="@string/pref_camera_shutter_delay_timer_5s"
+            />
+
+        <TextView
+            android:id="@+id/delay_10s"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#FFFFFF"
+            android:textSize="18dp"
+            android:gravity="center"
+            android:text="@string/pref_camera_shutter_delay_timer_10s"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

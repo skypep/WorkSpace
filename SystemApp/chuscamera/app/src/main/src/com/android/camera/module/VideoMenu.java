@@ -998,7 +998,9 @@ public class VideoMenu extends MenuController
 
     public void hideUI() {
         mFrontBackSwitcher.setVisibility(View.INVISIBLE);
-        pauseButton.setVisibility(View.VISIBLE);
+        if(!AGlobalConfig.disable_video_pause) {
+            pauseButton.setVisibility(View.VISIBLE);
+        }
         //mFilterModeSwitcher.setVisibility(View.INVISIBLE);
         mSceneModeSwitcher.setVisibility(View.INVISIBLE); // frankie, add
     }

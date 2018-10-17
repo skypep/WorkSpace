@@ -678,10 +678,10 @@
     <string-array name="pref_camera_shutter_delay_timer_icons" translatable="false">
 
 
-        <item>@drawable/chus_delay_shutter_3s</item>
-        <item>@drawable/chus_delay_shutter_5s</item>
-        <item>@drawable/chus_delay_shutter_10s</item>
-        <item>@drawable/chus_delay_shutter_off</item>
+        <item>@drawable/toro_delay_shutter_on</item>
+        <item>@drawable/toro_delay_shutter_on</item>
+        <item>@drawable/toro_delay_shutter_on</item>
+        <item>@drawable/toro_delay_shutter_off</item>
     </string-array>
     <string-array name="pref_camera_shutter_delay_timer_icons_invert" translatable="false">
         <item>@drawable/chus_delay_shutter_3s_revert</item>

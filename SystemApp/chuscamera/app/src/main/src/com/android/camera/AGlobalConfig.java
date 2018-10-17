@@ -7,7 +7,7 @@ package com.android.camera;
 public class AGlobalConfig {
 	/*******************/
 	/* for global */
-	public static final boolean config_disable_scan_module_en = false;
+	public static final boolean config_disable_scan_module_en = false; // liujia open
 	public static final boolean config_slidetab_reorder_en = true; // false; // true;
 
 	/*******************/
@@ -67,7 +67,8 @@ public class AGlobalConfig {
 
 
 
-
+	/************************  toro liujia add ***************************/
+	public static boolean disable_video_pause = true;
 	
 
 }

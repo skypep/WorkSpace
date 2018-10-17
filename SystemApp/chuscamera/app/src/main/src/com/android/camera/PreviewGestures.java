@@ -68,7 +68,7 @@ public class PreviewGestures
     private PhotoMenu mPhotoMenu;
     private VideoMenu mVideoMenu;
 	private com.android.camera.module.WideAnglePanoramaUI mPanoramaUI_1;
-    private com.android.camera.module.PhotoMenu mPhotoMenu_1;
+    private com.android.camera.module.ToroPhotoMenu mPhotoMenu_1;
     private com.android.camera.module.VideoMenu mVideoMenu_1;
 	
     private boolean waitUntilNextDown;
@@ -283,7 +283,7 @@ public class PreviewGestures
     public void setWideAnglePanoramaUI(com.android.camera.module.WideAnglePanoramaUI ui) {
 		mPanoramaUI_1 = ui;
 	}
-    public void setPhotoMenu(com.android.camera.module.PhotoMenu menu) {
+    public void setPhotoMenu(com.android.camera.module.ToroPhotoMenu menu) {
         mPhotoMenu_1 = menu;
     }
     public void setVideoMenu(com.android.camera.module.VideoMenu menu) {
@@ -296,7 +296,7 @@ public class PreviewGestures
     public VideoMenu getVideoMenu() {
         return mVideoMenu;
     }
-    public com.android.camera.module.PhotoMenu getPhotoMenu_1() {
+    public com.android.camera.module.ToroPhotoMenu getPhotoMenu_1() {
         return mPhotoMenu_1;
     }
     public com.android.camera.module.VideoMenu getVideoMenu_1() {

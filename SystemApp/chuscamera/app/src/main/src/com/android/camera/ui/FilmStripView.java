@@ -1883,7 +1883,7 @@ public class FilmStripView extends ViewGroup implements BottomControlsListener {
 
 		/// 
 	
-        com.android.camera.module.PhotoMenu pMenu_1 = mPreviewGestures.getPhotoMenu_1();
+        com.android.camera.module.ToroPhotoMenu pMenu_1 = mPreviewGestures.getPhotoMenu_1();
         com.android.camera.module.VideoMenu vMenu_1 = mPreviewGestures.getVideoMenu_1();
 	    if (pMenu_1 != null) {
             if (pMenu_1.isMenuBeingShown()) {
@@ -1975,7 +1975,7 @@ public class FilmStripView extends ViewGroup implements BottomControlsListener {
         }
 
 		/// 
-        com.android.camera.module.PhotoMenu pMenu_1 = mPreviewGestures.getPhotoMenu_1();
+        com.android.camera.module.ToroPhotoMenu pMenu_1 = mPreviewGestures.getPhotoMenu_1();
         com.android.camera.module.VideoMenu vMenu_1 = mPreviewGestures.getVideoMenu_1();
         if (pMenu_1 != null) {
             if (mSendToPreviewMenu) {

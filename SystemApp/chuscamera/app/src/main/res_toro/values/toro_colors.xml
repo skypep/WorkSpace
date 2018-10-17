@@ -15,14 +15,7 @@
 -->
 <resources>
 
-    <string name="toro_scan_hint">Please aim at the qr code</string>
-    <string name="toro_cancel">Cancel</string>
-    <string name="toro_goto_browser">Goto browser</string>
-    <string name="toro_copy">Copy</string>
-    <string name="toro_scan_url">Scan url</string>
-    <string name="toro_scan_file">Scan file</string>
-    <string name="toro_copy_done">Copied to paste board</string>
-    <string name="toro_open_browser_failed">Failed to open the browser</string>
-    <string name="toro_copy_failed">Failed to copy</string>
+    <color name="toro_action_selected_color">#FCF13E</color>
+
 
 </resources>

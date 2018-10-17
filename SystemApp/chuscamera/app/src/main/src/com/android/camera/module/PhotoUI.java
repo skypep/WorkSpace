@@ -145,7 +145,7 @@ public class PhotoUI implements
     private DecodeImageForReview mDecodeTaskForReview = null;
 
     private View mMenuButton;
-    private PhotoMenu mMenu;
+    private ToroPhotoMenu mMenu;
     //private ModuleSwitcher mSwitcher;
     private CameraControlsPhoto mCameraControls;
     private MenuHelp mMenuHelp;
@@ -244,7 +244,7 @@ public class PhotoUI implements
         mActivity = activity;
         mController = controller;
         mRootView = parent;
-        mActivity.getLayoutInflater().inflate(R.layout.photo_module_1,
+        mActivity.getLayoutInflater().inflate(R.layout.toro_photo_module,
                 (ViewGroup) mRootView, true);
         mPreviewCover = mRootView.findViewById(R.id.preview_cover);
 		
@@ -737,7 +737,7 @@ public class PhotoUI implements
         }
 
         if (mMenu == null) {
-            mMenu = new PhotoMenu(mActivity, this, makeupListener);
+            mMenu = new ToroPhotoMenu(mActivity, this, makeupListener);
             mMenu.setListener(listener);
         }
         if(mController.currentFrontCamera() == 1){

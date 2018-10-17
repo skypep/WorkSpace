@@ -43,7 +43,7 @@
             style="@style/MenuButton_1"
             android:layout_weight="1"
             android:src="@drawable/chus_ic_setting" />
-        <!--chus_settings_button-->
+        <!--toro_settings_button-->
         <com.android.camera.ui.RotateImageView
             style="@style/MenuButton_1"
             android:layout_weight="1"

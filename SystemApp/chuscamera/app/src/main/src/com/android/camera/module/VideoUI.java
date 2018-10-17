@@ -528,8 +528,9 @@ public class VideoUI implements
     private void initializeMiscControls() {
         mReviewImage = (ImageView) mRootView.findViewById(R.id.review_image);
 		
-        mShutterButton.setImageResource(R.drawable.btn_new_shutter_video);
+//        mShutterButton.setImageResource(R.drawable.btn_new_shutter_video);
         mShutterButton.setImageResource(R.drawable.chus_shutter_button_video_start); // frankie, add
+        mShutterButton.setImageResource(R.drawable.toro_shutter_button_video_start); // liujia add
         mShutterButton.setOnShutterButtonListener(mController);
         mShutterButton.setVisibility(View.VISIBLE);
         mShutterButton.requestFocus();
@@ -1342,14 +1343,16 @@ public class VideoUI implements
         mMenuButton.setVisibility(recording ? View.GONE : View.VISIBLE);
         //mOnScreenIndicators.setVisibility(recording ? View.GONE : View.VISIBLE);
         if (recording) {
-            mShutterButton.setImageResource(R.drawable.shutter_button_video_stop);
-            mShutterButton.setImageResource(R.drawable.chus_shutter_button_video_stop); // frankie, add
+//            mShutterButton.setImageResource(R.drawable.shutter_button_video_stop);
+//            mShutterButton.setImageResource(R.drawable.chus_shutter_button_video_stop); // frankie, add
+            mShutterButton.setImageResource(R.drawable.toro_shutter_button_video_stop); // liujia add
             hideSwitcher();
             redDotImg.setVisibility(View.VISIBLE);
 //            ((ViewGroup) mRootView).addView(mRecordingTimeRect);
         } else {
-            mShutterButton.setImageResource(R.drawable.btn_new_shutter_video);
-            mShutterButton.setImageResource(R.drawable.chus_shutter_button_video_start); // frankie, add
+//            mShutterButton.setImageResource(R.drawable.btn_new_shutter_video);
+//            mShutterButton.setImageResource(R.drawable.chus_shutter_button_video_start); // frankie, add
+            mShutterButton.setImageResource(R.drawable.toro_shutter_button_video_start); // liujia, add
             if (!mController.isVideoCaptureIntent()) {
                 showSwitcher();
             }
