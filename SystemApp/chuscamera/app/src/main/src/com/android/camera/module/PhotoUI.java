@@ -576,6 +576,11 @@ public class PhotoUI implements
 			}
 		}
         mCameraControls.setPreviewRatio(mAspectRatio, false);
+
+        if(mMenu!= null) { // liujia add
+            mMenu.setAspectRatio(ratio);
+        }
+
         layoutPreview(ratio);
     }
 

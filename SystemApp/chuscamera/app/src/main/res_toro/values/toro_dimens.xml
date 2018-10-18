@@ -16,6 +16,9 @@
 <resources>
 
     <dimen name="toro_video_margin_top">40dp</dimen>
+    <dimen name="toro_phone_margin_top_4_3">20dp</dimen>
+    <dimen name="toro_phone_margin_top_16_9">40dp</dimen>
+    <dimen name="toro_phone_margin_top_1_1">10dp</dimen>
 
 
 </resources>

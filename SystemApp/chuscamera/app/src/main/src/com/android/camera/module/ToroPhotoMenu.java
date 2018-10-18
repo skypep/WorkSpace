@@ -196,6 +196,23 @@ public class ToroPhotoMenu extends MenuController
 
     }
 
+    public void setAspectRatio(float ratio) {
+        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mTopMenu.getLayoutParams();
+        int mScreenRatio = CameraUtil.determineRatio(ratio);
+        switch (mScreenRatio) {
+            case CameraUtil.RATIO_16_9:
+                lp.setMargins(0,mActivity.getResources().getDimensionPixelOffset(R.dimen.toro_phone_margin_top_16_9),0,0);
+                break;
+            case CameraUtil.RATIO_4_3:
+                lp.setMargins(0,mActivity.getResources().getDimensionPixelOffset(R.dimen.toro_phone_margin_top_4_3),0,0);
+                break;
+            default:
+                lp.setMargins(0,mActivity.getResources().getDimensionPixelOffset(R.dimen.toro_phone_margin_top_1_1),0,0);
+                break;
+        }
+        mTopMenu.setLayoutParams(lp);
+    }
+
     private void updateToroCountDelay() {
         TextView delayClose,delay3s,delay5s,delay10s;
         delayClose = (TextView) delayActionView.findViewById(R.id.delay_close);
@@ -275,11 +292,11 @@ public class ToroPhotoMenu extends MenuController
         }
 
         String flashMode = pref.getValue();
-        if(flashMode.equals(mActivity.getString(R.string.pref_camera_flashmode_entry_off))) {
+        if(flashMode.equals("off")) {
             flashOff.setTextColor(mActivity.getColor(R.color.toro_action_selected_color));
-        } else if(flashMode.equals(mActivity.getString(R.string.pref_camera_flashmode_entry_auto))) {
+        } else if(flashMode.equals("auto")) {
             flashAuto.setTextColor(mActivity.getColor(R.color.toro_action_selected_color));
-        } else if(flashMode.equals(mActivity.getString(R.string.pref_camera_flashmode_entry_on))) {
+        } else if(flashMode.equals("on")) {
             flashOn.setTextColor(mActivity.getColor(R.color.toro_action_selected_color));
         }
             mFlashSwitcher.setOnClickListener(new View.OnClickListener() {
@@ -1923,7 +1940,7 @@ public class ToroPhotoMenu extends MenuController
         public void onListMenuTouched() { /* do nothing */ }
         @Override
         public void onListPrefChanged(ListPreference pref) {
-            this.onSettingChanged(pref);
+            ToroPhotoMenu.this.onSettingChanged(pref);
         }
     };
 

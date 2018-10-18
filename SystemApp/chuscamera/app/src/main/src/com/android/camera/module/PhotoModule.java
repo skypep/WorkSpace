@@ -4000,7 +4000,7 @@ public class PhotoModule
 		// frankie, add start
 		if (CameraSettings.KEY_PICTURE_SIZE.equals(pref.getKey())) {
 			if(myFrameLayout != null) {
-				Size size_ = mParameters.getPreviewSize();	// stil last 
+				Size size_ = mParameters.getPreviewSize();	// stil last
 				Log.v(TAG, "  getPreviewSize:" + size_.width + " * " + size_.height);
 				Camera.CameraInfo info = CameraHolder.instance().getCameraInfo()[mCameraId];
 				myFrameLayout.setCameraInfo(size_.width, size_.height, info.orientation, (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT));
@@ -5428,6 +5428,8 @@ public class PhotoModule
             setDisplayOrientation();
         }
     }
+
+    // liujia mark 位置信息打开失败
     private void setLocationPreference(String value) {
         mPreferences.edit().putString(CameraSettings.KEY_RECORD_LOCATION, value).apply();
         // TODO: Fix this to use the actual onSharedPreferencesChanged listener

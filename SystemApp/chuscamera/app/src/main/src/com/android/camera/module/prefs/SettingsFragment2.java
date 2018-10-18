@@ -1,5 +1,6 @@
 package com.android.camera.module.prefs;
 
+import android.app.AlertDialog;
 import android.app.CsAlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -326,7 +327,7 @@ public class SettingsFragment2 extends PreferenceFragment {
             };
 
     private void showResetDefaultDialog(final Preference preference){
-        new CsAlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(getActivity())
                 .setCancelable(false)
                 .setTitle(R.string.pref_reset_default_title)
                 .setMessage(R.string.pref_reset_default_content)

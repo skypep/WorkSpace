@@ -25,8 +25,8 @@
     android:textOff=""
     android:showText="false"
     android:textOn=""
-    android:thumb="@drawable/chus_pref_fragment_thumb"
-    android:track="@drawable/chus_pref_fragment_checkbox_track"
+    android:thumb="@drawable/toro_pref_fragment_thumb"
+    android:track="@drawable/toro_pref_fragment_checkbox_track"
     android:background="@null"/>
 
     <!--</LinearLayout>-->

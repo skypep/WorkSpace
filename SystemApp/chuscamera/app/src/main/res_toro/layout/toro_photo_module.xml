@@ -284,7 +284,7 @@
         android:id="@+id/layout_top_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="0dp"
         android:visibility="gone"/>
     <include layout="@layout/layout_camera_flashlight"
         android:id="@+id/layout_top_flashlight"

@@ -167,6 +167,8 @@ public class VideoUI implements
     MyFrameLayoutVideo myFrameLayout;    // frankie, add
     private SurfaceTexture mySurfaceTexture;
 
+    private View ToroVideoTopLayout; // liujia add
+
     int mBubbleSeekProgress = 0;    // frankie, add
 
     public enum SURFACE_STATUS {
@@ -492,6 +494,7 @@ public class VideoUI implements
         initializeOverlay();
         initializePauseButton();
 
+        ToroVideoTopLayout = mRootView.findViewById(R.id.toro_video_top_layout);
         mCameraControls = (CameraControlsVideo) mRootView.findViewById(R.id.camera_controls);
         ViewStub faceViewStub = (ViewStub) mRootView
                 .findViewById(R.id.face_view_stub);
@@ -749,6 +752,24 @@ public class VideoUI implements
 		Log.v(TAG, "- setAspectRatio, done");
     }
 
+    private void updateTopLayout(float ratio) {
+        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) ToroVideoTopLayout.getLayoutParams();
+        int mScreenRatio = CameraUtil.determineRatio(ratio);
+        switch (mScreenRatio) {
+            case CameraUtil.RATIO_16_9:
+                lp.setMargins(0,mActivity.getResources().getDimensionPixelOffset(R.dimen.toro_video_margin_top),0,0);
+                break;
+            case CameraUtil.RATIO_4_3:
+                lp.setMargins(0,mActivity.getResources().getDimensionPixelOffset(R.dimen.toro_video_margin_top),0,0);
+                break;
+            default:
+                lp.setMargins(0,0,0,0);
+                break;
+        }
+        ToroVideoTopLayout.setLayoutParams(lp);
+
+    }
+
     private void layoutPreview(float ratio) {
         Log.v(TAG, "+ layoutPreview:" + ratio);
         if (AGlobalConfig.config_module_VIDEO_MODULE_PREVIEW_TYPE == 1) {
@@ -858,6 +879,8 @@ public class VideoUI implements
             }
         }
 
+        //liujia add
+        updateTopLayout(ratio);
 
         //if(lp != null) {
         mSurfaceView.setLayoutParams(lp);
