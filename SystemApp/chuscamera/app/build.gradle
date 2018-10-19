@@ -3,10 +3,10 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         config {
-            keyAlias 'key1'
-            keyPassword '123456'
-            storeFile file('../yangjianyingReleaseKey.jks')
-            storePassword '123456'
+            keyAlias 'st801_keystore'
+            keyPassword 'st801_keystore'
+            storeFile file('../st801_keystore.keystore')
+            storePassword 'st801_keystore'
         }
     }
     compileSdkVersion 25
@@ -17,8 +17,8 @@ android {
         targetSdkVersion 25
 
         // frankie, use AnoroidManifest version settings
-        //versionCode 1
-        //versionName "1.0"
+        versionCode 3
+        versionName "1.0.2"
 
         // frankie, no need to set this for support RenderScript !
         //renderscriptTargetApi 19

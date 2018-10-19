@@ -14,8 +14,6 @@ import com.toro.camera.R;
 import android.preference.PreferenceManager;
 import android.content.SharedPreferences;
 
-import android.app.CsAlertDialog; // frankie, add
-
 /**
  * Activity that shows permissions request dialogs and handles lack of critical permissions.
  */
@@ -243,7 +241,7 @@ public class PermissionsActivity extends Activity {
             mFailureDialog.dismiss();
         }
         //new AlertDialog.Builder(this)
-        mFailureDialog = new CsAlertDialog.Builder(this)
+        mFailureDialog = new AlertDialog.Builder(this)
                 .setCancelable(false) // frankie,
 //                .setOnDismissListener(new DialogInterface.OnDismissListener() {
 //                    @Override

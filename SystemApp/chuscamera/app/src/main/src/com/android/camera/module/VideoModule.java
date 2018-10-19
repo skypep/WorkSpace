@@ -17,7 +17,7 @@
 package com.android.camera.module;
 
 import android.app.Activity;
-import android.app.CsAlertDialog;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
@@ -309,7 +309,7 @@ public class VideoModule implements CameraModule,
         if(context == null) {
             throw new RuntimeException("showErrDialog, context == null");
         }
-        CsAlertDialog.Builder builder = new CsAlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(title);
         builder.setMessage(message);
         builder.setPositiveButton(

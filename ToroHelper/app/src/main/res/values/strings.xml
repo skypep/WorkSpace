@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">亲连助手</string>
+    <string name="app_copy_right">版权所有@ 深圳市小达人网络科技有限公司 2018</string>
+
+    <string name="main_tab_photo_text">家庭相册</string>
+    <string name="main_tab_helper_text">助手</string>
+    <string name="main_tab_market_text">夕阳红商城</string>
+    <string name="main_tab_me_text">我的</string>
+
+    <string name="main_market_title">商城</string>
+    <string name="login_quick_login">快捷登陆</string>
+    <string name="login_register">注册</string>
+    <string name="login_welcom">Hello!欢迎使用</string>
+    <string name="login_forget_pwd">忘记密码?</string>
+    <string name="login_submit">登陆</string>
+    <string name="login_user_hint">手机号码</string>
+    <string name="login_pwd_hint">密码</string>
+</resources>

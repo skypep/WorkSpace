@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 主题颜色 -->
+    <color name="main_color">#B6310D</color>
+
+    <color name="colorPrimary">@color/main_color</color>
+    <color name="colorPrimaryDark">#8D2C12</color>
+    <color name="colorAccent">#FFFFFF</color>
+
+    <color name="welcom_bg_color">@color/main_color</color>
+    <color name="main_tab_bg_color">#F5F8FF</color>
+    <color name="main_tab_selected_color">@color/main_color</color>
+    <color name="main_tab_normal_color">#858D97</color>
+</resources>

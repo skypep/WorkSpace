@@ -18,7 +18,6 @@ package com.android.camera.util;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.CsAlertDialog;
 import android.app.admin.DevicePolicyManager;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
@@ -368,7 +367,7 @@ public class CameraUtil {
         };
         TypedValue out = new TypedValue();
         activity.getTheme().resolveAttribute(android.R.attr.alertDialogIcon, out, true);
-        new CsAlertDialog.Builder(activity)
+        new AlertDialog.Builder(activity)
                 .setCancelable(false)
                 .setTitle(R.string.camera_error_title)
                 .setMessage(msgId)

@@ -1,0 +1,201 @@
+package com.toro.helper.activity;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.view.ViewConfiguration;
+
+import com.toro.helper.R;
+import com.toro.helper.TabFragment;
+import com.toro.helper.view.ChangeColorIconWithTextView;
+import com.toro.helper.view.MainActionBar;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Create By liujia
+ * on 2018/10/19.
+ **/
+public class MainActivity extends FragmentActivity implements
+        ViewPager.OnPageChangeListener, View.OnClickListener {
+
+    public static final int MAIN_PHOTO_FRAGMENT = 0;
+    public static final int MAIN_HELPER_FRAGMENT = 1;
+    public static final int MAIN_MARKET_FRAGMENT = 2;
+    public static final int MAIN_ME_FRAGMENT = 3;
+
+    private ViewPager mViewPager;
+    private List<Fragment> mTabs = new ArrayList<Fragment>();
+    private FragmentPagerAdapter mAdapter;
+    private MainActionBar mainActionBar;
+
+    private String[] mTitles = new String[] { "First Fragment!",
+            "Second Fragment!", "Third Fragment!", "Fourth Fragment!" };
+
+    private List<ChangeColorIconWithTextView> mTabIndicator = new ArrayList<ChangeColorIconWithTextView>();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main_activity);
+
+        setOverflowShowingAlways();
+        mViewPager = (ViewPager) findViewById(R.id.id_viewpager);
+
+        initDatas();
+
+        mViewPager.setAdapter(mAdapter);
+        mViewPager.setOnPageChangeListener(this);
+
+        mainActionBar = findViewById(R.id.main_action_view);
+        mainActionBar.init();
+
+        mTabIndicator.get(MAIN_PHOTO_FRAGMENT).setIconAlpha(1.0f);
+        mViewPager.setCurrentItem(MAIN_PHOTO_FRAGMENT, false);
+        mainActionBar.changeView(MAIN_PHOTO_FRAGMENT);
+    }
+
+    private void initDatas()
+    {
+
+        for (String title : mTitles)
+        {
+            TabFragment tabFragment = new TabFragment();
+            Bundle args = new Bundle();
+            args.putString("title", title);
+            tabFragment.setArguments(args);
+            mTabs.add(tabFragment);
+        }
+
+        mAdapter = new FragmentPagerAdapter(getSupportFragmentManager())
+        {
+
+            @Override
+            public int getCount()
+            {
+                return mTabs.size();
+            }
+
+            @Override
+            public Fragment getItem(int arg0)
+            {
+                return mTabs.get(arg0);
+            }
+        };
+
+        initTabIndicator();
+
+    }
+
+    private void initTabIndicator()
+    {
+        ChangeColorIconWithTextView one = (ChangeColorIconWithTextView) findViewById(R.id.id_indicator_one);
+        ChangeColorIconWithTextView two = (ChangeColorIconWithTextView) findViewById(R.id.id_indicator_two);
+        ChangeColorIconWithTextView three = (ChangeColorIconWithTextView) findViewById(R.id.id_indicator_three);
+        ChangeColorIconWithTextView four = (ChangeColorIconWithTextView) findViewById(R.id.id_indicator_four);
+
+        mTabIndicator.add(one);
+        mTabIndicator.add(two);
+        mTabIndicator.add(three);
+        mTabIndicator.add(four);
+
+        one.setOnClickListener(this);
+        two.setOnClickListener(this);
+        three.setOnClickListener(this);
+        four.setOnClickListener(this);
+
+    }
+
+    @Override
+    public void onPageSelected(int arg0)
+    {
+        resetOtherTabs();
+        mTabIndicator.get(arg0).setIconAlpha(1.0f);
+        mViewPager.setCurrentItem(arg0, false);
+        mainActionBar.changeView(arg0);
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset,
+                               int positionOffsetPixels)
+    {
+        if (positionOffset > 0)
+        {
+            ChangeColorIconWithTextView left = mTabIndicator.get(position);
+            ChangeColorIconWithTextView right = mTabIndicator.get(position + 1);
+
+            left.setIconAlpha(1 - positionOffset);
+            right.setIconAlpha(positionOffset);
+        }
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state)
+    {
+    }
+
+    @Override
+    public void onClick(View v)
+    {
+
+        switch (v.getId())
+        {
+            case R.id.id_indicator_one:
+                mViewPager.setCurrentItem(MAIN_PHOTO_FRAGMENT, false);
+                break;
+            case R.id.id_indicator_two:
+                mViewPager.setCurrentItem(MAIN_HELPER_FRAGMENT, false);
+                break;
+            case R.id.id_indicator_three:
+                mViewPager.setCurrentItem(MAIN_MARKET_FRAGMENT, false);
+                break;
+            case R.id.id_indicator_four:
+                mViewPager.setCurrentItem(MAIN_ME_FRAGMENT, false);
+                break;
+
+        }
+
+    }
+
+    /**
+     * 重置其他的Tab
+     */
+    private void resetOtherTabs()
+    {
+        for (int i = 0; i < mTabIndicator.size(); i++)
+        {
+            mTabIndicator.get(i).setIconAlpha(0);
+        }
+    }
+
+    private void setOverflowShowingAlways()
+    {
+        try
+        {
+            // true if a permanent menu key is present, false otherwise.
+            ViewConfiguration config = ViewConfiguration.get(this);
+            Field menuKeyField = ViewConfiguration.class
+                    .getDeclaredField("sHasPermanentMenuKey");
+            menuKeyField.setAccessible(true);
+            menuKeyField.setBoolean(config, false);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public static Intent newIntent(Context context) {
+        Intent intent = new Intent();
+        intent.setClass(context,MainActivity.class);
+        return intent;
+    }
+}

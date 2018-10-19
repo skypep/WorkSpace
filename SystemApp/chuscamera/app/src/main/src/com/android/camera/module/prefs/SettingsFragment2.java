@@ -1,7 +1,6 @@
 package com.android.camera.module.prefs;
 
 import android.app.AlertDialog;
-import android.app.CsAlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
