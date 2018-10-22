@@ -8,14 +8,12 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.view.ViewConfiguration;
 
 import com.toro.helper.R;
-import com.toro.helper.TabFragment;
+import com.toro.helper.fragment.TabFragment;
 import com.toro.helper.view.ChangeColorIconWithTextView;
 import com.toro.helper.view.MainActionBar;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +45,6 @@ public class MainActivity extends FragmentActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        setOverflowShowingAlways();
         mViewPager = (ViewPager) findViewById(R.id.id_viewpager);
 
         initDatas();
@@ -56,11 +53,10 @@ public class MainActivity extends FragmentActivity implements
         mViewPager.setOnPageChangeListener(this);
 
         mainActionBar = findViewById(R.id.main_action_view);
-        mainActionBar.init();
 
         mTabIndicator.get(MAIN_PHOTO_FRAGMENT).setIconAlpha(1.0f);
         mViewPager.setCurrentItem(MAIN_PHOTO_FRAGMENT, false);
-        mainActionBar.changeView(MAIN_PHOTO_FRAGMENT);
+        changeActionView(MAIN_PHOTO_FRAGMENT);
     }
 
     private void initDatas()
@@ -120,7 +116,7 @@ public class MainActivity extends FragmentActivity implements
         resetOtherTabs();
         mTabIndicator.get(arg0).setIconAlpha(1.0f);
         mViewPager.setCurrentItem(arg0, false);
-        mainActionBar.changeView(arg0);
+        changeActionView(arg0);
     }
 
     @Override
@@ -177,21 +173,49 @@ public class MainActivity extends FragmentActivity implements
         }
     }
 
-    private void setOverflowShowingAlways()
-    {
-        try
-        {
-            // true if a permanent menu key is present, false otherwise.
-            ViewConfiguration config = ViewConfiguration.get(this);
-            Field menuKeyField = ViewConfiguration.class
-                    .getDeclaredField("sHasPermanentMenuKey");
-            menuKeyField.setAccessible(true);
-            menuKeyField.setBoolean(config, false);
-        } catch (Exception e)
-        {
-            e.printStackTrace();
+    public void changeActionView(int index) {
+        switch (index){
+            case MainActivity.MAIN_PHOTO_FRAGMENT:
+                setupPhotoActionBar();
+                break;
+            case MainActivity.MAIN_HELPER_FRAGMENT:
+                setupHelpeerActionBar();
+                break;
+            case MainActivity.MAIN_MARKET_FRAGMENT:
+                setupMarketActionBar();
+                break;
+            case MainActivity.MAIN_ME_FRAGMENT:
+                setupMeActionBar();
+                break;
         }
     }
+
+    private void setupPhotoActionBar() {
+        mainActionBar.updateView(getResources().getString(R.string.app_name), 0, R.mipmap.icon_action_camera, null, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
+
+    private void setupHelpeerActionBar() {
+        mainActionBar.updateView(getResources().getString(R.string.app_name), 0, R.mipmap.icon_action_more, null, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
+
+    private void setupMarketActionBar() {
+        mainActionBar.updateView(getResources().getString(R.string.main_market_title), 0, 0, null, null);
+    }
+
+    private void setupMeActionBar() {
+        mainActionBar.updateView(getResources().getString(R.string.app_name), 0, 0, null, null);
+    }
+
 
     public static Intent newIntent(Context context) {
         Intent intent = new Intent();

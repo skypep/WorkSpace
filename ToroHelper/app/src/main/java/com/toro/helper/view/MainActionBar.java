@@ -17,53 +17,47 @@ import com.toro.helper.R;
 public class MainActionBar extends RelativeLayout {
 
     private TextView titleView;
-    private ImageView rightImageView;
+    private ImageView rightImageView,leftImageView;
 
     public MainActionBar(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public void init() {
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
         titleView = findViewById(R.id.action_title);
         rightImageView = findViewById(R.id.action_right_img);
+        leftImageView = findViewById(R.id.action_left_img);
     }
 
-    public void changeView(int index) {
-        switch (index){
-            case MainActivity.MAIN_PHOTO_FRAGMENT:
-                setupPhotoActionBar();
-                break;
-            case MainActivity.MAIN_HELPER_FRAGMENT:
-                setupHelpeerActionBar();
-                break;
-            case MainActivity.MAIN_MARKET_FRAGMENT:
-                setupMarketActionBar();
-                break;
-            case MainActivity.MAIN_ME_FRAGMENT:
-                setupMeActionBar();
-                break;
+    public void updateView(String title,int leftRes,int rightRes,OnClickListener leftListener,OnClickListener rightListener) {
+        setTitle(title);
+        setLeftImage(leftRes,leftListener);
+        setRightImage(rightRes,rightListener);
+    }
+
+    private void setTitle(String title) {
+        titleView.setText(title);
+    }
+
+    private void setLeftImage(int imgRes,OnClickListener listener) {
+        if(listener != null) {
+            leftImageView.setVisibility(View.VISIBLE);
+            leftImageView.setImageResource(imgRes);
+            leftImageView.setOnClickListener(listener);
+        } else {
+            leftImageView.setVisibility(View.GONE);
         }
     }
 
-    private void setupPhotoActionBar() {
-        titleView.setText(getResources().getString(R.string.app_name));
-        rightImageView.setVisibility(View.VISIBLE);
-        rightImageView.setImageResource(R.mipmap.icon_action_camera);
-    }
-
-    private void setupHelpeerActionBar() {
-        titleView.setText(getResources().getString(R.string.app_name));
-        rightImageView.setVisibility(View.VISIBLE);
-        rightImageView.setImageResource(R.mipmap.icon_action_more);
-    }
-
-    private void setupMarketActionBar() {
-        titleView.setText(getResources().getString(R.string.main_market_title));
-        rightImageView.setVisibility(View.GONE);
-    }
-
-    private void setupMeActionBar() {
-        titleView.setText(getResources().getString(R.string.app_name));
-        rightImageView.setVisibility(View.GONE);
+    private void setRightImage(int imgRes,OnClickListener listener) {
+        if(listener != null) {
+            rightImageView.setVisibility(View.VISIBLE);
+            rightImageView.setImageResource(imgRes);
+            rightImageView.setOnClickListener(listener);
+        } else {
+            rightImageView.setVisibility(View.GONE);
+        }
     }
 }

@@ -45,6 +45,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         });
 
         findViewById(R.id.login_register).setOnClickListener(this);
+        findViewById(R.id.login_quick_login).setOnClickListener(this);
     }
 
     @Override
@@ -52,6 +53,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()) {
             case R.id.login_register:
                 startActivity(RegisterActivity.newIntent(this));
+                finish();
+                break;
+            case R.id.login_quick_login:
+                startActivity(QuickLoginActivity.newIntent(this));
+                finish();
                 break;
         }
     }

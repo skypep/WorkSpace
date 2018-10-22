@@ -21,7 +21,7 @@
         android:hint="@string/phone_number_hint"
         android:textSize="18dp"
         />
-
+    
     <View
         android:layout_width="match_parent"
         android:layout_height="0.1sp"
@@ -60,50 +60,6 @@
             />
 
     </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1sp"
-        android:layout_marginLeft="@dimen/horizontal_margin"
-        android:layout_marginRight="@dimen/horizontal_margin"
-        android:background="@color/main_tab_normal_color"
-        />
-
-    <com.toro.helper.view.CustomEditText
-        android:id="@+id/pwd_edit1"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:padding="8dp"
-        android:background="@drawable/edit_shape_top"
-        android:layout_marginLeft="@dimen/horizontal_margin"
-        android:layout_marginRight="@dimen/horizontal_margin"
-        android:inputType="textPassword"
-        android:hint="@string/login_pwd_hint"
-        android:drawableRight="@mipmap/pwd_trans_display"
-        android:textSize="18dp"
-        />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1sp"
-        android:layout_marginLeft="@dimen/horizontal_margin"
-        android:layout_marginRight="@dimen/horizontal_margin"
-        android:background="@color/main_tab_normal_color"
-        />
-
-    <com.toro.helper.view.CustomEditText
-        android:id="@+id/pwd_edit2"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:padding="8dp"
-        android:background="@drawable/edit_shape_top"
-        android:layout_marginLeft="@dimen/horizontal_margin"
-        android:layout_marginRight="@dimen/horizontal_margin"
-        android:inputType="textPassword"
-        android:hint="@string/confirm_pwd"
-        android:drawableRight="@mipmap/pwd_trans_display"
-        android:textSize="18dp"
-        />
 
     <Button
         android:id="@+id/submit_button"
