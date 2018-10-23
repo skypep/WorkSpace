@@ -12,6 +12,7 @@
     <string name="login_register">注册</string>
     <string name="login_welcom">Hello!欢迎使用</string>
     <string name="login_forget_pwd">忘记密码?</string>
+    <string name="forget_pwd">忘记密码</string>
     <string name="login_submit">登陆</string>
     <string name="phone_number_hint">手机号码</string>
     <string name="login_pwd_hint">密码</string>
@@ -25,5 +26,10 @@
     <string name="setting_pwd">设置密码</string>
     <string name="please_input_phone">请输入手机号码</string>
     <string name="unknow_error">未知错误</string>
+    <string name="scode_error">验证码错误</string>
     <string name="pwd_confirm_erro">两次密码不一致</string>
+    <string name="loging">正在登陆...</string>
+    <string name="registing">正在注册...</string>
+    <string name="submiting">正在提交...</string>
+    <string name="submit">提交</string>
 </resources>

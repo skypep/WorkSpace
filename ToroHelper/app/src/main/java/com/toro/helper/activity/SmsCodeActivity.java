@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -15,11 +14,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.toro.helper.R;
+import com.toro.helper.base.ToroNetworkActivity;
 import com.toro.helper.modle.BaseResponeData;
 import com.toro.helper.modle.DataModleParser;
-import com.toro.helper.modle.UserManager;
+import com.toro.helper.modle.ToroUserManager;
 import com.toro.helper.utils.ConnectManager;
-import com.toro.helper.utils.OnHttpDataUpdateListener;
 import com.toro.helper.utils.StringUtils;
 import com.toro.helper.view.MainActionBar;
 
@@ -27,7 +26,15 @@ import com.toro.helper.view.MainActionBar;
  * Create By liujia
  * on 2018/10/19.
  **/
-public class QuickLoginActivity extends AppCompatActivity implements View.OnClickListener,OnHttpDataUpdateListener {
+public class SmsCodeActivity extends ToroNetworkActivity implements View.OnClickListener {
+
+    private static final String TORO_EXTRA_MODE = "extra_mode";
+    private static final String TORO_EXTRA_PHONE = "extra_phone";
+
+    private static final String QUICK_LOGIN_MODE = "quick_login_mode";
+    private static final String FORGET_PWD_MODE = "forget_pwd_mode";
+
+    private String startMode;
 
     public static final int UPDATE_SCODE_TIME = 1;
 
@@ -68,21 +75,36 @@ public class QuickLoginActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.quick_login_activity);
+        setContentView(R.layout.sms_code_activity);
+        startMode = getIntent().getStringExtra(TORO_EXTRA_MODE);
+        phoneText = getIntent().getStringExtra(TORO_EXTRA_PHONE);
         getScodeView = findViewById(R.id.get_s_code);
         getScodeView.setOnClickListener(this);
         submitBt = findViewById(R.id.submit_button);
         submitBt.setOnClickListener(this);
         actionBar = findViewById(R.id.main_action_view);
-        actionBar.updateView(getString(R.string.login_quick_login),R.mipmap.action_back_icon, 0,new View.OnClickListener() {
+        phoneEdit = findViewById(R.id.edit_phone);
+        sCodeEdit = findViewById(R.id.scode_edit);
+
+        initView();
+    }
+
+    private void initView() {
+        String title = "";
+        if(startMode.equals(QUICK_LOGIN_MODE)) {
+            title = getString(R.string.login_quick_login);
+            submitBt.setText(getString(R.string.login_submit));
+        } else if(startMode.equals(FORGET_PWD_MODE)) {
+            title = getString(R.string.forget_pwd);
+            submitBt.setText(getString(R.string.next_step));
+        }
+        actionBar.updateView(title,R.mipmap.action_back_icon, 0,new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(LoginActivity.newIntent(QuickLoginActivity.this));
                 finish();
             }
         },null);
-        phoneEdit = findViewById(R.id.edit_phone);
-        sCodeEdit = findViewById(R.id.scode_edit);
+
         sCodeEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -117,6 +139,9 @@ public class QuickLoginActivity extends AppCompatActivity implements View.OnClic
 
             }
         });
+        if(!StringUtils.isEmpty(phoneText)){
+            phoneEdit.setText(phoneText);
+        }
     }
 
     @Override
@@ -142,7 +167,11 @@ public class QuickLoginActivity extends AppCompatActivity implements View.OnClic
             sCodeGetTime = System.currentTimeMillis();
             handler.sendEmptyMessage(UPDATE_SCODE_TIME);
 
-            ConnectManager.getInstance().getScodeForLogin(this,phoneNum);
+            if(startMode.equals(QUICK_LOGIN_MODE)) {
+                ConnectManager.getInstance().getScodeForLogin(this,phoneNum);
+            } else if(startMode.equals(FORGET_PWD_MODE)) {
+                ConnectManager.getInstance().getScodeForResetPwd(this,phoneText);
+            }
         } else {
             return;
 
@@ -150,7 +179,17 @@ public class QuickLoginActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void submit() {
-        ConnectManager.getInstance().quickLogin(this,phoneText,sCodeText);
+        if(startMode.equals(QUICK_LOGIN_MODE)) {
+            ConnectManager.getInstance().quickLogin(this,phoneText,sCodeText);
+        } else if(startMode.equals(FORGET_PWD_MODE)) {
+            if(sCodeText.equals(sCode)) {
+                startActivity(ResetPassword.newIntent(this,phoneText,sCodeText));
+            }else{
+                Toast.makeText(this,getString(R.string.scode_error),Toast.LENGTH_LONG);
+            }
+
+        }
+
     }
 
     private void resetScode() {
@@ -165,36 +204,27 @@ public class QuickLoginActivity extends AppCompatActivity implements View.OnClic
 
 
     @Override
-    public void bindData(int tag, Object object) {
-        try{
+    public boolean bindData(int tag, Object object) {
+        boolean status = super.bindData(tag,object);
+        if(!status) {
+            resetScode();
+            return status;
+        } else {
             String result = (String) object;
             BaseResponeData data = DataModleParser.parserBaseResponeData(result);
-            if(!data.isStatus()) {
-                if(StringUtils.isEmpty(data.getMessage())) {
-                    Toast.makeText(this,getString(R.string.unknow_error),Toast.LENGTH_LONG).show();
-                } else{
-                    Toast.makeText(this,data.getMessage(),Toast.LENGTH_LONG).show();
-                }
-                resetScode();
-                Toast.makeText(this,getString(R.string.unknow_error),Toast.LENGTH_LONG).show();
-                return;
-            }
             switch (tag) {
                 case ConnectManager.GET_SCODE_FOR_LOGIN:
+                case ConnectManager.GET_SCODE_FOR_RESET_PWD:
                     sCode = data.getEntry();
-                    return;
+                    break;
                 case ConnectManager.QUICK_LOGIN:
-                    UserManager.getInstance().setToken(data.getEntry());
+                    ToroUserManager.getInstance(this).login(phoneText,data.getEntry());
                     startActivity(MainActivity.newIntent(this));
                     finish();
-                    return;
+                    break;
             }
-        }catch (Exception e) {
-
+            return true;
         }
-        resetScode();
-        Toast.makeText(this,getString(R.string.unknow_error),Toast.LENGTH_LONG).show();
-
     }
 
     private void checkSubmitEnable() {
@@ -205,9 +235,29 @@ public class QuickLoginActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    public static Intent newIntent(Context context) {
+    public static Intent newQuickLoginIntent(Context context) {
         Intent intent = new Intent();
-        intent.setClass(context,QuickLoginActivity.class);
+        intent.setClass(context,SmsCodeActivity.class);
+        intent.putExtra(TORO_EXTRA_MODE,QUICK_LOGIN_MODE);
+        return intent;
+    }
+
+    public static Intent newQuickLoginIntent(Context context,String phone) {
+        Intent intent = newQuickLoginIntent(context);
+        intent.putExtra(TORO_EXTRA_PHONE,phone);
+        return intent;
+    }
+
+    public static Intent newForgetPwdIntent(Context context) {
+        Intent intent = new Intent();
+        intent.setClass(context,SmsCodeActivity.class);
+        intent.putExtra(TORO_EXTRA_MODE,FORGET_PWD_MODE);
+        return intent;
+    }
+
+    public static Intent newForgetPwdIntent(Context context,String phone) {
+        Intent intent = newForgetPwdIntent(context);
+        intent.putExtra(TORO_EXTRA_PHONE,phone);
         return intent;
     }
 }

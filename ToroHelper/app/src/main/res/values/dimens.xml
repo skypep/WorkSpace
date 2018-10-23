@@ -12,5 +12,10 @@
     <dimen name="action_bar_image_height">35dp</dimen>
 
     <dimen name="text_size_m">16dp</dimen>
+    <dimen name="text_size_l">18dp</dimen>
+    <dimen name="text_size_xl">20dp</dimen>
     <dimen name="text_size_xxxl">30dp</dimen>
+
+    <dimen name="photo_list_head_photo_size">40dp</dimen>
+    <dimen name="photo_list_photo_size">60dp</dimen>
 </resources>

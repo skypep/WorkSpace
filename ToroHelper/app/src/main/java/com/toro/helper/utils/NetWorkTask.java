@@ -25,8 +25,15 @@ public class NetWorkTask extends AsyncTask<Object, Integer, Object> {
             case ConnectManager.QUICK_LOGIN:
             case ConnectManager.GET_SCODE_FOR_REGISTER:
             case ConnectManager.REGISTER:
+            case ConnectManager.GET_NUMBER_CAPTCHAR:
+            case ConnectManager.LOGIN:
+            case ConnectManager.GET_SCODE_FOR_RESET_PWD:
                 JSONObject obj = (JSONObject) params[3];
                 return HttpUtils.doPost(url,obj);
+            case ConnectManager.GET_PHOTO_LIST:
+                JSONObject pobj = (JSONObject) params[3];
+                String token = (String) params[4];
+                return HttpUtils.doPostForToken(url,pobj,token);
             default:
                 break;
         }

@@ -4,13 +4,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.toro.helper.R;
+import com.toro.helper.base.ToroNetworkActivity;
+import com.toro.helper.modle.BaseResponeData;
+import com.toro.helper.modle.DataModleParser;
+import com.toro.helper.utils.ConnectManager;
+import com.toro.helper.utils.StringUtils;
 import com.toro.helper.view.CustomEditText;
 import com.toro.helper.view.MainActionBar;
 
@@ -18,7 +25,11 @@ import com.toro.helper.view.MainActionBar;
  * Create By liujia
  * on 2018/10/22.
  **/
-public class ResetPassword extends AppCompatActivity implements View.OnClickListener {
+public class ResetPassword extends ToroNetworkActivity implements View.OnClickListener {
+
+    private static final String EXTRA_SCODE = "extra_scode";
+    private static final String EXTRA_PHONE = "extra_phone";
+    private String phone,scode,pwdText1,pwdText2;
 
     private MainActionBar actionBar;
     private CustomEditText pwdEdit1,pwdEdit2;
@@ -72,23 +83,92 @@ public class ResetPassword extends AppCompatActivity implements View.OnClickList
                 showPwd2 = !showPwd2;
             }
         });
+        pwdEdit1.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                pwdText1 = s.toString();
+                checkSubmitEnable();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        pwdEdit2.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                pwdText2 = s.toString();
+                checkSubmitEnable();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         submitBt = findViewById(R.id.submit_button);
         submitBt.setOnClickListener(this);
+
+        scode = getIntent().getStringExtra(EXTRA_SCODE);
+        phone = getIntent().getStringExtra(EXTRA_PHONE);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.submit_button:
-                startActivity(MainActivity.newIntent(this));
-                finish();
+                if(pwdText1.equals(pwdText2)) {
+                    ConnectManager.getInstance().resetPwd(this,phone,pwdText1,scode);
+                } else {
+                    Toast.makeText(this,getString(R.string.pwd_confirm_erro),Toast.LENGTH_LONG).show();
+                }
+
                 break;
         }
     }
 
-    public static Intent newIntent(Context context) {
+    private void checkSubmitEnable() {
+        if(!StringUtils.isEmpty(pwdText1) && !StringUtils.isEmpty(pwdText2)) {
+            submitBt.setEnabled(true);
+        } else {
+            submitBt.setEnabled(false);
+        }
+    }
+
+    public static Intent newIntent(Context context,String phone,String scode) {
         Intent intent = new Intent();
         intent.setClass(context,ResetPassword.class);
+        intent.putExtra(EXTRA_SCODE,scode);
+        intent.putExtra(EXTRA_PHONE,phone);
         return intent;
+    }
+
+    @Override
+    public boolean bindData(int tag, Object object) {
+        boolean status = super.bindData(tag,object);
+        if(!status) {
+            return status;
+        } else {
+            String result = (String) object;
+            BaseResponeData data = DataModleParser.parserBaseResponeData(result);
+            switch (tag) {
+                case ConnectManager.RESET_PWD:
+                    startActivity(LoginActivity.newIntent(this));
+                    finish();
+                    break;
+            }
+            return true;
+        }
     }
 }

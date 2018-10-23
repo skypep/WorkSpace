@@ -4,13 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.toro.helper.R;
-import com.toro.helper.fragment.TabFragment;
+import com.toro.helper.base.ToroNetworkActivity;
+import com.toro.helper.fragment.NetWorkFragment;
+import com.toro.helper.fragment.PhotoFragment;
 import com.toro.helper.view.ChangeColorIconWithTextView;
 import com.toro.helper.view.MainActionBar;
 
@@ -21,7 +22,7 @@ import java.util.List;
  * Create By liujia
  * on 2018/10/19.
  **/
-public class MainActivity extends FragmentActivity implements
+public class MainActivity extends ToroNetworkActivity implements
         ViewPager.OnPageChangeListener, View.OnClickListener {
 
     public static final int MAIN_PHOTO_FRAGMENT = 0;
@@ -33,9 +34,6 @@ public class MainActivity extends FragmentActivity implements
     private List<Fragment> mTabs = new ArrayList<Fragment>();
     private FragmentPagerAdapter mAdapter;
     private MainActionBar mainActionBar;
-
-    private String[] mTitles = new String[] { "First Fragment!",
-            "Second Fragment!", "Third Fragment!", "Fourth Fragment!" };
 
     private List<ChangeColorIconWithTextView> mTabIndicator = new ArrayList<ChangeColorIconWithTextView>();
 
@@ -62,14 +60,29 @@ public class MainActivity extends FragmentActivity implements
     private void initDatas()
     {
 
-        for (String title : mTitles)
-        {
-            TabFragment tabFragment = new TabFragment();
-            Bundle args = new Bundle();
-            args.putString("title", title);
-            tabFragment.setArguments(args);
-            mTabs.add(tabFragment);
-        }
+        PhotoFragment photoFragment = new PhotoFragment();
+        Bundle args = new Bundle();
+        args.putString("title", "photo");
+        photoFragment.setArguments(args);
+        mTabs.add(photoFragment);
+
+        NetWorkFragment tabFragment1 = new NetWorkFragment();
+        Bundle args1 = new Bundle();
+        args.putString("title", "title1");
+        tabFragment1.setArguments(args1);
+        mTabs.add(tabFragment1);
+
+        NetWorkFragment tabFragment2 = new NetWorkFragment();
+        Bundle args2 = new Bundle();
+        args.putString("title", "title2");
+        tabFragment2.setArguments(args2);
+        mTabs.add(tabFragment2);
+
+        NetWorkFragment tabFragment3 = new NetWorkFragment();
+        Bundle args3 = new Bundle();
+        args.putString("title", "title3");
+        tabFragment3.setArguments(args3);
+        mTabs.add(tabFragment3);
 
         mAdapter = new FragmentPagerAdapter(getSupportFragmentManager())
         {
@@ -216,10 +229,10 @@ public class MainActivity extends FragmentActivity implements
         mainActionBar.updateView(getResources().getString(R.string.app_name), 0, 0, null, null);
     }
 
-
     public static Intent newIntent(Context context) {
         Intent intent = new Intent();
         intent.setClass(context,MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         return intent;
     }
 }

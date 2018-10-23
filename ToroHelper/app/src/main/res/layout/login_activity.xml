@@ -63,6 +63,7 @@
             />
 
         <EditText
+            android:id="@+id/phone_edit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
@@ -89,6 +90,7 @@
             />
 
         <TextView
+            android:id="@+id/forget_pwd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/vertical_margin_m"
@@ -100,6 +102,7 @@
             />
 
         <Button
+            android:id="@+id/submit_bt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/vertical_margin"
@@ -108,8 +111,11 @@
             android:layout_marginLeft="@dimen/horizontal_margin"
             android:layout_marginRight="@dimen/horizontal_margin"
             android:textColor="#FFFFFF"
+            android:enabled="false"
             />
 
     </LinearLayout>
+
+    <include layout="@layout/toro_progress_layout"/>
 
 </RelativeLayout>

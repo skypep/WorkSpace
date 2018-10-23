@@ -17,4 +17,6 @@
     <color name="gray_text_color">#A6A6A7</color>
 
     <color name="activity_normal_bg_color">#F5F7FE</color>
+
+    <color name="progress_bg_color">#7F000000</color>
 </resources>

@@ -9,17 +9,23 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.toro.helper.R;
+import com.toro.helper.utils.OnHttpDataUpdateListener;
 
 /**
  * Create By liujia
  * on 2018/10/19.
  **/
-public class TabFragment extends Fragment {
+public class NetWorkFragment extends Fragment implements OnHttpDataUpdateListener {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(
-                R.layout.fragment_photo, container, false
+                R.layout.fragment_base, container, false
         );
+    }
+
+    @Override
+    public boolean bindData(int tag, Object object) {
+        return false;
     }
 }

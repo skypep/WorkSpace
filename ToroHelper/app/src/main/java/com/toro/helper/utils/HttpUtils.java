@@ -135,4 +135,30 @@ public class HttpUtils {
         }
         return null;
     }
+
+    public static String doPostForToken(String url,JSONObject obj,String token) {
+        try {
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost httppost = new HttpPost(url);
+            //添加http头信息
+            httppost.addHeader("Content-Type", "application/json");
+            httppost.addHeader("Authorization", token);
+            httppost.setEntity(new StringEntity(obj.toString()));
+            HttpResponse response;
+            response = httpclient.execute(httppost);
+            //检验状态码，如果成功接收数据
+            int code = response.getStatusLine().getStatusCode();
+            if (code == 200) {
+                String result = EntityUtils.toString(response.getEntity());
+                return result;
+            }
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

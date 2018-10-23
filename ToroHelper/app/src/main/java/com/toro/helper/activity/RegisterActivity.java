@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
@@ -18,34 +17,41 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.toro.helper.R;
+import com.toro.helper.base.ToroNetworkActivity;
 import com.toro.helper.modle.BaseResponeData;
 import com.toro.helper.modle.DataModleParser;
-import com.toro.helper.modle.UserManager;
 import com.toro.helper.utils.ConnectManager;
-import com.toro.helper.utils.OnHttpDataUpdateListener;
 import com.toro.helper.utils.StringUtils;
 import com.toro.helper.view.CustomEditText;
 import com.toro.helper.view.MainActionBar;
+import com.toro.helper.view.ToroProgressView;
 
 /**
  * Create By liujia
  * on 2018/10/22.
  **/
-public class RegisterActivity  extends AppCompatActivity implements View.OnClickListener,OnHttpDataUpdateListener {
+public class RegisterActivity  extends ToroNetworkActivity implements View.OnClickListener {
 
     public static final int UPDATE_SCODE_TIME = 1;
+    private static final String TORO_EXTRA_MODE = "extra_mode";
+    private static final String TORO_EXTRA_PHONE = "extra_phone";
+
+    private static final String REGISTER_MODE = "register_mode";
+    private static final String FORGET_PWD_MODE = "forget_pwd_mode";
 
     private boolean isCanGetScode = true;
     private TextView getScodeView;
     private long scodentervalTime = 60 * 1000;
     private long sCodeGetTime;
     private String sCode;
+    private String startMode;
 
     private MainActionBar actionBar;
     private Button submitBt;
     private EditText phoneEdit,sCodeEdit;
     private CustomEditText pwdEdit1,pwdEdit2;
     private boolean showPwd1,showPwd2;
+    private ToroProgressView progressView;
 
     private String phoneText,sCodeText,pwdText1,pwdText2;
 
@@ -75,20 +81,36 @@ public class RegisterActivity  extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_activity);
+        startMode = getIntent().getStringExtra(TORO_EXTRA_MODE);
+        progressView = findViewById(R.id.toro_progress);
         getScodeView = findViewById(R.id.get_s_code);
         getScodeView.setOnClickListener(this);
         submitBt = findViewById(R.id.submit_button);
         submitBt.setOnClickListener(this);
         actionBar = findViewById(R.id.main_action_view);
-        actionBar.updateView(getString(R.string.login_register),R.mipmap.action_back_icon, 0,new View.OnClickListener() {
+
+        phoneEdit = findViewById(R.id.edit_phone);
+        sCodeEdit = findViewById(R.id.scode_edit);
+        initView();
+    }
+
+    private void initView() {
+        String title = "";
+        if(REGISTER_MODE.equals(startMode)) {
+            title = getString(R.string.login_register);
+            submitBt.setText(getString(R.string.login_register));
+            progressView.setProgressText(getString(R.string.registing));
+        } else if(FORGET_PWD_MODE.equals(startMode)) {
+            title = getString(R.string.forget_pwd);
+            submitBt.setText(getString(R.string.submit));
+            progressView.setProgressText(getString(R.string.submiting));
+        }
+        actionBar.updateView(title,R.mipmap.action_back_icon, 0,new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(LoginActivity.newIntent(RegisterActivity.this));
                 finish();
             }
         },null);
-        phoneEdit = findViewById(R.id.edit_phone);
-        sCodeEdit = findViewById(R.id.scode_edit);
         sCodeEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -217,8 +239,12 @@ public class RegisterActivity  extends AppCompatActivity implements View.OnClick
             isCanGetScode = false;
             sCodeGetTime = System.currentTimeMillis();
             handler.sendEmptyMessage(UPDATE_SCODE_TIME);
+            if(REGISTER_MODE.equals(startMode)) {
+                ConnectManager.getInstance().getScodeForRegister(this,phoneNum);
+            } else if(FORGET_PWD_MODE.equals(startMode)) {
+                ConnectManager.getInstance().getScodeForResetPwd(this,phoneText);
+            }
 
-            ConnectManager.getInstance().getScodeForRegister(this,phoneNum);
         } else {
             return;
 
@@ -227,7 +253,12 @@ public class RegisterActivity  extends AppCompatActivity implements View.OnClick
 
     private void submit() {
         if(pwdText1.equals(pwdText2)) {
-            ConnectManager.getInstance().register(this,phoneText,sCodeText,pwdText1);
+            if(REGISTER_MODE.equals(startMode)) {
+                ConnectManager.getInstance().register(this,phoneText,sCodeText,pwdText1);
+            } else if(FORGET_PWD_MODE.equals(startMode)) {
+                ConnectManager.getInstance().resetPwd(this,phoneText,pwdText1,sCodeText);
+            }
+            progressView.show(this);
         } else {
             Toast.makeText(this,getString(R.string.pwd_confirm_erro),Toast.LENGTH_LONG).show();
         }
@@ -246,34 +277,33 @@ public class RegisterActivity  extends AppCompatActivity implements View.OnClick
 
 
     @Override
-    public void bindData(int tag, Object object) {
-        try{
+    public boolean bindData(int tag, Object object) {
+        boolean status = super.bindData(tag,object);
+        if(!status) {
+            resetScode();
+            progressView.hide(this);
+            return status;
+        } else {
             String result = (String) object;
             BaseResponeData data = DataModleParser.parserBaseResponeData(result);
-            if(!data.isStatus()) {
-                if(StringUtils.isEmpty(data.getMessage())) {
-                    Toast.makeText(this,getString(R.string.unknow_error),Toast.LENGTH_LONG).show();
-                } else{
-                    Toast.makeText(this,data.getMessage(),Toast.LENGTH_LONG).show();
-                }
-                resetScode();
-                Toast.makeText(this,getString(R.string.unknow_error),Toast.LENGTH_LONG).show();
-                return;
-            }
             switch (tag) {
                 case ConnectManager.GET_SCODE_FOR_REGISTER:
+                case ConnectManager.GET_SCODE_FOR_RESET_PWD:
                     sCode = data.getEntry();
-                    return;
+                    break;
                 case ConnectManager.REGISTER:
                     startActivity(LoginActivity.newIntent(this));
                     finish();
-                    return;
+                    progressView.hide(this);
+                    break;
+                case ConnectManager.RESET_PWD:
+                    startActivity(LoginActivity.newIntent(this));
+                    finish();
+                    progressView.hide(this);
+                    break;
             }
-        }catch (Exception e) {
-            e.printStackTrace();
+            return true;
         }
-        resetScode();
-        Toast.makeText(this,getString(R.string.unknow_error),Toast.LENGTH_LONG).show();
 
     }
 
@@ -285,9 +315,23 @@ public class RegisterActivity  extends AppCompatActivity implements View.OnClick
         }
     }
 
-    public static Intent newIntent(Context context) {
+    public static Intent newRegisterIntent(Context context) {
         Intent intent = new Intent();
         intent.setClass(context,RegisterActivity.class);
+        intent.putExtra(TORO_EXTRA_MODE,REGISTER_MODE);
+        return intent;
+    }
+
+    public static Intent newForgotPwdIntent(Context context) {
+        Intent intent = new Intent();
+        intent.setClass(context,RegisterActivity.class);
+        intent.putExtra(TORO_EXTRA_MODE,FORGET_PWD_MODE);
+        return intent;
+    }
+
+    public static Intent newForgotPwdIntent(Context context,String phone) {
+        Intent intent = newForgotPwdIntent(context);
+        intent.putExtra(TORO_EXTRA_PHONE,phone);
         return intent;
     }
 

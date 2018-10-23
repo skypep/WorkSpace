@@ -5,5 +5,5 @@ package com.toro.helper.utils;
  */
 
 public interface OnHttpDataUpdateListener {
-    public abstract void bindData(int tag, Object object);
+    public abstract boolean bindData(int tag, Object object);
 }

@@ -21,7 +21,7 @@
 
         <activity android:name=".activity.MainActivity" android:theme="@style/NoTitle"/>
         <activity android:name=".activity.LoginActivity" android:theme="@style/NoTitle"/>
-        <activity android:name=".activity.QuickLoginActivity" android:theme="@style/NoTitle"/>
+        <activity android:name=".activity.SmsCodeActivity" android:theme="@style/NoTitle"/>
         <activity android:name=".activity.ResetPassword" android:theme="@style/NoTitle"/>
         <activity android:name=".activity.RegisterActivity" android:theme="@style/NoTitle"/>
 
