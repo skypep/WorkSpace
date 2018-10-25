@@ -3,6 +3,7 @@
     package="com.toro.helper">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -24,6 +25,7 @@
         <activity android:name=".activity.SmsCodeActivity" android:theme="@style/NoTitle"/>
         <activity android:name=".activity.ResetPassword" android:theme="@style/NoTitle"/>
         <activity android:name=".activity.RegisterActivity" android:theme="@style/NoTitle"/>
+        <activity android:name=".activity.UploadPhotoActivity" android:theme="@style/NoTitle"/>
 
     </application>
 

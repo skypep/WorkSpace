@@ -4,6 +4,8 @@ import android.os.AsyncTask;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 /**
  * Created by SK on 2017/10/8.
  */
@@ -20,6 +22,7 @@ public class NetWorkTask extends AsyncTask<Object, Integer, Object> {
 
         mTag = (Integer) params[1];
         String url = (String)params[2];
+        String token;
         switch (mTag) {
             case ConnectManager.GET_SCODE_FOR_LOGIN:
             case ConnectManager.QUICK_LOGIN:
@@ -32,8 +35,12 @@ public class NetWorkTask extends AsyncTask<Object, Integer, Object> {
                 return HttpUtils.doPost(url,obj);
             case ConnectManager.GET_PHOTO_LIST:
                 JSONObject pobj = (JSONObject) params[3];
-                String token = (String) params[4];
-                return HttpUtils.doPostForToken(url,pobj,token);
+                token = (String) params[4];
+                return HttpUtils.doTokenPost(url,pobj,token);
+            case ConnectManager.UPLOAD_PHOTO_LIST:
+                ArrayList<String> images = (ArrayList<String>) params[3];
+                token = (String) params[4];
+                return ToroHttp.uploadFile(url,images,token);
             default:
                 break;
         }

@@ -17,5 +17,5 @@
     <dimen name="text_size_xxxl">30dp</dimen>
 
     <dimen name="photo_list_head_photo_size">40dp</dimen>
-    <dimen name="photo_list_photo_size">60dp</dimen>
+    <dimen name="photo_list_photo_offset">5dp</dimen>
 </resources>

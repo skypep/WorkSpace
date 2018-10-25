@@ -32,4 +32,15 @@
     <string name="registing">正在注册...</string>
     <string name="submiting">正在提交...</string>
     <string name="submit">提交</string>
+    <string name="cancel">取消</string>
+    <string name="choose_photo_from_album">从相册中选择</string>
+    <string name="take_photo_by_camera">拍照上传</string>
+    <string name="no_permissions_alert">没有权限进行此操作</string>
+    <string name="show_for_who">\@给谁看</string>
+    <string name="family_menber_is_empty">您还没有添加家庭成员</string>
+    <string name="issue">发布</string>
+    <string name="upload_photo">上传照片</string>
+    <string name="upload_progress_text_format">正在提交(%1$s)</string>
+    <string name="submit_sucsses">提交成功</string>
+    <string name="submit_failed">提交失败</string>
 </resources>

@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.toro.helper.R;
-import com.toro.helper.base.ToroNetworkActivity;
+import com.toro.helper.base.ToroActivity;
 import com.toro.helper.modle.BaseResponeData;
 import com.toro.helper.modle.DataModleParser;
 import com.toro.helper.modle.ToroUserManager;
@@ -26,7 +26,7 @@ import com.toro.helper.view.ToroProgressView;
  * Create By liujia
  * on 2018/10/19.
  **/
-public class LoginActivity extends ToroNetworkActivity implements View.OnClickListener {
+public class LoginActivity extends ToroActivity implements View.OnClickListener {
 
     private CustomEditText pwdEdit;
     private EditText phoneEdit;
@@ -156,7 +156,7 @@ public class LoginActivity extends ToroNetworkActivity implements View.OnClickLi
             switch (tag) {
                 case ConnectManager.GET_NUMBER_CAPTCHAR:
                     String captchar = data.getEntry();
-                    ConnectManager.getInstance().login(this,phoneText,StringUtils.md5(pwdText + captchar),captchar);
+                    ConnectManager.getInstance().login(this,phoneText,StringUtils.md5(StringUtils.md5(pwdText) + captchar),captchar);
                     break;
                 case ConnectManager.LOGIN:
                     ToroUserManager.getInstance(this).login(phoneText,data.getEntry());

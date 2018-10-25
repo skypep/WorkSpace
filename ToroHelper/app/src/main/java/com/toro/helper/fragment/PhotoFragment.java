@@ -10,12 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.toro.helper.R;
+import com.toro.helper.app.AppConfig;
+import com.toro.helper.base.ToroFragment;
 import com.toro.helper.fragment.photo.PhotoAdapter;
 import com.toro.helper.modle.photo.PhotoData;
 import com.toro.helper.modle.ToroUserManager;
 import com.toro.helper.modle.photo.PhotoItem;
 import com.toro.helper.modle.photo.PhotoUserInfo;
 import com.toro.helper.utils.ConnectManager;
+import com.toro.helper.view.RecyclerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +27,7 @@ import java.util.List;
  * Create By liujia
  * on 2018/10/23.
  **/
-public class PhotoFragment extends NetWorkFragment {
+public class PhotoFragment extends ToroFragment {
 
     private RecyclerView recyclerView;
     private PhotoAdapter adapter;
@@ -45,6 +48,7 @@ public class PhotoFragment extends NetWorkFragment {
         adapter = new PhotoAdapter(getContext(),photoDatas);
         recyclerView = rootView.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.addItemDecoration(new RecyclerItemDecoration(getContext().getResources().getDimensionPixelOffset(R.dimen.photo_list_photo_offset)));
         recyclerView.setAdapter(adapter);
     }
 
@@ -57,7 +61,7 @@ public class PhotoFragment extends NetWorkFragment {
             user.setName("老弟");
             data.setUserinfo(user);
             List<PhotoItem> photos = new ArrayList<>();
-            for(int j=0; j < 6; j++) {
+            for(int j = 0; j < AppConfig.PhotoMaxCoun; j++) {
                 PhotoItem photo = new PhotoItem();
                 photos.add(photo);
             }
@@ -68,4 +72,6 @@ public class PhotoFragment extends NetWorkFragment {
         recyclerView.setAdapter(adapter);
         return super.bindData(tag, object);
     }
+
+
 }

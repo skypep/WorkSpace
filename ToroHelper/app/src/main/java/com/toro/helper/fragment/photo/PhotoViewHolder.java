@@ -11,8 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.toro.helper.R;
+import com.toro.helper.app.AppConfig;
 import com.toro.helper.modle.photo.PhotoData;
 import com.toro.helper.modle.photo.PhotoItem;
+import com.toro.helper.view.RecyclerItemDecoration;
 import com.toro.helper.view.RoundnessImageView;
 
 import java.util.List;
@@ -28,15 +30,17 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
     private TextView nameText,timeText;
     private ImageView inAction;
     private Context mContext;
+    private boolean isFirst = false;
 
     public PhotoViewHolder(@NonNull View itemView) {
         super(itemView);
+        mContext = itemView.getContext();
         recyclerView = itemView.findViewById(R.id.recycler_view);
         headImg = itemView.findViewById(R.id.head_img);
         nameText = itemView.findViewById(R.id.name);
         timeText = itemView.findViewById(R.id.time);
         inAction = itemView.findViewById(R.id.action_in);
-        mContext = itemView.getContext();
+        isFirst = true;
     }
 
     public void setViewPool(RecyclerView.RecycledViewPool viewPool) {
@@ -47,8 +51,13 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
         headImg.setImageResource(R.mipmap.default_head_xxxxxxxx);
         nameText.setText(data.getUserinfo().getName());
         timeText.setText(data.getGmtUpdated());
-        recyclerView.setLayoutManager(new GridLayoutManager(mContext, 3));
         recyclerView.setAdapter(new PhotoItemAdapter(data.getPhotos()));
+        if(isFirst) {
+            recyclerView.setLayoutManager(new GridLayoutManager(mContext, AppConfig.PhotoSpanCount));
+            recyclerView.addItemDecoration(new RecyclerItemDecoration(mContext.getResources().getDimensionPixelOffset(R.dimen.photo_list_photo_offset)));
+            isFirst = false;
+        }
+
     }
 
     class PhotoItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -63,12 +72,13 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
             LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-            return new PhotoViewHolder(inflater.inflate(R.layout.photo_item, viewGroup, false));
+            return new PhotoItemViewHolder(inflater.inflate(R.layout.photo_item, viewGroup, false));
         }
 
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-
+            PhotoItemViewHolder itemView = (PhotoItemViewHolder) viewHolder;
+            itemView.setUpPhotoView();
         }
 
         @Override

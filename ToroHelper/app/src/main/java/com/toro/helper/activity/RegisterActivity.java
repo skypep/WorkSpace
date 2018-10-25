@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.toro.helper.R;
-import com.toro.helper.base.ToroNetworkActivity;
+import com.toro.helper.base.ToroActivity;
 import com.toro.helper.modle.BaseResponeData;
 import com.toro.helper.modle.DataModleParser;
 import com.toro.helper.utils.ConnectManager;
@@ -30,7 +30,7 @@ import com.toro.helper.view.ToroProgressView;
  * Create By liujia
  * on 2018/10/22.
  **/
-public class RegisterActivity  extends ToroNetworkActivity implements View.OnClickListener {
+public class RegisterActivity  extends ToroActivity implements View.OnClickListener {
 
     public static final int UPDATE_SCODE_TIME = 1;
     private static final String TORO_EXTRA_MODE = "extra_mode";

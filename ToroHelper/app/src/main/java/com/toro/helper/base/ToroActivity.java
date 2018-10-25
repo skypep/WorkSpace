@@ -13,7 +13,7 @@ import com.toro.helper.utils.StringUtils;
  * Create By liujia
  * on 2018/10/23.
  **/
-public class ToroNetworkActivity extends AppCompatActivity implements OnHttpDataUpdateListener {
+public class ToroActivity extends AppCompatActivity implements OnHttpDataUpdateListener {
     @Override
     public boolean bindData(int tag, Object object) {
         try{

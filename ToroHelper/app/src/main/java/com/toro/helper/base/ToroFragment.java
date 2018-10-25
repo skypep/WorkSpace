@@ -1,4 +1,4 @@
-package com.toro.helper.fragment;
+package com.toro.helper.base;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,7 +15,7 @@ import com.toro.helper.utils.OnHttpDataUpdateListener;
  * Create By liujia
  * on 2018/10/19.
  **/
-public class NetWorkFragment extends Fragment implements OnHttpDataUpdateListener {
+public class ToroFragment extends Fragment implements OnHttpDataUpdateListener {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

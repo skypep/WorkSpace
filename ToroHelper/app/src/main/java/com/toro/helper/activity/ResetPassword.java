@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.toro.helper.R;
-import com.toro.helper.base.ToroNetworkActivity;
+import com.toro.helper.base.ToroActivity;
 import com.toro.helper.modle.BaseResponeData;
 import com.toro.helper.modle.DataModleParser;
 import com.toro.helper.utils.ConnectManager;
@@ -25,7 +25,7 @@ import com.toro.helper.view.MainActionBar;
  * Create By liujia
  * on 2018/10/22.
  **/
-public class ResetPassword extends ToroNetworkActivity implements View.OnClickListener {
+public class ResetPassword extends ToroActivity implements View.OnClickListener {
 
     private static final String EXTRA_SCODE = "extra_scode";
     private static final String EXTRA_PHONE = "extra_phone";

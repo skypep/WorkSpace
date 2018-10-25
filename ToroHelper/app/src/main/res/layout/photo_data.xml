@@ -10,6 +10,8 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingTop="@dimen/vertical_margin_m"
+        android:paddingBottom="@dimen/vertical_margin_m"
         >
         
         <com.toro.helper.view.RoundnessImageView
@@ -17,7 +19,7 @@
             android:layout_width="@dimen/photo_list_head_photo_size"
             android:layout_height="@dimen/photo_list_head_photo_size"
             android:scaleType="fitCenter"
-            android:layout_marginLeft="@dimen/horizontal_margin"
+            android:layout_centerVertical="true"
             />
 
         <ImageView
@@ -27,7 +29,7 @@
             android:scaleType="fitCenter"
             android:src="@mipmap/icon_in"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/horizontal_margin"
+            android:layout_centerVertical="true"
             />
 
         <LinearLayout
@@ -35,6 +37,8 @@
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/head_img"
             android:layout_toLeftOf="@+id/action_in"
+            android:layout_marginLeft="@dimen/horizontal_margin"
+            android:layout_centerVertical="true"
             android:orientation="vertical"
             >
 
@@ -60,7 +64,7 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
 

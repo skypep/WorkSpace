@@ -1,6 +1,11 @@
 package com.toro.helper.utils;
 
+import com.toro.helper.utils.okhttp.OkHttp;
+import com.toro.helper.utils.okhttp.mutifile.listener.impl.UIProgressListener;
+
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Create By liujia
@@ -20,6 +25,7 @@ public class ConnectManager {
     public static final int GET_SCODE_FOR_RESET_PWD = 8;
     public static final int RESET_PWD = 9;
     public static final int GET_PHOTO_LIST = 10;
+    public static final int UPLOAD_PHOTO_LIST = 11;
 
     private static final String mainUrl = "http://192.168.8.106:8888/";
 
@@ -67,6 +73,11 @@ public class ConnectManager {
      * 获取照片列表
      */
     private static final String getPhotoListAction = "kinship-api/photograph/list";
+
+    /**
+     * 图片上传
+     */
+    private static final String uploadPhotoListAction = "kinship-api/upload/photos";
 
     private static ConnectManager instance;
 
@@ -191,6 +202,26 @@ public class ConnectManager {
 
         }
         return false;
+    }
+
+    public boolean uploadPhotos(OnHttpDataUpdateListener listener, ArrayList<String>photos, String token, UIProgressListener progressListener) {
+        if(HttpUtils.useOkHttp) {
+//            OkHttp.upLoadFile(UPLOAD_PHOTO_LIST,mainUrl + uploadPhotoListAction,photos.get(0),token,progressListener,listener);
+            OkHttp.upLoadFiles(UPLOAD_PHOTO_LIST,mainUrl + uploadPhotoListAction,photos,token,progressListener,listener);
+//            OkHttp.upLoadFile(UPLOAD_PHOTO_LIST,mainUrl + uploadPhotoListAction,photos,token,listener);
+//            OkHttp.postFile(UPLOAD_PHOTO_LIST,mainUrl + uploadPhotoListAction,photos.get(0),token,listener);
+            return true;
+        } else {
+            try{
+                JSONObject obj = new JSONObject();
+                new NetWorkTask().execute(listener, UPLOAD_PHOTO_LIST,mainUrl + uploadPhotoListAction,photos,token);
+                return true;
+            } catch (Exception e){
+
+            }
+            return false;
+        }
+
     }
 
 }

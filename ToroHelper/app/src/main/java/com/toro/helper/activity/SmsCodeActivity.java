@@ -14,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.toro.helper.R;
-import com.toro.helper.base.ToroNetworkActivity;
+import com.toro.helper.base.ToroActivity;
 import com.toro.helper.modle.BaseResponeData;
 import com.toro.helper.modle.DataModleParser;
 import com.toro.helper.modle.ToroUserManager;
@@ -26,7 +26,7 @@ import com.toro.helper.view.MainActionBar;
  * Create By liujia
  * on 2018/10/19.
  **/
-public class SmsCodeActivity extends ToroNetworkActivity implements View.OnClickListener {
+public class SmsCodeActivity extends ToroActivity implements View.OnClickListener {
 
     private static final String TORO_EXTRA_MODE = "extra_mode";
     private static final String TORO_EXTRA_PHONE = "extra_phone";

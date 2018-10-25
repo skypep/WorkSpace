@@ -8,11 +8,16 @@ import java.security.NoSuchAlgorithmException;
  * on 2018/10/22.
  **/
 public class StringUtils {
+
     public static boolean isEmpty(String string) {
         if(string == null || string.length() < 1) {
             return true;
         }
         return false;
+    }
+
+    public static boolean isNotEmpty(String string) {
+        return !isEmpty(string);
     }
 
     public static String md5(String string) {
