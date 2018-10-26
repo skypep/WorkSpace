@@ -11,9 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.toro.helper.R;
+import com.toro.helper.activity.PhotoPreviewActivity;
 import com.toro.helper.app.AppConfig;
 import com.toro.helper.modle.photo.PhotoData;
 import com.toro.helper.modle.photo.PhotoItem;
+import com.toro.helper.utils.ImageLoad;
 import com.toro.helper.view.RecyclerItemDecoration;
 import com.toro.helper.view.RoundnessImageView;
 
@@ -48,7 +50,6 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void init(PhotoData data) {
-        headImg.setImageResource(R.mipmap.default_head_xxxxxxxx);
         nameText.setText(data.getUserinfo().getName());
         timeText.setText(data.getGmtUpdated());
         recyclerView.setAdapter(new PhotoItemAdapter(data.getPhotos()));
@@ -57,7 +58,7 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
             recyclerView.addItemDecoration(new RecyclerItemDecoration(mContext.getResources().getDimensionPixelOffset(R.dimen.photo_list_photo_offset)));
             isFirst = false;
         }
-
+        ImageLoad.newInstance(headImg).load(data.getUserinfo().getHeadPhoto(),R.mipmap.default_head);
     }
 
     class PhotoItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -76,9 +77,15 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, final int i) {
             PhotoItemViewHolder itemView = (PhotoItemViewHolder) viewHolder;
-            itemView.setUpPhotoView();
+            itemView.setUpPhotoView(photos.get(i));
+            itemView.setOnclickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mContext.startActivity(PhotoPreviewActivity.createIntent(mContext,photos,i));
+                }
+            });
         }
 
         @Override

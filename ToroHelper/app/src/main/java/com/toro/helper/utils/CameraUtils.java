@@ -2,14 +2,18 @@ package com.toro.helper.utils;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v4.os.EnvironmentCompat;
 
 import com.toro.helper.activity.MainActivity;
@@ -50,7 +54,7 @@ public class CameraUtils {
     /**
      * 检查权限并拍照。
      */
-    public static void checkPermissionAndCamera(Activity activity,int ResultCode,OnCameraPermissionListener listener) {
+    public static void checkPermissionAndCamera(Activity activity,int RequestCode,OnCameraPermissionListener listener) {
         int hasCameraPermission = ContextCompat.checkSelfPermission(activity.getApplication(),
                 Manifest.permission.CAMERA);
         if (hasCameraPermission == PackageManager.PERMISSION_GRANTED) {
@@ -59,7 +63,7 @@ public class CameraUtils {
         } else {
             //没有权限，申请权限。
             ActivityCompat.requestPermissions(activity,
-                    new String[]{Manifest.permission.CAMERA}, ResultCode);
+                    new String[]{Manifest.permission.CAMERA}, RequestCode);
         }
     }
 
@@ -71,5 +75,55 @@ public class CameraUtils {
                 Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         intent.setData(Uri.parse("package:" + context.getPackageName()));
         context.startActivity(intent);
+    }
+
+    /**
+     * 权限弹框
+     * @param context
+     * @param applyLoad
+     */
+    public static void showExceptionDialog(final Context context, final boolean applyLoad) {
+        new AlertDialog.Builder(context)
+                .setCancelable(false)
+                .setTitle(context.getString(helper.phone.toro.com.imageselector.R.string.hint))
+                .setMessage(context.getString(helper.phone.toro.com.imageselector.R.string.p_message))
+                .setNegativeButton(context.getString(helper.phone.toro.com.imageselector.R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                }).setPositiveButton(context.getString(helper.phone.toro.com.imageselector.R.string.confirm), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                startAppSettings(context);
+            }
+        }).show();
+    }
+
+    /**
+     * 调起相机拍照
+     */
+    public static String openCamera(Activity activity,int RequestCode) {
+        Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (captureIntent.resolveActivity(activity.getPackageManager()) != null) {
+            File photoFile = null;
+            try {
+                photoFile = CameraUtils.createImageFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (photoFile != null) {
+                String mPhotoPath = photoFile.getAbsolutePath();
+                //通过FileProvider创建一个content类型的Uri
+                Uri photoUri = FileProvider.getUriForFile(activity, activity.getPackageName() + ".fileprovider", photoFile);
+                captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                captureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                activity.startActivityForResult(captureIntent, RequestCode);
+                return mPhotoPath;
+            }
+        }
+        return "";
     }
 }

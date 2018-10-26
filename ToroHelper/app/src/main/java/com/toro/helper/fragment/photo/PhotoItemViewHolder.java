@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.toro.helper.R;
+import com.toro.helper.modle.photo.PhotoItem;
+import com.toro.helper.utils.ImageLoad;
 
 /**
  * Create By liujia
@@ -26,23 +28,27 @@ public class PhotoItemViewHolder extends RecyclerView.ViewHolder {
         this.actionView = rootView.findViewById(R.id.photo_action);
     }
 
-    public void setUpPhotoView() {
+    public void setUpPhotoView(PhotoItem photo) {
         actionView.setVisibility(View.GONE);
-        photoView.setImageResource(R.mipmap.default_photo_xxxxxxxxx);
+        ImageLoad.newInstance(photoView).load(photo,R.mipmap.image_loading);
     }
 
-    public void setUpEditPhotoView(String imagePath, View.OnClickListener deleteListener) {
+    public void setUpEditPhotoView(int index,String imagePath, View.OnClickListener deleteListener) {
         actionView.setVisibility(View.VISIBLE);
-        actionView.setImageResource(R.mipmap.delete_xxxxxxxx);
+        actionView.setImageResource(R.mipmap.delete_icon);
         Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
         photoView.setImageBitmap(bitmap);
-//        photoView.setImageResource(R.mipmap.default_photo_xxxxxxxxx);
+        actionView.setTag(index);
         actionView.setOnClickListener(deleteListener);
     }
 
     public void setUpEditPlusView(View.OnClickListener plusListener) {
         actionView.setVisibility(View.GONE);
-        photoView.setImageResource(R.mipmap.plus_xxxxxxxxxxx);
+        photoView.setImageResource(R.mipmap.plus_img);
         photoView.setOnClickListener(plusListener);
+    }
+
+    public void setOnclickListener(View.OnClickListener listener) {
+        rootView.setOnClickListener(listener);
     }
 }

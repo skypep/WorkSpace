@@ -1,5 +1,10 @@
 package com.toro.helper.modle.photo;
 
+import com.toro.helper.modle.DataModleParser;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
 /**
@@ -15,6 +20,23 @@ public class PhotoData {
     private PubTime pubTime;
     private PhotoUserInfo userinfo;
     private List<PhotoItem> photos;
+
+    public static PhotoData newInstance(JSONObject obj) throws JSONException {
+        PhotoData instance = new PhotoData();
+        instance.id = obj.getInt("id");
+        instance.message = obj.getString("message");
+        instance.mode = obj.getInt("mode");
+        instance.gmtCreated = obj.getString("gmtCreated");
+        instance.gmtUpdated = obj.getString("gmtUpdated");
+        instance.pubTime = PubTime.newInstance(obj.getString("pubTime"));
+        instance.userinfo = PhotoUserInfo.newInstance(obj.getString("user"));
+        instance.photos = DataModleParser.parserPhotoItems(obj.getString("photoList"));
+        return instance;
+    }
+
+    public PhotoData(){
+
+    }
 
     public int getId() {
         return id;

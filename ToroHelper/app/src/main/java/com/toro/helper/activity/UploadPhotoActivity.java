@@ -2,6 +2,7 @@ package com.toro.helper.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -17,14 +18,19 @@ import com.toro.helper.fragment.photo.PhotoEditAdapter;
 import com.toro.helper.modle.BaseResponeData;
 import com.toro.helper.modle.DataModleParser;
 import com.toro.helper.modle.ToroUserManager;
+import com.toro.helper.utils.CameraUtils;
 import com.toro.helper.utils.ConnectManager;
-import com.toro.helper.utils.HttpUtils;
+import com.toro.helper.utils.StringUtils;
 import com.toro.helper.utils.okhttp.mutifile.listener.impl.UIProgressListener;
 import com.toro.helper.view.MainActionBar;
 import com.toro.helper.view.RecyclerItemDecoration;
 import com.toro.helper.view.ToroProgressView;
+import com.toro.helper.view.iphone.IphoneDialogBottomMenu;
+import com.toro.helper.view.iphone.MenuItemOnClickListener;
 
 import java.util.ArrayList;
+
+import helper.phone.toro.com.imageselector.utils.ImageSelector;
 
 /**
  * Create By liujia
@@ -34,6 +40,10 @@ public class UploadPhotoActivity extends ToroActivity implements View.OnClickLis
 
     private static final String EXTRA_IMAGES = "extra_images";
 
+    private static final int PHOTO_REQUEST_CODE = 0x00000011;
+    private static final int PERMISSION_CAMERA_REQUEST_CODE = 0x00000012;
+    private static final int CAMERA_REQUEST_CODE = 0x00000013;
+
     private MainActionBar actionBar;
     private Button submitBt;
     private RecyclerView recyclerView;
@@ -41,6 +51,7 @@ public class UploadPhotoActivity extends ToroActivity implements View.OnClickLis
     private PhotoEditAdapter adapter;
 
     private ToroProgressView progressView;
+    private String mPhotoPath;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,7 +73,7 @@ public class UploadPhotoActivity extends ToroActivity implements View.OnClickLis
         if(images.size() > AppConfig.PhotoMaxCoun) {
             images = (ArrayList<String>) images.subList(0,AppConfig.PhotoMaxCoun - 1);
         }
-        adapter = new PhotoEditAdapter(this,images);
+        adapter = new PhotoEditAdapter(this,images,plusOnclickListener,deleteOnclickListener);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(this, AppConfig.PhotoSpanCount));
         recyclerView.addItemDecoration(new RecyclerItemDecoration(this.getResources().getDimensionPixelOffset(R.dimen.photo_list_photo_offset)));
@@ -111,28 +122,115 @@ public class UploadPhotoActivity extends ToroActivity implements View.OnClickLis
     }
 
     @Override
-    public boolean bindData(int tag, final Object object) {
-        if(HttpUtils.useOkHttp) {
-            runOnUiThread(new Runnable() {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PHOTO_REQUEST_CODE && data != null) {
+            ArrayList<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
+            for(String image : images) {
+                this.images.add(image);
+            }
+            adapter.updateListData(images);
+        }else if (requestCode == CAMERA_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                if(StringUtils.isNotEmpty(mPhotoPath)) {
+                    this.images.add(mPhotoPath);
+                    adapter.updateListData(images);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == PERMISSION_CAMERA_REQUEST_CODE) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //允许权限，有调起相机拍照。
+                mPhotoPath = CameraUtils.openCamera(this,CAMERA_REQUEST_CODE);
+            } else {
+                //拒绝权限，弹出提示框。
+                CameraUtils.showExceptionDialog(this,false);
+            }
+        }
+    }
+
+    private View.OnClickListener plusOnclickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            ArrayList<String> menus = new ArrayList<>();
+            menus.add(getString(R.string.take_photo_by_camera));
+            menus.add(getString(R.string.choose_photo_from_album));
+            IphoneDialogBottomMenu dialog = new IphoneDialogBottomMenu(UploadPhotoActivity.this,menus,new MenuItemOnClickListener() {
                 @Override
-                public void run() {
-                    progressView.hide(UploadPhotoActivity.this);
-                    String result = (String) object;
-                    BaseResponeData data = DataModleParser.parserBaseResponeData(result);
-                    if(data.isStatus()) {
-                        Toast.makeText(UploadPhotoActivity.this,getString(R.string.submit_sucsses),Toast.LENGTH_LONG).show();
-                        finish();
-                        // 上传成功
-                    } else {
-                        Toast.makeText(UploadPhotoActivity.this,getString(R.string.submit_failed),Toast.LENGTH_LONG).show();
+                public void onClickMenuItem(View v, int item_index, String item) {
+                    if(item.equals(getString(R.string.take_photo_by_camera))) {
+                        CameraUtils.checkPermissionAndCamera(UploadPhotoActivity.this, PERMISSION_CAMERA_REQUEST_CODE, new CameraUtils.OnCameraPermissionListener() {
+                            @Override
+                            public void onHasePermission() {
+                                mPhotoPath = CameraUtils.openCamera(UploadPhotoActivity.this,CAMERA_REQUEST_CODE);
+                            }
+                        });
+                    } else if(item.equals(getString(R.string.choose_photo_from_album))){
+                        ImageSelector.builder()
+                                .useCamera(true) // 设置是否使用拍照
+                                .setSingle(false)  //设置是否单选
+                                .setViewImage(true) //是否点击放大图片查看,，默认为true
+                                .setMaxSelectCount(AppConfig.PhotoMaxCoun - images.size()) // 图片的最大选择数量，小于等于0时，不限数量。
+                                .start(UploadPhotoActivity.this, PHOTO_REQUEST_CODE); // 打开相册
                     }
                 }
             });
-            return true;
-        } else {
-            progressView.hide(this);
-            return super.bindData(tag, object);
+            dialog.show();
         }
+    };
 
+    private View.OnClickListener deleteOnclickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            try{
+                int index = (int) v.getTag();
+                if(index >=0 && index < images.size()) {
+                    images.remove(index);
+                    adapter.updateListData(images);
+                }
+            }catch (Exception e){
+
+            }
+
+        }
+    };
+
+    @Override
+    public boolean bindData(final int tag, final Object object) {
+        switch (tag) {
+            case ConnectManager.UPLOAD_PHOTO_LIST:
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String result = (String) object;
+                        BaseResponeData data = DataModleParser.parserBaseResponeData(result);
+                        if(data.isStatus()) {
+                            // 上传成功
+                            progressView.setProgressText(getString(R.string.upload_finish_submit_progress_text));
+                            ConnectManager.getInstance().submitPhotoList(UploadPhotoActivity.this,DataModleParser.parserPhotoItems(data.getEntry()),new int[0],"",1,ToroUserManager.getInstance(UploadPhotoActivity.this).getToken());
+                        } else {
+                            progressView.hide(UploadPhotoActivity.this);
+                            Toast.makeText(UploadPhotoActivity.this,getString(R.string.submit_failed),Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+                break;
+            case ConnectManager.SUBMIT_PHOTO_LIST:
+                progressView.hide(this);
+                boolean status = super.bindData(tag,object);
+                if(!status) {
+                    return status;
+                } else {
+                    Toast.makeText(UploadPhotoActivity.this,getString(R.string.submit_sucsses),Toast.LENGTH_LONG).show();
+                    finish();
+                    return true;
+                }
+        }
+        return false;
     }
 }

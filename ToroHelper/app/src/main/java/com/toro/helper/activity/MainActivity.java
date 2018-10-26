@@ -16,10 +16,12 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.toro.helper.R;
+import com.toro.helper.app.AppConfig;
 import com.toro.helper.base.ToroActivity;
 import com.toro.helper.base.ToroFragment;
 import com.toro.helper.fragment.PhotoFragment;
 import com.toro.helper.utils.CameraUtils;
+import com.toro.helper.utils.StringUtils;
 import com.toro.helper.view.ChangeColorIconWithTextView;
 import com.toro.helper.view.MainActionBar;
 import com.toro.helper.view.iphone.IphoneDialogBottomMenu;
@@ -238,7 +240,7 @@ public class MainActivity extends ToroActivity implements
                             CameraUtils.checkPermissionAndCamera(MainActivity.this, PERMISSION_CAMERA_REQUEST_CODE, new CameraUtils.OnCameraPermissionListener() {
                                 @Override
                                 public void onHasePermission() {
-                                    openCamera();
+                                    mPhotoPath = CameraUtils.openCamera(MainActivity.this,CAMERA_REQUEST_CODE);
                                 }
                             });
                         } else if(item.equals(getString(R.string.choose_photo_from_album))){
@@ -246,7 +248,7 @@ public class MainActivity extends ToroActivity implements
                                     .useCamera(true) // 设置是否使用拍照
                                     .setSingle(false)  //设置是否单选
                                     .setViewImage(true) //是否点击放大图片查看,，默认为true
-                                    .setMaxSelectCount(9) // 图片的最大选择数量，小于等于0时，不限数量。
+                                    .setMaxSelectCount(AppConfig.PhotoMaxCoun) // 图片的最大选择数量，小于等于0时，不限数量。
                                     .start(MainActivity.this, PHOTO_REQUEST_CODE); // 打开相册
                         }
                     }
@@ -281,9 +283,11 @@ public class MainActivity extends ToroActivity implements
             startActivity(UploadPhotoActivity.newIntent(this,images));
         }else if (requestCode == CAMERA_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                ArrayList<String> images = new ArrayList<>();
-                images.add(mPhotoPath);
-                startActivity(UploadPhotoActivity.newIntent(this,images));
+                if(StringUtils.isNotEmpty(mPhotoPath)) {
+                    ArrayList<String> images = new ArrayList<>();
+                    images.add(mPhotoPath);
+                    startActivity(UploadPhotoActivity.newIntent(this,images));
+                }
             }
         }
     }
@@ -294,58 +298,13 @@ public class MainActivity extends ToroActivity implements
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 //允许权限，有调起相机拍照。
-                openCamera();
+                mPhotoPath = CameraUtils.openCamera(this,CAMERA_REQUEST_CODE);
             } else {
                 //拒绝权限，弹出提示框。
-                showExceptionDialog(false);
+                CameraUtils.showExceptionDialog(this,false);
             }
         }
     }
-
-    private void showExceptionDialog(final boolean applyLoad) {
-        new AlertDialog.Builder(this)
-                .setCancelable(false)
-                .setTitle(getString(helper.phone.toro.com.imageselector.R.string.hint))
-                .setMessage(getString(helper.phone.toro.com.imageselector.R.string.p_message))
-                .setNegativeButton(getString(helper.phone.toro.com.imageselector.R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                        finish();
-                    }
-                }).setPositiveButton(getString(helper.phone.toro.com.imageselector.R.string.confirm), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-                CameraUtils.startAppSettings(MainActivity.this);
-            }
-        }).show();
-    }
-
-    /**
-     * 调起相机拍照
-     */
-    private void openCamera() {
-        Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (captureIntent.resolveActivity(getPackageManager()) != null) {
-            File photoFile = null;
-            try {
-                photoFile = CameraUtils.createImageFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            if (photoFile != null) {
-                mPhotoPath = photoFile.getAbsolutePath();
-                //通过FileProvider创建一个content类型的Uri
-                Uri photoUri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", photoFile);
-                captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-                captureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                startActivityForResult(captureIntent, CAMERA_REQUEST_CODE);
-            }
-        }
-    }
-
 
     public static Intent newIntent(Context context) {
         Intent intent = new Intent();

@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
-        android:src="@mipmap/default_photo_xxxxxxxxx"
+        android:src="@mipmap/image_loading"
         />
 
     <ImageView

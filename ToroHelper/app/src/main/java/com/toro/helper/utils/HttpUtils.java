@@ -1,5 +1,11 @@
 package com.toro.helper.utils;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Bitmap;
+
+import com.toro.helper.activity.MainActivity;
 import com.toro.helper.utils.okhttp.OkHttp;
 
 import org.json.JSONObject;

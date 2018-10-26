@@ -40,13 +40,20 @@ public class PhotoEditAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         if(getItemViewType(i) == PLUS_TYPE) {
             itemView.setUpEditPlusView(plusListener);
         } else if(getItemViewType(i) == IMAGE_TYPE) {
-            itemView.setUpEditPhotoView(images.get(i),deleteListener);
+            itemView.setUpEditPhotoView(i,images.get(i),deleteListener);
         }
     }
 
-    public PhotoEditAdapter(Context context, List<String> photoDatas) {
+    public PhotoEditAdapter(Context context, List<String> photoDatas,View.OnClickListener plusListener,View.OnClickListener deleteListener) {
         this.mContext = context;
         this.images = photoDatas;
+        this.plusListener = plusListener;
+        this.deleteListener = deleteListener;
+    }
+
+    public void updateListData(List<String> images) {
+        this.images = images;
+        notifyDataSetChanged();
     }
 
     @Override

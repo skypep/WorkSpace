@@ -1,11 +1,14 @@
 package com.toro.helper.utils;
 
+import com.toro.helper.modle.photo.PhotoItem;
 import com.toro.helper.utils.okhttp.OkHttp;
 import com.toro.helper.utils.okhttp.mutifile.listener.impl.UIProgressListener;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Create By liujia
@@ -15,7 +18,6 @@ public class ConnectManager {
 
     private static final int USER_TYPE = 2; // 0：管理员,1：老人机用户，2：子女端用户，3：未注册用户|
 
-    public static final int REGISTER_ACTION =  1;
     public static final int GET_SCODE_FOR_LOGIN = 2;
     public static final int QUICK_LOGIN = 3;
     public static final int GET_SCODE_FOR_REGISTER = 4;
@@ -26,6 +28,8 @@ public class ConnectManager {
     public static final int RESET_PWD = 9;
     public static final int GET_PHOTO_LIST = 10;
     public static final int UPLOAD_PHOTO_LIST = 11;
+    public static final int SUBMIT_PHOTO_LIST = 12;
+    public static final int DOWNLOAD_IMAGE = 13;
 
     private static final String mainUrl = "http://192.168.8.106:8888/";
 
@@ -78,6 +82,16 @@ public class ConnectManager {
      * 图片上传
      */
     private static final String uploadPhotoListAction = "kinship-api/upload/photos";
+
+    /**
+     * 发布照片
+     */
+    private static final String submitPhotoListAction = "kinship-api/photograph";
+
+    /**
+     * 下载图片
+     */
+    private static final String downloadImageAction = "kinship-api";
 
     private static ConnectManager instance;
 
@@ -224,4 +238,31 @@ public class ConnectManager {
 
     }
 
+    public boolean submitPhotoList(OnHttpDataUpdateListener listener, List<PhotoItem> fileUrls, int[] uids, String message, int mode, String token) {
+        try{
+            JSONObject obj = new JSONObject();
+            JSONArray photoArray = new JSONArray();
+            for(PhotoItem item : fileUrls) {
+                photoArray.put(item.json());
+            }
+            obj.put("fileUrls",photoArray);
+            obj.put("message",message);
+            obj.put("mode",mode);
+            JSONArray uidArray = new JSONArray();
+            for(int uid : uids) {
+                uidArray.put(uid);
+            }
+            obj.put("uids",uidArray);
+            new NetWorkTask().execute(listener, SUBMIT_PHOTO_LIST,mainUrl + submitPhotoListAction,obj,token);
+            return true;
+        } catch (Exception e){
+
+        }
+        return false;
+    }
+
+    public String getPhotoUrl(PhotoItem photo) {
+        String url = mainUrl + downloadImageAction + "/" + photo.getFolder() + "/" + photo.getName();
+        return url;
+    }
 }

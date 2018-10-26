@@ -41,6 +41,8 @@
     <string name="issue">发布</string>
     <string name="upload_photo">上传照片</string>
     <string name="upload_progress_text_format">正在提交(%1$s)</string>
+    <string name="upload_finish_submit_progress_text">提交完成，正在发布</string>
     <string name="submit_sucsses">提交成功</string>
     <string name="submit_failed">提交失败</string>
+    <string name="empty_photo_hint">还没有照片哦!</string>
 </resources>

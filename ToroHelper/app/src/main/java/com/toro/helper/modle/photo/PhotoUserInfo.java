@@ -1,22 +1,37 @@
 package com.toro.helper.modle.photo;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Create By liujia
  * on 2018/10/23.
  **/
 public class PhotoUserInfo {
-    private String uid;
+    private int uid;
     private String phone;
     private String name;
     private PhotoItem headPhoto;
 
-    public String getUid() {
-        return uid;
+    public static PhotoUserInfo newInstance(String jsonString) throws JSONException {
+        JSONObject obj = new JSONObject(jsonString);
+        PhotoUserInfo instance = new PhotoUserInfo();
+        instance.uid = obj.getInt("uid");
+        instance.name = obj.getString("name");
+        instance.phone = obj.getString("phone");
+        try{
+            instance.headPhoto = PhotoItem.newInstance(new JSONObject(obj.getString("headPhoto")));
+        } catch (Exception e) {
+            instance.headPhoto = null;
+        }
+
+        return instance;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
+    public PhotoUserInfo(){
+
     }
+
 
     public String getPhone() {
         return phone;

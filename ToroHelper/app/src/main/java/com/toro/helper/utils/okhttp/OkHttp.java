@@ -1,5 +1,10 @@
 package com.toro.helper.utils.okhttp;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import com.toro.helper.utils.ImageCache;
+import com.toro.helper.utils.ImageLoad;
 import com.toro.helper.utils.OnHttpDataUpdateListener;
 import com.toro.helper.utils.okhttp.mutifile.listener.impl.UIProgressListener;
 import com.toro.helper.utils.okhttp.mutifile.utils.OKHttpUtils;
@@ -8,6 +13,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -67,7 +73,7 @@ public class OkHttp {
 
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
         return "";
     }
@@ -126,75 +132,54 @@ public class OkHttp {
         return client;
     }
 
-    /**
-     * 无进度
-     * @param url
-     * @param fileNames
-     */
-    public static void upLoadFile(final int tag,String url, ArrayList<String> fileNames,String token,final OnHttpDataUpdateListener listener){
-        OkHttpClient okHttpClient = getToroOkHttpClient(token);
-        Call call = okHttpClient.newCall(getRequest(url,fileNames)) ;
+    private static OkHttpClient getToroOkHttpClient(final String token,final String path) {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                //设置连接超时等属性,不设置可能会报异常
+                .connectTimeout(5000, TimeUnit.SECONDS)
+                .readTimeout(5000, TimeUnit.SECONDS)
+                .writeTimeout(5000, TimeUnit.SECONDS)
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        Request request = chain.request()
+                                .newBuilder()
+                                .addHeader("Content-Type","application/json")
+                                .addHeader("path", path)
+                                .addHeader("Authorization", token).build();
+                        return chain.proceed(request);
+                    }
+                });
+
+        OkHttpClient client = builder.build();
+        return client;
+    }
+
+    public static void downloadImage(final int tag,final String url,String token,String path,final OnHttpDataUpdateListener listener) {
+        Request request=new Request.Builder()
+                .url(url)
+                .build();
+        Call call = getToroOkHttpClient(token,path).newCall(request);
         call.enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
+            public void onFailure(Call call, final IOException e) {
                 listener.bindData(tag,e.getMessage());
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                listener.bindData(tag,response.body().string());
-            }
-        });
-    }
-
-    public static void postFile(final int tag,final String url,final String fileName,final String token,final OnHttpDataUpdateListener listener) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    OkHttpClient client = getToroOkHttpClient(token);
-                    File file = new File(fileName);
-                    RequestBody fileBody = RequestBody.create(MediaType.parse("application/octet-stream"), file);
-                    RequestBody requestBody = new MultipartBody.Builder()
-                            .setType(MultipartBody.FORM)
-                            .addFormDataPart("files", "image.png", fileBody)
-                            .build();
-                    Request request = new Request.Builder()
-                            .url(url)
-                            .post(requestBody)
-                            .build();
-                    Response response = client.newCall(request).execute();
-                    String responseStr = response.body().string();
-                    listener.bindData(tag,responseStr);
+            public void onResponse(Call call, final Response response) throws IOException {
+                //获取输出流，然后通过BitmapFactory生成Bitmap
+//                InputStream is = response.body().byteStream();
+//                final Bitmap bitmap= BitmapFactory.decodeStream(is);
+                byte[] bytes = response.body().bytes();
+                final Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                listener.bindData(tag,bitmap);
+                try {
+                    ImageCache.getInstance().writeToDiskLruCache(url, bytes);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-        }).start();
-
-
-    }
-
-
-
-    private static RequestBody getRequestBody(ArrayList<String> fileNames) {
-        MultipartBody.Builder builder = new MultipartBody.Builder();
-        for (int i = 0; i < fileNames.size(); i++) {
-            File file = new File(fileNames.get(i));
-            builder.addFormDataPart(
-                    "files",
-                    file.getName(),
-                    RequestBody.create(MediaType.parse("application/octet-stream"), file) //创建RequestBody，把上传的文件放入
-            );
-        }
-        return builder.build();
-    }
-
-    private static Request getRequest(String url, ArrayList<String> fileNames) {
-        Request.Builder builder = new Request.Builder();
-        builder.url(url)
-                .post(getRequestBody(fileNames));
-        return builder.build();
+        });
     }
 
 }

@@ -41,6 +41,11 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         viewPool = new RecyclerView.RecycledViewPool();
     }
 
+    public void updatePhotoDatas(List<PhotoData> photoDatas) {
+        this.photoDatas = photoDatas;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return photoDatas.size();
