@@ -6,6 +6,11 @@ import android.util.LruCache;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
+import com.bumptech.glide.request.RequestOptions;
+import com.toro.helper.R;
 import com.toro.helper.modle.DataModleParser;
 import com.toro.helper.modle.ToroUserManager;
 import com.toro.helper.modle.photo.PhotoData;
@@ -25,10 +30,28 @@ public class ImageLoad {
 
     private String url;
 
-    public static ImageLoad newInstance(ImageView imageView) {
+    private static ImageLoad newInstance(ImageView imageView) {
         ImageLoad instance = new ImageLoad(imageView);
 
         return instance;
+    }
+
+    public static void GlidLoad(ImageView imageView,PhotoItem photo,int defaultRes) {
+        if(photo == null) {
+            imageView.setImageResource(defaultRes);
+            return;
+        }
+        String url = ConnectManager.getInstance().getPhotoUrl(photo);
+        GlideUrl glideUrl = new GlideUrl(url, new LazyHeaders.Builder()
+                .addHeader("Authorization", ToroUserManager.getInstance(imageView.getContext()).getToken())
+                .addHeader("path", photo.getPath())
+                .build());
+        RequestOptions options = new RequestOptions();
+        options.placeholder(defaultRes);
+        options.error(defaultRes);
+        Glide.with(imageView).load(glideUrl)
+                .apply(options)
+                .into(imageView);
     }
 
     private ImageView imageView;
@@ -52,8 +75,6 @@ public class ImageLoad {
                 imageView.setImageBitmap(bitmap);
             }
         }
-
-
     }
 
     private OnHttpDataUpdateListener listener = new OnHttpDataUpdateListener() {
@@ -69,7 +90,6 @@ public class ImageLoad {
                                 imageView.setImageBitmap(bitmap);
                             }
                         });
-//                        ImageCache.getInstance().writeToDiskLruCache(url,bitmap);
                     }
                 }catch (Exception e) {
                     e.printStackTrace();

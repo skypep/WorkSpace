@@ -24,6 +24,7 @@ import com.toro.helper.modle.ToroUserManager;
 import com.toro.helper.modle.photo.PhotoItem;
 import com.toro.helper.modle.photo.PhotoUserInfo;
 import com.toro.helper.utils.ConnectManager;
+import com.toro.helper.view.AutoLoadRecyclerView;
 import com.toro.helper.view.RecyclerItemDecoration;
 
 import java.util.ArrayList;
@@ -33,9 +34,9 @@ import java.util.List;
  * Create By liujia
  * on 2018/10/23.
  **/
-public class PhotoFragment extends ToroFragment {
+public class FamilyPhotoFragment extends ToroFragment {
 
-    private RecyclerView recyclerView;
+    private AutoLoadRecyclerView recyclerView;
     private TextView emptyHint;
     private ProgressBar loadingProgress;
     private PhotoAdapter adapter;
@@ -59,12 +60,18 @@ public class PhotoFragment extends ToroFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new RecyclerItemDecoration(getContext().getResources().getDimensionPixelOffset(R.dimen.photo_list_photo_offset)));
         recyclerView.setAdapter(adapter);
+        recyclerView.setOnPauseListenerParams(new AutoLoadRecyclerView.OnLoadImageSwitchListener() {
+            @Override
+            public void onLoadImageSwitch(boolean flag) {
+                adapter.onLoadImageSwitch(flag);
+            }
+        },false,false);
 
         emptyHint = rootView.findViewById(R.id.empty_hint);
         loadingProgress = rootView.findViewById(R.id.loading_progress);
     }
 
-    private void updatePhotos() {
+    public void updatePhotos() {
         showProgress();
         ConnectManager.getInstance().updatePhotoList(this,0,10, ToroUserManager.getInstance(getContext()).getToken());
     }

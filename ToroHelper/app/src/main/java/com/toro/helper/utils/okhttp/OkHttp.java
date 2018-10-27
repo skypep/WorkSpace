@@ -170,14 +170,20 @@ public class OkHttp {
                 //获取输出流，然后通过BitmapFactory生成Bitmap
 //                InputStream is = response.body().byteStream();
 //                final Bitmap bitmap= BitmapFactory.decodeStream(is);
-                byte[] bytes = response.body().bytes();
-                final Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                listener.bindData(tag,bitmap);
-                try {
-                    ImageCache.getInstance().writeToDiskLruCache(url, bytes);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            final byte[] bytes = response.body().bytes();
+                            final Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                            listener.bindData(tag,bitmap);
+                            ImageCache.getInstance().writeToDiskLruCache(url, bytes);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+
             }
         });
     }

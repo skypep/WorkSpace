@@ -6,7 +6,7 @@
     android:background="@color/activity_normal_bg_color"
     >
 
-    <android.support.v7.widget.RecyclerView
+    <com.toro.helper.view.AutoLoadRecyclerView
         android:id="@+id/recycler_view"
         android:paddingLeft="@dimen/horizontal_margin"
         android:paddingRight="@dimen/horizontal_margin"

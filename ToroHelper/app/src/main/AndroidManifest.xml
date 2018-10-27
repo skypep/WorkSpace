@@ -29,6 +29,10 @@
         <activity android:name=".activity.UploadPhotoActivity" android:theme="@style/NoTitle"/>
         <activity android:name=".activity.PhotoPreviewActivity" android:theme="@style/NoTitle"/>
 
+        <!--<meta-data-->
+            <!--android:name="com.toro.helper.utils.OkHttpGlideModule"-->
+            <!--android:value="GlideModule" />-->
+
     </application>
 
 </manifest>

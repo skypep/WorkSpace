@@ -40,6 +40,8 @@ public class UploadPhotoActivity extends ToroActivity implements View.OnClickLis
 
     private static final String EXTRA_IMAGES = "extra_images";
 
+    public static final String UPLOAD_RESULT = "upload_result";
+
     private static final int PHOTO_REQUEST_CODE = 0x00000011;
     private static final int PERMISSION_CAMERA_REQUEST_CODE = 0x00000012;
     private static final int CAMERA_REQUEST_CODE = 0x00000013;
@@ -129,12 +131,12 @@ public class UploadPhotoActivity extends ToroActivity implements View.OnClickLis
             for(String image : images) {
                 this.images.add(image);
             }
-            adapter.updateListData(images);
+            adapter.updateListData(this.images);
         }else if (requestCode == CAMERA_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 if(StringUtils.isNotEmpty(mPhotoPath)) {
                     this.images.add(mPhotoPath);
-                    adapter.updateListData(images);
+                    adapter.updateListData(this.images);
                 }
             }
         }
@@ -227,6 +229,9 @@ public class UploadPhotoActivity extends ToroActivity implements View.OnClickLis
                     return status;
                 } else {
                     Toast.makeText(UploadPhotoActivity.this,getString(R.string.submit_sucsses),Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent();
+                    intent.putExtra(UPLOAD_RESULT, true);
+                    setResult(RESULT_OK, intent);
                     finish();
                     return true;
                 }

@@ -1,17 +1,11 @@
 package com.toro.helper.activity;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.FileProvider;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
@@ -19,7 +13,7 @@ import com.toro.helper.R;
 import com.toro.helper.app.AppConfig;
 import com.toro.helper.base.ToroActivity;
 import com.toro.helper.base.ToroFragment;
-import com.toro.helper.fragment.PhotoFragment;
+import com.toro.helper.fragment.FamilyPhotoFragment;
 import com.toro.helper.utils.CameraUtils;
 import com.toro.helper.utils.StringUtils;
 import com.toro.helper.view.ChangeColorIconWithTextView;
@@ -27,8 +21,6 @@ import com.toro.helper.view.MainActionBar;
 import com.toro.helper.view.iphone.IphoneDialogBottomMenu;
 import com.toro.helper.view.iphone.MenuItemOnClickListener;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,13 +41,14 @@ public class MainActivity extends ToroActivity implements
     private static final int PHOTO_REQUEST_CODE = 0x00000011;
     private static final int PERMISSION_CAMERA_REQUEST_CODE = 0x00000012;
     private static final int CAMERA_REQUEST_CODE = 0x00000013;
+    private static final int UPLOAD_REQUEST_CODE = 0x00000014;
 
     private ViewPager mViewPager;
     private List<Fragment> mTabs = new ArrayList<Fragment>();
     private FragmentPagerAdapter mAdapter;
     private MainActionBar mainActionBar;
 
-    private PhotoFragment photoFragment;
+    private FamilyPhotoFragment photoFragment;
     private String mPhotoPath;
 
     private List<ChangeColorIconWithTextView> mTabIndicator = new ArrayList<ChangeColorIconWithTextView>();
@@ -83,7 +76,7 @@ public class MainActivity extends ToroActivity implements
     private void initDatas()
     {
 
-        photoFragment = new PhotoFragment();
+        photoFragment = new FamilyPhotoFragment();
         Bundle args = new Bundle();
         args.putString("title", "photo");
         photoFragment.setArguments(args);
@@ -286,8 +279,13 @@ public class MainActivity extends ToroActivity implements
                 if(StringUtils.isNotEmpty(mPhotoPath)) {
                     ArrayList<String> images = new ArrayList<>();
                     images.add(mPhotoPath);
-                    startActivity(UploadPhotoActivity.newIntent(this,images));
+                    startActivityForResult(UploadPhotoActivity.newIntent(this,images),UPLOAD_REQUEST_CODE);
                 }
+            }
+        }else if(requestCode == UPLOAD_REQUEST_CODE) {
+            boolean needUpate = data.getBooleanExtra(UploadPhotoActivity.UPLOAD_RESULT,false);
+            if(needUpate) {
+                photoFragment.updatePhotos();
             }
         }
     }

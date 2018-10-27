@@ -61,7 +61,8 @@ public class PhotoPreviewActivity extends ToroActivity {
                 View adView = LayoutInflater.from(PhotoPreviewActivity.this).inflate(R.layout.photo_preview_item, null);
                 PhotoView image = (PhotoView) adView.findViewById(R.id.flaw_img);
                 image.setBackgroundColor(Color.BLACK);
-                ImageLoad.newInstance(image).load(photos.get(position),R.mipmap.image_loading);
+//                ImageLoad.newInstance(image).load(photos.get(position),R.mipmap.image_loading);
+                ImageLoad.GlidLoad(image,photos.get(position),R.mipmap.image_loading);
                 image.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

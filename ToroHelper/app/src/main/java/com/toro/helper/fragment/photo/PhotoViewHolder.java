@@ -33,8 +33,9 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
     private ImageView inAction;
     private Context mContext;
     private boolean isFirst = false;
+    private PhotoItemAdapter adapter;
 
-    public PhotoViewHolder(@NonNull View itemView) {
+    public PhotoViewHolder(@NonNull View itemView,List<PhotoItem> photos) {
         super(itemView);
         mContext = itemView.getContext();
         recyclerView = itemView.findViewById(R.id.recycler_view);
@@ -42,6 +43,10 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
         nameText = itemView.findViewById(R.id.name);
         timeText = itemView.findViewById(R.id.time);
         inAction = itemView.findViewById(R.id.action_in);
+        adapter = new PhotoItemAdapter(photos);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(mContext, AppConfig.PhotoSpanCount));
+        recyclerView.addItemDecoration(new RecyclerItemDecoration(mContext.getResources().getDimensionPixelOffset(R.dimen.photo_list_photo_offset)));
         isFirst = true;
     }
 
@@ -49,21 +54,29 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
         recyclerView.setRecycledViewPool(viewPool);
     }
 
-    public void init(PhotoData data) {
+    public void init(boolean needLoad,PhotoData data) {
         nameText.setText(data.getUserinfo().getName());
         timeText.setText(data.getGmtUpdated());
-        recyclerView.setAdapter(new PhotoItemAdapter(data.getPhotos()));
-        if(isFirst) {
-            recyclerView.setLayoutManager(new GridLayoutManager(mContext, AppConfig.PhotoSpanCount));
-            recyclerView.addItemDecoration(new RecyclerItemDecoration(mContext.getResources().getDimensionPixelOffset(R.dimen.photo_list_photo_offset)));
-            isFirst = false;
+//        recyclerView.setAdapter(new PhotoItemAdapter(data.getPhotos()));
+//        if(isFirst) {
+//            recyclerView.setLayoutManager(new GridLayoutManager(mContext, AppConfig.PhotoSpanCount));
+//            recyclerView.addItemDecoration(new RecyclerItemDecoration(mContext.getResources().getDimensionPixelOffset(R.dimen.photo_list_photo_offset)));
+//            isFirst = false;
+//        }
+        adapter.update(needLoad,data.getPhotos());
+        if(needLoad) {
+//            ImageLoad.newInstance(headImg).load(data.getUserinfo().getHeadPhoto(),R.mipmap.default_head);
+            ImageLoad.GlidLoad(headImg,data.getUserinfo().getHeadPhoto(),R.mipmap.default_head);
+        }else {
+            headImg.setImageResource(R.mipmap.default_head);
         }
-        ImageLoad.newInstance(headImg).load(data.getUserinfo().getHeadPhoto(),R.mipmap.default_head);
+
     }
 
     class PhotoItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         private List<PhotoItem> photos;
+        private boolean needload = true;
 
         PhotoItemAdapter(List<PhotoItem> photos) {
             this.photos = photos;
@@ -79,13 +92,19 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, final int i) {
             PhotoItemViewHolder itemView = (PhotoItemViewHolder) viewHolder;
-            itemView.setUpPhotoView(photos.get(i));
+            itemView.setUpPhotoView(needload,photos.get(i));
             itemView.setOnclickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mContext.startActivity(PhotoPreviewActivity.createIntent(mContext,photos,i));
                 }
             });
+        }
+
+        public void update(boolean needload,List<PhotoItem> photos){
+            this.photos = photos;
+            this.needload = needload;
+            notifyDataSetChanged();
         }
 
         @Override

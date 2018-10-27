@@ -8,9 +8,21 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
+import com.bumptech.glide.request.RequestOptions;
 import com.toro.helper.R;
+import com.toro.helper.modle.ToroUserManager;
 import com.toro.helper.modle.photo.PhotoItem;
+import com.toro.helper.utils.ConnectManager;
 import com.toro.helper.utils.ImageLoad;
+
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
+import okhttp3.Headers;
 
 /**
  * Create By liujia
@@ -28,9 +40,16 @@ public class PhotoItemViewHolder extends RecyclerView.ViewHolder {
         this.actionView = rootView.findViewById(R.id.photo_action);
     }
 
-    public void setUpPhotoView(PhotoItem photo) {
+    public void setUpPhotoView(boolean needload,final PhotoItem photo) {
         actionView.setVisibility(View.GONE);
-        ImageLoad.newInstance(photoView).load(photo,R.mipmap.image_loading);
+        String url = ConnectManager.getInstance().getPhotoUrl(photo);
+        if(needload) {
+//            ImageLoad.newInstance(photoView).load(photo,R.mipmap.image_loading);
+            ImageLoad.GlidLoad(photoView,photo,R.mipmap.image_loading);
+        }else {
+            photoView.setImageResource(R.mipmap.image_loading);
+        }
+
     }
 
     public void setUpEditPhotoView(int index,String imagePath, View.OnClickListener deleteListener) {
