@@ -16,8 +16,8 @@
         
         <com.toro.helper.view.RoundnessImageView
             android:id="@+id/head_img"
-            android:layout_width="@dimen/photo_list_head_photo_size"
-            android:layout_height="@dimen/photo_list_head_photo_size"
+            android:layout_width="@dimen/photo_list_head_photo_size_m"
+            android:layout_height="@dimen/photo_list_head_photo_size_m"
             android:scaleType="fitCenter"
             android:layout_centerVertical="true"
             />

@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
 
     <application
         android:name=".app.App"
@@ -28,6 +29,7 @@
         <activity android:name=".activity.RegisterActivity" android:theme="@style/NoTitle"/>
         <activity android:name=".activity.UploadPhotoActivity" android:theme="@style/NoTitle"/>
         <activity android:name=".activity.PhotoPreviewActivity" android:theme="@style/NoTitle"/>
+        <activity android:name=".activity.FamilyMemberEditActivity" android:theme="@style/NoTitle"/>
 
         <!--<meta-data-->
             <!--android:name="com.toro.helper.utils.OkHttpGlideModule"-->

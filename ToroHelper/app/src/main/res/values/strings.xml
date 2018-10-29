@@ -15,6 +15,7 @@
     <string name="forget_pwd">忘记密码</string>
     <string name="login_submit">登陆</string>
     <string name="phone_number_hint">手机号码</string>
+    <string name="name_hint">姓名</string>
     <string name="login_pwd_hint">密码</string>
     <string name="s_code">验证码</string>
     <string name="get_s_code">获取验证码</string>
@@ -45,4 +46,24 @@
     <string name="submit_sucsses">提交成功</string>
     <string name="submit_failed">提交失败</string>
     <string name="empty_photo_hint">还没有照片哦!</string>
+    <string name="empty_family_hint">家庭成员为空哦!</string>
+    <string name="add_family_from_contact">从通讯录添加</string>
+    <string name="add_family_from_edit">手动添加</string>
+    <string name="confirm">确认</string>
+    <string name="fix_head">修改头像</string>
+    <string name="create_new_member">添加</string>
+    <string name="edit_member">编辑</string>
+    <string name="create_new_member_sucsses">添加成功</string>
+    <string name="create_new_member_failed">添加失败</string>
+
+    <string name="status_accepted">已接受</string>
+    <string name="status_wait_me_agree">新申请</string>
+    <string name="status_wait_other_agree">待接受</string>
+    <string name="status_unknow">未知</string>
+
+    <string name="have_no_nick_name">暂无昵称</string>
+    <string name="family_member_manager">家庭成员管理</string>
+    <string name="family_photo">我的照片</string>
+    <string name="sms_mode">短信模式</string>
+    <string name="setting">设置</string>
 </resources>

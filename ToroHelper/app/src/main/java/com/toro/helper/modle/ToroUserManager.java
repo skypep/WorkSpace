@@ -3,6 +3,8 @@ package com.toro.helper.modle;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.toro.helper.utils.StringUtils;
+
 import org.json.JSONObject;
 
 /**
@@ -14,6 +16,8 @@ public class ToroUserManager {
     private String phone;
     private String pwd;
     private long loginTime;
+    private boolean isQuickLogin;
+    private LoginUserData loginUserData;
 
     private static ToroUserManager instance;
 
@@ -30,7 +34,7 @@ public class ToroUserManager {
         pre = context.getSharedPreferences(this.getClass().getName(),Context.MODE_PRIVATE);
     }
 
-    public void login(String phone,String token) {
+    public void login(String password,String phone,String token) {
         try{
             JSONObject obj = new JSONObject(token);
             token = obj.getString("login");
@@ -40,6 +44,12 @@ public class ToroUserManager {
         setLoginTime(System.currentTimeMillis());
         setPhone(phone);
         setToken(token);
+        setPwd(password);
+        if(StringUtils.isEmpty(password)) {
+            setQuickLogin(true);
+        }else {
+            setQuickLogin(false);
+        }
     }
 
     public String getToken() {
@@ -80,5 +90,23 @@ public class ToroUserManager {
     public void setLoginTime(long loginTime) {
         this.loginTime = loginTime;
         pre.edit().putLong("loginTime",loginTime).apply();
+    }
+
+    public boolean isQuickLogin() {
+        isQuickLogin = pre.getBoolean("isQuickLogin",isQuickLogin);
+        return isQuickLogin;
+    }
+
+    public void setQuickLogin(boolean quickLogin) {
+        isQuickLogin = quickLogin;
+        pre.edit().putBoolean("isQuickLogin",isQuickLogin).apply();
+    }
+
+    public LoginUserData getLoginUserData() {
+        return loginUserData;
+    }
+
+    public void setLoginUserData(LoginUserData loginUserData) {
+        this.loginUserData = loginUserData;
     }
 }

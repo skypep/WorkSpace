@@ -16,6 +16,7 @@ import com.toro.helper.R;
 import com.toro.helper.base.ToroActivity;
 import com.toro.helper.modle.BaseResponeData;
 import com.toro.helper.modle.DataModleParser;
+import com.toro.helper.modle.LoginUserData;
 import com.toro.helper.modle.ToroUserManager;
 import com.toro.helper.utils.ConnectManager;
 import com.toro.helper.utils.StringUtils;
@@ -159,7 +160,12 @@ public class LoginActivity extends ToroActivity implements View.OnClickListener 
                     ConnectManager.getInstance().login(this,phoneText,StringUtils.md5(StringUtils.md5(pwdText) + captchar),captchar);
                     break;
                 case ConnectManager.LOGIN:
-                    ToroUserManager.getInstance(this).login(phoneText,data.getEntry());
+                    ToroUserManager.getInstance(this).login(StringUtils.md5(pwdText),phoneText,data.getEntry());
+                    ConnectManager.getInstance().getLoginUserInfo(this,ToroUserManager.getInstance(this).getToken());
+                    break;
+                case ConnectManager.GET_LOGIN_USERE_INFO:
+                    LoginUserData loginUserData = DataModleParser.parserLoginUserData(data.getEntry());
+                    ToroUserManager.getInstance(this).setLoginUserData(loginUserData);
                     startActivity(MainActivity.newIntent(this));
                     finish();
                     progressView.hide(this);

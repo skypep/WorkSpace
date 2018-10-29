@@ -49,4 +49,30 @@ public class DataModleParser {
         }
         return datas;
     }
+
+    public static List<FamilyMemberData> parserFamilyMemberDatas(String jsonString) {
+        List<FamilyMemberData> datas = new ArrayList<>();
+        try{
+            JSONObject jsonObject = new JSONObject(jsonString);
+            JSONArray jsonArray = new JSONArray(jsonObject.getString("rows"));
+            for(int i=0;i< jsonArray.length();i++) {
+                JSONObject obj = jsonArray.getJSONObject(i);
+                FamilyMemberData item = FamilyMemberData.newInstance(obj);
+                datas.add(item);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return datas;
+    }
+
+    public static LoginUserData parserLoginUserData(String jsonString) {
+        try {
+            return LoginUserData.newInstance(new JSONObject(jsonString));
+        }catch (Exception e) {
+
+        }
+        return null;
+
+    }
 }

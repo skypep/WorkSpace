@@ -3,7 +3,10 @@ package com.toro.helper.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -12,8 +15,11 @@ import android.view.View;
 import com.toro.helper.R;
 import com.toro.helper.app.AppConfig;
 import com.toro.helper.base.ToroActivity;
-import com.toro.helper.base.ToroFragment;
-import com.toro.helper.fragment.FamilyPhotoFragment;
+import com.toro.helper.base.ToroListFragment;
+import com.toro.helper.fragment.FamilyMemberFragment;
+import com.toro.helper.fragment.FamilyPhotoFragment1;
+import com.toro.helper.fragment.MineFragment;
+import com.toro.helper.modle.FamilyUserInfo;
 import com.toro.helper.utils.CameraUtils;
 import com.toro.helper.utils.StringUtils;
 import com.toro.helper.view.ChangeColorIconWithTextView;
@@ -42,13 +48,17 @@ public class MainActivity extends ToroActivity implements
     private static final int PERMISSION_CAMERA_REQUEST_CODE = 0x00000012;
     private static final int CAMERA_REQUEST_CODE = 0x00000013;
     private static final int UPLOAD_REQUEST_CODE = 0x00000014;
+    private static final int CONTACT_REQUEST_CODE = 0x00000015;
+    private static final int EDIT_MEMBER_REQUEST_CODE = 0x00000016;
 
     private ViewPager mViewPager;
     private List<Fragment> mTabs = new ArrayList<Fragment>();
     private FragmentPagerAdapter mAdapter;
     private MainActionBar mainActionBar;
 
-    private FamilyPhotoFragment photoFragment;
+    private FamilyPhotoFragment1 photoFragment;
+    private FamilyMemberFragment familyFragment;
+    private MineFragment mineFragment;
     private String mPhotoPath;
 
     private List<ChangeColorIconWithTextView> mTabIndicator = new ArrayList<ChangeColorIconWithTextView>();
@@ -76,29 +86,29 @@ public class MainActivity extends ToroActivity implements
     private void initDatas()
     {
 
-        photoFragment = new FamilyPhotoFragment();
+        photoFragment = new FamilyPhotoFragment1();
         Bundle args = new Bundle();
         args.putString("title", "photo");
         photoFragment.setArguments(args);
         mTabs.add(photoFragment);
 
-        ToroFragment tabFragment1 = new ToroFragment();
+        familyFragment = new FamilyMemberFragment();
         Bundle args1 = new Bundle();
-        args.putString("title", "title1");
-        tabFragment1.setArguments(args1);
-        mTabs.add(tabFragment1);
+        args.putString("title", "family");
+        familyFragment.setArguments(args1);
+        mTabs.add(familyFragment);
 
-        ToroFragment tabFragment2 = new ToroFragment();
+        Fragment tabFragment2 = new Fragment();
         Bundle args2 = new Bundle();
         args.putString("title", "title2");
         tabFragment2.setArguments(args2);
         mTabs.add(tabFragment2);
 
-        ToroFragment tabFragment3 = new ToroFragment();
+        mineFragment = new MineFragment();
         Bundle args3 = new Bundle();
-        args.putString("title", "title3");
-        tabFragment3.setArguments(args3);
-        mTabs.add(tabFragment3);
+        args.putString("title", "mine");
+        mineFragment.setArguments(args3);
+        mTabs.add(mineFragment);
 
         mAdapter = new FragmentPagerAdapter(getSupportFragmentManager())
         {
@@ -255,7 +265,21 @@ public class MainActivity extends ToroActivity implements
         mainActionBar.updateView(getResources().getString(R.string.app_name), 0, R.mipmap.icon_action_more, null, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ArrayList<String> menus = new ArrayList<>();
+                menus.add(getString(R.string.add_family_from_contact));
+                menus.add(getString(R.string.add_family_from_edit));
+                IphoneDialogBottomMenu dialog = new IphoneDialogBottomMenu(MainActivity.this,menus,new MenuItemOnClickListener() {
+                    @Override
+                    public void onClickMenuItem(View v, int item_index, String item) {
+                        if(item.equals(getString(R.string.add_family_from_contact))) {
+                            Intent intent=new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+                            startActivityForResult(intent,CONTACT_REQUEST_CODE);
+                        } else if(item.equals(getString(R.string.add_family_from_edit))) {
+                            startActivityForResult(FamilyMemberEditActivity.createAddIntent(MainActivity.this,null),EDIT_MEMBER_REQUEST_CODE);
+                        }
+                    }
+                });
+                dialog.show();
             }
         });
     }
@@ -285,7 +309,33 @@ public class MainActivity extends ToroActivity implements
         }else if(requestCode == UPLOAD_REQUEST_CODE) {
             boolean needUpate = data.getBooleanExtra(UploadPhotoActivity.UPLOAD_RESULT,false);
             if(needUpate) {
-                photoFragment.updatePhotos();
+                photoFragment.doanloadDatas();
+            }
+        } else if(requestCode == CONTACT_REQUEST_CODE) {
+            String phoneNumber = "";
+            if(data != null) {
+                Uri uri = data.getData();
+                Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+                if (null != cursor && cursor.moveToFirst()){
+                    phoneNumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                    //得到纯数字电话号码
+                    if (phoneNumber.startsWith("+86")) {
+                        phoneNumber = phoneNumber.replace("+86", "");
+                    }
+                    phoneNumber = phoneNumber.replace(" ", "");
+                    phoneNumber = phoneNumber.replace("-", "");
+                    String name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                    cursor.close();
+                    FamilyUserInfo userInfo = new FamilyUserInfo();
+                    userInfo.setPhone(phoneNumber);
+                    userInfo.setName(name);
+                    startActivityForResult(FamilyMemberEditActivity.createAddIntent(this,userInfo),EDIT_MEMBER_REQUEST_CODE);
+                }
+            }
+        }else if(requestCode == EDIT_MEMBER_REQUEST_CODE) {
+            boolean needUpate = data.getBooleanExtra(FamilyMemberEditActivity.EDIT_RESULT,false);
+            if(needUpate) {
+                familyFragment.doanloadDatas();
             }
         }
     }

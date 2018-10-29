@@ -1,5 +1,7 @@
 package com.toro.helper.utils;
 
+import android.util.JsonReader;
+
 import com.toro.helper.modle.photo.PhotoItem;
 import com.toro.helper.utils.okhttp.OkHttp;
 import com.toro.helper.utils.okhttp.mutifile.listener.impl.UIProgressListener;
@@ -30,6 +32,9 @@ public class ConnectManager {
     public static final int UPLOAD_PHOTO_LIST = 11;
     public static final int SUBMIT_PHOTO_LIST = 12;
     public static final int DOWNLOAD_IMAGE = 13;
+    public static final int FAMILY_MENBER_LIST = 14;
+    public static final int ADD_FAMILY_MENBER = 15;
+    public static final int GET_LOGIN_USERE_INFO = 16;
 
     private static final String mainUrl = "http://192.168.8.106:8888/";
 
@@ -92,6 +97,21 @@ public class ConnectManager {
      * 下载图片
      */
     private static final String downloadImageAction = "kinship-api";
+
+    /**
+     * 家庭成员列表
+     */
+    private static final String familyMenberListAction = "kinship-api/member/list";
+
+    /**
+     * 增加家庭成员
+     */
+    private static final String addFamilyMenberAction = "kinship-api/member/add";
+
+    /**
+     * 获取登陆用户信息
+     */
+    private static final String getLoginUserInfo = "kinship-api/getLoginUser";
 
     private static ConnectManager instance;
 
@@ -264,5 +284,44 @@ public class ConnectManager {
     public String getPhotoUrl(PhotoItem photo) {
         String url = mainUrl + downloadImageAction + "/" + photo.getFolder() + "/" + photo.getName();
         return url;
+    }
+
+    public boolean getFamilyMemberList(OnHttpDataUpdateListener listener,int offset,int limit,String token) {
+        try{
+            JSONObject obj = new JSONObject();
+            obj.put("offset",offset);
+            obj.put("limit",limit);
+            new NetWorkTask().execute(listener, FAMILY_MENBER_LIST,mainUrl + familyMenberListAction,obj,token);
+            return true;
+        } catch (Exception e){
+
+        }
+        return false;
+    }
+
+    public boolean addFamilyMember(OnHttpDataUpdateListener listener,String phone,String name,String token) {
+        try{
+            JSONObject obj = new JSONObject();
+
+            JSONArray jArray = new JSONArray();
+            JSONObject childObj = new JSONObject();
+            childObj.put("phone",phone);
+            childObj.put("remarkName",name);
+            jArray.put(childObj);
+
+            obj.put("memberList",jArray);
+
+            new NetWorkTask().execute(listener, ADD_FAMILY_MENBER,mainUrl + addFamilyMenberAction,obj,token);
+            return true;
+        } catch (Exception e){
+
+        }
+        return false;
+    }
+
+    public boolean getLoginUserInfo(OnHttpDataUpdateListener listener,String token) {
+        JSONObject obj = new JSONObject();
+        new NetWorkTask().execute(listener, GET_LOGIN_USERE_INFO,mainUrl + getLoginUserInfo,token);
+        return true;
     }
 }

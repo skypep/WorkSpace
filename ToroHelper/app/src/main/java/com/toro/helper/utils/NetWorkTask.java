@@ -2,6 +2,8 @@ package com.toro.helper.utils;
 
 import android.os.AsyncTask;
 
+import com.toro.helper.utils.okhttp.OkHttp;
+
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -36,6 +38,8 @@ public class NetWorkTask extends AsyncTask<Object, Integer, Object> {
                 return HttpUtils.doPost(url,obj);
             case ConnectManager.GET_PHOTO_LIST:
             case ConnectManager.SUBMIT_PHOTO_LIST:
+            case ConnectManager.FAMILY_MENBER_LIST:
+            case ConnectManager.ADD_FAMILY_MENBER:
                 JSONObject pobj = (JSONObject) params[3];
                 token = (String) params[4];
                 return HttpUtils.doTokenPost(url,pobj,token);
@@ -43,6 +47,9 @@ public class NetWorkTask extends AsyncTask<Object, Integer, Object> {
                 ArrayList<String> images = (ArrayList<String>) params[3];
                 token = (String) params[4];
                 return ToroHttp.uploadFile(url,images,token);
+            case ConnectManager.GET_LOGIN_USERE_INFO:
+                token = (String) params[3];
+                return OkHttp.doTokenGet(url,token);
             case ConnectManager.DOWNLOAD_IMAGE:// 此case 无效 直接调用okhttp
                 return null;
             default:
