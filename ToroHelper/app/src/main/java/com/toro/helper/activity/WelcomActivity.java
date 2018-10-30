@@ -17,29 +17,19 @@ public class WelcomActivity extends ToroActivity {
 
     Handler handler = new Handler();
 
+    private String token;
+    private String phone;
+    private String password;
+    private boolean isQuickLogin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.welcom_activity);
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                if(isFinishing()) {
-//                    return;
-//                }
-//                if(StringUtils.isEmpty(ToroUserManager.getInstance(WelcomActivity.this).getToken())){
-//                    startActivity(LoginActivity.newIntent(WelcomActivity.this));
-//                } else {
-//                    startActivity(MainActivity.newIntent(WelcomActivity.this));
-//                }
-//
-//                finish();
-//            }
-//        },2000);
-        String token = ToroUserManager.getInstance(this).getToken();
-        String phone = ToroUserManager.getInstance(this).getPhone();
-        String password = ToroUserManager.getInstance(this).getPwd();
-        boolean isQuickLogin = ToroUserManager.getInstance(this).isQuickLogin();
+        token = ToroUserManager.getInstance(this).getToken();
+        phone = ToroUserManager.getInstance(this).getPhone();
+        password = ToroUserManager.getInstance(this).getPwd();
+        isQuickLogin = ToroUserManager.getInstance(this).isQuickLogin();
         /**
          * 如果没有登陆过，手动登陆
          * 如果正常登陆过，自动登陆
@@ -50,11 +40,12 @@ public class WelcomActivity extends ToroActivity {
         if(StringUtils.isEmpty(token)) {
             delayToLoginActivity();
         } else if(isQuickLogin) {
-
+            ConnectManager.getInstance().verifyTokenAction(this,token);
+        } else if(StringUtils.isNotEmpty(password)) {
+            ConnectManager.getInstance().getNumberCaptchar(this);
         } else {
-            startActivity(MainActivity.newIntent(WelcomActivity.this));
+            delayToLoginActivity();
         }
-//        ConnectManager.getInstance().getLoginUserInfo(this,token);
 
     }
 
@@ -80,8 +71,29 @@ public class WelcomActivity extends ToroActivity {
                 case ConnectManager.GET_LOGIN_USERE_INFO:
                     LoginUserData loginUserData = DataModleParser.parserLoginUserData(data.getEntry());
                     ToroUserManager.getInstance(this).setLoginUserData(loginUserData);
+                    startActivity(MainActivity.newIntent(WelcomActivity.this));
+                    finish();
+                    break;
+                case ConnectManager.VERIFY_TOKEN:
+                    ConnectManager.getInstance().refreshToken(this,token);
+                    break;
+                case ConnectManager.GET_NUMBER_CAPTCHAR:
+                    String captchar = data.getEntry();
+                    ConnectManager.getInstance().login(this,phone,StringUtils.md5(password + captchar),captchar);
+                    break;
+                case ConnectManager.LOGIN:
+                    ToroUserManager.getInstance(this).login(password,phone,data.getEntry());
+                    ConnectManager.getInstance().getLoginUserInfo(this,ToroUserManager.getInstance(this).getToken());
+                    break;
+                case ConnectManager.REFRESH_TOKEN:
+                    ToroUserManager.getInstance(this).login("",phone,data.getEntry());
+                    token = ToroUserManager.getInstance(this).getToken();
+                    ConnectManager.getInstance().getLoginUserInfo(this,token);
                     break;
             }
+        } else {
+            startActivity(LoginActivity.newIntent(WelcomActivity.this));
+            finish();
         }
         return staus;
     }

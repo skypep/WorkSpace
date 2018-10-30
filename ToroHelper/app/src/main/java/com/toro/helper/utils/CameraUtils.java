@@ -37,8 +37,7 @@ public class CameraUtils {
     public static File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         String imageFileName = String.format("JPEG_%s.jpg", timeStamp);
-        File storageDir = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES);
+        File storageDir = FileUtils.getImageCacheDir();
         if (!storageDir.exists()) {
             storageDir.mkdir();
         }

@@ -51,6 +51,7 @@
     <string name="add_family_from_edit">手动添加</string>
     <string name="confirm">确认</string>
     <string name="fix_head">修改头像</string>
+    <string name="add_head">添加头像</string>
     <string name="create_new_member">添加</string>
     <string name="edit_member">编辑</string>
     <string name="create_new_member_sucsses">添加成功</string>
@@ -61,9 +62,20 @@
     <string name="status_wait_other_agree">待接受</string>
     <string name="status_unknow">未知</string>
 
+    <string name="nick_name">昵称</string>
     <string name="have_no_nick_name">暂无昵称</string>
     <string name="family_member_manager">家庭成员管理</string>
     <string name="family_photo">我的照片</string>
     <string name="sms_mode">短信模式</string>
     <string name="setting">设置</string>
+    <string name="edit_personal_details">修改个人信息</string>
+    <string name="user_account">注册账号</string>
+    <string name="upload_head_progress_text_format">正在上传头像(%1$s)</string>
+    <string name="upload_head_finish_submit_progress_text">上传完成，正在提交</string>
+
+    <string name="save_photo_to_disc">保存至本地</string>
+    <string name="save_photo_to_gallery">保存至相册</string>
+    <string name="save_photo_sucsses_format">已保存至(%1$s)</string>
+    <string name="save_photo_failed">已保存至(%1$s)</string>
+    <string name="save_photo_to_gallery_sucsses">已保存至相册</string>
 </resources>

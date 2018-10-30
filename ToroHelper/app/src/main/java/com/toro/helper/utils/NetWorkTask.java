@@ -25,6 +25,7 @@ public class NetWorkTask extends AsyncTask<Object, Integer, Object> {
         mTag = (Integer) params[1];
         String url = (String)params[2];
         String token;
+        JSONObject pobj;
         switch (mTag) {
             case ConnectManager.GET_SCODE_FOR_LOGIN:
             case ConnectManager.QUICK_LOGIN:
@@ -34,13 +35,15 @@ public class NetWorkTask extends AsyncTask<Object, Integer, Object> {
             case ConnectManager.LOGIN:
             case ConnectManager.GET_SCODE_FOR_RESET_PWD:
             case ConnectManager.RESET_PWD:
+            case ConnectManager.VERIFY_TOKEN:
                 JSONObject obj = (JSONObject) params[3];
                 return HttpUtils.doPost(url,obj);
             case ConnectManager.GET_PHOTO_LIST:
             case ConnectManager.SUBMIT_PHOTO_LIST:
             case ConnectManager.FAMILY_MENBER_LIST:
             case ConnectManager.ADD_FAMILY_MENBER:
-                JSONObject pobj = (JSONObject) params[3];
+            case ConnectManager.REFRESH_TOKEN:
+                pobj = (JSONObject) params[3];
                 token = (String) params[4];
                 return HttpUtils.doTokenPost(url,pobj,token);
             case ConnectManager.UPLOAD_PHOTO_LIST: //  此case 无效 直接调用okhttp
@@ -50,6 +53,10 @@ public class NetWorkTask extends AsyncTask<Object, Integer, Object> {
             case ConnectManager.GET_LOGIN_USERE_INFO:
                 token = (String) params[3];
                 return OkHttp.doTokenGet(url,token);
+            case ConnectManager.SUBMIT_PERSIONAL_DETAILS:
+                pobj = (JSONObject) params[3];
+                token = (String) params[4];
+                return OkHttp.doTokenPut(url,pobj,token);
             case ConnectManager.DOWNLOAD_IMAGE:// 此case 无效 直接调用okhttp
                 return null;
             default:

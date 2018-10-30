@@ -71,6 +71,28 @@ public class OkHttp {
         return "";
     }
 
+    public static String doTokenPut(String url, JSONObject obj,String token) {
+        try{
+            OkHttpClient client = new OkHttpClient();
+            RequestBody body = RequestBody.create(JSON, obj.toString());
+            Request request = new Request.Builder()
+                    .addHeader("Authorization", token)
+                    .addHeader("Content-Type","application/json")
+                    .url(url)
+                    .put(body)
+                    .build();
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                return response.body().string();
+            } else {
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
     public static String doTokenPost(String url, JSONObject obj,String token) {
         try{
             OkHttpClient client = new OkHttpClient();

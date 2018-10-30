@@ -54,6 +54,19 @@ public class ImageLoad {
                 .into(imageView);
     }
 
+    public static void GlidLoad(ImageView imageView,String localPath,int defaultRes) {
+        if(StringUtils.isEmpty(localPath)) {
+            imageView.setImageResource(defaultRes);
+            return;
+        }
+        RequestOptions options = new RequestOptions();
+        options.placeholder(defaultRes);
+        options.error(defaultRes);
+        Glide.with(imageView).load(localPath)
+                .apply(options)
+                .into(imageView);
+    }
+
     private ImageView imageView;
     private Context mContext;
 

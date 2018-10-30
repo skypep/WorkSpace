@@ -35,6 +35,9 @@ public class ConnectManager {
     public static final int FAMILY_MENBER_LIST = 14;
     public static final int ADD_FAMILY_MENBER = 15;
     public static final int GET_LOGIN_USERE_INFO = 16;
+    public static final int VERIFY_TOKEN = 17;
+    public static final int SUBMIT_PERSIONAL_DETAILS = 18;
+    public static final int REFRESH_TOKEN = 19;
 
     private static final String mainUrl = "http://192.168.8.106:8888/";
 
@@ -112,6 +115,21 @@ public class ConnectManager {
      * 获取登陆用户信息
      */
     private static final String getLoginUserInfo = "kinship-api/getLoginUser";
+
+    /**
+     * 验证token是否有效
+     */
+    private static final String verifyTokenAction = "kinship-api/verifyToken";
+
+    /**
+     * 修改用户信息
+     */
+    private static final String submitPersionalDaitelsAction = "kinship-api/user";
+
+    /**
+     * 刷新Token
+     */
+    private static final String refreshTokenAction = "kinship-api/refreshToken";
 
     private static ConnectManager instance;
 
@@ -258,6 +276,11 @@ public class ConnectManager {
 
     }
 
+    public boolean uploadPhot(OnHttpDataUpdateListener listener, String photo, String token, UIProgressListener progressListener) {
+        OkHttp.upLoadFile(UPLOAD_PHOTO_LIST,mainUrl + uploadPhotoListAction,photo,token,progressListener,listener);
+        return true;
+    }
+
     public boolean submitPhotoList(OnHttpDataUpdateListener listener, List<PhotoItem> fileUrls, int[] uids, String message, int mode, String token) {
         try{
             JSONObject obj = new JSONObject();
@@ -322,6 +345,55 @@ public class ConnectManager {
     public boolean getLoginUserInfo(OnHttpDataUpdateListener listener,String token) {
         JSONObject obj = new JSONObject();
         new NetWorkTask().execute(listener, GET_LOGIN_USERE_INFO,mainUrl + getLoginUserInfo,token);
+        return true;
+    }
+
+    public boolean verifyTokenAction(OnHttpDataUpdateListener listener, String token) {
+        try{
+            JSONObject obj = new JSONObject();
+            obj.put("token",token);
+            new NetWorkTask().execute(listener,VERIFY_TOKEN,mainUrl + verifyTokenAction,obj);
+            return true;
+        } catch (Exception e){
+
+        }
+        return false;
+    }
+
+    public boolean submitPersionalDaitels(OnHttpDataUpdateListener listener,int uid,String nickName,PhotoItem photo,String token) {
+        try{
+            JSONObject obj = new JSONObject();
+
+            obj.put("uid",uid);
+            obj.put("nickName",nickName);
+            obj.put("headPhoto",photo.json());
+
+            new NetWorkTask().execute(listener, SUBMIT_PERSIONAL_DETAILS,mainUrl + submitPersionalDaitelsAction,obj,token);
+            return true;
+        } catch (Exception e){
+
+        }
+        return false;
+    }
+
+    public boolean submitPersionalDaitels(OnHttpDataUpdateListener listener,int uid,String nickName,String token) {
+        try{
+            JSONObject obj = new JSONObject();
+
+            obj.put("uid",uid);
+            obj.put("nickName",nickName);
+
+            new NetWorkTask().execute(listener, SUBMIT_PERSIONAL_DETAILS,mainUrl + submitPersionalDaitelsAction,obj,token);
+            return true;
+        } catch (Exception e){
+
+        }
+        return false;
+    }
+
+    public boolean refreshToken(OnHttpDataUpdateListener listener,String token) {
+        JSONObject obj = new JSONObject();
+        new NetWorkTask().execute(listener, REFRESH_TOKEN,mainUrl + refreshTokenAction,obj,token);
         return true;
     }
 }

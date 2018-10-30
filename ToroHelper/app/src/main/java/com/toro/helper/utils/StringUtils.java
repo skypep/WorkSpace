@@ -10,7 +10,7 @@ import java.security.NoSuchAlgorithmException;
 public class StringUtils {
 
     public static boolean isEmpty(String string) {
-        if(string == null || string.length() < 1) {
+        if(string == null || string.length() < 1 || string.equals("null") || string.equals("NULL")) {
             return true;
         }
         return false;

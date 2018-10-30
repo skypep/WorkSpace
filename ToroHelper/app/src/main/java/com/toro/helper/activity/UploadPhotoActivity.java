@@ -40,8 +40,6 @@ public class UploadPhotoActivity extends ToroActivity implements View.OnClickLis
 
     private static final String EXTRA_IMAGES = "extra_images";
 
-    public static final String UPLOAD_RESULT = "upload_result";
-
     private static final int PHOTO_REQUEST_CODE = 0x00000011;
     private static final int PERMISSION_CAMERA_REQUEST_CODE = 0x00000012;
     private static final int CAMERA_REQUEST_CODE = 0x00000013;
@@ -226,11 +224,12 @@ public class UploadPhotoActivity extends ToroActivity implements View.OnClickLis
                 progressView.hide(this);
                 boolean status = super.bindData(tag,object);
                 if(!status) {
+                    Toast.makeText(UploadPhotoActivity.this,getString(R.string.submit_failed),Toast.LENGTH_LONG).show();
                     return status;
                 } else {
                     Toast.makeText(UploadPhotoActivity.this,getString(R.string.submit_sucsses),Toast.LENGTH_LONG).show();
                     Intent intent = new Intent();
-                    intent.putExtra(UPLOAD_RESULT, true);
+                    intent.putExtra(MainActivity.NEED_REFRESH_PHOTO_LIST_RESULT, true);
                     setResult(RESULT_OK, intent);
                     finish();
                     return true;

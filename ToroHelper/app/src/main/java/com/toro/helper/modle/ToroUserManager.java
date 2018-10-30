@@ -3,6 +3,7 @@ package com.toro.helper.modle;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.toro.helper.app.App;
 import com.toro.helper.utils.StringUtils;
 
 import org.json.JSONObject;
@@ -13,6 +14,7 @@ import org.json.JSONObject;
  **/
 public class ToroUserManager {
     private String token;
+    private String rongYunToken;
     private String phone;
     private String pwd;
     private long loginTime;
@@ -35,15 +37,25 @@ public class ToroUserManager {
     }
 
     public void login(String password,String phone,String token) {
+        String toroToken = "";
+        String rongYunToken = "";
         try{
             JSONObject obj = new JSONObject(token);
-            token = obj.getString("login");
+            toroToken = obj.getString("login");
         }catch (Exception e) {
 
         }
+        try{
+            JSONObject obj = new JSONObject(token);
+            rongYunToken = obj.getString("message");
+            App.getInstance().RongYunConnect(rongYunToken); // 连接融云
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
         setLoginTime(System.currentTimeMillis());
         setPhone(phone);
-        setToken(token);
+        setToken(toroToken);
+        setRongYunToken(rongYunToken);
         setPwd(password);
         if(StringUtils.isEmpty(password)) {
             setQuickLogin(true);
@@ -90,6 +102,16 @@ public class ToroUserManager {
     public void setLoginTime(long loginTime) {
         this.loginTime = loginTime;
         pre.edit().putLong("loginTime",loginTime).apply();
+    }
+
+    public String getRongYunToken() {
+        rongYunToken = pre.getString("rongYunToken",rongYunToken);
+        return rongYunToken;
+    }
+
+    public void setRongYunToken(String rongYunToken) {
+        this.rongYunToken = rongYunToken;
+        pre.edit().putString("rongYunToken",rongYunToken).apply();
     }
 
     public boolean isQuickLogin() {

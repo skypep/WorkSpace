@@ -44,12 +44,16 @@ public class MainActivity extends ToroActivity implements
     public static final int MAIN_MARKET_FRAGMENT = 2;
     public static final int MAIN_ME_FRAGMENT = 3;
 
-    private static final int PHOTO_REQUEST_CODE = 0x00000011;
-    private static final int PERMISSION_CAMERA_REQUEST_CODE = 0x00000012;
-    private static final int CAMERA_REQUEST_CODE = 0x00000013;
-    private static final int UPLOAD_REQUEST_CODE = 0x00000014;
-    private static final int CONTACT_REQUEST_CODE = 0x00000015;
-    private static final int EDIT_MEMBER_REQUEST_CODE = 0x00000016;
+    public static final int PHOTO_REQUEST_CODE = 0x0011;
+    public static final int PERMISSION_CAMERA_REQUEST_CODE = 0x0012;
+    public static final int CAMERA_REQUEST_CODE = 0x0013;
+    private static final int UPLOAD_REQUEST_CODE = 0x0014;
+    private static final int CONTACT_REQUEST_CODE = 0x0015;
+    private static final int EDIT_MEMBER_REQUEST_CODE = 0x0016;
+    public static final int EDIT_PERSONAL_DETAILS_REQUEST_CODE = 0x0017;
+
+    public static final String NEED_REFRESH_PHOTO_LIST_RESULT = "need_refresh_photo_list_result";
+    public static final String NEED_REFRESH_PHOTO_LIST_AND_MINE_RESULT = "need_refresh_photo_list_and_ming_result";
 
     private ViewPager mViewPager;
     private List<Fragment> mTabs = new ArrayList<Fragment>();
@@ -306,10 +310,20 @@ public class MainActivity extends ToroActivity implements
                     startActivityForResult(UploadPhotoActivity.newIntent(this,images),UPLOAD_REQUEST_CODE);
                 }
             }
-        }else if(requestCode == UPLOAD_REQUEST_CODE) {
-            boolean needUpate = data.getBooleanExtra(UploadPhotoActivity.UPLOAD_RESULT,false);
-            if(needUpate) {
-                photoFragment.doanloadDatas();
+        }else if(requestCode == UPLOAD_REQUEST_CODE){
+            if(data != null) {
+                boolean needUpate = data.getBooleanExtra(NEED_REFRESH_PHOTO_LIST_RESULT,false);
+                if(needUpate) {
+                    photoFragment.doanloadDatas();
+                }
+            }
+        } else if(requestCode == EDIT_PERSONAL_DETAILS_REQUEST_CODE){
+            if(data != null) {
+                boolean needUpate = data.getBooleanExtra(NEED_REFRESH_PHOTO_LIST_AND_MINE_RESULT,false);
+                if(needUpate) {
+                    photoFragment.doanloadDatas();
+                    mineFragment.update();
+                }
             }
         } else if(requestCode == CONTACT_REQUEST_CODE) {
             String phoneNumber = "";
@@ -333,9 +347,11 @@ public class MainActivity extends ToroActivity implements
                 }
             }
         }else if(requestCode == EDIT_MEMBER_REQUEST_CODE) {
-            boolean needUpate = data.getBooleanExtra(FamilyMemberEditActivity.EDIT_RESULT,false);
-            if(needUpate) {
-                familyFragment.doanloadDatas();
+            if(data != null) {
+                boolean needUpate = data.getBooleanExtra(FamilyMemberEditActivity.EDIT_RESULT,false);
+                if(needUpate) {
+                    familyFragment.doanloadDatas();
+                }
             }
         }
     }
