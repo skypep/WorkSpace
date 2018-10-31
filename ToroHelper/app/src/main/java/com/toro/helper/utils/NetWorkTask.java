@@ -54,6 +54,7 @@ public class NetWorkTask extends AsyncTask<Object, Integer, Object> {
                 token = (String) params[3];
                 return OkHttp.doTokenGet(url,token);
             case ConnectManager.SUBMIT_PERSIONAL_DETAILS:
+            case ConnectManager.AGREEN_MEMBER:
                 pobj = (JSONObject) params[3];
                 token = (String) params[4];
                 return OkHttp.doTokenPut(url,pobj,token);

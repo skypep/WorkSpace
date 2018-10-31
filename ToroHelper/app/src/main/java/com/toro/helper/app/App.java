@@ -6,7 +6,6 @@ import android.content.Context;
 import android.util.Log;
 
 import com.toro.helper.RongyunManager;
-import com.toro.helper.utils.ImageCache;
 
 /**
  * Create By liujia
@@ -22,8 +21,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-//        ImageCache.getInstance().init(this);
-        RongyunManager.init(this);
+        RongyunManager.getInstance().init(this);
     }
 
     public static App getInstance() {
@@ -50,38 +48,8 @@ public class App extends Application {
 
     public void RongYunConnect(String token) {
         if (getApplicationInfo().packageName.equals(getCurProcessName(getApplicationContext()))) {
-            RongyunManager.connect(getApplicationContext(), token, new RongyunManager.RongYunConnectCallback() {
-                @Override
-                public void onTokenIncorrect() {
-                    Log.d(Tag,"onTokenIncorrect");
-                }
-
-                @Override
-                public void onSuccess(String userid) {
-                    Log.d(Tag,"onSuccess");
-                }
-
-                @Override
-                public void onError(int errorCode) {
-                    Log.d(Tag,"errorCode(" + errorCode + ")");
-                }
-            });
-
-            RongyunManager.setOnReceiveMessageListener(new RongyunManager.OnReceiveMessageListener() {
-                @Override
-                public boolean onReceived(String message, int i) {
-                    return false;
-                }
-            });
-
-            RongyunManager.setConnectionStatusListener(new RongyunManager.ConnectionStatusListener() {
-                @Override
-                public void onChanged(String message) {
-                    String me = message;
-                }
-            });
+            RongyunManager.getInstance().connect(token,null);
         }
     }
-
 
 }

@@ -1,8 +1,10 @@
 package com.toro.helper.fragment;
 
 import android.support.v7.widget.DividerItemDecoration;
+import android.view.View;
 
 import com.toro.helper.R;
+import com.toro.helper.activity.MainActivity;
 import com.toro.helper.base.ToroListAdapter;
 import com.toro.helper.base.ToroListFragment;
 import com.toro.helper.fragment.family.FamilyMemberAdapter;
@@ -24,8 +26,8 @@ public class FamilyMemberFragment extends ToroListFragment {
     private FamilyMemberAdapter adpter;
 
     @Override
-    public void doanloadDatas() {
-        super.doanloadDatas();
+    public void doanloadDatas(boolean isBackgroud) {
+        super.doanloadDatas(isBackgroud);
         ConnectManager.getInstance().getFamilyMemberList(this,0,10, ToroUserManager.getInstance(getContext()).getToken());
     }
 
@@ -33,6 +35,7 @@ public class FamilyMemberFragment extends ToroListFragment {
     protected ToroListAdapter getAdapter() {
         if(adpter == null) {
             adpter = new FamilyMemberAdapter(getContext(),familys);
+            adpter.setAgreenListener(agreenListener);
         }
         return adpter;
     }
@@ -56,5 +59,13 @@ public class FamilyMemberFragment extends ToroListFragment {
     protected void setItemDecoration() {
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
     }
+
+    private View.OnClickListener agreenListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            int index = (int) v.getTag();
+            ConnectManager.getInstance().agreenMember((MainActivity)getActivity(),familys.get(index).getId(),ToroUserManager.getInstance(getContext()).getToken());
+        }
+    };
 
 }

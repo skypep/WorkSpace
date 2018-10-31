@@ -50,8 +50,8 @@ public class FamilyPhotoFragment1 extends ToroListFragment {
     }
 
     @Override
-    public void doanloadDatas() {
-        super.doanloadDatas();
+    public void doanloadDatas(boolean isBackgroud) {
+        super.doanloadDatas(isBackgroud);
         ConnectManager.getInstance().updatePhotoList(this,0,10, ToroUserManager.getInstance(getContext()).getToken());
     }
 

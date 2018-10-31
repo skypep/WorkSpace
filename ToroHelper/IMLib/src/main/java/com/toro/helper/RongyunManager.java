@@ -2,8 +2,13 @@ package com.toro.helper;
 
 import android.content.Context;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.rong.imlib.RongIMClient;
+import io.rong.imlib.RongIMClient.OnReceiveMessageListener;
 import io.rong.imlib.model.Message;
+import io.rong.message.TextMessage;
 
 /**
  * Create By liujia
@@ -11,85 +16,110 @@ import io.rong.imlib.model.Message;
  **/
 public class RongyunManager {
 
-    public interface RongYunConnectCallback {
-        /**
-         * Token 错误。可以从下面两点检查 1.  Token 是否过期，如果过期您需要向 App Server 重新请求一个新的 Token
-         *                            2.  token 对应的 appKey 和工程里设置的 appKey 是否一致
-         */
-        public void onTokenIncorrect();
+    private static RongyunManager instance;
+    private Context appContext;
+    private List<RongYunListener.OnReceiveMessageListener> onReceiveMessageListeners;
+    private List<RongYunListener.ConnectionStatusListener> connectionStatusListeners;
+    private boolean isFirst = true;
 
-        /**
-         * 连接融云成功
-         * @param userid 当前 token 对应的用户 id
-         */
-        public void onSuccess(String userid);
-
-        /**
-         * 连接融云失败
-         * @param errorCode 错误码，可到官网 查看错误码对应的注释
-         */
-        public void onError(int errorCode);
+    public static RongyunManager getInstance() {
+        if(instance == null) {
+            instance = new RongyunManager();
+        }
+        return instance;
     }
 
-    public interface OnReceiveMessageListener{
-        public boolean onReceived(String message, int i);
+    private RongyunManager() {
+        onReceiveMessageListeners = new ArrayList<RongYunListener.OnReceiveMessageListener>();
+        connectionStatusListeners = new ArrayList<RongYunListener.ConnectionStatusListener>();
     }
 
-    public interface ConnectionStatusListener{
-        public void onChanged(String message);
-    }
-
-    public static void init(Context context) {
+    public void init(Context context) {
+        this.appContext = context;
         RongIMClient.init(context);
+        RongIMClient.setOnReceiveMessageListener(onReceiveMessageListener);
+        RongIMClient.setConnectionStatusListener(connectionStatusListener);
     }
 
-    public static void connect(Context context,String token,final RongYunConnectCallback callback) {
-        RongIMClient.connect(token, new RongIMClient.ConnectCallback() {
-
-            /**
-             * Token 错误。可以从下面两点检查 1.  Token 是否过期，如果过期您需要向 App Server 重新请求一个新的 Token
-             *                            2.  token 对应的 appKey 和工程里设置的 appKey 是否一致
-             */
+    public void connect(String token,final RongYunListener.RongYunConnectCallback callback) {
+        if(!isFirst) {
+            return;
+        }
+        isFirst = false;
+        RongIMClient.getInstance().connect(token, new RongIMClient.ConnectCallback() {
             @Override
             public void onTokenIncorrect() {
-                callback.onTokenIncorrect();
+                if(callback != null) {
+                    callback.onTokenIncorrect();
+                }
             }
 
-            /**
-             * 连接融云成功
-             * @param userid 当前 token 对应的用户 id
-             */
             @Override
             public void onSuccess(String userid) {
-                callback.onSuccess(userid);
+                if(callback != null) {
+                    callback.onSuccess(userid);
+                }
             }
 
-            /**
-             * 连接融云失败
-             * @param errorCode 错误码，可到官网 查看错误码对应的注释
-             */
             @Override
             public void onError(RongIMClient.ErrorCode errorCode) {
-                callback.onError(errorCode.getValue());
+                if(callback != null) {
+                    callback.onError(errorCode.getValue());
+                }
             }
         });
     }
 
-    public static void setOnReceiveMessageListener(final OnReceiveMessageListener listener) {
-        RongIMClient.setOnReceiveMessageListener(new RongIMClient.OnReceiveMessageListener() {
-            @Override
-            public boolean onReceived(Message message, int i) {
-                return listener.onReceived(message.toString(),i);
-            }
-        });
+    public void addOnReceiveMessageListener(RongYunListener.OnReceiveMessageListener listener){
+        if(listener instanceof RongYunListener.OnReceiveMessageListener) {
+            onReceiveMessageListeners.add(listener);
+        }
     }
 
-    public static void setConnectionStatusListener(final ConnectionStatusListener listener){
-        RongIMClient.setConnectionStatusListener(new RongIMClient.ConnectionStatusListener() {
-            @Override
-            public void onChanged(ConnectionStatus connectionStatus) {
-                listener.onChanged(connectionStatus.getMessage());
-            }
-        });
+    public void removeOnReceiveMessageListener(RongYunListener.OnReceiveMessageListener listener){
+        if(listener instanceof RongYunListener.OnReceiveMessageListener) {
+            onReceiveMessageListeners.remove(listener);
+        }
     }
+
+    public void addConnectionStatusListener(RongYunListener.ConnectionStatusListener listener) {
+        connectionStatusListeners.add(listener);
+    }
+
+    public void removeConnectionStatusListener(RongYunListener.ConnectionStatusListener listener) {
+        connectionStatusListeners.remove(listener);
+    }
+
+    private OnReceiveMessageListener onReceiveMessageListener = new OnReceiveMessageListener() {
+        @Override
+        public boolean onReceived(Message message, int i) {
+            String result = "";
+            try{
+                TextMessage tm = (TextMessage) message.getContent();
+                result = tm.getContent();
+            }catch (Exception e) {
+                return false;
+            }
+            boolean flag = false;
+            if(onReceiveMessageListeners != null){
+                for(RongYunListener.OnReceiveMessageListener listener : onReceiveMessageListeners) {
+                    if(listener.onReceived(result)){
+                        flag = true;
+                    }
+                }
+            }
+            return flag;
+        }
+    };
+
+    private RongIMClient.ConnectionStatusListener connectionStatusListener = new RongIMClient.ConnectionStatusListener() {
+        @Override
+        public void onChanged(ConnectionStatus connectionStatus) {
+            if(connectionStatusListeners != null){
+                for(RongYunListener.ConnectionStatusListener listener : connectionStatusListeners) {
+                    listener.onChanged(connectionStatus.getValue());
+                }
+            }
+        }
+    };
 }

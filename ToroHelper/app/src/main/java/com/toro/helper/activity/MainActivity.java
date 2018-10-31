@@ -13,6 +13,8 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.toro.helper.R;
+import com.toro.helper.RongYunListener;
+import com.toro.helper.RongyunManager;
 import com.toro.helper.app.AppConfig;
 import com.toro.helper.base.ToroActivity;
 import com.toro.helper.base.ToroListFragment;
@@ -21,6 +23,7 @@ import com.toro.helper.fragment.FamilyPhotoFragment1;
 import com.toro.helper.fragment.MineFragment;
 import com.toro.helper.modle.FamilyUserInfo;
 import com.toro.helper.utils.CameraUtils;
+import com.toro.helper.utils.ConnectManager;
 import com.toro.helper.utils.StringUtils;
 import com.toro.helper.view.ChangeColorIconWithTextView;
 import com.toro.helper.view.MainActionBar;
@@ -37,7 +40,8 @@ import helper.phone.toro.com.imageselector.utils.ImageSelector;
  * on 2018/10/19.
  **/
 public class MainActivity extends ToroActivity implements
-        ViewPager.OnPageChangeListener, View.OnClickListener {
+        ViewPager.OnPageChangeListener, View.OnClickListener,
+        RongYunListener.OnReceiveMessageListener{
 
     public static final int MAIN_PHOTO_FRAGMENT = 0;
     public static final int MAIN_HELPER_FRAGMENT = 1;
@@ -85,6 +89,14 @@ public class MainActivity extends ToroActivity implements
         mTabIndicator.get(MAIN_PHOTO_FRAGMENT).setIconAlpha(1.0f);
         mViewPager.setCurrentItem(MAIN_PHOTO_FRAGMENT, false);
         changeActionView(MAIN_PHOTO_FRAGMENT);
+
+        RongyunManager.getInstance().addOnReceiveMessageListener(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        RongyunManager.getInstance().removeOnReceiveMessageListener(this);
+        super.onDestroy();
     }
 
     private void initDatas()
@@ -301,7 +313,7 @@ public class MainActivity extends ToroActivity implements
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PHOTO_REQUEST_CODE && data != null) {
             ArrayList<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
-            startActivity(UploadPhotoActivity.newIntent(this,images));
+            startActivityForResult(UploadPhotoActivity.newIntent(this,images),UPLOAD_REQUEST_CODE);
         }else if (requestCode == CAMERA_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 if(StringUtils.isNotEmpty(mPhotoPath)) {
@@ -314,14 +326,14 @@ public class MainActivity extends ToroActivity implements
             if(data != null) {
                 boolean needUpate = data.getBooleanExtra(NEED_REFRESH_PHOTO_LIST_RESULT,false);
                 if(needUpate) {
-                    photoFragment.doanloadDatas();
+                    photoFragment.doanloadDatas(true);
                 }
             }
         } else if(requestCode == EDIT_PERSONAL_DETAILS_REQUEST_CODE){
             if(data != null) {
                 boolean needUpate = data.getBooleanExtra(NEED_REFRESH_PHOTO_LIST_AND_MINE_RESULT,false);
                 if(needUpate) {
-                    photoFragment.doanloadDatas();
+                    photoFragment.doanloadDatas(true);
                     mineFragment.update();
                 }
             }
@@ -350,7 +362,7 @@ public class MainActivity extends ToroActivity implements
             if(data != null) {
                 boolean needUpate = data.getBooleanExtra(FamilyMemberEditActivity.EDIT_RESULT,false);
                 if(needUpate) {
-                    familyFragment.doanloadDatas();
+                    familyFragment.doanloadDatas(true);
                 }
             }
         }
@@ -375,5 +387,30 @@ public class MainActivity extends ToroActivity implements
         intent.setClass(context,MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         return intent;
+    }
+
+    @Override
+    public boolean onReceived(String message) {
+        if(message.equals("MEMBER_DELETE") || message.equals("MEMBER_ADD") || message.equals("MEMBER_ACCEPT")) {
+            familyFragment.doanloadDatas(true);
+            return true;
+        } else if(message.equals("PHOTO_RELEASE") || message.equals("PHOTO_DELETE")) {
+            photoFragment.doanloadDatas(true);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean bindData(int tag, Object object) {
+        boolean flag = super.bindData(tag, object);
+        switch (tag) {
+            case ConnectManager.AGREEN_MEMBER:
+                familyFragment.doanloadDatas(true);
+                if(flag) {
+                    photoFragment.doanloadDatas(true);
+                }
+                break;
+        }
+        return flag;
     }
 }

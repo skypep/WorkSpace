@@ -61,6 +61,7 @@
     <string name="status_wait_me_agree">新申请</string>
     <string name="status_wait_other_agree">待接受</string>
     <string name="status_unknow">未知</string>
+    <string name="agreen">同意</string>
 
     <string name="nick_name">昵称</string>
     <string name="have_no_nick_name">暂无昵称</string>

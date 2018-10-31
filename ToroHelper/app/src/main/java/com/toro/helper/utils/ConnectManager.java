@@ -38,6 +38,7 @@ public class ConnectManager {
     public static final int VERIFY_TOKEN = 17;
     public static final int SUBMIT_PERSIONAL_DETAILS = 18;
     public static final int REFRESH_TOKEN = 19;
+    public static final int AGREEN_MEMBER = 20;
 
     private static final String mainUrl = "http://192.168.8.106:8888/";
 
@@ -130,6 +131,11 @@ public class ConnectManager {
      * 刷新Token
      */
     private static final String refreshTokenAction = "kinship-api/refreshToken";
+
+    /**
+     * 接受成员邀请
+     */
+    private static final String agreenMemberAction = "kinship-api/member/status/";
 
     private static ConnectManager instance;
 
@@ -394,6 +400,12 @@ public class ConnectManager {
     public boolean refreshToken(OnHttpDataUpdateListener listener,String token) {
         JSONObject obj = new JSONObject();
         new NetWorkTask().execute(listener, REFRESH_TOKEN,mainUrl + refreshTokenAction,obj,token);
+        return true;
+    }
+
+    public boolean agreenMember(OnHttpDataUpdateListener listener,int id,String token) {
+        JSONObject obj = new JSONObject();
+        new NetWorkTask().execute(listener, AGREEN_MEMBER,mainUrl + agreenMemberAction + id,obj,token);
         return true;
     }
 }

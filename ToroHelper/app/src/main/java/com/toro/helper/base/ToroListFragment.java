@@ -46,7 +46,7 @@ public abstract class ToroListFragment extends BaseFragment implements OnHttpDat
                 R.layout.list_fragment, container, false
         );
         initView(view);
-        doanloadDatas();
+        doanloadDatas(false);
         return view;
     }
 
@@ -68,8 +68,10 @@ public abstract class ToroListFragment extends BaseFragment implements OnHttpDat
         setItemDecoration();
     }
 
-    public void doanloadDatas(){
-        showProgress();
+    public void doanloadDatas(boolean isBackgroud){
+        if(!isBackgroud) {
+            showProgress();
+        }
     }
     protected abstract ToroListAdapter getAdapter();
     protected abstract List<?> getDatas();
@@ -92,10 +94,14 @@ public abstract class ToroListFragment extends BaseFragment implements OnHttpDat
     }
 
     protected void showPhotoList() {
-        recyclerView.setVisibility(View.VISIBLE);
-        loadingProgress.setVisibility(View.GONE);
-        emptyHint.setVisibility(View.GONE);
-        adapter.updatePhotoDatas(getDatas());
+        if(getDatas().size() < 1) {
+            showEmptyHint();
+        }else {
+            recyclerView.setVisibility(View.VISIBLE);
+            loadingProgress.setVisibility(View.GONE);
+            emptyHint.setVisibility(View.GONE);
+            adapter.updatePhotoDatas(getDatas());
+        }
     }
 
     private void loadFailed() {

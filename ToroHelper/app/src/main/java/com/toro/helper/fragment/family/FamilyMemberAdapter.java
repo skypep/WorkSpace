@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.toro.helper.R;
@@ -20,6 +21,8 @@ import java.util.List;
  **/
 public class FamilyMemberAdapter extends ToroListAdapter {
 
+    private View.OnClickListener agreenListener;
+
     public FamilyMemberAdapter(Context context, List<FamilyMemberData> datas) {
         super(context, datas);
     }
@@ -34,6 +37,10 @@ public class FamilyMemberAdapter extends ToroListAdapter {
     public void onBindView(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         FamilyMemberViewHolder familyViewHolder = (FamilyMemberViewHolder) viewHolder;
         FamilyMemberData data = (FamilyMemberData) datas.get(i);
-        familyViewHolder.init(needLoad,data);
+        familyViewHolder.init(needLoad,data,agreenListener,i);
+    }
+
+    public void setAgreenListener(View.OnClickListener listener) {
+        this.agreenListener = listener;
     }
 }
