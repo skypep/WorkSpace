@@ -17,11 +17,11 @@ import com.toro.helper.RongYunListener;
 import com.toro.helper.RongyunManager;
 import com.toro.helper.app.AppConfig;
 import com.toro.helper.base.ToroActivity;
-import com.toro.helper.base.ToroListFragment;
 import com.toro.helper.fragment.FamilyMemberFragment;
-import com.toro.helper.fragment.FamilyPhotoFragment1;
+import com.toro.helper.fragment.FamilyPhotoFragment;
 import com.toro.helper.fragment.MineFragment;
 import com.toro.helper.modle.FamilyUserInfo;
+import com.toro.helper.modle.data.ToroDataModle;
 import com.toro.helper.utils.CameraUtils;
 import com.toro.helper.utils.ConnectManager;
 import com.toro.helper.utils.StringUtils;
@@ -53,18 +53,13 @@ public class MainActivity extends ToroActivity implements
     public static final int CAMERA_REQUEST_CODE = 0x0013;
     private static final int UPLOAD_REQUEST_CODE = 0x0014;
     private static final int CONTACT_REQUEST_CODE = 0x0015;
-    private static final int EDIT_MEMBER_REQUEST_CODE = 0x0016;
-    public static final int EDIT_PERSONAL_DETAILS_REQUEST_CODE = 0x0017;
-
-    public static final String NEED_REFRESH_PHOTO_LIST_RESULT = "need_refresh_photo_list_result";
-    public static final String NEED_REFRESH_PHOTO_LIST_AND_MINE_RESULT = "need_refresh_photo_list_and_ming_result";
 
     private ViewPager mViewPager;
     private List<Fragment> mTabs = new ArrayList<Fragment>();
     private FragmentPagerAdapter mAdapter;
     private MainActionBar mainActionBar;
 
-    private FamilyPhotoFragment1 photoFragment;
+    private FamilyPhotoFragment photoFragment;
     private FamilyMemberFragment familyFragment;
     private MineFragment mineFragment;
     private String mPhotoPath;
@@ -94,6 +89,16 @@ public class MainActivity extends ToroActivity implements
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
     protected void onDestroy() {
         RongyunManager.getInstance().removeOnReceiveMessageListener(this);
         super.onDestroy();
@@ -101,8 +106,10 @@ public class MainActivity extends ToroActivity implements
 
     private void initDatas()
     {
+        ToroDataModle.getInstance().updateToroFamilyPhotoList(0,10, ToroDataModle.getInstance().getLocalData().getToken());
+        ToroDataModle.getInstance().updateToroFamilyMemberList(0,10, ToroDataModle.getInstance().getLocalData().getToken());
 
-        photoFragment = new FamilyPhotoFragment1();
+        photoFragment = new FamilyPhotoFragment();
         Bundle args = new Bundle();
         args.putString("title", "photo");
         photoFragment.setArguments(args);
@@ -291,7 +298,7 @@ public class MainActivity extends ToroActivity implements
                             Intent intent=new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
                             startActivityForResult(intent,CONTACT_REQUEST_CODE);
                         } else if(item.equals(getString(R.string.add_family_from_edit))) {
-                            startActivityForResult(FamilyMemberEditActivity.createAddIntent(MainActivity.this,null),EDIT_MEMBER_REQUEST_CODE);
+                            startActivity(FamilyMemberEditActivity.createAddIntent(MainActivity.this,null));
                         }
                     }
                 });
@@ -322,21 +329,6 @@ public class MainActivity extends ToroActivity implements
                     startActivityForResult(UploadPhotoActivity.newIntent(this,images),UPLOAD_REQUEST_CODE);
                 }
             }
-        }else if(requestCode == UPLOAD_REQUEST_CODE){
-            if(data != null) {
-                boolean needUpate = data.getBooleanExtra(NEED_REFRESH_PHOTO_LIST_RESULT,false);
-                if(needUpate) {
-                    photoFragment.doanloadDatas(true);
-                }
-            }
-        } else if(requestCode == EDIT_PERSONAL_DETAILS_REQUEST_CODE){
-            if(data != null) {
-                boolean needUpate = data.getBooleanExtra(NEED_REFRESH_PHOTO_LIST_AND_MINE_RESULT,false);
-                if(needUpate) {
-                    photoFragment.doanloadDatas(true);
-                    mineFragment.update();
-                }
-            }
         } else if(requestCode == CONTACT_REQUEST_CODE) {
             String phoneNumber = "";
             if(data != null) {
@@ -355,14 +347,7 @@ public class MainActivity extends ToroActivity implements
                     FamilyUserInfo userInfo = new FamilyUserInfo();
                     userInfo.setPhone(phoneNumber);
                     userInfo.setName(name);
-                    startActivityForResult(FamilyMemberEditActivity.createAddIntent(this,userInfo),EDIT_MEMBER_REQUEST_CODE);
-                }
-            }
-        }else if(requestCode == EDIT_MEMBER_REQUEST_CODE) {
-            if(data != null) {
-                boolean needUpate = data.getBooleanExtra(FamilyMemberEditActivity.EDIT_RESULT,false);
-                if(needUpate) {
-                    familyFragment.doanloadDatas(true);
+                    startActivity(FamilyMemberEditActivity.createAddIntent(this,userInfo));
                 }
             }
         }
@@ -392,10 +377,10 @@ public class MainActivity extends ToroActivity implements
     @Override
     public boolean onReceived(String message) {
         if(message.equals("MEMBER_DELETE") || message.equals("MEMBER_ADD") || message.equals("MEMBER_ACCEPT")) {
-            familyFragment.doanloadDatas(true);
+            ToroDataModle.getInstance().updateToroFamilyMemberList(0,10, ToroDataModle.getInstance().getLocalData().getToken());
             return true;
         } else if(message.equals("PHOTO_RELEASE") || message.equals("PHOTO_DELETE")) {
-            photoFragment.doanloadDatas(true);
+            ToroDataModle.getInstance().updateToroFamilyPhotoList(0,10, ToroDataModle.getInstance().getLocalData().getToken());
         }
         return false;
     }
@@ -405,9 +390,9 @@ public class MainActivity extends ToroActivity implements
         boolean flag = super.bindData(tag, object);
         switch (tag) {
             case ConnectManager.AGREEN_MEMBER:
-                familyFragment.doanloadDatas(true);
+                ToroDataModle.getInstance().updateToroFamilyMemberList(0,10, ToroDataModle.getInstance().getLocalData().getToken());
                 if(flag) {
-                    photoFragment.doanloadDatas(true);
+                    ToroDataModle.getInstance().updateToroFamilyPhotoList(0,10, ToroDataModle.getInstance().getLocalData().getToken());
                 }
                 break;
         }

@@ -21,12 +21,13 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private Context mContext;
     private RecyclerView.RecycledViewPool viewPool; // 优化嵌套recycleView 性能
     private boolean needLoad = true;
+    private boolean isMyPhotoMode;
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        return new PhotoViewHolder(inflater.inflate(R.layout.photo_data, viewGroup, false),photoDatas.get(i).getPhotos());
+        return new PhotoViewHolder(inflater.inflate(R.layout.photo_data, viewGroup, false),photoDatas.get(i).getPhotos(),isMyPhotoMode);
     }
 
     @Override
@@ -36,7 +37,8 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         photoHolder.init(needLoad,photoDatas.get(i));
     }
 
-    public PhotoAdapter(Context context, List<PhotoData> photoDatas) {
+    public PhotoAdapter(Context context, List<PhotoData> photoDatas,boolean isMyPhotoMode) {
+        this.isMyPhotoMode = isMyPhotoMode;
         this.mContext = context;
         this.photoDatas = photoDatas;
         viewPool = new RecyclerView.RecycledViewPool();

@@ -11,12 +11,13 @@ import android.widget.TextView;
 
 import com.toro.helper.R;
 import com.toro.helper.activity.EditPersonalDetailsActivity;
+import com.toro.helper.activity.FamilyMemberManagerActivity;
 import com.toro.helper.activity.MainActivity;
+import com.toro.helper.activity.MyPhotoActivity;
 import com.toro.helper.base.BaseFragment;
-import com.toro.helper.base.ToroListAdapter;
-import com.toro.helper.base.ToroListFragment;
-import com.toro.helper.modle.LoginUserData;
-import com.toro.helper.modle.ToroUserManager;
+import com.toro.helper.modle.data.ToroDataModle;
+import com.toro.helper.modle.data.ToroLoginUserData;
+import com.toro.helper.modle.data.listener.LoginUserDataOnChangeListener;
 import com.toro.helper.utils.ImageLoad;
 import com.toro.helper.utils.StringUtils;
 import com.toro.helper.view.RoundnessImageView;
@@ -27,7 +28,7 @@ import java.util.List;
  * Create By liujia
  * on 2018/10/27.
  **/
-public class MineFragment extends BaseFragment implements View.OnClickListener {
+public class MineFragment extends BaseFragment implements View.OnClickListener,LoginUserDataOnChangeListener {
 
     private RoundnessImageView headImageView;
     private ImageView headEditImage;
@@ -45,26 +46,24 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        setupViewByLoginData();
+        ToroDataModle.getInstance().addToroDataModeOnChangeListener(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ToroDataModle.getInstance().removeToroDataModeOnChangeListener(this);
+    }
+
     private void updateView() {
         headImageView = rootView.findViewById(R.id.head_img);
         headEditImage = rootView.findViewById(R.id.edit_image);
         nameText = rootView.findViewById(R.id.name_text);
         phoneText = rootView.findViewById(R.id.phone_text);
-
-        LoginUserData loginUserData = ToroUserManager.getInstance(getContext()).getLoginUserData();
-        if(loginUserData != null) {
-            if(loginUserData.getHeadPhoto() != null) {
-                ImageLoad.GlidLoad(headImageView,loginUserData.getHeadPhoto(),R.mipmap.default_head);
-            } else {
-                headImageView.setImageResource(R.mipmap.default_head);
-            }
-            if(StringUtils.isNotEmpty(loginUserData.getNickName())) {
-                nameText.setText(loginUserData.getNickName());
-            } else {
-                nameText.setText(R.string.have_no_nick_name);
-            }
-            phoneText.setText(loginUserData.getPhone());
-        }
 
         View setting1 = rootView.findViewById(R.id.setting_item1);
         View setting2 = rootView.findViewById(R.id.setting_item2);
@@ -83,6 +82,23 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         setting4.setOnClickListener(this);
     }
 
+    private void setupViewByLoginData() {
+        ToroLoginUserData loginUserData = ToroDataModle.getInstance().getLoginUserData();
+        if(loginUserData != null) {
+            if(loginUserData.getHeadPhoto() != null) {
+                ImageLoad.GlidLoad(headImageView,loginUserData.getHeadPhoto(),R.mipmap.default_head);
+            } else {
+                headImageView.setImageResource(R.mipmap.default_head);
+            }
+            if(StringUtils.isNotEmpty(loginUserData.getNickName())) {
+                nameText.setText(loginUserData.getNickName());
+            } else {
+                nameText.setText(R.string.have_no_nick_name);
+            }
+            phoneText.setText(loginUserData.getPhone());
+        }
+    }
+
     private void setItemView(View itemView, int stringID, int imgID, View.OnClickListener listener) {
         ((ImageView)itemView.findViewById(R.id.title_icon)).setImageResource(imgID);
         ((TextView)itemView.findViewById(R.id.title_text)).setText(stringID);
@@ -97,16 +113,23 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.edit_image:
-                getActivity().startActivityForResult(EditPersonalDetailsActivity.createIntent(getContext()), MainActivity.EDIT_PERSONAL_DETAILS_REQUEST_CODE);
+                getActivity().startActivity(EditPersonalDetailsActivity.createIntent(getContext()));
                 break;
             case R.id.setting_item1:
+                startActivity(FamilyMemberManagerActivity.createIntent(getContext()));
                 break;
             case R.id.setting_item2:
+                startActivity(MyPhotoActivity.createIntent(getContext()));
                 break;
             case R.id.setting_item3:
                 break;
             case R.id.setting_item4:
                 break;
         }
+    }
+
+    @Override
+    public void onChange(Object obj) {
+        setupViewByLoginData();
     }
 }

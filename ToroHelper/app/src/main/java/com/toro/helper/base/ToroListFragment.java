@@ -1,10 +1,8 @@
 package com.toro.helper.base;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,18 +12,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.toro.helper.R;
-import com.toro.helper.fragment.family.FamilyMemberAdapter;
 import com.toro.helper.modle.BaseResponeData;
 import com.toro.helper.modle.DataModleParser;
-import com.toro.helper.modle.FamilyMemberData;
-import com.toro.helper.modle.ToroUserManager;
-import com.toro.helper.utils.ConnectManager;
 import com.toro.helper.utils.OnHttpDataUpdateListener;
 import com.toro.helper.utils.StringUtils;
 import com.toro.helper.view.AutoLoadRecyclerView;
 import com.toro.helper.view.RecyclerItemDecoration;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

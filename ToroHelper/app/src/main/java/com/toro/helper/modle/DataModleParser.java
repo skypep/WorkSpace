@@ -1,5 +1,6 @@
 package com.toro.helper.modle;
 
+import com.toro.helper.modle.data.ToroLoginUserData;
 import com.toro.helper.modle.photo.PhotoData;
 import com.toro.helper.modle.photo.PhotoItem;
 
@@ -50,14 +51,14 @@ public class DataModleParser {
         return datas;
     }
 
-    public static List<FamilyMemberData> parserFamilyMemberDatas(String jsonString) {
-        List<FamilyMemberData> datas = new ArrayList<>();
+    public static List<FamilyMemberInfo> parserFamilyMemberDatas(String jsonString) {
+        List<FamilyMemberInfo> datas = new ArrayList<>();
         try{
             JSONObject jsonObject = new JSONObject(jsonString);
             JSONArray jsonArray = new JSONArray(jsonObject.getString("rows"));
             for(int i=0;i< jsonArray.length();i++) {
                 JSONObject obj = jsonArray.getJSONObject(i);
-                FamilyMemberData item = FamilyMemberData.newInstance(obj);
+                FamilyMemberInfo item = FamilyMemberInfo.newInstance(obj);
                 datas.add(item);
             }
         } catch (Exception e) {
@@ -66,9 +67,9 @@ public class DataModleParser {
         return datas;
     }
 
-    public static LoginUserData parserLoginUserData(String jsonString) {
+    public static ToroLoginUserData parserLoginUserData(String jsonString) {
         try {
-            return LoginUserData.newInstance(new JSONObject(jsonString));
+            return ToroLoginUserData.newInstance(new JSONObject(jsonString));
         }catch (Exception e) {
 
         }

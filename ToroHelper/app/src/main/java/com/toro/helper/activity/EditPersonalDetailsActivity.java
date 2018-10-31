@@ -17,13 +17,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.toro.helper.R;
-import com.toro.helper.app.AppConfig;
 import com.toro.helper.base.ToroActivity;
 import com.toro.helper.modle.BaseResponeData;
 import com.toro.helper.modle.DataModleParser;
-import com.toro.helper.modle.FamilyUserInfo;
-import com.toro.helper.modle.LoginUserData;
-import com.toro.helper.modle.ToroUserManager;
+import com.toro.helper.modle.data.ToroDataModle;
+import com.toro.helper.modle.data.ToroLoginUserData;
 import com.toro.helper.modle.photo.PhotoItem;
 import com.toro.helper.utils.CameraUtils;
 import com.toro.helper.utils.ConnectManager;
@@ -55,7 +53,7 @@ public class EditPersonalDetailsActivity extends ToroActivity implements View.On
     private MainActionBar actionBar;
     private ToroProgressView progressView;
     private RoundnessImageView headImageView;
-    private LoginUserData loginUserData;
+    private ToroLoginUserData loginUserData;
     private TextView editHeadImageView;
 
     private String mPhotoPath = "";
@@ -93,7 +91,7 @@ public class EditPersonalDetailsActivity extends ToroActivity implements View.On
 
             }
         });
-        loginUserData = ToroUserManager.getInstance(this).getLoginUserData();
+        loginUserData = ToroDataModle.getInstance().getLoginUserData();
         if(loginUserData != null) {
             if(loginUserData.getHeadPhoto() != null) {
                 editHeadImageView.setText(R.string.fix_head);
@@ -206,7 +204,7 @@ public class EditPersonalDetailsActivity extends ToroActivity implements View.On
     private void submit() {
         if(StringUtils.isNotEmpty(mPhotoPath)) {
             showProgress(0);
-            ConnectManager.getInstance().uploadPhot(this, mPhotoPath, ToroUserManager.getInstance(this).getToken(), new UIProgressListener() {
+            ConnectManager.getInstance().uploadPhot(this, mPhotoPath, ToroDataModle.getInstance().getLocalData().getToken(), new UIProgressListener() {
                 @Override
                 public void onUIProgress(long currentBytes, long contentLength, boolean done) {
                     showProgress((int) (currentBytes * 100 / contentLength));
@@ -215,7 +213,7 @@ public class EditPersonalDetailsActivity extends ToroActivity implements View.On
         } else {
             progressView.setProgressText(getString(R.string.upload_head_finish_submit_progress_text));
             progressView.show(this);
-            ConnectManager.getInstance().submitPersionalDaitels(this,loginUserData.getUid(),nameText,ToroUserManager.getInstance(this).getToken());
+            ConnectManager.getInstance().submitPersionalDaitels(this,loginUserData.getUid(),nameText,ToroDataModle.getInstance().getLocalData().getToken());
         }
 
     }
@@ -248,7 +246,7 @@ public class EditPersonalDetailsActivity extends ToroActivity implements View.On
                             try{
                                 JSONArray array = new JSONArray(data.getEntry());
                                 JSONObject obj = array.getJSONObject(0);
-                                ConnectManager.getInstance().submitPersionalDaitels(EditPersonalDetailsActivity.this,loginUserData.getUid(),nameText, PhotoItem.newInstance(obj),ToroUserManager.getInstance(EditPersonalDetailsActivity.this).getToken());
+                                ConnectManager.getInstance().submitPersionalDaitels(EditPersonalDetailsActivity.this,loginUserData.getUid(),nameText, PhotoItem.newInstance(obj),ToroDataModle.getInstance().getLocalData().getToken());
                             } catch (Exception e) {
                                 progressView.hide(EditPersonalDetailsActivity.this);
                             }
@@ -267,13 +265,7 @@ public class EditPersonalDetailsActivity extends ToroActivity implements View.On
                     Toast.makeText(EditPersonalDetailsActivity.this,getString(R.string.submit_failed),Toast.LENGTH_LONG).show();
                     return status;
                 } else {
-                    BaseResponeData data = DataModleParser.parserBaseResponeData((String) object);
-                    LoginUserData loginUserData = DataModleParser.parserLoginUserData(data.getEntry());
-                    ToroUserManager.getInstance(this).setLoginUserData(loginUserData);
-                    Toast.makeText(EditPersonalDetailsActivity.this,getString(R.string.submit_sucsses),Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent();
-                    intent.putExtra(MainActivity.NEED_REFRESH_PHOTO_LIST_AND_MINE_RESULT, true);
-                    setResult(RESULT_OK, intent);
+                    ToroDataModle.getInstance().updateToroLoginUserData(ToroDataModle.getInstance().getLocalData().getToken());
                     finish();
                     return true;
                 }

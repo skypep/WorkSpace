@@ -6,18 +6,23 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.toro.helper.R;
 import com.toro.helper.app.AppConfig;
 import com.toro.helper.base.ToroActivity;
+import com.toro.helper.fragment.photo.MarkMemberAdapter;
 import com.toro.helper.fragment.photo.PhotoEditAdapter;
 import com.toro.helper.modle.BaseResponeData;
 import com.toro.helper.modle.DataModleParser;
-import com.toro.helper.modle.ToroUserManager;
+import com.toro.helper.modle.FamilyMemberInfo;
+import com.toro.helper.modle.data.ToroDataModle;
+import com.toro.helper.modle.data.listener.FamilyMemberDataOnChangeListener;
 import com.toro.helper.utils.CameraUtils;
 import com.toro.helper.utils.ConnectManager;
 import com.toro.helper.utils.StringUtils;
@@ -29,6 +34,7 @@ import com.toro.helper.view.iphone.IphoneDialogBottomMenu;
 import com.toro.helper.view.iphone.MenuItemOnClickListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import helper.phone.toro.com.imageselector.utils.ImageSelector;
 
@@ -36,7 +42,7 @@ import helper.phone.toro.com.imageselector.utils.ImageSelector;
  * Create By liujia
  * on 2018/10/24.
  **/
-public class UploadPhotoActivity extends ToroActivity implements View.OnClickListener {
+public class UploadPhotoActivity extends ToroActivity implements View.OnClickListener,FamilyMemberDataOnChangeListener {
 
     private static final String EXTRA_IMAGES = "extra_images";
 
@@ -46,12 +52,17 @@ public class UploadPhotoActivity extends ToroActivity implements View.OnClickLis
 
     private MainActionBar actionBar;
     private Button submitBt;
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerView,memberRecycler;
     private ArrayList<String> images;
     private PhotoEditAdapter adapter;
+    private TextView memberEmpty;
 
     private ToroProgressView progressView;
     private String mPhotoPath;
+    private List<FamilyMemberInfo> members;
+    private MarkMemberAdapter memberAdapter;
+    private List<Integer> markUids;
+    private boolean[] markFlags;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,6 +79,15 @@ public class UploadPhotoActivity extends ToroActivity implements View.OnClickLis
         submitBt = findViewById(R.id.submit_button);
         submitBt.setOnClickListener(this);
         recyclerView = findViewById(R.id.recycler_view);
+
+        memberRecycler = findViewById(R.id.member_recycler);
+        LinearLayoutManager ms= new LinearLayoutManager(this);
+        ms.setOrientation(LinearLayoutManager.HORIZONTAL);
+        memberRecycler.setLayoutManager(ms);
+        memberEmpty = findViewById(R.id.member_empty);
+        memberAdapter = new MarkMemberAdapter(null);
+        memberRecycler.setAdapter(memberAdapter);
+
         images = new ArrayList<>();
         updateImages(getIntent().getStringArrayListExtra(EXTRA_IMAGES));
         if(images.size() > AppConfig.PhotoMaxCoun) {
@@ -77,6 +97,32 @@ public class UploadPhotoActivity extends ToroActivity implements View.OnClickLis
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(this, AppConfig.PhotoSpanCount));
         recyclerView.addItemDecoration(new RecyclerItemDecoration(this.getResources().getDimensionPixelOffset(R.dimen.photo_list_photo_offset)));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateMemberList();
+        ToroDataModle.getInstance().addToroDataModeOnChangeListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ToroDataModle.getInstance().removeToroDataModeOnChangeListener(this);
+    }
+
+    private void updateMemberList() {
+        members = ToroDataModle.getInstance().getFamilyMemberData().getFamilyMemberDatas();
+        if(members == null || members.size() < 1) {
+            memberRecycler.setVisibility(View.GONE);
+            memberEmpty.setVisibility(View.VISIBLE);
+        }else {
+            memberRecycler.setVisibility(View.VISIBLE);
+            memberEmpty.setVisibility(View.GONE);
+            memberAdapter.updateDatas(members);
+            markFlags = new boolean[members.size()];
+        }
     }
 
     private void updateImages(ArrayList<String> images) {
@@ -106,7 +152,7 @@ public class UploadPhotoActivity extends ToroActivity implements View.OnClickLis
 
     private void submit() {
         showProgress(0);
-        ConnectManager.getInstance().uploadPhotos(this, images, ToroUserManager.getInstance(this).getToken(), new UIProgressListener() {
+        ConnectManager.getInstance().uploadPhotos(this, images, ToroDataModle.getInstance().getLocalData().getToken(), new UIProgressListener() {
             @Override
             public void onUIProgress(long currentBytes, long contentLength, boolean done) {
                 showProgress((int) (currentBytes * 100 / contentLength));
@@ -212,7 +258,13 @@ public class UploadPhotoActivity extends ToroActivity implements View.OnClickLis
                         if(data.isStatus()) {
                             // 上传成功
                             progressView.setProgressText(getString(R.string.upload_finish_submit_progress_text));
-                            ConnectManager.getInstance().submitPhotoList(UploadPhotoActivity.this,DataModleParser.parserPhotoItems(data.getEntry()),new int[0],"",1,ToroUserManager.getInstance(UploadPhotoActivity.this).getToken());
+                            markUids = new ArrayList<>();
+                            for(int i = 0; i < markFlags.length; i ++) {
+                                if(markFlags[i]) {
+                                    markUids.add(members.get(i).getId());
+                                }
+                            }
+                            ConnectManager.getInstance().submitPhotoList(UploadPhotoActivity.this,DataModleParser.parserPhotoItems(data.getEntry()),markUids,"",1,ToroDataModle.getInstance().getLocalData().getToken());
                         } else {
                             progressView.hide(UploadPhotoActivity.this);
                             Toast.makeText(UploadPhotoActivity.this,getString(R.string.submit_failed),Toast.LENGTH_LONG).show();
@@ -227,14 +279,27 @@ public class UploadPhotoActivity extends ToroActivity implements View.OnClickLis
                     Toast.makeText(UploadPhotoActivity.this,getString(R.string.submit_failed),Toast.LENGTH_LONG).show();
                     return status;
                 } else {
-                    Toast.makeText(UploadPhotoActivity.this,getString(R.string.submit_sucsses),Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent();
-                    intent.putExtra(MainActivity.NEED_REFRESH_PHOTO_LIST_RESULT, true);
-                    setResult(RESULT_OK, intent);
+//                    Toast.makeText(UploadPhotoActivity.this,getString(R.string.submit_sucsses),Toast.LENGTH_LONG).show();
+//                    Intent intent = new Intent();
+//                    intent.putExtra(MainActivity.NEED_REFRESH_PHOTO_LIST_RESULT, true);
+//                    setResult(RESULT_OK, intent);
                     finish();
                     return true;
                 }
         }
         return false;
+    }
+
+    private View.OnClickListener markOncliListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            int index = (int) v.getTag();
+            markFlags[index] = !markFlags[index];
+        }
+    };
+
+    @Override
+    public void onChange(Object obj) {
+        updateMemberList();
     }
 }

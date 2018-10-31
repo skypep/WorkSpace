@@ -9,16 +9,13 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.toro.helper.R;
 import com.toro.helper.base.ToroActivity;
 import com.toro.helper.modle.FamilyUserInfo;
-import com.toro.helper.modle.ToroUserManager;
+import com.toro.helper.modle.data.ToroDataModle;
 import com.toro.helper.utils.ConnectManager;
-import com.toro.helper.utils.ImageLoad;
 import com.toro.helper.utils.StringUtils;
 import com.toro.helper.view.MainActionBar;
 import com.toro.helper.view.ToroProgressView;
@@ -123,7 +120,7 @@ public class FamilyMemberEditActivity extends ToroActivity implements View.OnCli
 
     private void submit() {
         progressView.show(this);
-        ConnectManager.getInstance().addFamilyMember(this,phoneText,nameText, ToroUserManager.getInstance(this).getToken());
+        ConnectManager.getInstance().addFamilyMember(this,phoneText,nameText, ToroDataModle.getInstance().getLocalData().getToken());
     }
 
     @Override

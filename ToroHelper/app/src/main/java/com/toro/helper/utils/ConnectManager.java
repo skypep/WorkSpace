@@ -39,6 +39,7 @@ public class ConnectManager {
     public static final int SUBMIT_PERSIONAL_DETAILS = 18;
     public static final int REFRESH_TOKEN = 19;
     public static final int AGREEN_MEMBER = 20;
+    public static final int GET_PHOTO_LIST_BY_UID = 21;
 
     private static final String mainUrl = "http://192.168.8.106:8888/";
 
@@ -136,6 +137,8 @@ public class ConnectManager {
      * 接受成员邀请
      */
     private static final String agreenMemberAction = "kinship-api/member/status/";
+
+    private static final String getPhotoListByUidAction = "kinship-api/photograph/uid/";
 
     private static ConnectManager instance;
 
@@ -287,7 +290,7 @@ public class ConnectManager {
         return true;
     }
 
-    public boolean submitPhotoList(OnHttpDataUpdateListener listener, List<PhotoItem> fileUrls, int[] uids, String message, int mode, String token) {
+    public boolean submitPhotoList(OnHttpDataUpdateListener listener, List<PhotoItem> fileUrls, List<Integer> uids, String message, int mode, String token) {
         try{
             JSONObject obj = new JSONObject();
             JSONArray photoArray = new JSONArray();
@@ -406,6 +409,11 @@ public class ConnectManager {
     public boolean agreenMember(OnHttpDataUpdateListener listener,int id,String token) {
         JSONObject obj = new JSONObject();
         new NetWorkTask().execute(listener, AGREEN_MEMBER,mainUrl + agreenMemberAction + id,obj,token);
+        return true;
+    }
+
+    public boolean getPhotoListByUid(OnHttpDataUpdateListener listener,int id,String token){
+        new NetWorkTask().execute(listener, GET_PHOTO_LIST_BY_UID,mainUrl + getPhotoListByUidAction + id,token);
         return true;
     }
 }

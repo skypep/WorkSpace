@@ -19,6 +19,7 @@
             android:layout_width="@dimen/photo_list_head_photo_size_m"
             android:layout_height="@dimen/photo_list_head_photo_size_m"
             android:scaleType="fitCenter"
+            android:layout_marginRight="@dimen/horizontal_margin"
             android:layout_centerVertical="true"
             />
 
@@ -37,7 +38,6 @@
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/head_img"
             android:layout_toLeftOf="@+id/action_in"
-            android:layout_marginLeft="@dimen/horizontal_margin"
             android:layout_centerVertical="true"
             android:orientation="vertical"
             >

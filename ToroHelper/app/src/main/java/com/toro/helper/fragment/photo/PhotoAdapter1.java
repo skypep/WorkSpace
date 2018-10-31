@@ -23,7 +23,7 @@ public class PhotoAdapter1 extends ToroListAdapter {
     protected RecyclerView.ViewHolder onCreateView(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         PhotoData data = (PhotoData) datas.get(i);
-        return new PhotoViewHolder(inflater.inflate(R.layout.photo_data, viewGroup, false),data.getPhotos());
+        return new PhotoViewHolder(inflater.inflate(R.layout.photo_data, viewGroup, false),data.getPhotos(),false);
     }
 
     @Override

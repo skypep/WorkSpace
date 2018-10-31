@@ -1,9 +1,6 @@
 package com.toro.helper.modle;
 
 import com.toro.helper.R;
-import com.toro.helper.modle.photo.PhotoData;
-import com.toro.helper.modle.photo.PhotoUserInfo;
-import com.toro.helper.modle.photo.PubTime;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,14 +9,14 @@ import org.json.JSONObject;
  * Create By liujia
  * on 2018/10/29.
  **/
-public class FamilyMemberData {
+public class FamilyMemberInfo {
     private int id;
     private String remarkName;
     private int status;
     private FamilyUserInfo userInfo;
 
-    public static FamilyMemberData newInstance(JSONObject obj) throws JSONException {
-        FamilyMemberData instance = new FamilyMemberData();
+    public static FamilyMemberInfo newInstance(JSONObject obj) throws JSONException {
+        FamilyMemberInfo instance = new FamilyMemberInfo();
         instance.id = obj.getInt("id");
         instance.remarkName = obj.getString("remarkName");
         instance.status = obj.getInt("status");

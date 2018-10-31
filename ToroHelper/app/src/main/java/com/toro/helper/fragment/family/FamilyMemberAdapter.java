@@ -9,9 +9,7 @@ import android.view.ViewGroup;
 
 import com.toro.helper.R;
 import com.toro.helper.base.ToroListAdapter;
-import com.toro.helper.fragment.photo.PhotoViewHolder;
-import com.toro.helper.modle.FamilyMemberData;
-import com.toro.helper.modle.photo.PhotoData;
+import com.toro.helper.modle.FamilyMemberInfo;
 
 import java.util.List;
 
@@ -23,7 +21,7 @@ public class FamilyMemberAdapter extends ToroListAdapter {
 
     private View.OnClickListener agreenListener;
 
-    public FamilyMemberAdapter(Context context, List<FamilyMemberData> datas) {
+    public FamilyMemberAdapter(Context context, List<FamilyMemberInfo> datas) {
         super(context, datas);
     }
 
@@ -36,7 +34,7 @@ public class FamilyMemberAdapter extends ToroListAdapter {
     @Override
     public void onBindView(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         FamilyMemberViewHolder familyViewHolder = (FamilyMemberViewHolder) viewHolder;
-        FamilyMemberData data = (FamilyMemberData) datas.get(i);
+        FamilyMemberInfo data = (FamilyMemberInfo) datas.get(i);
         familyViewHolder.init(needLoad,data,agreenListener,i);
     }
 

@@ -17,8 +17,7 @@ import com.toro.helper.R;
 import com.toro.helper.base.ToroActivity;
 import com.toro.helper.modle.BaseResponeData;
 import com.toro.helper.modle.DataModleParser;
-import com.toro.helper.modle.LoginUserData;
-import com.toro.helper.modle.ToroUserManager;
+import com.toro.helper.modle.data.ToroDataModle;
 import com.toro.helper.utils.ConnectManager;
 import com.toro.helper.utils.StringUtils;
 import com.toro.helper.view.MainActionBar;
@@ -219,12 +218,8 @@ public class SmsCodeActivity extends ToroActivity implements View.OnClickListene
                     sCode = data.getEntry();
                     break;
                 case ConnectManager.QUICK_LOGIN:
-                    ToroUserManager.getInstance(this).login("",phoneText,data.getEntry());
-                    ConnectManager.getInstance().getLoginUserInfo(this,ToroUserManager.getInstance(this).getToken());
-                    break;
-                case ConnectManager.GET_LOGIN_USERE_INFO:
-                    LoginUserData loginUserData = DataModleParser.parserLoginUserData(data.getEntry());
-                    ToroUserManager.getInstance(this).setLoginUserData(loginUserData);
+                    ToroDataModle.getInstance().getLocalData().login("",phoneText,data.getEntry());
+                    ToroDataModle.getInstance().updateToroLoginUserData(ToroDataModle.getInstance().getLocalData().getToken());
                     startActivity(MainActivity.newIntent(this));
                     finish();
                     break;

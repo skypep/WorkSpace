@@ -6,6 +6,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.toro.helper.RongyunManager;
+import com.toro.helper.modle.data.ToroDataModle;
 
 /**
  * Create By liujia
@@ -22,6 +23,7 @@ public class App extends Application {
         super.onCreate();
         instance = this;
         RongyunManager.getInstance().init(this);
+        ToroDataModle.getInstance().init(this);
     }
 
     public static App getInstance() {

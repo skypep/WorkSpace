@@ -31,6 +31,8 @@
         <activity android:name=".activity.PhotoPreviewActivity" android:theme="@style/NoTitle"/>
         <activity android:name=".activity.FamilyMemberEditActivity" android:theme="@style/NoTitle"/>
         <activity android:name=".activity.EditPersonalDetailsActivity" android:theme="@style/NoTitle"/>
+        <activity android:name=".activity.FamilyMemberManagerActivity" android:theme="@style/NoTitle"/>
+        <activity android:name=".activity.MyPhotoActivity" android:theme="@style/NoTitle"/>
 
         <!--<meta-data-->
             <!--android:name="com.toro.helper.utils.OkHttpGlideModule"-->

@@ -8,8 +8,7 @@ import com.toro.helper.R;
 import com.toro.helper.base.ToroActivity;
 import com.toro.helper.modle.BaseResponeData;
 import com.toro.helper.modle.DataModleParser;
-import com.toro.helper.modle.LoginUserData;
-import com.toro.helper.modle.ToroUserManager;
+import com.toro.helper.modle.data.ToroDataModle;
 import com.toro.helper.utils.ConnectManager;
 import com.toro.helper.utils.StringUtils;
 
@@ -26,10 +25,10 @@ public class WelcomActivity extends ToroActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.welcom_activity);
-        token = ToroUserManager.getInstance(this).getToken();
-        phone = ToroUserManager.getInstance(this).getPhone();
-        password = ToroUserManager.getInstance(this).getPwd();
-        isQuickLogin = ToroUserManager.getInstance(this).isQuickLogin();
+        token = ToroDataModle.getInstance().getLocalData().getToken();
+        phone = ToroDataModle.getInstance().getLocalData().getPhone();
+        password = ToroDataModle.getInstance().getLocalData().getPwd();
+        isQuickLogin = ToroDataModle.getInstance().getLocalData().isQuickLogin();
         /**
          * 如果没有登陆过，手动登陆
          * 如果正常登陆过，自动登陆
@@ -68,12 +67,6 @@ public class WelcomActivity extends ToroActivity {
         BaseResponeData data = DataModleParser.parserBaseResponeData((String) object);
         if(staus) {
             switch (tag){
-                case ConnectManager.GET_LOGIN_USERE_INFO:
-                    LoginUserData loginUserData = DataModleParser.parserLoginUserData(data.getEntry());
-                    ToroUserManager.getInstance(this).setLoginUserData(loginUserData);
-                    startActivity(MainActivity.newIntent(WelcomActivity.this));
-                    finish();
-                    break;
                 case ConnectManager.VERIFY_TOKEN:
                     ConnectManager.getInstance().refreshToken(this,token);
                     break;
@@ -82,13 +75,15 @@ public class WelcomActivity extends ToroActivity {
                     ConnectManager.getInstance().login(this,phone,StringUtils.md5(password + captchar),captchar);
                     break;
                 case ConnectManager.LOGIN:
-                    ToroUserManager.getInstance(this).login(password,phone,data.getEntry());
-                    ConnectManager.getInstance().getLoginUserInfo(this,ToroUserManager.getInstance(this).getToken());
+                    ToroDataModle.getInstance().getLocalData().login(password,phone,data.getEntry());
+                    ConnectManager.getInstance().getLoginUserInfo(this,ToroDataModle.getInstance().getLocalData().getToken());
                     break;
                 case ConnectManager.REFRESH_TOKEN:
-                    ToroUserManager.getInstance(this).login("",phone,data.getEntry());
-                    token = ToroUserManager.getInstance(this).getToken();
-                    ConnectManager.getInstance().getLoginUserInfo(this,token);
+                    ToroDataModle.getInstance().getLocalData().login("",phone,data.getEntry());
+                    token = ToroDataModle.getInstance().getLocalData().getToken();
+                    ToroDataModle.getInstance().updateToroLoginUserData(token);
+                    startActivity(MainActivity.newIntent(WelcomActivity.this));
+                    finish();
                     break;
             }
         } else {

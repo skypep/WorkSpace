@@ -1,6 +1,7 @@
 package com.toro.helper.fragment.photo;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,9 +35,11 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
     private Context mContext;
     private boolean isFirst = false;
     private PhotoItemAdapter adapter;
+    private boolean isMyPhotoMode;
 
-    public PhotoViewHolder(@NonNull View itemView,List<PhotoItem> photos) {
+    public PhotoViewHolder(@NonNull View itemView,List<PhotoItem> photos,boolean isMyphotoMode) {
         super(itemView);
+        this.isMyPhotoMode = isMyphotoMode;
         mContext = itemView.getContext();
         recyclerView = itemView.findViewById(R.id.recycler_view);
         headImg = itemView.findViewById(R.id.head_img);
@@ -57,20 +60,17 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
     public void init(boolean needLoad,PhotoData data) {
         nameText.setText(data.getUserinfo().getName());
         timeText.setText(data.getGmtUpdated());
-//        recyclerView.setAdapter(new PhotoItemAdapter(data.getPhotos()));
-//        if(isFirst) {
-//            recyclerView.setLayoutManager(new GridLayoutManager(mContext, AppConfig.PhotoSpanCount));
-//            recyclerView.addItemDecoration(new RecyclerItemDecoration(mContext.getResources().getDimensionPixelOffset(R.dimen.photo_list_photo_offset)));
-//            isFirst = false;
-//        }
         adapter.update(needLoad,data.getPhotos());
         if(needLoad) {
-//            ImageLoad.newInstance(headImg).load(data.getUserinfo().getHeadPhoto(),R.mipmap.default_head);
             ImageLoad.GlidLoad(headImg,data.getUserinfo().getHeadPhoto(),R.mipmap.default_head);
         }else {
             headImg.setImageResource(R.mipmap.default_head);
         }
-
+        if(isMyPhotoMode){
+            nameText.setVisibility(View.GONE);
+            headImg.setVisibility(View.GONE);
+            timeText.setTextColor(Color.BLACK);
+        }
     }
 
     class PhotoItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

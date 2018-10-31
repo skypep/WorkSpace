@@ -2,21 +2,14 @@ package com.toro.helper.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.LruCache;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
 import com.bumptech.glide.request.RequestOptions;
-import com.toro.helper.R;
-import com.toro.helper.modle.DataModleParser;
-import com.toro.helper.modle.ToroUserManager;
-import com.toro.helper.modle.photo.PhotoData;
+import com.toro.helper.modle.data.ToroDataModle;
 import com.toro.helper.modle.photo.PhotoItem;
-import com.toro.helper.modle.photo.PhotoUserInfo;
-import com.toro.helper.modle.photo.PubTime;
 import com.toro.helper.utils.okhttp.OkHttp;
 
 import org.json.JSONException;
@@ -43,7 +36,7 @@ public class ImageLoad {
         }
         String url = ConnectManager.getInstance().getPhotoUrl(photo);
         GlideUrl glideUrl = new GlideUrl(url, new LazyHeaders.Builder()
-                .addHeader("Authorization", ToroUserManager.getInstance(imageView.getContext()).getToken())
+                .addHeader("Authorization", ToroDataModle.getInstance().getLocalData().getToken())
                 .addHeader("path", photo.getPath())
                 .build());
         RequestOptions options = new RequestOptions();
@@ -83,7 +76,7 @@ public class ImageLoad {
             Bitmap bitmap = ImageCache.getInstance().readBitmapFromDiskLruCache(url);
             if(bitmap == null) {
                 imageView.setImageResource(defultResId);
-                OkHttp.downloadImage(ConnectManager.DOWNLOAD_IMAGE,url, ToroUserManager.getInstance(mContext).getToken(),photo.getPath(),listener);
+                OkHttp.downloadImage(ConnectManager.DOWNLOAD_IMAGE,url, ToroDataModle.getInstance().getLocalData().getToken(),photo.getPath(),listener);
             } else {
                 imageView.setImageBitmap(bitmap);
             }

@@ -3,12 +3,11 @@ package com.toro.helper.fragment.family;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.toro.helper.R;
-import com.toro.helper.modle.FamilyMemberData;
+import com.toro.helper.modle.FamilyMemberInfo;
 import com.toro.helper.utils.ImageLoad;
 import com.toro.helper.view.RoundnessImageView;
 
@@ -35,7 +34,7 @@ public class FamilyMemberViewHolder extends RecyclerView.ViewHolder {
         agreenBt = rootView.findViewById(R.id.agreen_bt);
     }
 
-    public void init(boolean needLoad, FamilyMemberData data, final View.OnClickListener agreenListener,int index) {
+    public void init(boolean needLoad, FamilyMemberInfo data, final View.OnClickListener agreenListener, int index) {
         if(needLoad) {
             ImageLoad.GlidLoad(headImageView,data.getUserInfo().getHeadPhoto(),R.mipmap.default_head);
         }else {

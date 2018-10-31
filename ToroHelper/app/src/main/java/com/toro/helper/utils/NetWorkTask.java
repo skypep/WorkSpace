@@ -51,6 +51,7 @@ public class NetWorkTask extends AsyncTask<Object, Integer, Object> {
                 token = (String) params[4];
                 return ToroHttp.uploadFile(url,images,token);
             case ConnectManager.GET_LOGIN_USERE_INFO:
+            case ConnectManager.GET_PHOTO_LIST_BY_UID:
                 token = (String) params[3];
                 return OkHttp.doTokenGet(url,token);
             case ConnectManager.SUBMIT_PERSIONAL_DETAILS:

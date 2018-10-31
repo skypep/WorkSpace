@@ -79,4 +79,6 @@
     <string name="save_photo_sucsses_format">已保存至(%1$s)</string>
     <string name="save_photo_failed">已保存至(%1$s)</string>
     <string name="save_photo_to_gallery_sucsses">已保存至相册</string>
+
+    <string name="edit">编辑</string>
 </resources>

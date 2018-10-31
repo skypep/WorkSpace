@@ -6,23 +6,11 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.model.GlideUrl;
-import com.bumptech.glide.load.model.LazyHeaders;
-import com.bumptech.glide.request.RequestOptions;
 import com.toro.helper.R;
-import com.toro.helper.modle.ToroUserManager;
 import com.toro.helper.modle.photo.PhotoItem;
 import com.toro.helper.utils.ConnectManager;
 import com.toro.helper.utils.ImageLoad;
-
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-
-import okhttp3.Headers;
 
 /**
  * Create By liujia
