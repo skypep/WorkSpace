@@ -106,8 +106,8 @@ public class MainActivity extends ToroActivity implements
 
     private void initDatas()
     {
-        ToroDataModle.getInstance().updateToroFamilyPhotoList(0,10, ToroDataModle.getInstance().getLocalData().getToken());
-        ToroDataModle.getInstance().updateToroFamilyMemberList(0,10, ToroDataModle.getInstance().getLocalData().getToken());
+        ToroDataModle.getInstance().updateToroFamilyPhotoList();
+        ToroDataModle.getInstance().updateToroFamilyMemberList();
 
         photoFragment = new FamilyPhotoFragment();
         Bundle args = new Bundle();
@@ -377,10 +377,10 @@ public class MainActivity extends ToroActivity implements
     @Override
     public boolean onReceived(String message) {
         if(message.equals("MEMBER_DELETE") || message.equals("MEMBER_ADD") || message.equals("MEMBER_ACCEPT")) {
-            ToroDataModle.getInstance().updateToroFamilyMemberList(0,10, ToroDataModle.getInstance().getLocalData().getToken());
+            ToroDataModle.getInstance().updateToroFamilyMemberList();
             return true;
         } else if(message.equals("PHOTO_RELEASE") || message.equals("PHOTO_DELETE")) {
-            ToroDataModle.getInstance().updateToroFamilyPhotoList(0,10, ToroDataModle.getInstance().getLocalData().getToken());
+            ToroDataModle.getInstance().updateToroFamilyPhotoList();
         }
         return false;
     }
@@ -390,9 +390,9 @@ public class MainActivity extends ToroActivity implements
         boolean flag = super.bindData(tag, object);
         switch (tag) {
             case ConnectManager.AGREEN_MEMBER:
-                ToroDataModle.getInstance().updateToroFamilyMemberList(0,10, ToroDataModle.getInstance().getLocalData().getToken());
+                ToroDataModle.getInstance().updateToroFamilyMemberList();
                 if(flag) {
-                    ToroDataModle.getInstance().updateToroFamilyPhotoList(0,10, ToroDataModle.getInstance().getLocalData().getToken());
+                    ToroDataModle.getInstance().updateToroFamilyPhotoList();
                 }
                 break;
         }

@@ -23,21 +23,37 @@
             android:layout_centerVertical="true"
             />
 
-        <ImageView
-            android:id="@+id/action_in"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="fitCenter"
-            android:src="@mipmap/icon_in"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            />
+            android:id="@+id/right_layout"
+            >
+
+            <ImageView
+                android:id="@+id/action_in"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/icon_in"
+                />
+
+            <ImageView
+                android:id="@+id/action_selecte"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
+                />
+
+        </RelativeLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/head_img"
-            android:layout_toLeftOf="@+id/action_in"
+            android:layout_toLeftOf="@+id/right_layout"
             android:layout_centerVertical="true"
             android:orientation="vertical"
             >

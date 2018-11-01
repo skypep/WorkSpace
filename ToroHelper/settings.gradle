@@ -1,1 +1,1 @@
-include ':app', ':imageselector', ':imagecache', ':IMLib'
+include ':app', ':imageselector', ':imagecache', ':IMLib', ':gaodemap'

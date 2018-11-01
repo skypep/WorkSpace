@@ -31,14 +31,16 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
     private RecyclerView recyclerView;
     private RoundnessImageView headImg;
     private TextView nameText,timeText;
-    private ImageView inAction;
+    private ImageView inAction,selectAction;
     private Context mContext;
     private boolean isFirst = false;
     private PhotoItemAdapter adapter;
     private boolean isMyPhotoMode;
+    private View rootView;
 
     public PhotoViewHolder(@NonNull View itemView,List<PhotoItem> photos,boolean isMyphotoMode) {
         super(itemView);
+        this.rootView = itemView;
         this.isMyPhotoMode = isMyphotoMode;
         mContext = itemView.getContext();
         recyclerView = itemView.findViewById(R.id.recycler_view);
@@ -46,6 +48,7 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
         nameText = itemView.findViewById(R.id.name);
         timeText = itemView.findViewById(R.id.time);
         inAction = itemView.findViewById(R.id.action_in);
+        selectAction = itemView.findViewById(R.id.action_selecte);
         adapter = new PhotoItemAdapter(photos);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(mContext, AppConfig.PhotoSpanCount));
@@ -71,6 +74,21 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
             headImg.setVisibility(View.GONE);
             timeText.setTextColor(Color.BLACK);
         }
+        inAction.setVisibility(View.VISIBLE);
+        selectAction.setVisibility(View.GONE);
+
+    }
+
+    public void initEditMode(int index,boolean isSelected,View.OnClickListener listener) {
+        inAction.setVisibility(View.GONE);
+        selectAction.setVisibility(View.VISIBLE);
+        if(isSelected) {
+            selectAction.setImageResource(R.mipmap.check_checked);
+        } else {
+            selectAction.setImageResource(R.mipmap.check_un_check);
+        }
+        selectAction.setTag(index);
+        selectAction.setOnClickListener(listener);
     }
 
     class PhotoItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

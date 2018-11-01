@@ -3,16 +3,14 @@ package com.toro.helper.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.toro.helper.R;
 import com.toro.helper.app.AppConfig;
@@ -20,8 +18,6 @@ import com.toro.helper.base.ToroActivity;
 import com.toro.helper.fragment.photo.PhotoAdapter;
 import com.toro.helper.modle.BaseResponeData;
 import com.toro.helper.modle.DataModleParser;
-import com.toro.helper.modle.FamilyUserInfo;
-import com.toro.helper.modle.data.FamilyPhotoData;
 import com.toro.helper.modle.data.ToroDataModle;
 import com.toro.helper.modle.photo.PhotoData;
 import com.toro.helper.utils.CameraUtils;
@@ -47,6 +43,9 @@ public class MyPhotoActivity extends ToroActivity {
     public static final int CAMERA_REQUEST_CODE = 0x0013;
     public static final int PHOTO_REQUEST_CODE = 0x0011;
     private static final int UPLOAD_REQUEST_CODE = 0x0014;
+
+    public static final String UPLOAD_REQUEST_EXTRA = "upload_request_extra";
+
     private PhotoAdapter adapter;
 
     protected AutoLoadRecyclerView recyclerView;
@@ -54,7 +53,9 @@ public class MyPhotoActivity extends ToroActivity {
     private ProgressBar loadingProgress;
     private List<PhotoData> photoDatas;
     private MainActionBar mainActionBar;
+    private LinearLayout deleteLayout;
     private String mPhotoPath;
+    private boolean[] deleteChecks;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -107,7 +108,7 @@ public class MyPhotoActivity extends ToroActivity {
                 enterEditMode();
             }
         });
-        mainActionBar.removeAddRightImage();
+        mainActionBar.removeRightText();
     }
 
     protected void initView() {
@@ -123,6 +124,7 @@ public class MyPhotoActivity extends ToroActivity {
             }
         },false,false);
         emptyHint = findViewById(R.id.empty_hint);
+        deleteLayout = findViewById(R.id.delete_layout);
         loadingProgress = findViewById(R.id.loading_progress);
     }
 
@@ -132,9 +134,17 @@ public class MyPhotoActivity extends ToroActivity {
         mainActionBar.addRightText(getString(R.string.cancel), new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setNormalAction();
+                exitEditMode();
             }
         });
+        deleteChecks = new boolean[photoDatas.size()];
+        adapter.enterEditMode(deleteChecks,onCheckClickListener);
+    }
+
+    private void exitEditMode() {
+        setNormalAction();
+        adapter.exitEditMode();
+        deleteLayout.setVisibility(View.GONE);
     }
 
     private void showPhotoList() {
@@ -167,6 +177,48 @@ public class MyPhotoActivity extends ToroActivity {
         emptyHint.setVisibility(View.GONE);
     }
 
+    private void changeDeleteLayout() {
+        int deleteCount = 0;
+        for(boolean flag : deleteChecks) {
+            if(flag) {
+                deleteCount ++;
+            }
+        }
+        if(deleteCount > 0) {
+            deleteLayout.setVisibility(View.VISIBLE);
+            ((TextView)findViewById(R.id.delete_text)).setText(getString(R.string.delete) + "(" + deleteCount + ")");
+            deleteLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    deletePhotos();
+                }
+            });
+        } else {
+            deleteLayout.setVisibility(View.GONE);
+        }
+    }
+
+    private void deletePhotos() {
+        showProgress();
+        List<Integer> ids = new ArrayList<>();
+        for(int i=0; i< deleteChecks.length;i++) {
+            if(deleteChecks[i]) {
+                ids.add(photoDatas.get(i).getId());
+            }
+        }
+        ConnectManager.getInstance().deletePhotoList(this,ids,ToroDataModle.getInstance().getLocalData().getToken());
+    }
+
+    private View.OnClickListener onCheckClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            int index = (int) v.getTag();
+            deleteChecks[index] = !deleteChecks[index];
+            adapter.updateEditCheckBox(deleteChecks);
+            changeDeleteLayout();
+        }
+    };
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -180,6 +232,11 @@ public class MyPhotoActivity extends ToroActivity {
                     images.add(mPhotoPath);
                     startActivityForResult(UploadPhotoActivity.newIntent(this,images),UPLOAD_REQUEST_CODE);
                 }
+            }
+        } else if(requestCode == UPLOAD_REQUEST_CODE && data != null) {
+            boolean needReload = data.getBooleanExtra(UPLOAD_REQUEST_EXTRA,false);
+            if(needReload) {
+                updatePhotoList();
             }
         }
     }
@@ -208,9 +265,23 @@ public class MyPhotoActivity extends ToroActivity {
                     photoDatas = DataModleParser.parserPhotoDatas(data.getEntry());
                     showPhotoList();
                     break;
+                case ConnectManager.DELETE_PHOTO_LIST:
+                    ToroDataModle.getInstance().updateToroFamilyPhotoList();
+                    exitEditMode();
+                    updatePhotoList();
+                    break;
             }
         } else {
-            showEmptyHint();
+            switch (tag) {
+                case ConnectManager.GET_PHOTO_LIST_BY_UID:
+                    showEmptyHint();;
+                    break;
+                case ConnectManager.DELETE_PHOTO_LIST:
+                    showPhotoList();
+                    Toast.makeText(this,R.string.delete_failed,Toast.LENGTH_LONG).show();
+                    break;
+            }
+
         }
         return status;
     }

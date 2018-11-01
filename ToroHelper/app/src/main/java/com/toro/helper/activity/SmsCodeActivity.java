@@ -219,7 +219,7 @@ public class SmsCodeActivity extends ToroActivity implements View.OnClickListene
                     break;
                 case ConnectManager.QUICK_LOGIN:
                     ToroDataModle.getInstance().getLocalData().login("",phoneText,data.getEntry());
-                    ToroDataModle.getInstance().updateToroLoginUserData(ToroDataModle.getInstance().getLocalData().getToken());
+                    ToroDataModle.getInstance().updateToroLoginUserData();
                     startActivity(MainActivity.newIntent(this));
                     finish();
                     break;

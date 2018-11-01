@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.toro.helper.R;
@@ -22,12 +23,16 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private RecyclerView.RecycledViewPool viewPool; // 优化嵌套recycleView 性能
     private boolean needLoad = true;
     private boolean isMyPhotoMode;
+    private boolean isEditMode;
+    private View.OnClickListener checkOnclickListener;
+    private boolean[]deleteChecks;
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        return new PhotoViewHolder(inflater.inflate(R.layout.photo_data, viewGroup, false),photoDatas.get(i).getPhotos(),isMyPhotoMode);
+        PhotoViewHolder viewHolder = new PhotoViewHolder(inflater.inflate(R.layout.photo_data, viewGroup, false),photoDatas.get(i).getPhotos(),isMyPhotoMode);
+        return viewHolder;
     }
 
     @Override
@@ -35,6 +40,9 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         PhotoViewHolder photoHolder = (PhotoViewHolder) viewHolder;
         photoHolder.setViewPool(viewPool);
         photoHolder.init(needLoad,photoDatas.get(i));
+        if(isEditMode) {
+            photoHolder.initEditMode(i,deleteChecks[i],checkOnclickListener);
+        }
     }
 
     public PhotoAdapter(Context context, List<PhotoData> photoDatas,boolean isMyPhotoMode) {
@@ -54,6 +62,23 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if(needLoad) {
             notifyDataSetChanged();
         }
+    }
+
+    public void enterEditMode(boolean[]deleteChecks, View.OnClickListener listener) {
+        isEditMode = true;
+        this.deleteChecks = deleteChecks;
+        this.checkOnclickListener = listener;
+        notifyDataSetChanged();
+    }
+
+    public void exitEditMode() {
+        isEditMode = false;
+        notifyDataSetChanged();
+    }
+
+    public void updateEditCheckBox(boolean[]deleteChecks) {
+        this.deleteChecks = deleteChecks;
+        notifyDataSetChanged();
     }
 
     @Override

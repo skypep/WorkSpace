@@ -14,6 +14,7 @@ import com.toro.helper.activity.EditPersonalDetailsActivity;
 import com.toro.helper.activity.FamilyMemberManagerActivity;
 import com.toro.helper.activity.MainActivity;
 import com.toro.helper.activity.MyPhotoActivity;
+import com.toro.helper.activity.SettingActivity;
 import com.toro.helper.base.BaseFragment;
 import com.toro.helper.modle.data.ToroDataModle;
 import com.toro.helper.modle.data.ToroLoginUserData;
@@ -124,6 +125,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener,L
             case R.id.setting_item3:
                 break;
             case R.id.setting_item4:
+                startActivity(SettingActivity.createIntent(getContext()));
                 break;
         }
     }

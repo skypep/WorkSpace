@@ -45,6 +45,10 @@ public class ToroDataModle {
         familyMemberData = new FamilyMemberData();
     }
 
+    public void loginOut() {
+        localData.setToken("");
+    }
+
     public void addToroDataModeOnChangeListener(ToroDataModeOnChangeListener listener) {
         toroDataModeOnChangeListeners.add(listener);
     }
@@ -53,15 +57,23 @@ public class ToroDataModle {
         toroDataModeOnChangeListeners.remove(listener);
     }
 
-    public void updateToroLoginUserData(String token) {
-        ConnectManager.getInstance().getLoginUserInfo(httpDataUpdateListener,token);
+    public void updateToroLoginUserData() {
+        ConnectManager.getInstance().getLoginUserInfo(httpDataUpdateListener,localData.getToken());
     }
 
-    public void updateToroFamilyPhotoList(int offset,int limit,String token) {
+    public void updateToroFamilyPhotoList() {
+        updateToroFamilyPhotoList(0,10,getLocalData().getToken());
+    }
+
+    private void updateToroFamilyPhotoList(int offset,int limit,String token) {
         ConnectManager.getInstance().updatePhotoList(httpDataUpdateListener,offset,limit, token);
     }
 
-    public void updateToroFamilyMemberList(int offset,int limit,String token) {
+    public void updateToroFamilyMemberList() {
+        updateToroFamilyMemberList(0,10,getLocalData().getToken());
+    }
+
+    private void updateToroFamilyMemberList(int offset,int limit,String token) {
         ConnectManager.getInstance().getFamilyMemberList(httpDataUpdateListener,offset,limit, token);
     }
 

@@ -265,7 +265,7 @@ public class EditPersonalDetailsActivity extends ToroActivity implements View.On
                     Toast.makeText(EditPersonalDetailsActivity.this,getString(R.string.submit_failed),Toast.LENGTH_LONG).show();
                     return status;
                 } else {
-                    ToroDataModle.getInstance().updateToroLoginUserData(ToroDataModle.getInstance().getLocalData().getToken());
+                    ToroDataModle.getInstance().updateToroLoginUserData();
                     finish();
                     return true;
                 }

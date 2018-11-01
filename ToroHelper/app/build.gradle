@@ -31,16 +31,16 @@ android {
     // 签名信息
     signingConfigs {
         release {
-            keyAlias 'st801_keystore'
-            keyPassword 'st801_keystore'
-            storeFile file('../st801_keystore.keystore')
-            storePassword 'st801_keystore'
+            keyAlias 'android.keystore'
+            keyPassword 'toro123456'
+            storeFile file('../ToroAndroid.keystore')
+            storePassword 'toro123456'
         }
         debug {
-            keyAlias 'st801_keystore'
-            keyPassword 'st801_keystore'
-            storeFile file('../st801_keystore.keystore')
-            storePassword 'st801_keystore'
+            keyAlias 'android.keystore'
+            keyPassword 'toro123456'
+            storeFile file('../ToroAndroid.keystore')
+            storePassword 'toro123456'
         }
     }
 }
@@ -62,4 +62,5 @@ dependencies {
     implementation project(':imagecache')
     implementation 'com.github.chrisbanes:PhotoView:2.1.3'
     implementation project(':IMLib')
+    implementation project(':gaodemap')
 }

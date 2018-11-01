@@ -120,8 +120,9 @@ public class UploadPhotoActivity extends ToroActivity implements View.OnClickLis
         }else {
             memberRecycler.setVisibility(View.VISIBLE);
             memberEmpty.setVisibility(View.GONE);
-            memberAdapter.updateDatas(members);
             markFlags = new boolean[members.size()];
+            memberAdapter.updateDatas(members,markFlags);
+            memberAdapter.setOnClickListener(markOncliListener);
         }
     }
 
@@ -279,10 +280,10 @@ public class UploadPhotoActivity extends ToroActivity implements View.OnClickLis
                     Toast.makeText(UploadPhotoActivity.this,getString(R.string.submit_failed),Toast.LENGTH_LONG).show();
                     return status;
                 } else {
-//                    Toast.makeText(UploadPhotoActivity.this,getString(R.string.submit_sucsses),Toast.LENGTH_LONG).show();
-//                    Intent intent = new Intent();
-//                    intent.putExtra(MainActivity.NEED_REFRESH_PHOTO_LIST_RESULT, true);
-//                    setResult(RESULT_OK, intent);
+                    Toast.makeText(UploadPhotoActivity.this,getString(R.string.submit_sucsses),Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent();
+                    intent.putExtra(MyPhotoActivity.UPLOAD_REQUEST_EXTRA, true);
+                    setResult(RESULT_OK, intent);
                     finish();
                     return true;
                 }
@@ -295,6 +296,7 @@ public class UploadPhotoActivity extends ToroActivity implements View.OnClickLis
         public void onClick(View v) {
             int index = (int) v.getTag();
             markFlags[index] = !markFlags[index];
+            memberAdapter.updateDatas(members,markFlags);
         }
     };
 

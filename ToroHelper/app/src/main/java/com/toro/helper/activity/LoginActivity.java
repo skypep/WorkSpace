@@ -160,7 +160,7 @@ public class LoginActivity extends ToroActivity implements View.OnClickListener 
                     break;
                 case ConnectManager.LOGIN:
                     ToroDataModle.getInstance().getLocalData().login(StringUtils.md5(pwdText),phoneText,data.getEntry());
-                    ToroDataModle.getInstance().updateToroLoginUserData(ToroDataModle.getInstance().getLocalData().getToken());
+                    ToroDataModle.getInstance().updateToroLoginUserData();
                     startActivity(MainActivity.newIntent(this));
                     finish();
                     progressView.hide(this);

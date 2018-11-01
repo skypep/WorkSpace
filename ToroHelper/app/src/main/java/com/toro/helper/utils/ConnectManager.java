@@ -40,6 +40,7 @@ public class ConnectManager {
     public static final int REFRESH_TOKEN = 19;
     public static final int AGREEN_MEMBER = 20;
     public static final int GET_PHOTO_LIST_BY_UID = 21;
+    public static final int DELETE_PHOTO_LIST = 22;
 
     private static final String mainUrl = "http://192.168.8.106:8888/";
 
@@ -138,7 +139,15 @@ public class ConnectManager {
      */
     private static final String agreenMemberAction = "kinship-api/member/status/";
 
+    /**
+     * 获取指定用户的照片
+     */
     private static final String getPhotoListByUidAction = "kinship-api/photograph/uid/";
+
+    /**
+     * 批量删除照片
+     */
+    private static final String deletePhotoListAction = "kinship-api/photograph/batchDelete";
 
     private static ConnectManager instance;
 
@@ -415,5 +424,21 @@ public class ConnectManager {
     public boolean getPhotoListByUid(OnHttpDataUpdateListener listener,int id,String token){
         new NetWorkTask().execute(listener, GET_PHOTO_LIST_BY_UID,mainUrl + getPhotoListByUidAction + id,token);
         return true;
+    }
+
+    public boolean deletePhotoList(OnHttpDataUpdateListener listener, List<Integer> uids, String token){
+        try{
+            JSONObject obj = new JSONObject();
+            JSONArray uidArray = new JSONArray();
+            for(int uid : uids) {
+                uidArray.put(uid);
+            }
+            obj.put("ids",uidArray);
+            new NetWorkTask().execute(listener, DELETE_PHOTO_LIST,mainUrl + deletePhotoListAction,obj,token);
+            return true;
+        } catch (Exception e){
+
+        }
+        return false;
     }
 }

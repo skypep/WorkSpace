@@ -176,9 +176,9 @@ public class FamilyMemberManagerActivity extends ToroActivity implements FamilyM
         boolean flag = super.bindData(tag, object);
         switch (tag) {
             case ConnectManager.AGREEN_MEMBER:
-                ToroDataModle.getInstance().updateToroFamilyMemberList(0,10, ToroDataModle.getInstance().getLocalData().getToken());
+                ToroDataModle.getInstance().updateToroFamilyMemberList();
                 if(flag) {
-                    ToroDataModle.getInstance().updateToroFamilyPhotoList(0,10, ToroDataModle.getInstance().getLocalData().getToken());
+                    ToroDataModle.getInstance().updateToroFamilyPhotoList();
                 }
                 break;
         }

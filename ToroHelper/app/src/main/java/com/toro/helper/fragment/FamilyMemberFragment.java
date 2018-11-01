@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.toro.helper.R;
+import com.toro.helper.activity.HelperActivity;
 import com.toro.helper.activity.MainActivity;
 import com.toro.helper.base.BaseFragment;
 import com.toro.helper.fragment.family.FamilyMemberAdapter;
@@ -73,6 +74,7 @@ public class FamilyMemberFragment extends BaseFragment implements FamilyMemberDa
             }
         },false,false);
         adapter.setAgreenListener(agreenListener);
+        adapter.setOnItemClickListener(itemOnclickListener);
         emptyHint = rootView.findViewById(R.id.empty_hint);
         loadingProgress = rootView.findViewById(R.id.loading_progress);
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
@@ -102,6 +104,14 @@ public class FamilyMemberFragment extends BaseFragment implements FamilyMemberDa
         public void onClick(View v) {
             int index = (int) v.getTag();
             ConnectManager.getInstance().agreenMember((MainActivity)getActivity(),memberData.getFamilyMemberDatas().get(index).getId(),ToroDataModle.getInstance().getLocalData().getToken());
+        }
+    };
+
+    private View.OnClickListener itemOnclickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            int index = (int) v.getTag();
+            startActivity(HelperActivity.createIntent(getContext(),memberData.getFamilyMemberDatas().get(index)));
         }
     };
 

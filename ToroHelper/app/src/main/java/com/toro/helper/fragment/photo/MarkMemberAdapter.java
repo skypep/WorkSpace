@@ -18,6 +18,7 @@ import java.util.List;
 public class MarkMemberAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<FamilyMemberInfo> members;
+    boolean[] markFlags;
     private View.OnClickListener onClickListener;
 
     public MarkMemberAdapter(List<FamilyMemberInfo> members) {
@@ -34,7 +35,7 @@ public class MarkMemberAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         MarkMemberViewHolder holder = (MarkMemberViewHolder) viewHolder;
-        holder.init(i,members.get(i),onClickListener);
+        holder.init(i,members.get(i),onClickListener,markFlags[i]);
     }
 
     @Override
@@ -42,8 +43,13 @@ public class MarkMemberAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         return members.size();
     }
 
-    public void updateDatas(List<FamilyMemberInfo> members) {
+    public void updateDatas(List<FamilyMemberInfo> members,boolean[] markFlags) {
         this.members = members;
+        this.markFlags = markFlags;
         notifyDataSetChanged();
+    }
+
+    public void setOnClickListener(View.OnClickListener listener) {
+        this.onClickListener = listener;
     }
 }

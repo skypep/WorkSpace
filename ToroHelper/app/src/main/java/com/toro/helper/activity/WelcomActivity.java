@@ -76,12 +76,12 @@ public class WelcomActivity extends ToroActivity {
                     break;
                 case ConnectManager.LOGIN:
                     ToroDataModle.getInstance().getLocalData().login(password,phone,data.getEntry());
-                    ConnectManager.getInstance().getLoginUserInfo(this,ToroDataModle.getInstance().getLocalData().getToken());
+                    ToroDataModle.getInstance().updateToroLoginUserData();
+                    startActivity(MainActivity.newIntent(WelcomActivity.this));
                     break;
                 case ConnectManager.REFRESH_TOKEN:
                     ToroDataModle.getInstance().getLocalData().login("",phone,data.getEntry());
-                    token = ToroDataModle.getInstance().getLocalData().getToken();
-                    ToroDataModle.getInstance().updateToroLoginUserData(token);
+                    ToroDataModle.getInstance().updateToroLoginUserData();
                     startActivity(MainActivity.newIntent(WelcomActivity.this));
                     finish();
                     break;

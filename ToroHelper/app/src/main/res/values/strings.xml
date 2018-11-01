@@ -81,4 +81,15 @@
     <string name="save_photo_to_gallery_sucsses">已保存至相册</string>
 
     <string name="edit">编辑</string>
+    <string name="delete">删除</string>
+    <string name="delete_failed">操作失败</string>
+    <string name="setting_wifi_connect">在Wifi网络下收发图片</string>
+    <string name="setting_sound_hint">家庭相册通知提示音</string>
+    <string name="about_app">关于亲连助手</string>
+    <string name="login_out">推出当前账号</string>
+
+    <string name="action_menu_health">查看健康</string>
+    <string name="action_menu_location">远程定位</string>
+    <string name="action_menu_call">拨打电话</string>
+    <string name="action_menu_helper">远程协助</string>
 </resources>

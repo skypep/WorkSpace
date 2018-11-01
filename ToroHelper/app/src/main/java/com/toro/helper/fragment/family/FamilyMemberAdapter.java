@@ -19,7 +19,7 @@ import java.util.List;
  **/
 public class FamilyMemberAdapter extends ToroListAdapter {
 
-    private View.OnClickListener agreenListener;
+    private View.OnClickListener agreenListener,itemOnclickListener;
 
     public FamilyMemberAdapter(Context context, List<FamilyMemberInfo> datas) {
         super(context, datas);
@@ -28,7 +28,7 @@ public class FamilyMemberAdapter extends ToroListAdapter {
     @Override
     protected RecyclerView.ViewHolder onCreateView(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        return new FamilyMemberViewHolder(inflater.inflate(R.layout.family_member_list_item, viewGroup, false));
+        return new FamilyMemberViewHolder(inflater.inflate(R.layout.family_member_list_item, viewGroup, false),itemOnclickListener);
     }
 
     @Override
@@ -36,6 +36,10 @@ public class FamilyMemberAdapter extends ToroListAdapter {
         FamilyMemberViewHolder familyViewHolder = (FamilyMemberViewHolder) viewHolder;
         FamilyMemberInfo data = (FamilyMemberInfo) datas.get(i);
         familyViewHolder.init(needLoad,data,agreenListener,i);
+    }
+
+    public void setOnItemClickListener(View.OnClickListener itemOnclickListener) {
+        this.itemOnclickListener =  itemOnclickListener;
     }
 
     public void setAgreenListener(View.OnClickListener listener) {

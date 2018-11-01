@@ -23,7 +23,6 @@ public class MarkMemberViewHolder extends RecyclerView.ViewHolder {
     private RoundnessImageView photo;
     private View rootView;
     private ImageView selectedIcon;
-    private boolean isSelected;
 
     public MarkMemberViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -33,7 +32,7 @@ public class MarkMemberViewHolder extends RecyclerView.ViewHolder {
         this.rootView = itemView;
     }
 
-    public void init(int i, FamilyMemberInfo info, final View.OnClickListener listener) {
+    public void init(int i, FamilyMemberInfo info, final View.OnClickListener listener,boolean isSelected) {
         String nameText = "";
         if(StringUtils.isNotEmpty(info.getRemarkName())){
             nameText = info.getRemarkName();
@@ -46,16 +45,15 @@ public class MarkMemberViewHolder extends RecyclerView.ViewHolder {
         } else {
             photo.setImageResource(R.mipmap.default_head);
         }
+        if(isSelected) {
+            selectedIcon.setVisibility(View.VISIBLE);
+        } else {
+            selectedIcon.setVisibility(View.GONE);
+        }
         rootView.setTag(i);
         rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isSelected = !isSelected;
-                if(isSelected) {
-                    selectedIcon.setVisibility(View.VISIBLE);
-                } else {
-                    selectedIcon.setVisibility(View.GONE);
-                }
                 if(listener != null) {
                     listener.onClick(v);
                 }

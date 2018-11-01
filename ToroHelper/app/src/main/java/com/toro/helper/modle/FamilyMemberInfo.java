@@ -1,15 +1,18 @@
 package com.toro.helper.modle;
 
 import com.toro.helper.R;
+import com.toro.helper.utils.StringUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.Serializable;
 
 /**
  * Create By liujia
  * on 2018/10/29.
  **/
-public class FamilyMemberInfo {
+public class FamilyMemberInfo implements Serializable {
     private int id;
     private String remarkName;
     private int status;
@@ -35,6 +38,19 @@ public class FamilyMemberInfo {
                 default:
                     return R.string.status_unknow;
         }
+    }
+
+    public String getDisplayName() {
+        if(StringUtils.isNotEmpty(remarkName)) {
+            return remarkName;
+        }
+        if(StringUtils.isNotEmpty(getUserInfo().getUsername())) {
+            return getUserInfo().getUsername();
+        }
+        if(StringUtils.isNotEmpty(getUserInfo().getName())) {
+            return getUserInfo().getName();
+        }
+        return getUserInfo().getPhone();
     }
 
     public int getId() {

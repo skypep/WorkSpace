@@ -24,7 +24,7 @@ public class FamilyMemberViewHolder extends RecyclerView.ViewHolder {
     private TextView agreenBt;
     private LinearLayout rightLayout;
 
-    public FamilyMemberViewHolder(@NonNull View itemView) {
+    public FamilyMemberViewHolder(@NonNull View itemView, View.OnClickListener listener) {
         super(itemView);
         this.rootView = itemView;
         this.headImageView = rootView.findViewById(R.id.head_img);
@@ -32,9 +32,11 @@ public class FamilyMemberViewHolder extends RecyclerView.ViewHolder {
         this.statusTextView = rootView.findViewById(R.id.text_status);
         this.rightLayout = rootView.findViewById(R.id.right_layout);
         agreenBt = rootView.findViewById(R.id.agreen_bt);
+        rootView.setOnClickListener(listener);
     }
 
     public void init(boolean needLoad, FamilyMemberInfo data, final View.OnClickListener agreenListener, int index) {
+        rootView.setTag(index);
         if(needLoad) {
             ImageLoad.GlidLoad(headImageView,data.getUserInfo().getHeadPhoto(),R.mipmap.default_head);
         }else {
