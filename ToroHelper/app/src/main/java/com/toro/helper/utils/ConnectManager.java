@@ -41,6 +41,8 @@ public class ConnectManager {
     public static final int AGREEN_MEMBER = 20;
     public static final int GET_PHOTO_LIST_BY_UID = 21;
     public static final int DELETE_PHOTO_LIST = 22;
+    public static final int GET_USER_PHONE_STATUS = 23;
+    public static final int FIX_REMARK_NAME = 24;
 
     private static final String mainUrl = "http://192.168.8.106:8888/";
 
@@ -148,6 +150,16 @@ public class ConnectManager {
      * 批量删除照片
      */
     private static final String deletePhotoListAction = "kinship-api/photograph/batchDelete";
+
+    /**
+     * 获取uid对应的用户手机状态
+     */
+    private static final String getUserPhontStatusAction = "kinship-api/phoneStatus/";
+
+    /**
+     *  修改备注名
+     */
+    private static final String fixRemarkNameAction = "kinship-api/member/updateName";
 
     private static ConnectManager instance;
 
@@ -435,6 +447,24 @@ public class ConnectManager {
             }
             obj.put("ids",uidArray);
             new NetWorkTask().execute(listener, DELETE_PHOTO_LIST,mainUrl + deletePhotoListAction,obj,token);
+            return true;
+        } catch (Exception e){
+
+        }
+        return false;
+    }
+
+    public boolean getUserPhoneStatus(OnHttpDataUpdateListener listener,int uid,String token) {
+        new NetWorkTask().execute(listener, GET_USER_PHONE_STATUS,mainUrl + getUserPhontStatusAction + uid,token);
+        return true;
+    }
+
+    public boolean fixRemarkName(OnHttpDataUpdateListener listener,int id,String remarkName,String token) {
+        try{
+            JSONObject obj = new JSONObject();
+            obj.put("id",id);
+            obj.put("name",remarkName);
+            new NetWorkTask().execute(listener, FIX_REMARK_NAME,mainUrl + fixRemarkNameAction,obj,token);
             return true;
         } catch (Exception e){
 

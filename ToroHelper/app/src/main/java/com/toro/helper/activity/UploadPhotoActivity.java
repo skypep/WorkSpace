@@ -46,10 +46,6 @@ public class UploadPhotoActivity extends ToroActivity implements View.OnClickLis
 
     private static final String EXTRA_IMAGES = "extra_images";
 
-    private static final int PHOTO_REQUEST_CODE = 0x00000011;
-    private static final int PERMISSION_CAMERA_REQUEST_CODE = 0x00000012;
-    private static final int CAMERA_REQUEST_CODE = 0x00000013;
-
     private MainActionBar actionBar;
     private Button submitBt;
     private RecyclerView recyclerView,memberRecycler;
@@ -171,13 +167,13 @@ public class UploadPhotoActivity extends ToroActivity implements View.OnClickLis
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PHOTO_REQUEST_CODE && data != null) {
+        if (requestCode == CameraUtils.PHOTO_REQUEST_CODE && data != null) {
             ArrayList<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
             for(String image : images) {
                 this.images.add(image);
             }
             adapter.updateListData(this.images);
-        }else if (requestCode == CAMERA_REQUEST_CODE) {
+        }else if (requestCode == CameraUtils.CAMERA_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 if(StringUtils.isNotEmpty(mPhotoPath)) {
                     this.images.add(mPhotoPath);
@@ -189,11 +185,11 @@ public class UploadPhotoActivity extends ToroActivity implements View.OnClickLis
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == PERMISSION_CAMERA_REQUEST_CODE) {
+        if (requestCode == CameraUtils.PERMISSION_CAMERA_REQUEST_CODE) {
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 //允许权限，有调起相机拍照。
-                mPhotoPath = CameraUtils.openCamera(this,CAMERA_REQUEST_CODE);
+                mPhotoPath = CameraUtils.openCamera(this);
             } else {
                 //拒绝权限，弹出提示框。
                 CameraUtils.showExceptionDialog(this,false);
@@ -211,10 +207,10 @@ public class UploadPhotoActivity extends ToroActivity implements View.OnClickLis
                 @Override
                 public void onClickMenuItem(View v, int item_index, String item) {
                     if(item.equals(getString(R.string.take_photo_by_camera))) {
-                        CameraUtils.checkPermissionAndCamera(UploadPhotoActivity.this, PERMISSION_CAMERA_REQUEST_CODE, new CameraUtils.OnCameraPermissionListener() {
+                        CameraUtils.checkPermissionAndCamera(UploadPhotoActivity.this, new CameraUtils.OnCameraPermissionListener() {
                             @Override
                             public void onHasePermission() {
-                                mPhotoPath = CameraUtils.openCamera(UploadPhotoActivity.this,CAMERA_REQUEST_CODE);
+                                mPhotoPath = CameraUtils.openCamera(UploadPhotoActivity.this);
                             }
                         });
                     } else if(item.equals(getString(R.string.choose_photo_from_album))){
@@ -223,7 +219,7 @@ public class UploadPhotoActivity extends ToroActivity implements View.OnClickLis
                                 .setSingle(false)  //设置是否单选
                                 .setViewImage(true) //是否点击放大图片查看,，默认为true
                                 .setMaxSelectCount(AppConfig.PhotoMaxCoun - images.size()) // 图片的最大选择数量，小于等于0时，不限数量。
-                                .start(UploadPhotoActivity.this, PHOTO_REQUEST_CODE); // 打开相册
+                                .start(UploadPhotoActivity.this, CameraUtils.PHOTO_REQUEST_CODE); // 打开相册
                     }
                 }
             });

@@ -133,7 +133,7 @@ public class FamilyMemberManagerActivity extends ToroActivity implements FamilyM
                     FamilyUserInfo userInfo = new FamilyUserInfo();
                     userInfo.setPhone(phoneNumber);
                     userInfo.setName(name);
-                    startActivity(FamilyMemberEditActivity.createAddIntent(this,userInfo));
+                    startActivity(FamilyMemberEditActivity.createAddIntent(this,phoneNumber,name));
                 }
             }
         }

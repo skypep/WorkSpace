@@ -44,9 +44,6 @@ public class FamilyMemberInfo implements Serializable {
         if(StringUtils.isNotEmpty(remarkName)) {
             return remarkName;
         }
-        if(StringUtils.isNotEmpty(getUserInfo().getUsername())) {
-            return getUserInfo().getUsername();
-        }
         if(StringUtils.isNotEmpty(getUserInfo().getName())) {
             return getUserInfo().getName();
         }

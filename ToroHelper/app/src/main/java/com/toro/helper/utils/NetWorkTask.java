@@ -53,10 +53,12 @@ public class NetWorkTask extends AsyncTask<Object, Integer, Object> {
                 return ToroHttp.uploadFile(url,images,token);
             case ConnectManager.GET_LOGIN_USERE_INFO:
             case ConnectManager.GET_PHOTO_LIST_BY_UID:
+            case ConnectManager.GET_USER_PHONE_STATUS:
                 token = (String) params[3];
                 return OkHttp.doTokenGet(url,token);
             case ConnectManager.SUBMIT_PERSIONAL_DETAILS:
             case ConnectManager.AGREEN_MEMBER:
+            case ConnectManager.FIX_REMARK_NAME:
                 pobj = (JSONObject) params[3];
                 token = (String) params[4];
                 return OkHttp.doTokenPut(url,pobj,token);

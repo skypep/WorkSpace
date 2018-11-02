@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.toro.helper.R;
 import com.toro.helper.base.ToroActivity;
+import com.toro.helper.modle.FamilyMemberInfo;
 import com.toro.helper.modle.FamilyUserInfo;
 import com.toro.helper.modle.data.ToroDataModle;
 import com.toro.helper.utils.ConnectManager;
@@ -27,14 +28,14 @@ import com.toro.helper.view.ToroProgressView;
 public class FamilyMemberEditActivity extends ToroActivity implements View.OnClickListener {
 
     private static final String EXTRA_USER_INFO = "extra_user_info";
-    private static final String EXTRA_IS_CREATE = "extra_is_create";
+    private static final String EXTRA_PHONE = "extra_phone";
+    private static final String EXTRA_REMARK_NAME = "extra_remark_name";
 
     public static final String EDIT_RESULT = "edit_result";
 
     private String phoneText,nameText;
     private EditText phontEdit,nameEdit;
-    private FamilyUserInfo userInfo;
-    private boolean isCreate;
+    private FamilyMemberInfo userInfo;
     private Button submitBt;
     private MainActionBar actionBar;
     private ToroProgressView progressView;
@@ -43,8 +44,9 @@ public class FamilyMemberEditActivity extends ToroActivity implements View.OnCli
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.family_member_edit_activity);
-        userInfo = (FamilyUserInfo) getIntent().getSerializableExtra(EXTRA_USER_INFO);
-        isCreate = getIntent().getBooleanExtra(EXTRA_IS_CREATE,true);
+        userInfo = (FamilyMemberInfo) getIntent().getSerializableExtra(EXTRA_USER_INFO);
+        phoneText = getIntent().getStringExtra(EXTRA_PHONE);
+        nameText = getIntent().getStringExtra(EXTRA_REMARK_NAME);
         initView();
     }
 
@@ -89,18 +91,18 @@ public class FamilyMemberEditActivity extends ToroActivity implements View.OnCli
 
             }
         });
+        String title;
         if(userInfo != null) {
-            phontEdit.setText(userInfo.getPhone());
-            nameEdit.setText(userInfo.getName());
+            phontEdit.setText(userInfo.getUserInfo().getPhone());
+            nameEdit.setText(userInfo.getRemarkName());
+            title = getString(R.string.edit_member);
+        }else {
+            phontEdit.setText(phoneText);
+            nameEdit.setText(nameText);
+            title = getString(R.string.create_new_member);
         }
         submitBt.setOnClickListener(this);
 
-        String title;
-        if(isCreate) {
-            title = getString(R.string.create_new_member);
-        }else {
-            title = getString(R.string.edit_member);
-        }
         progressView.setProgressText(getString(R.string.submiting));
         actionBar.updateView(title,R.mipmap.action_back_icon, 0,new View.OnClickListener() {
             @Override
@@ -120,7 +122,11 @@ public class FamilyMemberEditActivity extends ToroActivity implements View.OnCli
 
     private void submit() {
         progressView.show(this);
-        ConnectManager.getInstance().addFamilyMember(this,phoneText,nameText, ToroDataModle.getInstance().getLocalData().getToken());
+        if(userInfo == null) {
+            ConnectManager.getInstance().addFamilyMember(this,phoneText,nameText, ToroDataModle.getInstance().getLocalData().getToken());
+        } else {
+            ConnectManager.getInstance().fixRemarkName(this,userInfo.getId(),nameText,ToroDataModle.getInstance().getLocalData().getToken());
+        }
     }
 
     @Override
@@ -137,22 +143,37 @@ public class FamilyMemberEditActivity extends ToroActivity implements View.OnCli
         progressView.hide(this);
         boolean status = super.bindData(tag,object);
         if(status) {
-            Toast.makeText(this,getString(R.string.create_new_member_sucsses),Toast.LENGTH_LONG).show();
+            switch (tag) {
+                case ConnectManager.ADD_FAMILY_MENBER:
+                    Toast.makeText(this,getString(R.string.create_new_member_sucsses),Toast.LENGTH_LONG).show();
+                    break;
+                case ConnectManager.FIX_REMARK_NAME:
+                    Toast.makeText(this,getString(R.string.submit_sucsses),Toast.LENGTH_LONG).show();
+                    break;
+            }
             Intent intent = new Intent();
             intent.putExtra(EDIT_RESULT, true);
             setResult(RESULT_OK, intent);
             finish();
+
         } else {
-            Toast.makeText(this,getString(R.string.create_new_member_failed),Toast.LENGTH_LONG).show();
+            Toast.makeText(this,getString(R.string.submit_failed),Toast.LENGTH_LONG).show();
         }
         return status;
     }
 
-    public static Intent createAddIntent(Context context, FamilyUserInfo userInfo) {
+    public static Intent createAddIntent(Context context, FamilyMemberInfo userInfo) {
         Intent intent = new Intent();
         intent.setClass(context,FamilyMemberEditActivity.class);
         intent.putExtra(EXTRA_USER_INFO,userInfo);
-        intent.putExtra(EXTRA_IS_CREATE,true);
+        return intent;
+    }
+
+    public static Intent createAddIntent(Context context, String phone,String remarkName) {
+        Intent intent = new Intent();
+        intent.setClass(context,FamilyMemberEditActivity.class);
+        intent.putExtra(EXTRA_PHONE,phone);
+        intent.putExtra(EXTRA_REMARK_NAME,remarkName);
         return intent;
     }
 }

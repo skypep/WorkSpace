@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.toro.helper.R;
 import com.toro.helper.app.AppConfig;
+import com.toro.helper.app.ToroRequestCode;
 import com.toro.helper.base.ToroActivity;
 import com.toro.helper.fragment.photo.PhotoAdapter;
 import com.toro.helper.modle.BaseResponeData;
@@ -39,10 +40,6 @@ import helper.phone.toro.com.imageselector.utils.ImageSelector;
  * on 2018/10/31.
  **/
 public class MyPhotoActivity extends ToroActivity {
-    public static final int PERMISSION_CAMERA_REQUEST_CODE = 0x0012;
-    public static final int CAMERA_REQUEST_CODE = 0x0013;
-    public static final int PHOTO_REQUEST_CODE = 0x0011;
-    private static final int UPLOAD_REQUEST_CODE = 0x0014;
 
     public static final String UPLOAD_REQUEST_EXTRA = "upload_request_extra";
 
@@ -83,10 +80,10 @@ public class MyPhotoActivity extends ToroActivity {
                     @Override
                     public void onClickMenuItem(View v, int item_index, String item) {
                         if (item.equals(getString(R.string.take_photo_by_camera))) {
-                            CameraUtils.checkPermissionAndCamera(MyPhotoActivity.this, PERMISSION_CAMERA_REQUEST_CODE, new CameraUtils.OnCameraPermissionListener() {
+                            CameraUtils.checkPermissionAndCamera(MyPhotoActivity.this, new CameraUtils.OnCameraPermissionListener() {
                                 @Override
                                 public void onHasePermission() {
-                                    mPhotoPath = CameraUtils.openCamera(MyPhotoActivity.this, CAMERA_REQUEST_CODE);
+                                    mPhotoPath = CameraUtils.openCamera(MyPhotoActivity.this);
                                 }
                             });
                         } else if (item.equals(getString(R.string.choose_photo_from_album))) {
@@ -95,7 +92,7 @@ public class MyPhotoActivity extends ToroActivity {
                                     .setSingle(false)  //设置是否单选
                                     .setViewImage(true) //是否点击放大图片查看,，默认为true
                                     .setMaxSelectCount(AppConfig.PhotoMaxCoun) // 图片的最大选择数量，小于等于0时，不限数量。
-                                    .start(MyPhotoActivity.this, PHOTO_REQUEST_CODE); // 打开相册
+                                    .start(MyPhotoActivity.this, CameraUtils.PHOTO_REQUEST_CODE); // 打开相册
                         }
                     }
                 });
@@ -222,18 +219,18 @@ public class MyPhotoActivity extends ToroActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PHOTO_REQUEST_CODE && data != null) {
+        if (requestCode == CameraUtils.PHOTO_REQUEST_CODE && data != null) {
             ArrayList<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
-            startActivityForResult(UploadPhotoActivity.newIntent(this,images),UPLOAD_REQUEST_CODE);
-        }else if (requestCode == CAMERA_REQUEST_CODE) {
+            startActivityForResult(UploadPhotoActivity.newIntent(this,images), ToroRequestCode.UPLOAD_REQUEST_CODE);
+        }else if (requestCode == CameraUtils.CAMERA_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 if(StringUtils.isNotEmpty(mPhotoPath)) {
                     ArrayList<String> images = new ArrayList<>();
                     images.add(mPhotoPath);
-                    startActivityForResult(UploadPhotoActivity.newIntent(this,images),UPLOAD_REQUEST_CODE);
+                    startActivityForResult(UploadPhotoActivity.newIntent(this,images),ToroRequestCode.UPLOAD_REQUEST_CODE);
                 }
             }
-        } else if(requestCode == UPLOAD_REQUEST_CODE && data != null) {
+        } else if(requestCode == ToroRequestCode.UPLOAD_REQUEST_CODE && data != null) {
             boolean needReload = data.getBooleanExtra(UPLOAD_REQUEST_EXTRA,false);
             if(needReload) {
                 updatePhotoList();
@@ -243,11 +240,11 @@ public class MyPhotoActivity extends ToroActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == PERMISSION_CAMERA_REQUEST_CODE) {
+        if (requestCode == CameraUtils.PERMISSION_CAMERA_REQUEST_CODE) {
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 //允许权限，有调起相机拍照。
-                mPhotoPath = CameraUtils.openCamera(this,CAMERA_REQUEST_CODE);
+                mPhotoPath = CameraUtils.openCamera(this);
             } else {
                 //拒绝权限，弹出提示框。
                 CameraUtils.showExceptionDialog(this,false);

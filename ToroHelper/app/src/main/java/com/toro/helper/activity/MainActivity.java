@@ -48,9 +48,6 @@ public class MainActivity extends ToroActivity implements
     public static final int MAIN_MARKET_FRAGMENT = 2;
     public static final int MAIN_ME_FRAGMENT = 3;
 
-    public static final int PHOTO_REQUEST_CODE = 0x0011;
-    public static final int PERMISSION_CAMERA_REQUEST_CODE = 0x0012;
-    public static final int CAMERA_REQUEST_CODE = 0x0013;
     private static final int UPLOAD_REQUEST_CODE = 0x0014;
     private static final int CONTACT_REQUEST_CODE = 0x0015;
 
@@ -263,10 +260,10 @@ public class MainActivity extends ToroActivity implements
                     @Override
                     public void onClickMenuItem(View v, int item_index, String item) {
                         if(item.equals(getString(R.string.take_photo_by_camera))) {
-                            CameraUtils.checkPermissionAndCamera(MainActivity.this, PERMISSION_CAMERA_REQUEST_CODE, new CameraUtils.OnCameraPermissionListener() {
+                            CameraUtils.checkPermissionAndCamera(MainActivity.this, new CameraUtils.OnCameraPermissionListener() {
                                 @Override
                                 public void onHasePermission() {
-                                    mPhotoPath = CameraUtils.openCamera(MainActivity.this,CAMERA_REQUEST_CODE);
+                                    mPhotoPath = CameraUtils.openCamera(MainActivity.this);
                                 }
                             });
                         } else if(item.equals(getString(R.string.choose_photo_from_album))){
@@ -275,7 +272,7 @@ public class MainActivity extends ToroActivity implements
                                     .setSingle(false)  //设置是否单选
                                     .setViewImage(true) //是否点击放大图片查看,，默认为true
                                     .setMaxSelectCount(AppConfig.PhotoMaxCoun) // 图片的最大选择数量，小于等于0时，不限数量。
-                                    .start(MainActivity.this, PHOTO_REQUEST_CODE); // 打开相册
+                                    .start(MainActivity.this, CameraUtils.PHOTO_REQUEST_CODE); // 打开相册
                         }
                     }
                 });
@@ -318,10 +315,10 @@ public class MainActivity extends ToroActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PHOTO_REQUEST_CODE && data != null) {
+        if (requestCode == CameraUtils.PHOTO_REQUEST_CODE && data != null) {
             ArrayList<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
             startActivityForResult(UploadPhotoActivity.newIntent(this,images),UPLOAD_REQUEST_CODE);
-        }else if (requestCode == CAMERA_REQUEST_CODE) {
+        }else if (requestCode == CameraUtils.CAMERA_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 if(StringUtils.isNotEmpty(mPhotoPath)) {
                     ArrayList<String> images = new ArrayList<>();
@@ -347,7 +344,7 @@ public class MainActivity extends ToroActivity implements
                     FamilyUserInfo userInfo = new FamilyUserInfo();
                     userInfo.setPhone(phoneNumber);
                     userInfo.setName(name);
-                    startActivity(FamilyMemberEditActivity.createAddIntent(this,userInfo));
+                    startActivity(FamilyMemberEditActivity.createAddIntent(this,phoneNumber,name));
                 }
             }
         }
@@ -355,11 +352,11 @@ public class MainActivity extends ToroActivity implements
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == PERMISSION_CAMERA_REQUEST_CODE) {
+        if (requestCode == CameraUtils.PERMISSION_CAMERA_REQUEST_CODE) {
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 //允许权限，有调起相机拍照。
-                mPhotoPath = CameraUtils.openCamera(this,CAMERA_REQUEST_CODE);
+                mPhotoPath = CameraUtils.openCamera(this);
             } else {
                 //拒绝权限，弹出提示框。
                 CameraUtils.showExceptionDialog(this,false);

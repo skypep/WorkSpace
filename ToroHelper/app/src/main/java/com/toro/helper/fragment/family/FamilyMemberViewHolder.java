@@ -42,7 +42,7 @@ public class FamilyMemberViewHolder extends RecyclerView.ViewHolder {
         }else {
             headImageView.setImageResource(R.mipmap.default_head);
         }
-        nameTextView.setText(data.getRemarkName());
+        nameTextView.setText(data.getDisplayName());
         rightLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

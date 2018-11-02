@@ -26,6 +26,7 @@ import com.toro.helper.modle.photo.PhotoItem;
 import com.toro.helper.utils.CameraUtils;
 import com.toro.helper.utils.ConnectManager;
 import com.toro.helper.utils.ImageLoad;
+import com.toro.helper.utils.PhoneUtils;
 import com.toro.helper.utils.StringUtils;
 import com.toro.helper.utils.okhttp.mutifile.listener.impl.UIProgressListener;
 import com.toro.helper.view.MainActionBar;
@@ -139,10 +140,10 @@ public class EditPersonalDetailsActivity extends ToroActivity implements View.On
             @Override
             public void onClickMenuItem(View v, int item_index, String item) {
                 if(item.equals(getString(R.string.take_photo_by_camera))) {
-                    CameraUtils.checkPermissionAndCamera(EditPersonalDetailsActivity.this, MainActivity.PERMISSION_CAMERA_REQUEST_CODE, new CameraUtils.OnCameraPermissionListener() {
+                    CameraUtils.checkPermissionAndCamera(EditPersonalDetailsActivity.this, new CameraUtils.OnCameraPermissionListener() {
                         @Override
                         public void onHasePermission() {
-                            mPhotoPath = CameraUtils.openCamera(EditPersonalDetailsActivity.this,MainActivity.CAMERA_REQUEST_CODE);
+                            mPhotoPath = CameraUtils.openCamera(EditPersonalDetailsActivity.this);
                         }
                     });
                 } else if(item.equals(getString(R.string.choose_photo_from_album))){
@@ -152,7 +153,7 @@ public class EditPersonalDetailsActivity extends ToroActivity implements View.On
                             .setViewImage(true) //是否点击放大图片查看,，默认为true
                             .setCrop(true)      //可裁剪
                             .setMaxSelectCount(1) // 图片的最大选择数量，小于等于0时，不限数量。
-                            .start(EditPersonalDetailsActivity.this, MainActivity.PHOTO_REQUEST_CODE); // 打开相册
+                            .start(EditPersonalDetailsActivity.this, CameraUtils.PHOTO_REQUEST_CODE); // 打开相册
                 }
             }
         });
@@ -162,11 +163,11 @@ public class EditPersonalDetailsActivity extends ToroActivity implements View.On
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == MainActivity.PHOTO_REQUEST_CODE && data != null) {
+        if (requestCode == CameraUtils.PHOTO_REQUEST_CODE && data != null) {
             ArrayList<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
             mPhotoPath = images.get(0);
             changeHeadPhoto();
-        }else if (requestCode == MainActivity.CAMERA_REQUEST_CODE) {
+        }else if (requestCode == CameraUtils.CAMERA_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 changeHeadPhoto();
             }
@@ -176,11 +177,11 @@ public class EditPersonalDetailsActivity extends ToroActivity implements View.On
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == MainActivity.PERMISSION_CAMERA_REQUEST_CODE) {
+        if (requestCode == CameraUtils.PERMISSION_CAMERA_REQUEST_CODE) {
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 //允许权限，有调起相机拍照。
-                mPhotoPath = CameraUtils.openCamera(this,MainActivity.CAMERA_REQUEST_CODE);
+                mPhotoPath = CameraUtils.openCamera(this);
             } else {
                 //拒绝权限，弹出提示框。
                 CameraUtils.showExceptionDialog(this,false);

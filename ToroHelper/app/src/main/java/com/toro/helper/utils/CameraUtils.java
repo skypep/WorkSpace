@@ -17,6 +17,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v4.os.EnvironmentCompat;
 
 import com.toro.helper.activity.MainActivity;
+import com.toro.helper.app.ToroRequestCode;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,6 +30,10 @@ import java.util.Locale;
  * on 2018/10/25.
  **/
 public class CameraUtils {
+
+    public static final int PHOTO_REQUEST_CODE = ToroRequestCode.CAMERA_CODE + 1;
+    public static final int PERMISSION_CAMERA_REQUEST_CODE = ToroRequestCode.CAMERA_CODE + 2;
+    public static final int CAMERA_REQUEST_CODE = ToroRequestCode.CAMERA_CODE + 3;
 
     public interface OnCameraPermissionListener {
         public void onHasePermission();
@@ -53,7 +58,7 @@ public class CameraUtils {
     /**
      * 检查权限并拍照。
      */
-    public static void checkPermissionAndCamera(Activity activity,int RequestCode,OnCameraPermissionListener listener) {
+    public static void checkPermissionAndCamera(Activity activity,OnCameraPermissionListener listener) {
         int hasCameraPermission = ContextCompat.checkSelfPermission(activity.getApplication(),
                 Manifest.permission.CAMERA);
         if (hasCameraPermission == PackageManager.PERMISSION_GRANTED) {
@@ -62,7 +67,7 @@ public class CameraUtils {
         } else {
             //没有权限，申请权限。
             ActivityCompat.requestPermissions(activity,
-                    new String[]{Manifest.permission.CAMERA}, RequestCode);
+                    new String[]{Manifest.permission.CAMERA}, PERMISSION_CAMERA_REQUEST_CODE);
         }
     }
 
@@ -103,7 +108,7 @@ public class CameraUtils {
     /**
      * 调起相机拍照
      */
-    public static String openCamera(Activity activity,int RequestCode) {
+    public static String openCamera(Activity activity) {
         Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (captureIntent.resolveActivity(activity.getPackageManager()) != null) {
             File photoFile = null;
@@ -119,7 +124,7 @@ public class CameraUtils {
                 Uri photoUri = FileProvider.getUriForFile(activity, activity.getPackageName() + ".fileprovider", photoFile);
                 captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
                 captureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                activity.startActivityForResult(captureIntent, RequestCode);
+                activity.startActivityForResult(captureIntent, CAMERA_REQUEST_CODE);
                 return mPhotoPath;
             }
         }
