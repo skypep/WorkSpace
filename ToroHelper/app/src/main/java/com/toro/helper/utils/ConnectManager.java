@@ -463,7 +463,7 @@ public class ConnectManager {
         try{
             JSONObject obj = new JSONObject();
             obj.put("id",id);
-            obj.put("name",remarkName);
+            obj.put("remarkName",remarkName);
             new NetWorkTask().execute(listener, FIX_REMARK_NAME,mainUrl + fixRemarkNameAction,obj,token);
             return true;
         } catch (Exception e){

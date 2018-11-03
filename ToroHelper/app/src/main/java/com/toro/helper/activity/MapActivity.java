@@ -57,12 +57,7 @@ public class MapActivity extends ToroActivity implements View.OnClickListener {
         marker.showInfoWindow();
         aMap.moveCamera(CameraUpdateFactory.zoomTo(18));
         aMap.moveCamera(CameraUpdateFactory.changeLatLng(latLng));
-        aMap.addCircle(new CircleOptions().
-                center(latLng).
-                radius(1000).
-                fillColor(Color.argb(100, 255, 1, 1)).
-                strokeColor(Color.argb(100, 255, 1, 1)).
-                strokeWidth(1));
+
 
         mainActionBar = findViewById(R.id.main_action_view);
         mainActionBar.updateView(getString(R.string.action_menu_location), R.mipmap.action_back_icon, R.mipmap.refresh_action_icon, new View.OnClickListener() {
@@ -99,6 +94,7 @@ public class MapActivity extends ToroActivity implements View.OnClickListener {
                 mapJumpLayout.showMapJumpLayout(114.2180350000,22.7211940000,userInfo.getDisplayName());
                 break;
             case R.id.action_safeguard_layout:
+                startActivity(SafeguardActivity.createIntent(this,userInfo.getId()));
                 break;
             case R.id.action_trac_layout:
                 break;

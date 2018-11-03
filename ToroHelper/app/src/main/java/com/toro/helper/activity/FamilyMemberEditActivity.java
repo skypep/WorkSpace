@@ -151,6 +151,7 @@ public class FamilyMemberEditActivity extends ToroActivity implements View.OnCli
                     Toast.makeText(this,getString(R.string.submit_sucsses),Toast.LENGTH_LONG).show();
                     break;
             }
+            ToroDataModle.getInstance().updateToroFamilyMemberList();
             Intent intent = new Intent();
             intent.putExtra(EDIT_RESULT, true);
             setResult(RESULT_OK, intent);

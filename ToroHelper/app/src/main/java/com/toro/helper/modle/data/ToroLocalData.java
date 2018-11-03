@@ -3,6 +3,7 @@ package com.toro.helper.modle.data;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.amap.api.maps2d.model.LatLng;
 import com.toro.helper.app.App;
 import com.toro.helper.utils.StringUtils;
 
@@ -20,6 +21,8 @@ public class ToroLocalData {
     private String pwd;
     private long loginTime;
     private boolean isQuickLogin;
+    private LocationInfo homeLocation;
+    private int safeguardRadius;
 
     private static ToroLocalData instance;
 
@@ -27,6 +30,7 @@ public class ToroLocalData {
 
     public ToroLocalData(Context context) {
         pre = context.getSharedPreferences(this.getClass().getName(),Context.MODE_PRIVATE);
+        homeLocation = new LocationInfo();
     }
 
     public void login(String password,String phone,String token) {
@@ -115,5 +119,32 @@ public class ToroLocalData {
     public void setQuickLogin(boolean quickLogin) {
         isQuickLogin = quickLogin;
         pre.edit().putBoolean("isQuickLogin",isQuickLogin).apply();
+    }
+
+    public LocationInfo getHomeLocation() {
+        double lat = pre.getFloat("lat",0);
+        double lng = pre.getFloat("lng",0);
+        String poiTitle = pre.getString("poiTitle","");
+        if(lng * lat == 0) {
+            return null;
+        }
+        homeLocation.setLatLng(new LatLng(lat,lng));
+        homeLocation.setPoiTitle(poiTitle);
+        return homeLocation;
+    }
+
+    public void setHomeLocation(LocationInfo homeLocation) {
+        this.homeLocation = homeLocation;
+        pre.edit().putFloat("lat", (float) homeLocation.getLatLng().latitude).putFloat("lng", (float) homeLocation.getLatLng().longitude).putString("poiTitle",homeLocation.getPoiTitle()).apply();
+    }
+
+    public int getSafeguardRadius() {
+        safeguardRadius = pre.getInt("safeguardRadius",safeguardRadius);
+        return safeguardRadius;
+    }
+
+    public void setSafeguardRadius(int safeguardRadius) {
+        this.safeguardRadius = safeguardRadius;
+        pre.edit().putInt("safeguardRadius",safeguardRadius).apply();
     }
 }

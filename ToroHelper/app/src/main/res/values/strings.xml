@@ -99,4 +99,18 @@
     <string name="map_action_trac">行为轨迹</string>
     <string name="please_install_map">请安装地图软件</string>
     <string name="open_map_failed">地图打开失败</string>
+    <string name="call_dialog_title">是否拨打</string>
+    <string name="call_dialog_yes">是</string>
+    <string name="call_dialog_no">否</string>
+    <string name="need_setting_home_location">您需要设置家的位置后方可使用此功能</string>
+    <string name="setting_home_location">设置位置</string>
+    <string name="safeguard_setting">防护设置</string>
+    <string name="save">保存</string>
+    <string name="safeguard_location">防护位置</string>
+    <string name="safeguard_rect">防护范围</string>
+    <string name="home_location_empty">还没设置家的位置</string>
+    <string name="home_location_unknow">未知位置</string>
+    <string name="radius_500">500米</string>
+    <string name="radius_1000">1000米</string>
+    <string name="radius_1500">15000</string>
 </resources>

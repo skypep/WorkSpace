@@ -16,6 +16,7 @@ import com.toro.helper.R;
 import com.toro.helper.base.ToroActivity;
 import com.toro.helper.modle.FamilyMemberInfo;
 import com.toro.helper.modle.data.ToroDataModle;
+import com.toro.helper.modle.data.listener.FamilyMemberDataOnChangeListener;
 import com.toro.helper.utils.CameraUtils;
 import com.toro.helper.utils.ConnectManager;
 import com.toro.helper.utils.ImageLoad;
@@ -27,7 +28,7 @@ import com.toro.helper.view.RoundnessImageView;
  * Create By liujia
  * on 2018/11/1.
  **/
-public class HelperActivity extends ToroActivity implements View.OnClickListener {
+public class HelperActivity extends ToroActivity implements View.OnClickListener ,FamilyMemberDataOnChangeListener {
 
     private static final String EXTRA_MEMBER_INFO = "extra_user_info";
 
@@ -44,33 +45,27 @@ public class HelperActivity extends ToroActivity implements View.OnClickListener
         setContentView(R.layout.helper_activity);
         userInfo = (FamilyMemberInfo) getIntent().getSerializableExtra(EXTRA_MEMBER_INFO);
 
-        String titile = "";
-        if(userInfo != null) {
-            titile = userInfo.getDisplayName();
-        }
-
         initView();
+        updateMemberInfo();
+    }
 
-        mainActionBar = findViewById(R.id.main_action_view);
-        mainActionBar.updateView(titile, R.mipmap.action_back_icon, R.mipmap.icon_personal, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        }, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(FamilyMemberEditActivity.createAddIntent(HelperActivity.this,userInfo));
-            }
-        });
+    @Override
+    protected void onResume() {
+        super.onResume();
         updateUserPhoneStatus();
+        ToroDataModle.getInstance().addToroDataModeOnChangeListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ToroDataModle.getInstance().removeToroDataModeOnChangeListener(this);
     }
 
     private void initView() {
+        mainActionBar = findViewById(R.id.main_action_view);
         headImageView = findViewById(R.id.head_img);
         nameText = findViewById(R.id.name_text);
-
-        nameText.setText(userInfo.getDisplayName());
 
         refreshImage = findViewById(R.id.refresh_img);
         refreshImage.setOnClickListener(this);
@@ -90,11 +85,31 @@ public class HelperActivity extends ToroActivity implements View.OnClickListener
         setting3.setOnClickListener(this);
         setting4.setOnClickListener(this);
 
+    }
+
+    private void updateMemberInfo() {
+        userInfo = ToroDataModle.getInstance().getFamilyMemberData().getMemberInfoByid(userInfo.getId());
+        String titile = "";
+        if(userInfo != null) {
+            titile = userInfo.getDisplayName();
+        }
         if(userInfo != null && userInfo.getUserInfo() != null && userInfo.getUserInfo().getHeadPhoto() != null) {
             ImageLoad.GlidLoad(headImageView,userInfo.getUserInfo().getHeadPhoto(),R.mipmap.default_head);
         }else {
             headImageView.setImageResource(R.mipmap.default_head);
         }
+        mainActionBar.updateView(titile, R.mipmap.action_back_icon, R.mipmap.icon_personal, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        }, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(FamilyMemberEditActivity.createAddIntent(HelperActivity.this,userInfo));
+            }
+        });
+        nameText.setText(userInfo.getDisplayName());
     }
 
     private void updateUserPhoneStatus() {
@@ -171,5 +186,10 @@ public class HelperActivity extends ToroActivity implements View.OnClickListener
             }
         }
         return status;
+    }
+
+    @Override
+    public void onChange(Object obj) {
+        updateMemberInfo();
     }
 }

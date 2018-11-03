@@ -2,12 +2,16 @@ package com.toro.helper.utils;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+
+import com.toro.helper.R;
 
 /**
  * Create By liujia
@@ -22,15 +26,36 @@ public class PhoneUtils {
      * @param telPhone 电话
      */
     public static void call(Activity activity,String telPhone){
-        if(checkReadPermission(activity,Manifest.permission.CALL_PHONE,REQUEST_CALL_PERMISSION)){
-            try{
-                Intent intent = new Intent(Intent.ACTION_CALL,Uri.parse(telPhone));
-                activity.startActivity(intent);
-            }catch (Exception e) {
+        showDialog(activity,telPhone);
+    }
 
-            }
+    private static void showDialog(final Activity activity,final String phoneNum) {
+        final AlertDialog.Builder normalDialog =
+                new AlertDialog.Builder(activity);
+        normalDialog.setTitle(R.string.call_dialog_title);
+        normalDialog.setMessage(phoneNum);
+        normalDialog.setPositiveButton(R.string.call_dialog_yes,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(checkReadPermission(activity,Manifest.permission.CALL_PHONE,REQUEST_CALL_PERMISSION)){
+                            try{
+                                Intent intent = new Intent(Intent.ACTION_CALL,Uri.parse(phoneNum));
+                                activity.startActivity(intent);
+                            }catch (Exception e) {
 
-        }
+                            }
+                        }
+                    }
+                });
+        normalDialog.setNegativeButton(R.string.call_dialog_no,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+        // 显示
+        normalDialog.show();
     }
 
     private static boolean checkReadPermission(Activity activity, String string_permission, int request_code) {
