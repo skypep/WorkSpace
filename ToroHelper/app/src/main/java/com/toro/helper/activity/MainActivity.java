@@ -16,6 +16,7 @@ import com.toro.helper.R;
 import com.toro.helper.RongYunListener;
 import com.toro.helper.RongyunManager;
 import com.toro.helper.app.AppConfig;
+import com.toro.helper.app.ToroRequestCode;
 import com.toro.helper.base.ToroActivity;
 import com.toro.helper.fragment.FamilyMemberFragment;
 import com.toro.helper.fragment.FamilyPhotoFragment;
@@ -47,9 +48,6 @@ public class MainActivity extends ToroActivity implements
     public static final int MAIN_HELPER_FRAGMENT = 1;
     public static final int MAIN_MARKET_FRAGMENT = 2;
     public static final int MAIN_ME_FRAGMENT = 3;
-
-    private static final int UPLOAD_REQUEST_CODE = 0x0014;
-    private static final int CONTACT_REQUEST_CODE = 0x0015;
 
     private ViewPager mViewPager;
     private List<Fragment> mTabs = new ArrayList<Fragment>();
@@ -118,11 +116,13 @@ public class MainActivity extends ToroActivity implements
         familyFragment.setArguments(args1);
         mTabs.add(familyFragment);
 
-        Fragment tabFragment2 = new Fragment();
-        Bundle args2 = new Bundle();
-        args.putString("title", "title2");
-        tabFragment2.setArguments(args2);
-        mTabs.add(tabFragment2);
+        if(AppConfig.openMarket) {
+            Fragment tabFragment2 = new Fragment();
+            Bundle args2 = new Bundle();
+            args.putString("title", "title2");
+            tabFragment2.setArguments(args2);
+            mTabs.add(tabFragment2);
+        }
 
         mineFragment = new MineFragment();
         Bundle args3 = new Bundle();
@@ -153,20 +153,21 @@ public class MainActivity extends ToroActivity implements
     private void initTabIndicator()
     {
         ChangeColorIconWithTextView one = (ChangeColorIconWithTextView) findViewById(R.id.id_indicator_one);
-        ChangeColorIconWithTextView two = (ChangeColorIconWithTextView) findViewById(R.id.id_indicator_two);
-        ChangeColorIconWithTextView three = (ChangeColorIconWithTextView) findViewById(R.id.id_indicator_three);
-        ChangeColorIconWithTextView four = (ChangeColorIconWithTextView) findViewById(R.id.id_indicator_four);
-
         mTabIndicator.add(one);
-        mTabIndicator.add(two);
-        mTabIndicator.add(three);
-        mTabIndicator.add(four);
-
         one.setOnClickListener(this);
+        ChangeColorIconWithTextView two = (ChangeColorIconWithTextView) findViewById(R.id.id_indicator_two);
+        mTabIndicator.add(two);
         two.setOnClickListener(this);
-        three.setOnClickListener(this);
+        if(AppConfig.openMarket) {
+            ChangeColorIconWithTextView three = (ChangeColorIconWithTextView) findViewById(R.id.id_indicator_three);
+            mTabIndicator.add(three);
+            three.setOnClickListener(this);
+        } else {
+            findViewById(R.id.id_indicator_three).setVisibility(View.GONE);
+        }
+        ChangeColorIconWithTextView four = (ChangeColorIconWithTextView) findViewById(R.id.id_indicator_four);
+        mTabIndicator.add(four);
         four.setOnClickListener(this);
-
     }
 
     @Override
@@ -241,7 +242,11 @@ public class MainActivity extends ToroActivity implements
                 setupHelpeerActionBar();
                 break;
             case MainActivity.MAIN_MARKET_FRAGMENT:
-                setupMarketActionBar();
+                if(AppConfig.openMarket) {
+                    setupMarketActionBar();
+                }else {
+                    setupMeActionBar();
+                }
                 break;
             case MainActivity.MAIN_ME_FRAGMENT:
                 setupMeActionBar();
@@ -293,7 +298,7 @@ public class MainActivity extends ToroActivity implements
                     public void onClickMenuItem(View v, int item_index, String item) {
                         if(item.equals(getString(R.string.add_family_from_contact))) {
                             Intent intent=new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
-                            startActivityForResult(intent,CONTACT_REQUEST_CODE);
+                            startActivityForResult(intent, ToroRequestCode.CONTACT_REQUEST_CODE);
                         } else if(item.equals(getString(R.string.add_family_from_edit))) {
                             startActivity(FamilyMemberEditActivity.createAddIntent(MainActivity.this,null));
                         }
@@ -317,16 +322,16 @@ public class MainActivity extends ToroActivity implements
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CameraUtils.PHOTO_REQUEST_CODE && data != null) {
             ArrayList<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
-            startActivityForResult(UploadPhotoActivity.newIntent(this,images),UPLOAD_REQUEST_CODE);
+            startActivityForResult(UploadPhotoActivity.newIntent(this,images),ToroRequestCode.UPLOAD_REQUEST_CODE);
         }else if (requestCode == CameraUtils.CAMERA_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 if(StringUtils.isNotEmpty(mPhotoPath)) {
                     ArrayList<String> images = new ArrayList<>();
                     images.add(mPhotoPath);
-                    startActivityForResult(UploadPhotoActivity.newIntent(this,images),UPLOAD_REQUEST_CODE);
+                    startActivityForResult(UploadPhotoActivity.newIntent(this,images),ToroRequestCode.UPLOAD_REQUEST_CODE);
                 }
             }
-        } else if(requestCode == CONTACT_REQUEST_CODE) {
+        } else if(requestCode == ToroRequestCode.CONTACT_REQUEST_CODE) {
             String phoneNumber = "";
             if(data != null) {
                 Uri uri = data.getData();

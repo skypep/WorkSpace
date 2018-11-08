@@ -65,6 +65,8 @@ public class MapJumpLayout extends LinearLayout implements View.OnClickListener 
                 gdImg.setImageDrawable(drawable);
                 gdText.setText(appName);
             }
+        } else {
+            gdLayout.setVisibility(View.GONE);
         }
 
         if(MapUtil.isBaiduMapInstalled()){
@@ -78,6 +80,8 @@ public class MapJumpLayout extends LinearLayout implements View.OnClickListener 
                 bdImg.setImageDrawable(drawable);
                 bdText.setText(appName);
             }
+        } else {
+            bdLayout.setVisibility(View.GONE);
         }
 
         if(MapUtil.isTencentMapInstalled()){
@@ -91,6 +95,8 @@ public class MapJumpLayout extends LinearLayout implements View.OnClickListener 
                 txImg.setImageDrawable(drawable);
                 txText.setText(appName);
             }
+        }else {
+            txLayout.setVisibility(View.GONE);
         }
     }
 

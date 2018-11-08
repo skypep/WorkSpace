@@ -125,9 +125,11 @@ public class CameraUtils {
                 captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
                 captureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 activity.startActivityForResult(captureIntent, CAMERA_REQUEST_CODE);
+
                 return mPhotoPath;
             }
         }
         return "";
     }
+
 }

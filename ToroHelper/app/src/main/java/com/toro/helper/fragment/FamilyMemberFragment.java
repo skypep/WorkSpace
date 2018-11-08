@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.toro.helper.R;
 import com.toro.helper.activity.HelperActivity;
@@ -91,11 +92,20 @@ public class FamilyMemberFragment extends BaseFragment implements FamilyMemberDa
         memberData = ToroDataModle.getInstance().getFamilyMemberData();
         if(memberData == null || memberData.getFamilyMemberDatas() == null || memberData.getFamilyMemberDatas().size() < 1) {
             showEmptyHint();
+            return;
         }else {
             recyclerView.setVisibility(View.VISIBLE);
             loadingProgress.setVisibility(View.GONE);
             emptyHint.setVisibility(View.GONE);
             adapter.updatePhotoDatas(memberData.getFamilyMemberDatas());
+        }
+        if(memberData.getFamilyMemberDatas().size() % memberData.pageCount == 0) {
+            recyclerView.setLoadMoreListener(new AutoLoadRecyclerView.onLoadMoreListener() {
+                @Override
+                public void loadMore() {
+                    ToroDataModle.getInstance().updateMoreFamilyMemberList();
+                }
+            });
         }
     }
 
@@ -111,7 +121,13 @@ public class FamilyMemberFragment extends BaseFragment implements FamilyMemberDa
         @Override
         public void onClick(View v) {
             int index = (int) v.getTag();
-            startActivity(HelperActivity.createIntent(getContext(),memberData.getFamilyMemberDatas().get(index)));
+            int type = memberData.getFamilyMemberDatas().get(index).getUserInfo().getUserType();
+            if(type == 1) {
+                startActivity(HelperActivity.createIntent(getContext(),memberData.getFamilyMemberDatas().get(index)));
+            } else {
+                Toast.makeText(getContext(),R.string.member_is_not_old_man,Toast.LENGTH_LONG).show();
+            }
+
         }
     };
 

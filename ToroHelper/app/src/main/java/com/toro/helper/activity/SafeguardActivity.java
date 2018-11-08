@@ -21,6 +21,7 @@ import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
 import com.toro.helper.R;
 import com.toro.helper.base.ToroActivity;
+import com.toro.helper.modle.data.LocationInfo;
 import com.toro.helper.modle.data.ToroDataModle;
 import com.toro.helper.view.MainActionBar;
 

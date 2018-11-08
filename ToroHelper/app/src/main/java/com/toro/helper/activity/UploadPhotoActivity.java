@@ -25,6 +25,7 @@ import com.toro.helper.modle.data.ToroDataModle;
 import com.toro.helper.modle.data.listener.FamilyMemberDataOnChangeListener;
 import com.toro.helper.utils.CameraUtils;
 import com.toro.helper.utils.ConnectManager;
+import com.toro.helper.utils.FileUtils;
 import com.toro.helper.utils.StringUtils;
 import com.toro.helper.utils.okhttp.mutifile.listener.impl.UIProgressListener;
 import com.toro.helper.view.MainActionBar;
@@ -33,6 +34,8 @@ import com.toro.helper.view.ToroProgressView;
 import com.toro.helper.view.iphone.IphoneDialogBottomMenu;
 import com.toro.helper.view.iphone.MenuItemOnClickListener;
 
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +53,7 @@ public class UploadPhotoActivity extends ToroActivity implements View.OnClickLis
     private Button submitBt;
     private RecyclerView recyclerView,memberRecycler;
     private ArrayList<String> images;
+    private ArrayList<String> lubanImages;
     private PhotoEditAdapter adapter;
     private TextView memberEmpty;
 
@@ -149,7 +153,11 @@ public class UploadPhotoActivity extends ToroActivity implements View.OnClickLis
 
     private void submit() {
         showProgress(0);
-        ConnectManager.getInstance().uploadPhotos(this, images, ToroDataModle.getInstance().getLocalData().getToken(), new UIProgressListener() {
+        uploadImages(images);
+    }
+
+    private void uploadImages(ArrayList<String> images) {
+        ConnectManager.getInstance().uploadPhotos(this,this, images, ToroDataModle.getInstance().getLocalData().getToken(), new UIProgressListener() {
             @Override
             public void onUIProgress(long currentBytes, long contentLength, boolean done) {
                 showProgress((int) (currentBytes * 100 / contentLength));
@@ -197,6 +205,7 @@ public class UploadPhotoActivity extends ToroActivity implements View.OnClickLis
         }
     }
 
+
     private View.OnClickListener plusOnclickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -220,6 +229,7 @@ public class UploadPhotoActivity extends ToroActivity implements View.OnClickLis
                                 .setViewImage(true) //是否点击放大图片查看,，默认为true
                                 .setMaxSelectCount(AppConfig.PhotoMaxCoun - images.size()) // 图片的最大选择数量，小于等于0时，不限数量。
                                 .start(UploadPhotoActivity.this, CameraUtils.PHOTO_REQUEST_CODE); // 打开相册
+
                     }
                 }
             });

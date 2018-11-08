@@ -8,4 +8,5 @@ public class ToroRequestCode {
     public static final int CAMERA_CODE = 0x0011;
 
     public static final int UPLOAD_REQUEST_CODE = 0x0021;
+    public static final int CONTACT_REQUEST_CODE = 0x0022;
 }

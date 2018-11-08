@@ -84,7 +84,6 @@
                     android:gravity="center"
                     android:textSize="@dimen/text_size_m"
                     android:textColor="#858D97"
-                    android:text="深圳市天安数码城A栋4楼402阳台旁第二个位置"
                     />
 
             </LinearLayout>

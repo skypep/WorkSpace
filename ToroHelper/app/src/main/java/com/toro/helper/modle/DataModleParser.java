@@ -1,5 +1,6 @@
 package com.toro.helper.modle;
 
+import com.toro.helper.modle.data.LocationInfo;
 import com.toro.helper.modle.data.ToroLoginUserData;
 import com.toro.helper.modle.photo.PhotoData;
 import com.toro.helper.modle.photo.PhotoItem;
@@ -75,5 +76,22 @@ public class DataModleParser {
         }
         return null;
 
+    }
+
+    public static List<LocationInfo> parserLocations(String jsonString) {
+        List<LocationInfo> datas = new ArrayList<>();
+        try{
+            JSONArray jsonArray = new JSONArray(jsonString);
+            for(int i=0;i< jsonArray.length();i++) {
+                JSONObject obj = jsonArray.getJSONObject(i);
+                LocationInfo item = LocationInfo.newInstance(obj);
+                if(item != null) {
+                    datas.add(item);
+                }
+            }
+        } catch (Exception e) {
+
+        }
+        return datas;
     }
 }

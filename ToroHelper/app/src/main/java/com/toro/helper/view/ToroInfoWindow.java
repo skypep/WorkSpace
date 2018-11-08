@@ -3,12 +3,14 @@ package com.toro.helper.view;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.model.Marker;
 import com.toro.helper.R;
 import com.toro.helper.modle.photo.PhotoItem;
 import com.toro.helper.utils.ImageLoad;
+import com.toro.helper.utils.StringUtils;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -20,6 +22,7 @@ public class ToroInfoWindow implements AMap.InfoWindowAdapter {
 
     private Context mContext;
     private PhotoItem headPhoto;
+    private String poiTitle,time;
 
     @Override
     public View getInfoWindow(Marker marker) {
@@ -36,6 +39,12 @@ public class ToroInfoWindow implements AMap.InfoWindowAdapter {
         } else {
             photoView.setImageResource(R.mipmap.default_head);
         }
+        if(StringUtils.isNotEmpty(poiTitle)) {
+            ((TextView)infoWindow.findViewById(R.id.poi_title)).setText(poiTitle);
+        }
+        if(StringUtils.isNotEmpty(time)) {
+            ((TextView)infoWindow.findViewById(R.id.time)).setText(time);
+        }
         return infoWindow;
     }
 
@@ -45,5 +54,13 @@ public class ToroInfoWindow implements AMap.InfoWindowAdapter {
 
     public void setHeadPhoto(PhotoItem photo) {
         this.headPhoto = photo;
+    }
+
+    public void setPioTitle(String title) {
+        this.poiTitle = title;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

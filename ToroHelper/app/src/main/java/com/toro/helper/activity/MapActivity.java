@@ -7,7 +7,12 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.CameraUpdateFactory;
@@ -17,15 +22,22 @@ import com.amap.api.maps2d.model.CircleOptions;
 import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
+import com.amap.api.maps2d.model.PolylineOptions;
 import com.toro.helper.R;
 import com.toro.helper.base.ToroActivity;
+import com.toro.helper.modle.BaseResponeData;
+import com.toro.helper.modle.DataModleParser;
 import com.toro.helper.modle.FamilyMemberInfo;
+import com.toro.helper.modle.data.LocationInfo;
 import com.toro.helper.utils.ConnectManager;
 import com.toro.helper.utils.MapUtil;
 import com.toro.helper.utils.PhoneUtils;
 import com.toro.helper.view.MainActionBar;
 import com.toro.helper.view.MapJumpLayout;
 import com.toro.helper.view.ToroInfoWindow;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Create By liujia
@@ -38,6 +50,10 @@ public class MapActivity extends ToroActivity implements View.OnClickListener {
     private MainActionBar mainActionBar;
     private MapJumpLayout mapJumpLayout;
     private ToroInfoWindow toroInfoWindow;
+    private Marker marker;
+    private MapView mapView;
+    private ImageView refreshImage;
+    private List<LocationInfo> locationInfos;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,17 +63,8 @@ public class MapActivity extends ToroActivity implements View.OnClickListener {
         toroInfoWindow = new ToroInfoWindow(this);
         toroInfoWindow.setHeadPhoto(userInfo.getUserInfo().getHeadPhoto());
 
-        MapView mapView = (MapView) findViewById(R.id.map);
+        mapView = (MapView) findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);// 此方法必须重写
-        AMap aMap = mapView.getMap();
-        LatLng latLng = new LatLng(22.7211940000,114.2180350000);
-        final Marker marker = aMap.addMarker(new MarkerOptions().position(latLng).snippet("DefaultMarker").icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
-                .decodeResource(getResources(),R.mipmap.map_mark_icon))));
-        aMap.setInfoWindowAdapter(toroInfoWindow);
-        marker.showInfoWindow();
-        aMap.moveCamera(CameraUpdateFactory.zoomTo(18));
-        aMap.moveCamera(CameraUpdateFactory.changeLatLng(latLng));
-
 
         mainActionBar = findViewById(R.id.main_action_view);
         mainActionBar.updateView(getString(R.string.action_menu_location), R.mipmap.action_back_icon, R.mipmap.refresh_action_icon, new View.OnClickListener() {
@@ -68,13 +75,67 @@ public class MapActivity extends ToroActivity implements View.OnClickListener {
         }, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                refreshTrac();
             }
         });
+        refreshImage = mainActionBar.getRightImageView();
         mapJumpLayout = findViewById(R.id.map_jump_layout);
         findViewById(R.id.action_call_layout).setOnClickListener(this);
         findViewById(R.id.action_navigation_layout).setOnClickListener(this);
         findViewById(R.id.action_safeguard_layout).setOnClickListener(this);
         findViewById(R.id.action_trac_layout).setOnClickListener(this);
+        refreshTrac();
+    }
+
+    private void startRefreshAnim() {
+        refreshImage.setClickable(false);
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.refresh_anim);
+        LinearInterpolator lin = new LinearInterpolator();//设置动画匀速运动
+        animation.setInterpolator(lin);
+        refreshImage.startAnimation(animation);
+    }
+
+    private void stopRefreshAnim() {
+        refreshImage.setClickable(true);
+        refreshImage.clearAnimation();
+    }
+
+    private void refreshTrac() {
+        startRefreshAnim();
+        ConnectManager.getInstance().getTracData(this);
+    }
+
+    private void updateTrac() {
+        if(locationInfos == null || locationInfos.size() < 1) {
+            Toast.makeText(this,R.string.location_refresh_failed,Toast.LENGTH_LONG).show();
+            return;
+        }
+        AMap aMap = mapView.getMap();
+        toroInfoWindow.setPioTitle(locationInfos.get(locationInfos.size() - 1).getPoiTitle());
+        toroInfoWindow.setTime(locationInfos.get(locationInfos.size() - 1).getTime());
+        aMap.setInfoWindowAdapter(toroInfoWindow);
+        LatLng curLatLng = locationInfos.get(locationInfos.size() - 1).getLatLng();
+        if(marker == null) {
+            marker = aMap.addMarker(new MarkerOptions().position(curLatLng).snippet("DefaultMarker").icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
+                    .decodeResource(getResources(),R.mipmap.map_mark_icon))));
+        }else {
+            marker.setPosition(curLatLng);
+        }
+        marker.showInfoWindow();
+        aMap.moveCamera(CameraUpdateFactory.zoomTo(18));
+        aMap.moveCamera(CameraUpdateFactory.changeLatLng(curLatLng));
+    }
+
+    @Override
+    public boolean bindData(int tag, Object object) {
+        boolean status = super.bindData(tag, object);
+        stopRefreshAnim();
+        if(status) {
+            BaseResponeData data = DataModleParser.parserBaseResponeData((String) object);
+            locationInfos = DataModleParser.parserLocations(data.getEntry());
+            updateTrac();
+        }
+        return status;
     }
 
     public static Intent createIntent(Context context,FamilyMemberInfo memberInfo) {
@@ -97,6 +158,7 @@ public class MapActivity extends ToroActivity implements View.OnClickListener {
                 startActivity(SafeguardActivity.createIntent(this,userInfo.getId()));
                 break;
             case R.id.action_trac_layout:
+                startActivity(TracActivity.createIntent(this));
                 break;
         }
     }

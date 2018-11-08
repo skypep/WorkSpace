@@ -31,7 +31,7 @@ public class RongYunListener {
     }
 
     public interface ConnectionStatusListener{
-        public void onChanged(int code);
+        public void onChanged(String name);
     }
 
 }

@@ -205,7 +205,7 @@ public class EditPersonalDetailsActivity extends ToroActivity implements View.On
     private void submit() {
         if(StringUtils.isNotEmpty(mPhotoPath)) {
             showProgress(0);
-            ConnectManager.getInstance().uploadPhot(this, mPhotoPath, ToroDataModle.getInstance().getLocalData().getToken(), new UIProgressListener() {
+            ConnectManager.getInstance().uploadPhot(this,this, mPhotoPath, ToroDataModle.getInstance().getLocalData().getToken(), new UIProgressListener() {
                 @Override
                 public void onUIProgress(long currentBytes, long contentLength, boolean done) {
                     showProgress((int) (currentBytes * 100 / contentLength));

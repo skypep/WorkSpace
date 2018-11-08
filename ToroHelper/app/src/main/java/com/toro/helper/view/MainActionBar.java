@@ -59,6 +59,10 @@ public class MainActionBar extends RelativeLayout {
         }
     }
 
+    public ImageView getRightImageView() {
+        return rightImageView;
+    }
+
     public void removeRightText() {
         rightActionText.setVisibility(View.GONE);
     }

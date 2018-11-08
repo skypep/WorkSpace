@@ -62,19 +62,20 @@ public class ToroDataModle {
     }
 
     public void updateToroFamilyPhotoList() {
-        updateToroFamilyPhotoList(0,10,getLocalData().getToken());
+        ConnectManager.getInstance().loadFamilyPhotoList(httpDataUpdateListener,0,familyPhotoData.getLimit(), getLocalData().getToken());
     }
 
-    private void updateToroFamilyPhotoList(int offset,int limit,String token) {
-        ConnectManager.getInstance().updatePhotoList(httpDataUpdateListener,offset,limit, token);
+    public void updateMoreFamilyPhotoList() {
+        ConnectManager.getInstance().loadFamilyPhotoMore(httpDataUpdateListener,familyPhotoData.getPhotoDatas().size(),familyPhotoData.pageCount, getLocalData().getToken());
     }
+
 
     public void updateToroFamilyMemberList() {
-        updateToroFamilyMemberList(0,10,getLocalData().getToken());
+        ConnectManager.getInstance().loadFamilyMemberList(httpDataUpdateListener,0,familyMemberData.getLimit(), getLocalData().getToken());
     }
 
-    private void updateToroFamilyMemberList(int offset,int limit,String token) {
-        ConnectManager.getInstance().getFamilyMemberList(httpDataUpdateListener,offset,limit, token);
+    public void updateMoreFamilyMemberList() {
+        ConnectManager.getInstance().loadMoreFamilyMemberList(httpDataUpdateListener,familyMemberData.getFamilyMemberDatas().size(),familyMemberData.pageCount, getLocalData().getToken());
     }
 
     public void chnageLoginUserData(String result) {
@@ -86,7 +87,16 @@ public class ToroDataModle {
         }
     }
 
-    public void chnageFamilyPhoto(String result) {
+    private void addFamilyPhoto(String result) {
+        familyPhotoData.appendPhotoDatas(DataModleParser.parserPhotoDatas(result));
+        for(ToroDataModeOnChangeListener listener : toroDataModeOnChangeListeners) {
+            if(listener instanceof FamilyPhotoDataOnChangedListener) {
+                listener.onChange(familyPhotoData);
+            }
+        }
+    }
+
+    private void chnageFamilyPhoto(String result) {
         familyPhotoData.setPhotoDatas(DataModleParser.parserPhotoDatas(result));
         for(ToroDataModeOnChangeListener listener : toroDataModeOnChangeListeners) {
             if(listener instanceof FamilyPhotoDataOnChangedListener) {
@@ -95,8 +105,17 @@ public class ToroDataModle {
         }
     }
 
-    public void chnageFamilyMember(String result) {
+    private void chnageFamilyMember(String result) {
         familyMemberData.setFamilyMemberDatas(DataModleParser.parserFamilyMemberDatas(result));
+        for(ToroDataModeOnChangeListener listener : toroDataModeOnChangeListeners) {
+            if(listener instanceof FamilyMemberDataOnChangeListener) {
+                listener.onChange(familyPhotoData);
+            }
+        }
+    }
+
+    private void addFamilyMember(String result) {
+        familyMemberData.appendPhotoDatas(DataModleParser.parserFamilyMemberDatas(result));
         for(ToroDataModeOnChangeListener listener : toroDataModeOnChangeListeners) {
             if(listener instanceof FamilyMemberDataOnChangeListener) {
                 listener.onChange(familyPhotoData);
@@ -120,6 +139,12 @@ public class ToroDataModle {
                             return true;
                         case ConnectManager.FAMILY_MENBER_LIST:
                             chnageFamilyMember(data.getEntry());
+                            return true;
+                        case ConnectManager.GET_MORE_PHOTO:
+                            addFamilyPhoto(data.getEntry());
+                            return true;
+                        case ConnectManager.GET_MORE_MEMBER:
+                            addFamilyMember(data.getEntry());
                             return true;
                     }
                 }

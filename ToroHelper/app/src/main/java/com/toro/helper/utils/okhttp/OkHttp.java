@@ -1,5 +1,6 @@
 package com.toro.helper.utils.okhttp;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -15,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
@@ -26,6 +28,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import top.zibin.luban.Luban;
 
 /**
  * Create By liujia
@@ -33,7 +36,7 @@ import okhttp3.Response;
  **/
 public class OkHttp {
 
-    public static final MediaType JSON = MediaType.parse("application/json");
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     public static String doPost(String url, JSONObject obj) {
         try{
@@ -77,7 +80,7 @@ public class OkHttp {
             RequestBody body = RequestBody.create(JSON, obj.toString());
             Request request = new Request.Builder()
                     .addHeader("Authorization", token)
-                    .addHeader("Content-Type","application/json")
+                    .addHeader("Content-Type","application/json;charset=utf-8")
                     .url(url)
                     .put(body)
                     .build();
@@ -99,7 +102,7 @@ public class OkHttp {
             RequestBody body = RequestBody.create(JSON, obj.toString());
             Request request = new Request.Builder()
                     .addHeader("Authorization", token)
-                    .addHeader("Content-Type","application/json")
+                    .addHeader("Content-Type","application/json;charset=utf-8")
                     .url(url)
                     .post(body)
                     .build();
@@ -115,7 +118,23 @@ public class OkHttp {
         return "";
     }
 
-    public static void upLoadFiles(final int tag, String url, ArrayList<String>fileNames, String token, UIProgressListener progressListener, final OnHttpDataUpdateListener listener) {
+    public static void upLoadFiles(final Context context,final int tag, String url, ArrayList<String>fileNames, String token, UIProgressListener progressListener, final OnHttpDataUpdateListener listener) {
+        try{
+            /**
+             * 上传前压缩压缩
+             * 既然压缩压缩，那么gif就不能动咯
+             */
+            List<File> files = Luban.with(context).load(fileNames).get();
+            if(files.size() == fileNames.size()) {
+                for(int i = 0; i < files.size(); i++) {
+                    int length = (int) (files.get(i).length()/1024);
+                    fileNames.set(i,files.get(i).getAbsolutePath());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         OKHttpUtils.doToroUploadFilesRequest(getToroOkHttpClient(token),url, fileNames, progressListener, new Callback() {
             @Override
             public void onFailure(Call call, final IOException e) {
@@ -129,7 +148,19 @@ public class OkHttp {
         });
     }
 
-    public static void upLoadFile(final int tag, String url, String fileName, String token, UIProgressListener progressListener, final OnHttpDataUpdateListener listener) {
+    public static void upLoadFile(Context context,final int tag, String url, String fileName, String token, UIProgressListener progressListener, final OnHttpDataUpdateListener listener) {
+        try{
+            /**
+             * 上传前压缩压缩
+             * 既然压缩压缩，那么gif就不能动咯
+             */
+            List<File> files = Luban.with(context).load(fileName).get();
+            if(files != null && files.size() == 1) {
+                fileName = files.get(0).getAbsolutePath();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         OKHttpUtils.doToroUploadFileRequest(getToroOkHttpClient(token),url, fileName, progressListener, new Callback() {
             @Override
             public void onFailure(Call call, final IOException e) {

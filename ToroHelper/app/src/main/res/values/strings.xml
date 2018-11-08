@@ -86,12 +86,13 @@
     <string name="setting_wifi_connect">在Wifi网络下收发图片</string>
     <string name="setting_sound_hint">家庭相册通知提示音</string>
     <string name="about_app">关于亲连助手</string>
-    <string name="login_out">推出当前账号</string>
+    <string name="login_out">退出当前账号</string>
 
     <string name="action_menu_health">查看健康</string>
     <string name="action_menu_location">远程定位</string>
     <string name="action_menu_call">拨打电话</string>
     <string name="action_menu_helper">远程协助</string>
+    <string name="open_map_error">打开地图失败</string>
 
     <string name="map_action_call">拨打电话</string>
     <string name="map_action_navigation">导航</string>
@@ -113,4 +114,35 @@
     <string name="radius_500">500米</string>
     <string name="radius_1000">1000米</string>
     <string name="radius_1500">15000</string>
+    <string name="health_data">健康数据</string>
+    <string name="member_is_not_old_man">对方不是老年端，不允许此操作</string>
+    <string name="luban_image_error">图片压缩异常</string>
+
+    <string name="location_refresh_failed">位置刷新失败</string>
+    <string name="coerce_sigin_out">您的账号在另外的设备登陆，您被强制下线</string>
+
+    <string-array name="calendar_week">
+        <item>周日</item>
+        <item>周一</item>
+        <item>周二</item>
+        <item>周三</item>
+        <item>周四</item>
+        <item>周五</item>
+        <item>周六</item>
+    </string-array>
+    <string name="date_time_year">年</string>
+    <string name="date_time_mouth">月</string>
+    <string name="date_time_day">日</string>
+    <string name="date_time_week">星期</string>
+
+    <string name="number_0">零</string>
+    <string name="number_1">一</string>
+    <string name="number_2">二</string>
+    <string name="number_3">三</string>
+    <string name="number_4">四</string>
+    <string name="number_5">五</string>
+    <string name="number_6">六</string>
+    <string name="number_7">七</string>
+    <string name="number_8">八</string>
+    <string name="number_9">九</string>
 </resources>

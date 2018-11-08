@@ -80,7 +80,12 @@ public class FamilyPhotoFragment extends BaseFragment implements FamilyPhotoData
             emptyHint.setVisibility(View.GONE);
             adapter.updatePhotoDatas(photoData.getPhotoDatas());
         }
-
+        recyclerView.setLoadMoreListener(new AutoLoadRecyclerView.onLoadMoreListener() {
+            @Override
+            public void loadMore() {
+                ToroDataModle.getInstance().updateMoreFamilyPhotoList();
+            }
+        });
     }
 
     private void showEmptyHint() {

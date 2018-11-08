@@ -43,12 +43,12 @@ public class FamilyMemberViewHolder extends RecyclerView.ViewHolder {
             headImageView.setImageResource(R.mipmap.default_head);
         }
         nameTextView.setText(data.getDisplayName());
-        rightLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+//        rightLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
 
         if(data.getStatus() == 1) {
             agreenBt.setVisibility(View.VISIBLE);

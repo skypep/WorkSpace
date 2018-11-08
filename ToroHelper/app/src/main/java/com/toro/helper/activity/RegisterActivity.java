@@ -254,9 +254,9 @@ public class RegisterActivity  extends ToroActivity implements View.OnClickListe
     private void submit() {
         if(pwdText1.equals(pwdText2)) {
             if(REGISTER_MODE.equals(startMode)) {
-                ConnectManager.getInstance().register(this,phoneText,sCodeText,pwdText1);
+                ConnectManager.getInstance().register(this,phoneText,sCodeText,StringUtils.md5(pwdText1));
             } else if(FORGET_PWD_MODE.equals(startMode)) {
-                ConnectManager.getInstance().resetPwd(this,phoneText,pwdText1,sCodeText);
+                ConnectManager.getInstance().resetPwd(this,phoneText,StringUtils.md5(pwdText1),sCodeText);
             }
             progressView.show(this);
         } else {

@@ -40,9 +40,13 @@ public class PhoneUtils {
                     public void onClick(DialogInterface dialog, int which) {
                         if(checkReadPermission(activity,Manifest.permission.CALL_PHONE,REQUEST_CALL_PERMISSION)){
                             try{
-                                Intent intent = new Intent(Intent.ACTION_CALL,Uri.parse(phoneNum));
+                                Intent intent = new Intent(Intent.ACTION_CALL,Uri.parse("tel:" + phoneNum));
                                 activity.startActivity(intent);
                             }catch (Exception e) {
+                                Intent intent = new Intent(Intent.ACTION_DIAL);
+                                Uri data = Uri.parse("tel:" + phoneNum);
+                                intent.setData(data);
+                                activity.startActivity(intent);
 
                             }
                         }

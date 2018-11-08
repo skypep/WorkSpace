@@ -40,6 +40,8 @@
         <activity android:name=".activity.SafeguardActivity" android:theme="@style/NoTitle"/>
         <activity android:name=".activity.SettingHomeLoactionActivity" android:theme="@style/NoTitle"/>
         <activity android:name=".activity.SafeguardSettingActivity" android:theme="@style/NoTitle"/>
+        <activity android:name=".activity.HealthActivity" android:theme="@style/NoTitle"/>
+        <activity android:name=".activity.TracActivity" android:theme="@style/NoTitle"/>
 
         <!--<meta-data-->
             <!--android:name="com.toro.helper.utils.OkHttpGlideModule"-->

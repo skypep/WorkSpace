@@ -20,7 +20,7 @@ public class ToroLoginUserData {
         ToroLoginUserData instance = new ToroLoginUserData();
         instance.uid = obj.getInt("uid");
         instance.phone = obj.getString("phone");
-        instance.nickName = obj.getString("nickName");
+        instance.nickName = obj.getString("name");
         try{
             instance.headPhoto = PhotoItem.newInstance(new JSONObject(obj.getString("headPhoto")));
         } catch (Exception e) {

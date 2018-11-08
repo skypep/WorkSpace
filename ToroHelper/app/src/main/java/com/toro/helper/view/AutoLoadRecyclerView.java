@@ -41,6 +41,7 @@ public class AutoLoadRecyclerView extends RecyclerView {
     }
 
     public void setLoadMoreListener(onLoadMoreListener loadMoreListener) {
+        isLoadingMore = false;
         this.loadMoreListener = loadMoreListener;
     }
 

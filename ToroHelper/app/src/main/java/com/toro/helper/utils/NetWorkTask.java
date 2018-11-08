@@ -36,6 +36,7 @@ public class NetWorkTask extends AsyncTask<Object, Integer, Object> {
             case ConnectManager.GET_SCODE_FOR_RESET_PWD:
             case ConnectManager.RESET_PWD:
             case ConnectManager.VERIFY_TOKEN:
+            case ConnectManager.GET_TRAC_DATA:
                 JSONObject obj = (JSONObject) params[3];
                 return HttpUtils.doPost(url,obj);
             case ConnectManager.GET_PHOTO_LIST:
@@ -44,6 +45,9 @@ public class NetWorkTask extends AsyncTask<Object, Integer, Object> {
             case ConnectManager.ADD_FAMILY_MENBER:
             case ConnectManager.REFRESH_TOKEN:
             case ConnectManager.DELETE_PHOTO_LIST:
+            case ConnectManager.GET_MORE_PHOTO:
+            case ConnectManager.GET_MORE_MEMBER:
+            case ConnectManager.GET_HEALTH_DATA:
                 pobj = (JSONObject) params[3];
                 token = (String) params[4];
                 return HttpUtils.doTokenPost(url,pobj,token);

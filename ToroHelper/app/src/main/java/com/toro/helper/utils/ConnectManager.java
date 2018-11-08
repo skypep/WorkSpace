@@ -1,5 +1,6 @@
 package com.toro.helper.utils;
 
+import android.content.Context;
 import android.util.JsonReader;
 
 import com.toro.helper.modle.photo.PhotoItem;
@@ -43,8 +44,12 @@ public class ConnectManager {
     public static final int DELETE_PHOTO_LIST = 22;
     public static final int GET_USER_PHONE_STATUS = 23;
     public static final int FIX_REMARK_NAME = 24;
+    public static final int GET_MORE_PHOTO = 25;
+    public static final int GET_MORE_MEMBER = 26;
+    public static final int GET_HEALTH_DATA = 27;
+    public static final int GET_TRAC_DATA = 28;
 
-    private static final String mainUrl = "http://192.168.8.106:8888/";
+    private static final String mainUrl = "http://120.78.174.86:8888/";
 
     /**
      * 使用用户手机号获取短信验证码
@@ -161,6 +166,14 @@ public class ConnectManager {
      */
     private static final String fixRemarkNameAction = "kinship-api/member/updateName";
 
+    /**
+     * 获取健康数据
+     */
+    private static final String getHealthDataAction = "kinship-api/health/getToday";
+
+
+    private static final String getTracDataAction = "http://39.108.131.154:8082/mobile-gps/getGpsList";
+
     private static ConnectManager instance;
 
     public static ConnectManager getInstance() {
@@ -239,6 +252,7 @@ public class ConnectManager {
             obj.put("phone",phoneNum);
             obj.put("captcha",captcha);
             obj.put("password",pwd);
+            obj.put("userType",USER_TYPE);
             new NetWorkTask().execute(listener,LOGIN,mainUrl + loginAction,obj);
             return true;
         } catch (Exception e){
@@ -273,12 +287,20 @@ public class ConnectManager {
         return false;
     }
 
-    public boolean updatePhotoList(OnHttpDataUpdateListener listener,int offset,int limit,String token) {
+    public boolean loadFamilyPhotoList(OnHttpDataUpdateListener listener,int offset,int limit,String token) {
+        return updatePhotoList(listener,GET_PHOTO_LIST,offset,limit,token);
+    }
+
+    public boolean loadFamilyPhotoMore(OnHttpDataUpdateListener listener,int offset,int limit,String token) {
+        return updatePhotoList(listener,GET_MORE_PHOTO,offset,limit,token);
+    }
+
+    private boolean updatePhotoList(OnHttpDataUpdateListener listener,int tag,int offset,int limit,String token) {
         try{
             JSONObject obj = new JSONObject();
             obj.put("offset",offset);
             obj.put("limit",limit);
-            new NetWorkTask().execute(listener, GET_PHOTO_LIST,mainUrl + getPhotoListAction,obj,token);
+            new NetWorkTask().execute(listener, tag,mainUrl + getPhotoListAction,obj,token);
             return true;
         } catch (Exception e){
 
@@ -286,10 +308,10 @@ public class ConnectManager {
         return false;
     }
 
-    public boolean uploadPhotos(OnHttpDataUpdateListener listener, ArrayList<String>photos, String token, UIProgressListener progressListener) {
+    public boolean uploadPhotos(Context context,OnHttpDataUpdateListener listener, ArrayList<String>photos, String token, UIProgressListener progressListener) {
         if(HttpUtils.useOkHttp) {
 //            OkHttp.upLoadFile(UPLOAD_PHOTO_LIST,mainUrl + uploadPhotoListAction,photos.get(0),token,progressListener,listener);
-            OkHttp.upLoadFiles(UPLOAD_PHOTO_LIST,mainUrl + uploadPhotoListAction,photos,token,progressListener,listener);
+            OkHttp.upLoadFiles(context,UPLOAD_PHOTO_LIST,mainUrl + uploadPhotoListAction,photos,token,progressListener,listener);
 //            OkHttp.upLoadFile(UPLOAD_PHOTO_LIST,mainUrl + uploadPhotoListAction,photos,token,listener);
 //            OkHttp.postFile(UPLOAD_PHOTO_LIST,mainUrl + uploadPhotoListAction,photos.get(0),token,listener);
             return true;
@@ -306,8 +328,8 @@ public class ConnectManager {
 
     }
 
-    public boolean uploadPhot(OnHttpDataUpdateListener listener, String photo, String token, UIProgressListener progressListener) {
-        OkHttp.upLoadFile(UPLOAD_PHOTO_LIST,mainUrl + uploadPhotoListAction,photo,token,progressListener,listener);
+    public boolean uploadPhot(Context context,OnHttpDataUpdateListener listener, String photo, String token, UIProgressListener progressListener) {
+        OkHttp.upLoadFile(context,UPLOAD_PHOTO_LIST,mainUrl + uploadPhotoListAction,photo,token,progressListener,listener);
         return true;
     }
 
@@ -339,12 +361,20 @@ public class ConnectManager {
         return url;
     }
 
-    public boolean getFamilyMemberList(OnHttpDataUpdateListener listener,int offset,int limit,String token) {
+    public boolean loadFamilyMemberList(OnHttpDataUpdateListener listener,int offset,int limit,String token) {
+        return getFamilyMemberList(listener,FAMILY_MENBER_LIST,offset,limit,token);
+    }
+
+    public boolean loadMoreFamilyMemberList(OnHttpDataUpdateListener listener,int offset,int limit,String token) {
+        return getFamilyMemberList(listener,GET_MORE_MEMBER,offset,limit,token);
+    }
+
+    public boolean getFamilyMemberList(OnHttpDataUpdateListener listener,int tag,int offset,int limit,String token) {
         try{
             JSONObject obj = new JSONObject();
             obj.put("offset",offset);
             obj.put("limit",limit);
-            new NetWorkTask().execute(listener, FAMILY_MENBER_LIST,mainUrl + familyMenberListAction,obj,token);
+            new NetWorkTask().execute(listener, tag,mainUrl + familyMenberListAction,obj,token);
             return true;
         } catch (Exception e){
 
@@ -411,7 +441,7 @@ public class ConnectManager {
             JSONObject obj = new JSONObject();
 
             obj.put("uid",uid);
-            obj.put("nickName",nickName);
+            obj.put("name",nickName);
 
             new NetWorkTask().execute(listener, SUBMIT_PERSIONAL_DETAILS,mainUrl + submitPersionalDaitelsAction,obj,token);
             return true;
@@ -465,6 +495,31 @@ public class ConnectManager {
             obj.put("id",id);
             obj.put("remarkName",remarkName);
             new NetWorkTask().execute(listener, FIX_REMARK_NAME,mainUrl + fixRemarkNameAction,obj,token);
+            return true;
+        } catch (Exception e){
+
+        }
+        return false;
+    }
+
+    public boolean getHealthData(OnHttpDataUpdateListener listener,int uid,String today,String token) {
+        try{
+            JSONObject obj = new JSONObject();
+            obj.put("uid",uid);
+            obj.put("today",today);
+            new NetWorkTask().execute(listener, GET_HEALTH_DATA,mainUrl + getHealthDataAction,obj,token);
+            return true;
+        } catch (Exception e){
+
+        }
+        return false;
+    }
+
+    public boolean getTracData(OnHttpDataUpdateListener listener) {
+        try{
+            JSONObject obj = new JSONObject();
+            obj.put("sn","1234567893");
+            new NetWorkTask().execute(listener, GET_TRAC_DATA,getTracDataAction,obj);
             return true;
         } catch (Exception e){
 

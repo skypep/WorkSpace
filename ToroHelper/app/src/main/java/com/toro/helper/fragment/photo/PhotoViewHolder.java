@@ -51,6 +51,7 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
         selectAction = itemView.findViewById(R.id.action_selecte);
         adapter = new PhotoItemAdapter(photos);
         recyclerView.setAdapter(adapter);
+        recyclerView.setFocusableInTouchMode(false);
         recyclerView.setLayoutManager(new GridLayoutManager(mContext, AppConfig.PhotoSpanCount));
         recyclerView.addItemDecoration(new RecyclerItemDecoration(mContext.getResources().getDimensionPixelOffset(R.dimen.photo_list_photo_offset)));
         isFirst = true;

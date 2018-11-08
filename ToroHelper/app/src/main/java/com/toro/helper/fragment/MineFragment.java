@@ -69,6 +69,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener,L
         View setting1 = rootView.findViewById(R.id.setting_item1);
         View setting2 = rootView.findViewById(R.id.setting_item2);
         View setting3 = rootView.findViewById(R.id.setting_item3);
+        setting3.setVisibility(View.GONE);
         View setting4 = rootView.findViewById(R.id.setting_item4);
 
         setItemView(setting1,R.string.family_member_manager,R.mipmap.family_member_manager_icon,null);

@@ -34,6 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/title_icon"
         android:layout_toLeftOf="@+id/in_icon"
+        android:layout_centerVertical="true"
         android:gravity="left"
         android:paddingLeft="@dimen/horizontal_margin"
         />

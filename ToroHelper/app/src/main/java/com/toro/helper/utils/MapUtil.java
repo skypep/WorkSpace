@@ -7,8 +7,10 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.widget.Toast;
 
 import com.amap.api.maps2d.model.LatLng;
+import com.toro.helper.R;
 
 import java.io.File;
 
@@ -174,23 +176,27 @@ public class MapUtil {
      * @param dname 终点名称 必填
      */
     public static void openGaoDeNavi(Context context, double slat, double slon, String sname, double dlat, double dlon, String dname){
-        String uriString = null;
-        StringBuilder builder = new StringBuilder("amapuri://route/plan?sourceApplication=maxuslife");
-        if (slat != 0) {
-            builder.append("&sname=").append(sname)
-                    .append("&slat=").append(slat)
-                    .append("&slon=").append(slon);
+        try {
+            String uriString = null;
+            StringBuilder builder = new StringBuilder("amapuri://route/plan?sourceApplication=maxuslife");
+            if (slat != 0) {
+                builder.append("&sname=").append(sname)
+                        .append("&slat=").append(slat)
+                        .append("&slon=").append(slon);
+            }
+            builder.append("&dlat=").append(dlat)
+                    .append("&dlon=").append(dlon)
+                    .append("&dname=").append(dname)
+                    .append("&dev=0")
+                    .append("&t=0");
+            uriString = builder.toString();
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setPackage(PN_GAODE_MAP);
+            intent.setData(Uri.parse(uriString));
+            context.startActivity(intent);
+        } catch (Exception e) {
+            Toast.makeText(context, R.string.open_map_error,Toast.LENGTH_LONG).show();
         }
-        builder.append("&dlat=").append(dlat)
-                .append("&dlon=").append(dlon)
-                .append("&dname=").append(dname)
-                .append("&dev=0")
-                .append("&t=0");
-        uriString = builder.toString();
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setPackage(PN_GAODE_MAP);
-        intent.setData(Uri.parse(uriString));
-        context.startActivity(intent);
     }
 
     /**
@@ -212,23 +218,28 @@ public class MapUtil {
      * &from=" + dqAddress + "&fromcoord=" + dqLatitude + "," + dqLongitude + "
      */
     public static void openTencentMap(Context context, double slat, double slon, String sname, double dlat, double dlon, String dname) {
-        String uriString = null;
-        StringBuilder builder = new StringBuilder("qqmap://map/routeplan?type=drive&policy=0&referer=zhongshuo");
-        if (slat != 0) {
-            builder.append("&from=").append(sname)
-                    .append("&fromcoord=").append(slat)
+        try{
+            String uriString = null;
+            StringBuilder builder = new StringBuilder("qqmap://map/routeplan?type=drive&policy=0&referer=zhongshuo");
+            if (slat != 0) {
+                builder.append("&from=").append(sname)
+                        .append("&fromcoord=").append(slat)
+                        .append(",")
+                        .append(slon);
+            }
+            builder.append("&to=").append(dname)
+                    .append("&tocoord=").append(dlat)
                     .append(",")
-                    .append(slon);
+                    .append(dlon);
+            uriString = builder.toString();
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setPackage(PN_TENCENT_MAP);
+            intent.setData(Uri.parse(uriString));
+            context.startActivity(intent);
+        } catch (Exception e) {
+            Toast.makeText(context, R.string.open_map_error,Toast.LENGTH_LONG).show();
         }
-        builder.append("&to=").append(dname)
-                .append("&tocoord=").append(dlat)
-                .append(",")
-                .append(dlon);
-        uriString = builder.toString();
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setPackage(PN_TENCENT_MAP);
-        intent.setData(Uri.parse(uriString));
-        context.startActivity(intent);
+
     }
 
     /**
@@ -242,48 +253,53 @@ public class MapUtil {
      * @param dname 终点名称 必填
      */
     public static void openBaiDuNavi(Context context,double slat, double slon, String sname, double dlat, double dlon, String dname){
-        String uriString = null;
-        //终点坐标转换
+        try{
+            String uriString = null;
+            //终点坐标转换
 //        此方法需要百度地图的BaiduLBS_Android.jar包
 //        LatLng destination = new LatLng(dlat,dlon);
 //        LatLng destinationLatLng = GCJ02ToBD09(destination);
 //        dlat = destinationLatLng.latitude;
 //        dlon = destinationLatLng.longitude;
 
-        double destination[] = gaoDeToBaidu(dlat, dlon);
-        dlat = destination[0];
-        dlon = destination[1];
+            double destination[] = gaoDeToBaidu(dlat, dlon);
+            dlat = destination[0];
+            dlon = destination[1];
 
-        StringBuilder builder = new StringBuilder("baidumap://map/direction?mode=driving&");
-        if (slat != 0){
-            //起点坐标转换
+            StringBuilder builder = new StringBuilder("baidumap://map/direction?mode=driving&");
+            if (slat != 0){
+                //起点坐标转换
 
 //            LatLng origin = new LatLng(slat,slon);
 //            LatLng originLatLng = GCJ02ToBD09(origin);
 //            slat = originLatLng.latitude;
 //            slon = originLatLng.longitude;
 
-            double[] origin = gaoDeToBaidu(slat, slon);
-            slat = origin[0];
-            slon = origin[1];
+                double[] origin = gaoDeToBaidu(slat, slon);
+                slat = origin[0];
+                slon = origin[1];
 
-            builder.append("origin=latlng:")
-                    .append(slat)
+                builder.append("origin=latlng:")
+                        .append(slat)
+                        .append(",")
+                        .append(slon)
+                        .append("|name:")
+                        .append(sname);
+            }
+            builder.append("&destination=latlng:")
+                    .append(dlat)
                     .append(",")
-                    .append(slon)
+                    .append(dlon)
                     .append("|name:")
-                    .append(sname);
+                    .append(dname);
+            uriString = builder.toString();
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setPackage(PN_BAIDU_MAP);
+            intent.setData(Uri.parse(uriString));
+            context.startActivity(intent);
+        } catch (Exception e) {
+            Toast.makeText(context, R.string.open_map_error,Toast.LENGTH_LONG).show();
         }
-        builder.append("&destination=latlng:")
-                .append(dlat)
-                .append(",")
-                .append(dlon)
-                .append("|name:")
-                .append(dname);
-        uriString = builder.toString();
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setPackage(PN_BAIDU_MAP);
-        intent.setData(Uri.parse(uriString));
-        context.startActivity(intent);
+
     }
 }

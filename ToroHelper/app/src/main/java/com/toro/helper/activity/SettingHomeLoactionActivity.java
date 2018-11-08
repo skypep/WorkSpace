@@ -144,7 +144,7 @@ public class SettingHomeLoactionActivity extends ToroActivity implements Locatio
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String newText = s.toString().trim();
                 if (newText.length() > 0) {
-                    InputtipsQuery inputquery = new InputtipsQuery(newText, "北京");
+                    InputtipsQuery inputquery = new InputtipsQuery(newText, "");
                     Inputtips inputTips = new Inputtips(SettingHomeLoactionActivity.this, inputquery);
                     inputquery.setCityLimit(true);
                     inputTips.setInputtipsListener(inputtipsListener);
@@ -211,20 +211,26 @@ public class SettingHomeLoactionActivity extends ToroActivity implements Locatio
 
             @Override
             public void onCameraChangeFinish(CameraPosition cameraPosition) {
+                searchLatlonPoint = new LatLonPoint(cameraPosition.target.latitude, cameraPosition.target.longitude);
+                isInputKeySearch = false;
+                isItemClickAction = false;
                 if (!isItemClickAction && !isInputKeySearch) {
                     geoAddress();
                     startJumpAnimation();
                 }
-                searchLatlonPoint = new LatLonPoint(cameraPosition.target.latitude, cameraPosition.target.longitude);
-                isInputKeySearch = false;
-                isItemClickAction = false;
             }
         });
 
         aMap.setOnMapLoadedListener(new AMap.OnMapLoadedListener() {
             @Override
             public void onMapLoaded() {
-                addMarkerInScreenCenter(null);
+                double lat = getIntent().getDoubleExtra("lat",0);
+                double lng = getIntent().getDoubleExtra("lng",0);
+                LatLng latLng = new LatLng(lat,lng);
+                if(lat * lng == 0) {
+                    latLng = null;
+                }
+                addMarkerInScreenCenter(latLng);
             }
         });
     }
@@ -459,7 +465,7 @@ public class SettingHomeLoactionActivity extends ToroActivity implements Locatio
                 aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(curLatlng, 16f));
 
                 searchResultAdapter.setSelectedPosition(position);
-                selectedPoiString = poiItems.get(position).getTitle();
+                selectedPoiString = poiItem.getTitle();
                 searchResultAdapter.notifyDataSetChanged();
             }
         }
@@ -488,6 +494,9 @@ public class SettingHomeLoactionActivity extends ToroActivity implements Locatio
         //设置Marker在屏幕上,不跟随地图移动
         locationMarker.setPositionByPixels(screenPosition.x,screenPosition.y);
         locationMarker.setZIndex(1);
+        if(locationLatLng != null) {
+            aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(locationLatLng, 16f));
+        }
 
     }
 
@@ -573,7 +582,9 @@ public class SettingHomeLoactionActivity extends ToroActivity implements Locatio
 
         searchResultAdapter.setSelectedPosition(0);
 
-        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(searchLatlonPoint.getLatitude(), searchLatlonPoint.getLongitude()), 16f));
+        if(searchLatlonPoint != null) {
+            aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(searchLatlonPoint.getLatitude(), searchLatlonPoint.getLongitude()), 16f));
+        }
 
         hideSoftKey(searchText);
         doSearchQuery();
@@ -587,7 +598,13 @@ public class SettingHomeLoactionActivity extends ToroActivity implements Locatio
 
     public static Intent createIntent(Context context) {
         Intent intent = new Intent();
+        LocationInfo info = ToroDataModle.getInstance().getLocalData().getHomeLocation();
         intent.setClass(context,SettingHomeLoactionActivity.class);
+        if(info != null) {
+            intent.putExtra("lat",info.getLatLng().latitude);
+            intent.putExtra("lng",info.getLatLng().longitude);
+        }
+
         return intent;
     }
 

@@ -11,10 +11,14 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.toro.helper.R;
 import com.toro.helper.base.ToroActivity;
+import com.toro.helper.modle.BaseResponeData;
+import com.toro.helper.modle.DataModleParser;
 import com.toro.helper.modle.FamilyMemberInfo;
+import com.toro.helper.modle.data.LocationInfo;
 import com.toro.helper.modle.data.ToroDataModle;
 import com.toro.helper.modle.data.listener.FamilyMemberDataOnChangeListener;
 import com.toro.helper.utils.CameraUtils;
@@ -23,6 +27,8 @@ import com.toro.helper.utils.ImageLoad;
 import com.toro.helper.utils.PhoneUtils;
 import com.toro.helper.view.MainActionBar;
 import com.toro.helper.view.RoundnessImageView;
+
+import java.util.List;
 
 /**
  * Create By liujia
@@ -38,6 +44,8 @@ public class HelperActivity extends ToroActivity implements View.OnClickListener
     private RoundnessImageView headImageView;
     private TextView nameText;
     private ImageView refreshImage;
+    private List<LocationInfo> locationInfos;
+    private int connectCount = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,12 +55,12 @@ public class HelperActivity extends ToroActivity implements View.OnClickListener
 
         initView();
         updateMemberInfo();
+        refreshPhoneStatus();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        updateUserPhoneStatus();
         ToroDataModle.getInstance().addToroDataModeOnChangeListener(this);
     }
 
@@ -78,7 +86,7 @@ public class HelperActivity extends ToroActivity implements View.OnClickListener
         setItemView(setting1,R.string.action_menu_health,R.mipmap.action_menu_health,null);
         setItemView(setting2,R.string.action_menu_location,R.mipmap.action_menu_localtion,null);
         setItemView(setting3,R.string.action_menu_call,R.mipmap.action_menu_call,null);
-        setItemView(setting4,R.string.action_menu_helper,R.mipmap.action_menu_helper,null);
+        setItemView(setting4,R.string.map_action_safeguard,R.mipmap.action_menu_safeguard,null);
 
         setting1.setOnClickListener(this);
         setting2.setOnClickListener(this);
@@ -112,9 +120,20 @@ public class HelperActivity extends ToroActivity implements View.OnClickListener
         nameText.setText(userInfo.getDisplayName());
     }
 
-    private void updateUserPhoneStatus() {
+    private void refreshPhoneStatus() {
         startRefreshAnim();
+        connectCount++;
         ConnectManager.getInstance().getUserPhoneStatus(this,userInfo.getId(), ToroDataModle.getInstance().getLocalData().getToken());
+        connectCount++;
+        ConnectManager.getInstance().getTracData(this);
+    }
+
+    private void updateLocation() {
+        if(locationInfos == null || locationInfos.size() < 1) {
+            Toast.makeText(this,R.string.location_refresh_failed,Toast.LENGTH_LONG).show();
+            return;
+        }
+        ((TextView)findViewById(R.id.location_text)).setText(locationInfos.get(locationInfos.size() - 1).getPoiTitle());
     }
 
     private void setItemView(View itemView, int stringID, int imgID, View.OnClickListener listener) {
@@ -160,28 +179,38 @@ public class HelperActivity extends ToroActivity implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.setting_item1:
+                startActivity(HealthActivity.createIntent(this,userInfo.getUserInfo().getUid()));
                 break;
             case R.id.setting_item2:
                 startActivity(MapActivity.createIntent(this,userInfo));
                 break;
             case R.id.setting_item3:
-                PhoneUtils.call(this,"18675532502");
+                PhoneUtils.call(this,userInfo.getUserInfo().getPhone());
                 break;
             case R.id.setting_item4:
+                startActivity(SafeguardActivity.createIntent(this,userInfo.getUserInfo().getUid()));
                 break;
             case R.id.refresh_img:
-                updateUserPhoneStatus();
+                refreshPhoneStatus();
                 break;
         }
     }
 
     @Override
     public boolean bindData(int tag, Object object) {
-        stopRefreshAnim();
+        connectCount--;
+        if(connectCount == 0) {
+            stopRefreshAnim();
+        }
         boolean status = super.bindData(tag, object);
         if(status) {
+            BaseResponeData data = DataModleParser.parserBaseResponeData((String) object);
             switch (tag) {
                 case ConnectManager.GET_USER_PHONE_STATUS:
+                    break;
+                case ConnectManager.GET_TRAC_DATA:
+                    locationInfos = DataModleParser.parserLocations(data.getEntry());
+                    updateLocation();
                     break;
             }
         }

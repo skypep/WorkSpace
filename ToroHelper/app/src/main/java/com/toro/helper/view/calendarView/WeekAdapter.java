@@ -7,6 +7,10 @@ import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.toro.helper.R;
+
+import org.joda.time.DateTime;
+
 
 public class WeekAdapter extends PagerAdapter {
 
