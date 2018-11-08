@@ -28,4 +28,5 @@
     <string name="toro_delete_selected">Delete Selected Items</string>
     <string name="toro_back">Back</string>
     <string name="toro_send_location">Send Location</string>
+    <string name="toro_add_to_contact">Add to a contact</string>
 </resources>

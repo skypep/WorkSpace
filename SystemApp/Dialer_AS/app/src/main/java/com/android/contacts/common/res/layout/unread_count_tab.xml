@@ -40,7 +40,7 @@
   <TextView
     android:id="@+id/count"
     android:layout_width="wrap_content"
-    android:layout_height="@dimen/tab_unread_count_background_size"
+    android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/tab_unread_count_margin_top"
     android:layout_marginStart="@dimen/tab_unread_count_margin_left"
     android:layout_toEndOf="@id/icon"

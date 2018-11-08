@@ -28,5 +28,6 @@
     <string name="toro_delete_selected">删除选中的通话记录</string>
     <string name="toro_back">返回</string>
     <string name="toro_send_location">发送位置</string>
+    <string name="toro_add_to_contact">添加到已有联系人</string>
 
 </resources>

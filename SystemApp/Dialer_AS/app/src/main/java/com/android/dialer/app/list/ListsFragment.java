@@ -458,6 +458,10 @@ public class ListsFragment extends Fragment implements OnPageChangeListener, Lis
     return ((CallLogFragment) getmCurrentPage()).editSelectAll();
   }
 
+  public boolean isSelecteAll() {
+    return ((CallLogFragment) getmCurrentPage()).isSelecteAll();
+  }
+
   public boolean deleteSelected() {
     return ((CallLogFragment) getmCurrentPage()).deleteSelected();
   }

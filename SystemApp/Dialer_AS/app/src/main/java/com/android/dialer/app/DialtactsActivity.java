@@ -1303,6 +1303,8 @@ public class DialtactsActivity extends TransactionSafeActivity
     } else if (isInSearchUi()) {
       exitSearchUi();
       DialerUtils.hideInputMethod(mParentLayout);
+    } else if(isEditMode) {
+      exitCalllogEditModle(false);
     } else {
       super.onBackPressed();
     }
@@ -1762,10 +1764,6 @@ public class DialtactsActivity extends TransactionSafeActivity
       mFloatingActionButtonController.setVisible(false);
     }
 
-    findViewById(R.id.toro_calllog_delete_view).setVisibility(View.VISIBLE);
-    findViewById(R.id.toro_calllog_delete_view).setOnClickListener(deleteSelectedlistener);
-    ((TextView)findViewById(R.id.toro_calllog_delete_count_text)).setText(getEditDeleteString(0));
-
     updateToroActionBar(EDIT_MODE);
   }
 
@@ -1792,9 +1790,21 @@ public class DialtactsActivity extends TransactionSafeActivity
   }
 
   public void updateEditDeleteText(int selectedCount) {
-    String editDeleteFormat = getResources().getString(R.string.toro_edit_delete);
-    String editDelete = String.format(editDeleteFormat,selectedCount);
-    ((TextView)findViewById(R.id.toro_calllog_delete_count_text)).setText(editDelete);
+    if(selectedCount > 0) {
+      findViewById(R.id.toro_calllog_delete_view).setVisibility(View.VISIBLE);
+      findViewById(R.id.toro_calllog_delete_view).setOnClickListener(deleteSelectedlistener);
+      String editDeleteFormat = getResources().getString(R.string.toro_edit_delete);
+      String editDelete = String.format(editDeleteFormat,selectedCount);
+      ((TextView)findViewById(R.id.toro_calllog_delete_count_text)).setText(editDelete);
+    } else {
+      findViewById(R.id.toro_calllog_delete_view).setVisibility(View.GONE);
+    }
+    if(mListsFragment.isSelecteAll()){
+      mToroActionBar.setRightButton(getResources().getString(R.string.toro_un_select_all),selectAllCallLogListener);
+    } else {
+      mToroActionBar.setRightButton(getResources().getString(R.string.toro_select_all),selectAllCallLogListener);
+    }
+
   }
 
   /********************************* liujia add end *********************************************************/

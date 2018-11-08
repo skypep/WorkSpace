@@ -1561,6 +1561,10 @@ public class CallLogAdapter extends GroupingListAdapter
     return toroSelectAllMode;
   }
 
+  public boolean isSelecteAll() {
+    return toroSelectAllMode;
+  }
+
   public boolean deleteSelected() {
     AsyncTaskExecutors.createAsyncTaskExecutor().submit("delete_selected_items", new DeleteCallsTask());
     return true;
@@ -1620,7 +1624,13 @@ public class CallLogAdapter extends GroupingListAdapter
       if(position > -1 && position < toroEditModleDatas.size()) {
 //        radioArrays[position] =  isSelected;
         toroEditModleDatas.get(position).isSelected = isSelected;
-        ((DialtactsActivity)mActivity).updateEditDeleteText(getSelectedRadioCounts());
+        int selectCount = getSelectedRadioCounts();
+        if(selectCount == toroEditModleDatas.size()){
+          toroSelectAllMode = true;
+        } else {
+          toroSelectAllMode = false;
+        }
+        ((DialtactsActivity)mActivity).updateEditDeleteText(selectCount);
       }
     }
   };

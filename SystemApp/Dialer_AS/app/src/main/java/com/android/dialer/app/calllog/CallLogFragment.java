@@ -721,6 +721,15 @@ public class CallLogFragment extends Fragment
     return false;
   }
 
+  public boolean isSelecteAll() {
+    try{
+      return getAdapter().isSelecteAll();
+    }catch (Exception e) {
+      e.printStackTrace();
+    }
+    return false;
+  }
+
   public boolean deleteSelected(){
     return getAdapter().deleteSelected();
   }

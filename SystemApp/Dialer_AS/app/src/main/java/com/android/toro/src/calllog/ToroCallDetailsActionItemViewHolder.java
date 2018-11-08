@@ -26,10 +26,10 @@ import com.android.dialer.util.IntentUtil;
 
 public class ToroCallDetailsActionItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    //
+    //R.string.search_shortcut_add_to_contact  to  toro_add_to_contact添加到已有联系人
     private int[] actionTextsNoSaved = {
             R.string.search_shortcut_create_new_contact,
-            R.string.search_shortcut_add_to_contact,
+            R.string.toro_add_to_contact,
             R.string.call_log_action_send_message,
             R.string.call_log_action_block_number
     };
@@ -132,7 +132,7 @@ public class ToroCallDetailsActionItemViewHolder extends RecyclerView.ViewHolder
             final Intent intent = intentProvider.getIntent(context);
             DialerUtils.startActivityWithErrorToast(context, intent);
 
-        } else if(actionText.getText().equals(context.getResources().getString(R.string.search_shortcut_add_to_contact))) {
+        } else if(actionText.getText().equals(context.getResources().getString(R.string.toro_add_to_contact))) {
             IntentProvider intentProvider = IntentProvider.getAddContactIntentProvider(
                     callDetails.cachedContactInfo.lookupUri, callDetails.cachedContactInfo.name, callDetails.cachedContactInfo.number, callDetails.cachedContactInfo.type, false /* isNewContact */);
             final Intent intent = intentProvider.getIntent(context);
