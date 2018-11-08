@@ -404,7 +404,7 @@ public class DialtactsActivity extends TransactionSafeActivity
     mActionBarHeight = resources.getDimensionPixelSize(R.dimen.action_bar_height_large);
 
     Trace.beginSection(TAG + " setContentView");
-    setContentView(R.layout.dialtacts_activity);
+    setContentView(R.layout.toro_dialtacts_activity);
     Trace.endSection();
     getWindow().setBackgroundDrawable(null);
 

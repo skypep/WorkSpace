@@ -55,12 +55,8 @@ android {
 //                srcDir 'src/main/java' main\java\com\android\dialer\theme
 //            }
             res {
-                srcDirs = ['src/main/java/com/android/toro/res',
-                           'src/main/java/com/android/dialer/theme/res',
-                           'src/main/java/com/android/contacts/common/res',
-                           'src/main/java/com/android/dialer/contactsfragment/res',
-                           'src/main/res',
-                           rootProject.projectDir.absolutePath +  '/assets/product/res'
+                srcDirs = [
+                        rootProject.projectDir.absolutePath +  '/assets/product/res'
                 ]
             }
         }
@@ -177,6 +173,7 @@ dependencies {
     implementation project(':contacts')
     implementation 'com.zhy:base-rvadapter:3.0.3'
     implementation project(':toro2')
+    implementation project(':dialer.app')
 }
 
 //编写编译任务，调用plugin编译生成java文件

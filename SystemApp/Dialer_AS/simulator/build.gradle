@@ -19,7 +19,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
+    sourceSets {
+        main {
+            res {
+                res.srcDirs = [rootProject.projectDir.absolutePath +  '/app/src/main/java/com/android/dialer/enrichedcall/simulator/res']
+            }
+            manifest.srcFile rootProject.projectDir.absolutePath +  '/app/src/main/java/com/android/dialer/enrichedcall/simulator/AndroidManifest.xml'
+        }
+    }
 }
 
 dependencies {

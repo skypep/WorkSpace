@@ -19,7 +19,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
+    sourceSets {
+        main {
+            res {
+                res.srcDirs = [rootProject.projectDir.absolutePath +  '/app/src/main/java/com/android/voicemail/impl/configui/res']
+            }
+            manifest.srcFile rootProject.projectDir.absolutePath +  '/app/src/main/java/com/android/voicemail/impl/configui/AndroidManifest.xml'
+        }
+    }
 }
 
 dependencies {

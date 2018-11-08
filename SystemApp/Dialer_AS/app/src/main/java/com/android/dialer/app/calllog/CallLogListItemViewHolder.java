@@ -390,7 +390,7 @@ public final class CallLogListItemViewHolder extends RecyclerView.ViewHolder
             callLogCache,
             new CallLogListItemHelper(phoneCallDetailsHelper, resources, callLogCache),
             voicemailPlaybackPresenter,
-            LayoutInflater.from(context).inflate(R.layout.call_log_list_item, null),
+            LayoutInflater.from(context).inflate(R.layout.toro_call_log_list_item, null),
             new View(context),
             PhoneCallDetailsViews.createForTest(context),
             new LinearLayout(context),

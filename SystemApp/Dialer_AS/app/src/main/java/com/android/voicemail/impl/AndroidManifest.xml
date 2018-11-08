@@ -17,9 +17,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.android.voicemail.impl">
 
+  <!--liujia fixed usesCleartextTraffic="true" -->
   <application
     android:supportsRtl="true"
-    android:usesCleartextTraffic="true"
+    android:usesCleartextTraffic="false"
     android:defaultToDeviceProtectedStorage="true"
     android:directBootAware="true">
 

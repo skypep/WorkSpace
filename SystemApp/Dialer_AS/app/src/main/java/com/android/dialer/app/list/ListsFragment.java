@@ -152,7 +152,7 @@ public class ListsFragment extends Fragment implements OnPageChangeListener, Lis
     LogUtil.d("ListsFragment.onCreateView", null);
     Trace.beginSection(TAG + " onCreateView");
     Trace.beginSection(TAG + " inflate view");
-    final View parentView = inflater.inflate(R.layout.lists_fragment, container, false);
+    final View parentView = inflater.inflate(R.layout.toro_lists_fragment, container, false);
     Trace.endSection();
     Trace.beginSection(TAG + " setup views");
 

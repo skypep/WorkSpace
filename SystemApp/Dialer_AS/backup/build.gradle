@@ -19,6 +19,12 @@ android {
         }
     }
 
+    sourceSets {
+        main {
+            manifest.srcFile rootProject.projectDir.absolutePath +  '/app/src/main/java/com/android/dialer/backup/AndroidManifest.xml'
+        }
+    }
+
 }
 
 dependencies {

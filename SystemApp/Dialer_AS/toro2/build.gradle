@@ -21,7 +21,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
+    sourceSets {
+        main {
+            res {
+                res.srcDirs = [rootProject.projectDir.absolutePath +  '/app/src/main/java/com/android/toro/res']
+            }
+            manifest.srcFile rootProject.projectDir.absolutePath +  '/app/src/main/java/com/android/toro/AndroidManifest.xml'
+        }
+    }
 }
 
 dependencies {

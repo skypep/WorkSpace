@@ -19,7 +19,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
+    sourceSets {
+        main {
+            res {
+                res.srcDirs = [rootProject.projectDir.absolutePath +  '/app/src/main/java/com/android/dialer/theme/res']
+            }
+            manifest.srcFile rootProject.projectDir.absolutePath +  '/app/src/main/java/com/android/dialer/theme/AndroidManifest.xml'
+        }
+    }
 }
 
 dependencies {

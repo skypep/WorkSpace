@@ -693,7 +693,7 @@ public class CallLogAdapter extends GroupingListAdapter
    */
   private ViewHolder createCallLogEntryViewHolder(ViewGroup parent) {
     LayoutInflater inflater = LayoutInflater.from(mActivity);
-    View view = inflater.inflate(R.layout.call_log_list_item, parent, false);
+    View view = inflater.inflate(R.layout.toro_call_log_list_item, parent, false);
     CallLogListItemViewHolder viewHolder =
         CallLogListItemViewHolder.create(
             view,
