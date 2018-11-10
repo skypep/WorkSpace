@@ -43,6 +43,8 @@ public final class AppUtils {
         if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.N){
             uri= VersionFileProvider.getUriForFile(context,context.getPackageName()+".versionProvider",file);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.setDataAndType(uri, "application/vnd.android.package-archive");
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }else{
             uri= Uri.fromFile(file);
         }

@@ -13,6 +13,9 @@ import com.toro.helper.RongyunManager;
 import com.toro.helper.activity.LoginActivity;
 import com.toro.helper.modle.data.ToroDataModle;
 
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
+
 /**
  * Create By liujia
  * on 2018/10/26.
@@ -22,6 +25,22 @@ public class App extends Application {
     private static final String Tag = "App";
 
     public static App instance;
+    private Handler handler = new Handler() {
+        @Override
+        public void publish(LogRecord record) {
+
+        }
+
+        @Override
+        public void flush() {
+
+        }
+
+        @Override
+        public void close() throws SecurityException {
+
+        }
+    };
 
     @Override
     public void onCreate() {
@@ -66,9 +85,8 @@ public class App extends Application {
             public void onChanged(String name) {
                 if(name.equals("KICKED_OFFLINE_BY_OTHER_CLIENT")){
                     // 在别处登陆 强制退出账号
-                    Toast.makeText(instance, R.string.coerce_sigin_out,Toast.LENGTH_LONG).show();
                     ToroDataModle.getInstance().loginOut();
-                    Intent intent = LoginActivity.newIntent(instance);
+                    Intent intent = LoginActivity.newIntent(instance,getString(R.string.coerce_sigin_out));
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
 

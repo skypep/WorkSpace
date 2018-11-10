@@ -58,7 +58,8 @@ public class DownloadManager {
             }
         }
         final NotificationManager manager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
-        final NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+//        final NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+        final Notification.Builder builder = new Notification.Builder(context);
         Intent intent = new Intent(context, versionParams.getCustomDownloadActivityClass());
         intent.putExtra("isRetry", false);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);

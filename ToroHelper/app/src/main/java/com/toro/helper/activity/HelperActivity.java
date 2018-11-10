@@ -125,7 +125,7 @@ public class HelperActivity extends ToroActivity implements View.OnClickListener
         connectCount++;
         ConnectManager.getInstance().getUserPhoneStatus(this,userInfo.getId(), ToroDataModle.getInstance().getLocalData().getToken());
         connectCount++;
-        ConnectManager.getInstance().getTracData(this);
+        ConnectManager.getInstance().getTracData(this,userInfo.getUserInfo().getSn());
     }
 
     private void updateLocation() {

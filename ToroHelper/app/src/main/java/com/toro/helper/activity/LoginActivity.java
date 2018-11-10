@@ -11,6 +11,7 @@ import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.toro.helper.R;
 import com.toro.helper.base.ToroActivity;
@@ -103,6 +104,11 @@ public class LoginActivity extends ToroActivity implements View.OnClickListener 
         findViewById(R.id.login_quick_login).setOnClickListener(this);
         findViewById(R.id.forget_pwd).setOnClickListener(this);
         submitBt.setOnClickListener(this);
+
+        String toastString = getIntent().getStringExtra("toastString");
+        if(StringUtils.isNotEmpty(toastString)) {
+            Toast.makeText(this,toastString,Toast.LENGTH_LONG).show();
+        }
     }
 
     private void checkSubmitEnable() {
@@ -169,6 +175,12 @@ public class LoginActivity extends ToroActivity implements View.OnClickListener 
             }
             return true;
         }
+    }
+
+    public static Intent newIntent(Context context,String toastString) {
+        Intent intent = newIntent(context);
+        intent.putExtra("toastString",toastString);
+        return intent;
     }
 
     public static Intent newIntent(Context context) {

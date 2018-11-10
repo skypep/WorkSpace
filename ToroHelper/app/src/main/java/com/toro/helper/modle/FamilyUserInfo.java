@@ -24,6 +24,7 @@ public class FamilyUserInfo implements Serializable {
     private String gmtCreated;
     private String gmtLastLogin;
     private String gmtUpdated;
+    private String sn;
 
     public static FamilyUserInfo newInstance(String jsonString) throws JSONException {
         JSONObject obj = new JSONObject(jsonString);
@@ -39,6 +40,7 @@ public class FamilyUserInfo implements Serializable {
         instance.gmtCreated = obj.getString("gmtCreated");
         instance.gmtLastLogin = obj.getString("gmtLastLogin");
         instance.gmtUpdated = obj.getString("gmtUpdated");
+        instance.sn = obj.getString("sn");
         try{
             instance.headPhoto = PhotoItem.newInstance(new JSONObject(obj.getString("headPhoto")));
         } catch (Exception e) {
@@ -138,5 +140,13 @@ public class FamilyUserInfo implements Serializable {
 
     public void setGmtUpdated(String gmtUpdated) {
         this.gmtUpdated = gmtUpdated;
+    }
+
+    public String getSn() {
+        return sn;
+    }
+
+    public void setSn(String sn) {
+        this.sn = sn;
     }
 }

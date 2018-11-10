@@ -102,7 +102,7 @@ public class MapActivity extends ToroActivity implements View.OnClickListener {
 
     private void refreshTrac() {
         startRefreshAnim();
-        ConnectManager.getInstance().getTracData(this);
+        ConnectManager.getInstance().getTracData(this,userInfo.getUserInfo().getSn());
     }
 
     private void updateTrac() {
@@ -158,7 +158,7 @@ public class MapActivity extends ToroActivity implements View.OnClickListener {
                 startActivity(SafeguardActivity.createIntent(this,userInfo.getId()));
                 break;
             case R.id.action_trac_layout:
-                startActivity(TracActivity.createIntent(this));
+                startActivity(TracActivity.createIntent(this,userInfo));
                 break;
         }
     }

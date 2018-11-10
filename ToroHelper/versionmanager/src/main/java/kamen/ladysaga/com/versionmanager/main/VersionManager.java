@@ -1,8 +1,15 @@
 package kamen.ladysaga.com.versionmanager.main;
 
+import android.app.Activity;
+import android.content.Context;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.logging.Handler;
+
+import kamen.ladysaga.com.versionmanager.core.AllenChecker;
+import kamen.ladysaga.com.versionmanager.core.VersionParams;
 import kamen.ladysaga.com.versionmanager.utils.HttpUtils;
 
 /**
@@ -13,7 +20,7 @@ public class VersionManager {
 
     private static VersionManager instance;
     private VersionInfo versionInfo;
-    private static String versionUrl = "https://raw.githubusercontent.com/2957433126/kamen/master/.gitignore/kamen_update_config_1.5_yipay";
+    private static String versionUrl = "https://raw.githubusercontent.com/skypep/WorkSpace/master/Doc/update_config";
 
     public static VersionManager getInstance(){
         if(instance == null ) {
@@ -22,11 +29,31 @@ public class VersionManager {
         return instance;
     }
 
-    public void checkVersion(){
+    public void checkVersion(final Activity activity, final Handler handler, final int versionCode){
         new Thread(new Runnable() {
             @Override
             public void run() {
                 versionInfo = parserVersionInfo(HttpUtils.getHtml(versionUrl));
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try{
+                            if(VersionManager.getInstance().getVersionInfo().getVersionCode() > versionCode) {
+                                VersionParams.Builder builder = new VersionParams.Builder()
+                                        .setRequestUrl("http://www.baidu.com")
+                                        .setService(VersionService.class);
+                                if(VersionManager.getInstance().getVersionInfo().isMust()) {
+                                    CustomVersionDialogActivity.isForceUpdate = true;
+                                    builder.setCustomDownloadActivityClass(CustomVersionDialogActivity.class);
+                                }
+                                AllenChecker.startVersionCheck(activity, builder.build());
+                            }
+                        }catch (Exception e) {
+
+                        }
+                    }
+                });
+
             }
         }).start();
     }

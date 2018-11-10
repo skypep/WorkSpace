@@ -12,6 +12,8 @@ import com.toro.helper.modle.data.ToroDataModle;
 import com.toro.helper.utils.ConnectManager;
 import com.toro.helper.utils.StringUtils;
 
+import kamen.ladysaga.com.versionmanager.main.VersionManager;
+
 public class WelcomActivity extends ToroActivity {
 
     Handler handler = new Handler();

@@ -523,10 +523,10 @@ public class ConnectManager {
         return false;
     }
 
-    public boolean getTracData(OnHttpDataUpdateListener listener) {
+    public boolean getTracData(OnHttpDataUpdateListener listener,String sn) {
         try{
             JSONObject obj = new JSONObject();
-            obj.put("sn","1234567893");
+            obj.put("sn",sn);
             new NetWorkTask().execute(listener, GET_TRAC_DATA,getTracDataAction,obj);
             return true;
         } catch (Exception e){

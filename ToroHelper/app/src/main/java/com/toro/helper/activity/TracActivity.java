@@ -26,6 +26,7 @@ import com.toro.helper.R;
 import com.toro.helper.base.ToroActivity;
 import com.toro.helper.modle.BaseResponeData;
 import com.toro.helper.modle.DataModleParser;
+import com.toro.helper.modle.FamilyMemberInfo;
 import com.toro.helper.modle.data.LocationInfo;
 import com.toro.helper.utils.ConnectManager;
 import com.toro.helper.view.MainActionBar;
@@ -45,6 +46,8 @@ public class TracActivity extends ToroActivity {
     private List<LocationInfo> locationInfos;
     private Polyline tracLine;
     private ImageView refreshImage;
+    private static final String EXTRA_MEMBER_INFO = "extra_user_info";
+    private FamilyMemberInfo userInfo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,6 +68,7 @@ public class TracActivity extends ToroActivity {
             }
         });
         refreshImage = mainActionBar.getRightImageView();
+        userInfo = (FamilyMemberInfo) getIntent().getSerializableExtra(EXTRA_MEMBER_INFO);
         refreshTrac();
     }
 
@@ -88,7 +92,7 @@ public class TracActivity extends ToroActivity {
 
     private void refreshTrac() {
         startRefreshAnim();
-        ConnectManager.getInstance().getTracData(this);
+        ConnectManager.getInstance().getTracData(this,userInfo.getUserInfo().getSn());
     }
 
     private void updateTrac() {
@@ -130,9 +134,10 @@ public class TracActivity extends ToroActivity {
         return status;
     }
 
-    public static Intent createIntent(Context context) {
+    public static Intent createIntent(Context context,FamilyMemberInfo memberInfo) {
         Intent intent = new Intent();
         intent.setClass(context,TracActivity.class);
+        intent.putExtra(EXTRA_MEMBER_INFO,memberInfo);
         return intent;
     }
 }

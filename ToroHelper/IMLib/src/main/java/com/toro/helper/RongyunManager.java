@@ -50,6 +50,7 @@ public class RongyunManager {
             return;
         }
         isFirst = false;
+        RongIMClient.getInstance().disconnect();
         RongIMClient.getInstance().connect(token, new RongIMClient.ConnectCallback() {
             @Override
             public void onTokenIncorrect() {
@@ -121,7 +122,7 @@ public class RongyunManager {
         public void onChanged(ConnectionStatus connectionStatus) {
             if(connectionStatusListeners != null){
                 for(RongYunListener.ConnectionStatusListener listener : connectionStatusListeners) {
-                    listener.onChanged(connectionStatus.name());
+//                    listener.onChanged(connectionStatus.name());
                 }
             }
         }

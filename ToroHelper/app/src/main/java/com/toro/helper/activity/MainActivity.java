@@ -34,6 +34,8 @@ import com.toro.helper.view.iphone.MenuItemOnClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 import helper.phone.toro.com.imageselector.utils.ImageSelector;
 import kamen.ladysaga.com.versionmanager.core.AllenChecker;
@@ -67,6 +69,23 @@ public class MainActivity extends ToroActivity implements
 
     private List<ChangeColorIconWithTextView> mTabIndicator = new ArrayList<ChangeColorIconWithTextView>();
 
+    private Handler handler = new Handler() {
+        @Override
+        public void publish(LogRecord record) {
+
+        }
+
+        @Override
+        public void flush() {
+
+        }
+
+        @Override
+        public void close() throws SecurityException {
+
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -92,24 +111,24 @@ public class MainActivity extends ToroActivity implements
     }
 
     private void updateApk() {
-        try{
-            if(VersionManager.getInstance().getVersionInfo() == null) {
-                return;
-            }
-            if(VersionManager.getInstance().getVersionInfo().getVersionCode() > BuildConfig.VERSION_CODE) {
-                VersionParams.Builder builder = new VersionParams.Builder()
-                        .setRequestUrl("http://www.baidu.com")
-                        .setService(VersionService.class);
-                if(VersionManager.getInstance().getVersionInfo().isMust()) {
-                    CustomVersionDialogActivity.isForceUpdate = true;
-                    builder.setCustomDownloadActivityClass(CustomVersionDialogActivity.class);
-                }
-                AllenChecker.startVersionCheck(this, builder.build());
-            }
-        }catch (Exception e) {
-
-        }
-
+//        try{
+//            if(VersionManager.getInstance().getVersionInfo() == null) {
+//                return;
+//            }
+//            if(VersionManager.getInstance().getVersionInfo().getVersionCode() > BuildConfig.VERSION_CODE) {
+//                VersionParams.Builder builder = new VersionParams.Builder()
+//                        .setRequestUrl("http://www.baidu.com")
+//                        .setService(VersionService.class);
+//                if(VersionManager.getInstance().getVersionInfo().isMust()) {
+//                    CustomVersionDialogActivity.isForceUpdate = true;
+//                    builder.setCustomDownloadActivityClass(CustomVersionDialogActivity.class);
+//                }
+//                AllenChecker.startVersionCheck(this, builder.build());
+//            }
+//        }catch (Exception e) {
+//
+//        }
+        VersionManager.getInstance().checkVersion(this, handler,BuildConfig.VERSION_CODE);
 
     }
 
