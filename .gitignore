@@ -19,7 +19,6 @@
 build
 app/build
 /captures
-*.apk
 *.ap_
 *.dex
 *.class
