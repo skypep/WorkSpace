@@ -29,6 +29,7 @@ import com.android.dialer.common.concurrent.DefaultDialerExecutorFactory;
 import com.android.dialer.inject.HasRootComponent;
 import com.android.dialer.notification.NotificationChannelManager;
 import com.android.dialer.persistentlog.PersistentLogger;
+import com.iwith.assistantlib.PieAssistant;
 
 /** A common application subclass for all Dialer build variants. */
 public abstract class DialerApplication extends Application implements HasRootComponent {
@@ -53,6 +54,7 @@ public abstract class DialerApplication extends Application implements HasRootCo
     if (BuildCompat.isAtLeastO()) {
       NotificationChannelManager.initChannels(this);
     }
+    PieAssistant.init(this);// liujia add 语音助手初始化
     Trace.endSection();
   }
 

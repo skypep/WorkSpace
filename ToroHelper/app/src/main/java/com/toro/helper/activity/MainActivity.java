@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
+import com.toro.helper.BuildConfig;
 import com.toro.helper.R;
 import com.toro.helper.RongYunListener;
 import com.toro.helper.RongyunManager;
@@ -35,6 +36,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import helper.phone.toro.com.imageselector.utils.ImageSelector;
+import kamen.ladysaga.com.versionmanager.core.AllenChecker;
+import kamen.ladysaga.com.versionmanager.core.VersionParams;
+import kamen.ladysaga.com.versionmanager.main.CustomVersionDialogActivity;
+import kamen.ladysaga.com.versionmanager.main.VersionManager;
+import kamen.ladysaga.com.versionmanager.main.VersionService;
 
 /**
  * Create By liujia
@@ -81,6 +87,30 @@ public class MainActivity extends ToroActivity implements
         changeActionView(MAIN_PHOTO_FRAGMENT);
 
         RongyunManager.getInstance().addOnReceiveMessageListener(this);
+
+        updateApk();
+    }
+
+    private void updateApk() {
+        try{
+            if(VersionManager.getInstance().getVersionInfo() == null) {
+                return;
+            }
+            if(VersionManager.getInstance().getVersionInfo().getVersionCode() > BuildConfig.VERSION_CODE) {
+                VersionParams.Builder builder = new VersionParams.Builder()
+                        .setRequestUrl("http://www.baidu.com")
+                        .setService(VersionService.class);
+                if(VersionManager.getInstance().getVersionInfo().isMust()) {
+                    CustomVersionDialogActivity.isForceUpdate = true;
+                    builder.setCustomDownloadActivityClass(CustomVersionDialogActivity.class);
+                }
+                AllenChecker.startVersionCheck(this, builder.build());
+            }
+        }catch (Exception e) {
+
+        }
+
+
     }
 
     @Override

@@ -29,4 +29,7 @@
     <string name="toro_back">Back</string>
     <string name="toro_send_location">Send Location</string>
     <string name="toro_add_to_contact">Add to a contact</string>
+    <string name="hint">hint</string>
+    <string name="locationing">locationing</string>
+    <string name="get_location_failed">get location failed</string>
 </resources>

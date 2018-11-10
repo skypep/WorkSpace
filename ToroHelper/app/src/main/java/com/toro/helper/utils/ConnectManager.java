@@ -48,6 +48,7 @@ public class ConnectManager {
     public static final int GET_MORE_MEMBER = 26;
     public static final int GET_HEALTH_DATA = 27;
     public static final int GET_TRAC_DATA = 28;
+    public static final int DELETE_MEMBER_LIST = 29;
 
     private static final String mainUrl = "http://120.78.174.86:8888/";
 
@@ -171,8 +172,15 @@ public class ConnectManager {
      */
     private static final String getHealthDataAction = "kinship-api/health/getToday";
 
-
+    /**
+     * 获取轨迹
+     */
     private static final String getTracDataAction = "http://39.108.131.154:8082/mobile-gps/getGpsList";
+
+    /**
+     * 删除家庭成员（双方删除）
+     */
+    private static final String deleteFamilyMemberAction = "kinship-api/member/batchDelete";
 
     private static ConnectManager instance;
 
@@ -520,6 +528,22 @@ public class ConnectManager {
             JSONObject obj = new JSONObject();
             obj.put("sn","1234567893");
             new NetWorkTask().execute(listener, GET_TRAC_DATA,getTracDataAction,obj);
+            return true;
+        } catch (Exception e){
+
+        }
+        return false;
+    }
+
+    public boolean deleteMemberList(OnHttpDataUpdateListener listener, List<Integer> uids, String token){
+        try{
+            JSONObject obj = new JSONObject();
+            JSONArray uidArray = new JSONArray();
+            for(int uid : uids) {
+                uidArray.put(uid);
+            }
+            obj.put("ids",uidArray);
+            new NetWorkTask().execute(listener, DELETE_MEMBER_LIST,mainUrl + deleteFamilyMemberAction,obj,token);
             return true;
         } catch (Exception e){
 

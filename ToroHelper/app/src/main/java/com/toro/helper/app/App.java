@@ -53,6 +53,10 @@ public class App extends Application {
         return null;
     }
 
+    public void RongYunDisConnect() {
+        RongyunManager.getInstance().disConnect();
+    }
+
     public void RongYunConnect(String token) {
         if (getApplicationInfo().packageName.equals(getCurProcessName(getApplicationContext()))) {
             RongyunManager.getInstance().connect(token,null);
@@ -62,11 +66,12 @@ public class App extends Application {
             public void onChanged(String name) {
                 if(name.equals("KICKED_OFFLINE_BY_OTHER_CLIENT")){
                     // 在别处登陆 强制退出账号
+                    Toast.makeText(instance, R.string.coerce_sigin_out,Toast.LENGTH_LONG).show();
                     ToroDataModle.getInstance().loginOut();
                     Intent intent = LoginActivity.newIntent(instance);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
-                    Toast.makeText(instance, R.string.coerce_sigin_out,Toast.LENGTH_LONG).show();
+
                 }
             }
         });

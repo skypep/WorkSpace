@@ -1,6 +1,7 @@
 package com.android.toro.src.calllog;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.dialer.BuildConfig;
 import com.android.dialer.R;
 import com.android.dialer.app.calllog.BlockReportSpamListener;
 import com.android.dialer.app.calllog.IntentProvider;
@@ -23,6 +26,13 @@ import com.android.dialer.logging.DialerImpression;
 import com.android.dialer.logging.Logger;
 import com.android.dialer.util.DialerUtils;
 import com.android.dialer.util.IntentUtil;
+import com.google.gson.JsonObject;
+import com.google.wireless.gdata.data.StringUtils;
+import com.iwith.assistantlib.PieAssistant;
+import com.iwith.assistantlib.bean.Request;
+import com.iwith.assistantlib.remote.AssistantCallback;
+
+import org.json.JSONObject;
 
 public class ToroCallDetailsActionItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -108,9 +118,7 @@ public class ToroCallDetailsActionItemViewHolder extends RecyclerView.ViewHolder
         if(actionText.getText().equals(context.getResources().getString(R.string.call_log_action_send_message))) {
             DialerUtils.startActivityWithErrorToast(context, IntentUtil.getSendSmsIntent(contact.getNumber()));
         }else if(actionText.getText().equals(context.getResources().getString(R.string.toro_send_location))) {
-            Intent intent = IntentUtil.getSendSmsIntent(contact.getNumber());
-            intent.putExtra("sms_body", "我的位置是：广东省深圳市龙岗区天安数码城A座");
-            DialerUtils.startActivityWithErrorToast(context, intent);
+            sendLocation();
         } else if(actionText.getText().equals(context.getResources().getString(R.string.call_log_action_block_number))) {
             Logger.get(context).logImpression(DialerImpression.Type.CALL_LOG_CONTEXT_MENU_BLOCK_NUMBER);
             maybeShowBlockNumberMigrationDialog(
@@ -139,6 +147,43 @@ public class ToroCallDetailsActionItemViewHolder extends RecyclerView.ViewHolder
             DialerUtils.startActivityWithErrorToast(context, intent);
 
         }
+    }
+
+    private void sendLocation() {
+        ProgressDialog dialog2 = ProgressDialog.show(context, context.getResources().getString(R.string.hint), context.getString(R.string.locationing));
+        dialog2.show();
+        Request request = new Request();
+        request.version = 1;
+        //请求方法
+        request.method = "getLoacl";
+        request.exts.put("appId",BuildConfig.APPLICATION_ID);
+//        request.exts["key"] = "dataSign";
+        PieAssistant.request(request,new AssistantCallback(){
+            @Override
+            public void onResponse(String s) {
+                dialog2.dismiss();
+                try{
+                    JSONObject obj = new JSONObject(s);
+                    String desc = obj.getJSONObject("entry").getString("desc");
+                    if(!StringUtils.isEmpty(desc)) {
+                        Intent intent = IntentUtil.getSendSmsIntent(contact.getNumber());
+                        intent.putExtra("sms_body", desc);
+                        DialerUtils.startActivityWithErrorToast(context, intent);
+                        return;
+                    }
+
+                } catch (Exception e) {
+
+                }
+                Toast.makeText(context,R.string.get_location_failed,Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(Throwable throwable) {
+                dialog2.dismiss();
+                Toast.makeText(context,R.string.get_location_failed,Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     class ToroBlockListener implements BlockListener{

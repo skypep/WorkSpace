@@ -41,6 +41,10 @@ public class RongyunManager {
         RongIMClient.setConnectionStatusListener(connectionStatusListener);
     }
 
+    public void disConnect() {
+        RongIMClient.getInstance().disconnect();
+    }
+
     public void connect(String token,final RongYunListener.RongYunConnectCallback callback) {
         if(!isFirst) {
             return;

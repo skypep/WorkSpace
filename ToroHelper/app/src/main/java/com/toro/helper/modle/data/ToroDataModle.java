@@ -2,6 +2,7 @@ package com.toro.helper.modle.data;
 
 import android.content.Context;
 
+import com.toro.helper.app.App;
 import com.toro.helper.modle.BaseResponeData;
 import com.toro.helper.modle.DataModleParser;
 import com.toro.helper.modle.data.listener.FamilyMemberDataOnChangeListener;
@@ -47,6 +48,7 @@ public class ToroDataModle {
 
     public void loginOut() {
         localData.setToken("");
+        App.getInstance().RongYunDisConnect();
     }
 
     public void addToroDataModeOnChangeListener(ToroDataModeOnChangeListener listener) {

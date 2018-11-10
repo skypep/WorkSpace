@@ -25,6 +25,7 @@ allprojects {
     repositories {
         google()
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url 'http://192.168.8.249:6969/repository/maven-public/' }
     }
 
 }

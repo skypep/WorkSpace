@@ -3,6 +3,7 @@ package com.toro.helper.fragment.family;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -22,7 +23,8 @@ public class FamilyMemberViewHolder extends RecyclerView.ViewHolder {
     private TextView nameTextView;
     private TextView statusTextView;
     private TextView agreenBt;
-    private LinearLayout rightLayout;
+    private LinearLayout ListRightLayout;
+    private ImageView selectAction;
 
     public FamilyMemberViewHolder(@NonNull View itemView, View.OnClickListener listener) {
         super(itemView);
@@ -30,12 +32,14 @@ public class FamilyMemberViewHolder extends RecyclerView.ViewHolder {
         this.headImageView = rootView.findViewById(R.id.head_img);
         this.nameTextView = rootView.findViewById(R.id.text_name);
         this.statusTextView = rootView.findViewById(R.id.text_status);
-        this.rightLayout = rootView.findViewById(R.id.right_layout);
+        this.ListRightLayout = rootView.findViewById(R.id.list_right_layout);
+        selectAction = itemView.findViewById(R.id.action_selecte);
         agreenBt = rootView.findViewById(R.id.agreen_bt);
         rootView.setOnClickListener(listener);
     }
 
     public void init(boolean needLoad, FamilyMemberInfo data, final View.OnClickListener agreenListener, int index) {
+        selectAction.setVisibility(View.GONE);
         rootView.setTag(index);
         if(needLoad) {
             ImageLoad.GlidLoad(headImageView,data.getUserInfo().getHeadPhoto(),R.mipmap.default_head);
@@ -68,5 +72,17 @@ public class FamilyMemberViewHolder extends RecyclerView.ViewHolder {
             statusTextView.setVisibility(View.VISIBLE);
             statusTextView.setText(data.getStatusStringRes());
         }
+    }
+
+    public void initEditMode(int index,boolean isSelected,View.OnClickListener listener) {
+        ListRightLayout.setVisibility(View.GONE);
+        selectAction.setVisibility(View.VISIBLE);
+        if(isSelected) {
+            selectAction.setImageResource(R.mipmap.check_checked);
+        } else {
+            selectAction.setImageResource(R.mipmap.check_un_check);
+        }
+        selectAction.setTag(index);
+        selectAction.setOnClickListener(listener);
     }
 }

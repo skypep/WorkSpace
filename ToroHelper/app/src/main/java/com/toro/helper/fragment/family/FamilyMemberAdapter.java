@@ -20,6 +20,9 @@ import java.util.List;
 public class FamilyMemberAdapter extends ToroListAdapter {
 
     private View.OnClickListener agreenListener,itemOnclickListener;
+    private boolean isEditMode;
+    private boolean[]deleteChecks;
+    private View.OnClickListener checkOnclickListener;
 
     public FamilyMemberAdapter(Context context, List<FamilyMemberInfo> datas) {
         super(context, datas);
@@ -36,6 +39,9 @@ public class FamilyMemberAdapter extends ToroListAdapter {
         FamilyMemberViewHolder familyViewHolder = (FamilyMemberViewHolder) viewHolder;
         FamilyMemberInfo data = (FamilyMemberInfo) datas.get(i);
         familyViewHolder.init(needLoad,data,agreenListener,i);
+        if(isEditMode) {
+            familyViewHolder.initEditMode(i,deleteChecks[i],checkOnclickListener);
+        }
     }
 
     public void setOnItemClickListener(View.OnClickListener itemOnclickListener) {
@@ -44,5 +50,22 @@ public class FamilyMemberAdapter extends ToroListAdapter {
 
     public void setAgreenListener(View.OnClickListener listener) {
         this.agreenListener = listener;
+    }
+
+    public void enterEditMode(boolean[]deleteChecks, View.OnClickListener listener) {
+        isEditMode = true;
+        this.deleteChecks = deleteChecks;
+        this.checkOnclickListener = listener;
+        notifyDataSetChanged();
+    }
+
+    public void exitEditMode() {
+        isEditMode = false;
+        notifyDataSetChanged();
+    }
+
+    public void updateEditCheckBox(boolean[]deleteChecks) {
+        this.deleteChecks = deleteChecks;
+        notifyDataSetChanged();
     }
 }

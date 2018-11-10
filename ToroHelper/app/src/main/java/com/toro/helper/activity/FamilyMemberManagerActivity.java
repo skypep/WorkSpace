@@ -13,8 +13,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.toro.helper.R;
 import com.toro.helper.base.ToroActivity;
@@ -31,6 +33,7 @@ import com.toro.helper.view.iphone.IphoneDialogBottomMenu;
 import com.toro.helper.view.iphone.MenuItemOnClickListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Create By liujia
@@ -47,38 +50,15 @@ public class FamilyMemberManagerActivity extends ToroActivity implements FamilyM
     private ProgressBar loadingProgress;
     private FamilyMemberData memberData;
     private MainActionBar mainActionBar;
+    private boolean[] deleteChecks;
+    private LinearLayout deleteLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.family_member_manager_activity);
         initView();
-        mainActionBar = findViewById(R.id.main_action_view);
-        mainActionBar.updateView(getResources().getString(R.string.family_member_manager), R.mipmap.action_back_icon, R.mipmap.icon_action_more, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        }, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ArrayList<String> menus = new ArrayList<>();
-                menus.add(getString(R.string.add_family_from_contact));
-                menus.add(getString(R.string.add_family_from_edit));
-                IphoneDialogBottomMenu dialog = new IphoneDialogBottomMenu(FamilyMemberManagerActivity.this, menus, new MenuItemOnClickListener() {
-                    @Override
-                    public void onClickMenuItem(View v, int item_index, String item) {
-                        if (item.equals(getString(R.string.add_family_from_contact))) {
-                            Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
-                            startActivityForResult(intent, CONTACT_REQUEST_CODE);
-                        } else if (item.equals(getString(R.string.add_family_from_edit))) {
-                            startActivity(FamilyMemberEditActivity.createAddIntent(FamilyMemberManagerActivity.this, null));
-                        }
-                    }
-                });
-                dialog.show();
-            }
-        });
+        setNormalAction();
     }
 
     @Override
@@ -110,7 +90,108 @@ public class FamilyMemberManagerActivity extends ToroActivity implements FamilyM
         emptyHint = findViewById(R.id.empty_hint);
         loadingProgress = findViewById(R.id.loading_progress);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        deleteLayout = findViewById(R.id.delete_layout);
     }
+
+    private void setNormalAction() {
+        mainActionBar = findViewById(R.id.main_action_view);
+        mainActionBar.updateView(getResources().getString(R.string.family_member_manager), R.mipmap.action_back_icon, R.mipmap.icon_action_more, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        }, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<String> menus = new ArrayList<>();
+                menus.add(getString(R.string.add_family_from_contact));
+                menus.add(getString(R.string.add_family_from_edit));
+                menus.add(getString(R.string.delete));
+                IphoneDialogBottomMenu dialog = new IphoneDialogBottomMenu(FamilyMemberManagerActivity.this, menus, new MenuItemOnClickListener() {
+                    @Override
+                    public void onClickMenuItem(View v, int item_index, String item) {
+                        if (item.equals(getString(R.string.add_family_from_contact))) {
+                            Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+                            startActivityForResult(intent, CONTACT_REQUEST_CODE);
+                        } else if (item.equals(getString(R.string.add_family_from_edit))) {
+                            startActivity(FamilyMemberEditActivity.createAddIntent(FamilyMemberManagerActivity.this, null));
+                        } else if(item.equals(getString(R.string.delete))) {
+                            enterEditMode();
+                        }
+                    }
+                });
+                dialog.show();
+            }
+        });
+        mainActionBar.removeRightText();
+    }
+
+    private void enterEditMode() {
+        mainActionBar.removeAddRightImage();
+        mainActionBar.updateView(getResources().getString(R.string.edit), 0, 0, null, null);
+        mainActionBar.addRightText(getString(R.string.cancel), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exitEditMode();
+            }
+        });
+        deleteChecks = new boolean[memberData.getFamilyMemberDatas().size()];
+        adapter.enterEditMode(deleteChecks,onCheckClickListener);
+    }
+
+    private void exitEditMode() {
+        setNormalAction();
+        adapter.exitEditMode();
+        deleteLayout.setVisibility(View.GONE);
+    }
+
+    private void changeDeleteLayout() {
+        int deleteCount = 0;
+        for(boolean flag : deleteChecks) {
+            if(flag) {
+                deleteCount ++;
+            }
+        }
+        if(deleteCount > 0) {
+            deleteLayout.setVisibility(View.VISIBLE);
+            ((TextView)findViewById(R.id.delete_text)).setText(getString(R.string.delete) + "(" + deleteCount + ")");
+            deleteLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    deleteMembers();
+                }
+            });
+        } else {
+            deleteLayout.setVisibility(View.GONE);
+        }
+    }
+
+    private void showProgress() {
+        recyclerView.setVisibility(View.GONE);
+        loadingProgress.setVisibility(View.VISIBLE);
+        emptyHint.setVisibility(View.GONE);
+    }
+
+    private void deleteMembers() {
+        showProgress();
+        List<Integer> ids = new ArrayList<>();
+        for(int i=0; i< deleteChecks.length;i++) {
+            if(deleteChecks[i]) {
+                ids.add(memberData.getFamilyMemberDatas().get(i).getId());
+            }
+        }
+        ConnectManager.getInstance().deleteMemberList(this,ids,ToroDataModle.getInstance().getLocalData().getToken());
+    }
+
+    private View.OnClickListener onCheckClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            int index = (int) v.getTag();
+            deleteChecks[index] = !deleteChecks[index];
+            adapter.updateEditCheckBox(deleteChecks);
+            changeDeleteLayout();
+        }
+    };
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -158,6 +239,18 @@ public class FamilyMemberManagerActivity extends ToroActivity implements FamilyM
         }
     }
 
+    private void showMemberList() {
+        if(memberData == null || memberData.getFamilyMemberDatas().size() < 1) {
+            showEmptyHint();
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            loadingProgress.setVisibility(View.GONE);
+            emptyHint.setVisibility(View.GONE);
+            adapter.updatePhotoDatas(memberData.getFamilyMemberDatas());
+        }
+
+    }
+
     private View.OnClickListener agreenListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -180,6 +273,17 @@ public class FamilyMemberManagerActivity extends ToroActivity implements FamilyM
                 if(flag) {
                     ToroDataModle.getInstance().updateToroFamilyPhotoList();
                 }
+                break;
+            case ConnectManager.DELETE_MEMBER_LIST:
+                if(flag) {
+                    ToroDataModle.getInstance().updateToroFamilyMemberList();
+                    exitEditMode();
+//                    updateMemberList();// 可以删除
+                } else {
+                    showMemberList();
+                    Toast.makeText(this,R.string.delete_failed,Toast.LENGTH_LONG).show();
+                }
+
                 break;
         }
         return flag;

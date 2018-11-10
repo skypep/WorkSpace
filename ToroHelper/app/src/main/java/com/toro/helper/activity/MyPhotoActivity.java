@@ -265,7 +265,7 @@ public class MyPhotoActivity extends ToroActivity {
                 case ConnectManager.DELETE_PHOTO_LIST:
                     ToroDataModle.getInstance().updateToroFamilyPhotoList();
                     exitEditMode();
-                    updatePhotoList();
+//                    updatePhotoList();//不必要，可删除
                     break;
             }
         } else {
