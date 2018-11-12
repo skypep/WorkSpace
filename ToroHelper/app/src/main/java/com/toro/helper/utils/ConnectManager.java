@@ -49,6 +49,8 @@ public class ConnectManager {
     public static final int GET_HEALTH_DATA = 27;
     public static final int GET_TRAC_DATA = 28;
     public static final int DELETE_MEMBER_LIST = 29;
+    public static final int GET_MORE_PHOTO_LIST_BY_UID = 30;
+    public static final int GET_PRIVACY_POLICY = 31;
 
     private static final String mainUrl = "http://120.78.174.86:8888/";
 
@@ -181,6 +183,8 @@ public class ConnectManager {
      * 删除家庭成员（双方删除）
      */
     private static final String deleteFamilyMemberAction = "kinship-api/member/batchDelete";
+
+    private static final String getPrivacyPolicyAction = "kinship-api/law";
 
     private static ConnectManager instance;
 
@@ -471,9 +475,32 @@ public class ConnectManager {
         return true;
     }
 
-    public boolean getPhotoListByUid(OnHttpDataUpdateListener listener,int id,String token){
-        new NetWorkTask().execute(listener, GET_PHOTO_LIST_BY_UID,mainUrl + getPhotoListByUidAction + id,token);
-        return true;
+    public boolean loadPhotoListByUid(OnHttpDataUpdateListener listener,int id,int offset,int limit,String token) {
+        return getPhotoListByUid(listener,id,offset,limit,token,GET_PHOTO_LIST_BY_UID);
+    }
+
+    public boolean loadPhotoListByUidMore(OnHttpDataUpdateListener listener,int id,int offset,int limit,String token) {
+        return getPhotoListByUid(listener,id,offset,limit,token,GET_MORE_PHOTO_LIST_BY_UID);
+    }
+
+    /**
+     * 奇葩的访问方式，因为是get 所以offset和limit需要放到头里面.....so...ODUOKE
+     * @param listener
+     * @param id
+     * @param token
+     * @return
+     */
+    private boolean getPhotoListByUid(OnHttpDataUpdateListener listener,int id,int offset,int limit,String token,int tag){
+        try{
+            JSONObject obj = new JSONObject();
+            obj.put("offset",offset);
+            obj.put("limit",limit);
+            new NetWorkTask().execute(listener, tag,mainUrl + getPhotoListByUidAction + id,obj,token);
+            return true;
+        } catch (Exception e){
+
+        }
+        return false;
     }
 
     public boolean deletePhotoList(OnHttpDataUpdateListener listener, List<Integer> uids, String token){
@@ -549,5 +576,9 @@ public class ConnectManager {
 
         }
         return false;
+    }
+
+    public void updatePrivacyPolicy(OnHttpDataUpdateListener listener) {
+        new NetWorkTask().execute(listener, GET_PRIVACY_POLICY,mainUrl + getPrivacyPolicyAction);
     }
 }

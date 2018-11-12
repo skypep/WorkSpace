@@ -63,6 +63,8 @@ public class ToroActionBar extends FrameLayout {
         rightButton.setText(text);
         if(listener != null) {
             rightButton.setOnClickListener(listener);
+        }else {
+            rightButton.setVisibility(View.GONE);
         }
     }
 
@@ -72,6 +74,8 @@ public class ToroActionBar extends FrameLayout {
         rightImageButton.setImageResource(imgRes);
         if(listener != null) {
             rightImageButton.setOnClickListener(listener);
+        }else{
+            rightImageButton.setVisibility(View.GONE);
         }
     }
 

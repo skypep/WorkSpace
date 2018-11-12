@@ -59,6 +59,29 @@ public class OkHttp {
         return "";
     }
 
+    public static String doTokenGet(String url,String token,int offset,int limit) {
+        try{
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .addHeader("Authorization", token)
+                    .addHeader("Content-Type","application/json;charset=utf-8")
+                    .addHeader("pageIndex",offset + "")
+                    .addHeader("pageSize",limit + "")
+                    .url(url)
+                    .get()
+                    .build();
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                return response.body().string();
+            } else {
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
     public static String doTokenGet(String url,String token) {
         OkHttpClient okHttpClient = getToroOkHttpClient(token);
         Request request = new Request.Builder()
@@ -69,6 +92,26 @@ public class OkHttp {
             Response response = call.execute();
             return response.body().string();
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public static String doTokenGet(String url) {
+        try{
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .addHeader("Content-Type","application/json;charset=utf-8")
+                    .url(url)
+                    .get()
+                    .build();
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                return response.body().string();
+            } else {
+
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return "";

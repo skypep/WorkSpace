@@ -38,7 +38,9 @@ public class WelcomActivity extends ToroActivity {
          * 如果自动登陆失败，手动登陆
          * 自动登陆成功，获取登陆用户信息
          */
-        if(StringUtils.isEmpty(token)) {
+        if(!ToroDataModle.getInstance().getLocalData().isAgreenPrivacyPolicy()) {
+            ConnectManager.getInstance().updatePrivacyPolicy(this);
+        }else if(StringUtils.isEmpty(token)) {
             delayToLoginActivity();
         } else if(isQuickLogin) {
             ConnectManager.getInstance().verifyTokenAction(this,token);
@@ -67,6 +69,20 @@ public class WelcomActivity extends ToroActivity {
     public boolean bindData(int tag, Object object) {
         boolean staus = super.bindData(tag, object);
         BaseResponeData data = DataModleParser.parserBaseResponeData((String) object);
+        if(tag == ConnectManager.GET_PRIVACY_POLICY) {
+            finish();
+            if(staus) {
+                try{
+                    String content = DataModleParser.parserPrivacyPolicyContent(data.getEntry());
+                    if(StringUtils.isNotEmpty(content)) {
+                        ToroDataModle.getInstance().getLocalData().setPrivatyPolicyContent(content);
+                    }
+                }catch (Exception  e) {
+
+                }
+            }
+            startActivity(PrivacyPolicyActivity.createIntent(this));
+        }
         if(staus) {
             switch (tag){
                 case ConnectManager.VERIFY_TOKEN:

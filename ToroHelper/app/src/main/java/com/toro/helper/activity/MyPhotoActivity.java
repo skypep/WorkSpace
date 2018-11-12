@@ -19,6 +19,7 @@ import com.toro.helper.base.ToroActivity;
 import com.toro.helper.fragment.photo.PhotoAdapter;
 import com.toro.helper.modle.BaseResponeData;
 import com.toro.helper.modle.DataModleParser;
+import com.toro.helper.modle.data.FamilyPhotoData;
 import com.toro.helper.modle.data.ToroDataModle;
 import com.toro.helper.modle.photo.PhotoData;
 import com.toro.helper.utils.CameraUtils;
@@ -48,7 +49,8 @@ public class MyPhotoActivity extends ToroActivity {
     protected AutoLoadRecyclerView recyclerView;
     private TextView emptyHint;
     private ProgressBar loadingProgress;
-    private List<PhotoData> photoDatas;
+//    private List<PhotoData> photoDatas;
+    private FamilyPhotoData photoData;
     private MainActionBar mainActionBar;
     private LinearLayout deleteLayout;
     private String mPhotoPath;
@@ -134,7 +136,7 @@ public class MyPhotoActivity extends ToroActivity {
                 exitEditMode();
             }
         });
-        deleteChecks = new boolean[photoDatas.size()];
+        deleteChecks = new boolean[photoData.getPhotoDatas().size()];
         adapter.enterEditMode(deleteChecks,onCheckClickListener);
     }
 
@@ -145,20 +147,35 @@ public class MyPhotoActivity extends ToroActivity {
     }
 
     private void showPhotoList() {
-        if(photoDatas == null || photoDatas.size() < 1) {
+        if(photoData == null || photoData.getPhotoDatas().size() < 1) {
             showEmptyHint();
         } else {
             recyclerView.setVisibility(View.VISIBLE);
             loadingProgress.setVisibility(View.GONE);
             emptyHint.setVisibility(View.GONE);
-            adapter.updatePhotoDatas(photoDatas);
+            adapter.updatePhotoDatas(photoData.getPhotoDatas());
         }
+        recyclerView.setLoadMoreListener(new AutoLoadRecyclerView.onLoadMoreListener() {
+            @Override
+            public void loadMore() {
+                loadPhotoMore();
+            }
+        });
 
     }
 
     private void updatePhotoList() {
+        photoData = new FamilyPhotoData();
+        loadPhotoList();
+    }
+
+    private void loadPhotoList(){
         showProgress();
-        ConnectManager.getInstance().getPhotoListByUid(this,ToroDataModle.getInstance().getLoginUserData().getUid(),ToroDataModle.getInstance().getLocalData().getToken());
+        ConnectManager.getInstance().loadPhotoListByUid(this,ToroDataModle.getInstance().getLoginUserData().getUid(),0,photoData.getLimit(),ToroDataModle.getInstance().getLocalData().getToken());
+    }
+
+    private void loadPhotoMore() {
+        ConnectManager.getInstance().loadPhotoListByUidMore(this,ToroDataModle.getInstance().getLoginUserData().getUid(),photoData.getPhotoDatas().size(),photoData.pageCount, ToroDataModle.getInstance().getLocalData().getToken());
     }
 
     private void showEmptyHint() {
@@ -200,7 +217,7 @@ public class MyPhotoActivity extends ToroActivity {
         List<Integer> ids = new ArrayList<>();
         for(int i=0; i< deleteChecks.length;i++) {
             if(deleteChecks[i]) {
-                ids.add(photoDatas.get(i).getId());
+                ids.add(photoData.getPhotoDatas().get(i).getId());
             }
         }
         ConnectManager.getInstance().deletePhotoList(this,ids,ToroDataModle.getInstance().getLocalData().getToken());
@@ -259,13 +276,17 @@ public class MyPhotoActivity extends ToroActivity {
             BaseResponeData data = DataModleParser.parserBaseResponeData((String) object);
             switch (tag) {
                 case ConnectManager.GET_PHOTO_LIST_BY_UID:
-                    photoDatas = DataModleParser.parserPhotoDatas(data.getEntry());
+                    photoData.setPhotoDatas(DataModleParser.parserPhotoDatas(data.getEntry()));
                     showPhotoList();
                     break;
                 case ConnectManager.DELETE_PHOTO_LIST:
                     ToroDataModle.getInstance().updateToroFamilyPhotoList();
                     exitEditMode();
-//                    updatePhotoList();//不必要，可删除
+                    updatePhotoList();
+                    break;
+                case ConnectManager.GET_MORE_PHOTO_LIST_BY_UID:
+                    photoData.appendPhotoDatas(DataModleParser.parserPhotoDatas(data.getEntry()));
+                    showPhotoList();
                     break;
             }
         } else {

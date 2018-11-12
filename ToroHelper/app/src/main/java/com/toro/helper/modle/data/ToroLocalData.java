@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.amap.api.maps2d.model.LatLng;
+import com.toro.helper.R;
 import com.toro.helper.app.App;
 import com.toro.helper.utils.StringUtils;
 
@@ -23,6 +24,8 @@ public class ToroLocalData {
     private boolean isQuickLogin;
     private LocationInfo homeLocation;
     private int safeguardRadius;
+    private boolean agreenPrivacyPolicy;
+    private String privatyPolicyContent;
 
     private static ToroLocalData instance;
 
@@ -146,5 +149,27 @@ public class ToroLocalData {
     public void setSafeguardRadius(int safeguardRadius) {
         this.safeguardRadius = safeguardRadius;
         pre.edit().putInt("safeguardRadius",safeguardRadius).apply();
+    }
+
+    public boolean isAgreenPrivacyPolicy() {
+        agreenPrivacyPolicy = pre.getBoolean("agreenPrivacyPolicy",agreenPrivacyPolicy);
+        return agreenPrivacyPolicy;
+    }
+
+    public void setAgreenPrivacyPolicy(boolean agreenPrivacyPolicy) {
+        this.agreenPrivacyPolicy = agreenPrivacyPolicy;
+        pre.edit().putBoolean("agreenPrivacyPolicy",agreenPrivacyPolicy).apply();
+    }
+
+    public String getPrivatyPolicyContent(Context context) {
+        privatyPolicyContent = pre.getString("privatyPolicyContent",privatyPolicyContent);
+        if(StringUtils.isEmpty(privatyPolicyContent)) {
+            privatyPolicyContent = context.getString(R.string.privacy_policy);
+        }
+        return privatyPolicyContent;
+    }
+
+    public void setPrivatyPolicyContent(String privatyPolicyContent) {
+        this.privatyPolicyContent = privatyPolicyContent;
     }
 }

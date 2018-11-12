@@ -33,6 +33,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.os.Trace;
 import android.provider.CallLog.Calls;
+import android.provider.ContactsContract;
 import android.speech.RecognizerIntent;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
@@ -1707,6 +1708,16 @@ public class DialtactsActivity extends TransactionSafeActivity
     }
   };
 
+  private View.OnClickListener editContactListener = new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+      final Intent intent = new Intent("com.android.contacts.action.MULTI_PICK_CONTACT",
+              ContactsContract.Contacts.CONTENT_URI);
+      intent.putExtra("delete", true);
+      startActivity(intent);
+    }
+  };
+
   private View.OnClickListener deleteSelectedlistener = new View.OnClickListener() {
     @Override
     public void onClick(View v) {
@@ -1737,11 +1748,12 @@ public class DialtactsActivity extends TransactionSafeActivity
     } else if(tabIndex == DialtactsPagerAdapter.TAB_INDEX_HISTORY) {
       mToroActionBar.setTitleText(getResources().getString(R.string.tab_history));
       mToroActionBar.setLeftButton(getResources().getString(R.string.toro_edit),editCallLogListener);
-      mToroActionBar.setRightImageButton(R.drawable.toro_settings,settingClickHandler);
+//      mToroActionBar.setRightImageButton(R.drawable.toro_settings,settingClickHandler);
+      mToroActionBar.setRightImageButton(0,null);
     } else if(tabIndex == DialtactsPagerAdapter.TAB_INDEX_ALL_CONTACTS) {
       mToroActionBar.setTitleText(getResources().getString(R.string.tab_all_contacts));
       mToroActionBar.setLeftButton(getResources().getString(R.string.toro_add),addContactListener);
-      mToroActionBar.setRightImageButton(R.drawable.toro_settings,settingClickHandler);
+      mToroActionBar.setRightButton(getResources().getString(R.string.toro_edit),editContactListener);
     }
   }
 

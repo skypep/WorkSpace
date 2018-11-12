@@ -35,6 +35,11 @@ public class CameraUtils {
     public static final int PERMISSION_CAMERA_REQUEST_CODE = ToroRequestCode.CAMERA_CODE + 2;
     public static final int CAMERA_REQUEST_CODE = ToroRequestCode.CAMERA_CODE + 3;
 
+    /**
+     * 相机权限
+     */
+    private static String[] cameraPermissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA};
+
     public interface OnCameraPermissionListener {
         public void onHasePermission();
     }
@@ -59,16 +64,25 @@ public class CameraUtils {
      * 检查权限并拍照。
      */
     public static void checkPermissionAndCamera(Activity activity,OnCameraPermissionListener listener) {
-        int hasCameraPermission = ContextCompat.checkSelfPermission(activity.getApplication(),
-                Manifest.permission.CAMERA);
-        if (hasCameraPermission == PackageManager.PERMISSION_GRANTED) {
+        if (checkCameraPermission(activity) ){
             //有调起相机拍照。
             listener.onHasePermission();
         } else {
             //没有权限，申请权限。
             ActivityCompat.requestPermissions(activity,
-                    new String[]{Manifest.permission.CAMERA}, PERMISSION_CAMERA_REQUEST_CODE);
+                    cameraPermissions, PERMISSION_CAMERA_REQUEST_CODE);
         }
+    }
+
+    private static boolean checkCameraPermission(Activity activity) {
+        for(String permission:cameraPermissions) {
+            int hasCameraPermission = ContextCompat.checkSelfPermission(activity.getApplication(),
+                    permission);
+            if(hasCameraPermission != PackageManager.PERMISSION_GRANTED){
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

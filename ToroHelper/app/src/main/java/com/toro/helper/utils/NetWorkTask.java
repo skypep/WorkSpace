@@ -57,7 +57,6 @@ public class NetWorkTask extends AsyncTask<Object, Integer, Object> {
                 token = (String) params[4];
                 return ToroHttp.uploadFile(url,images,token);
             case ConnectManager.GET_LOGIN_USERE_INFO:
-            case ConnectManager.GET_PHOTO_LIST_BY_UID:
             case ConnectManager.GET_USER_PHONE_STATUS:
                 token = (String) params[3];
                 return OkHttp.doTokenGet(url,token);
@@ -67,6 +66,18 @@ public class NetWorkTask extends AsyncTask<Object, Integer, Object> {
                 pobj = (JSONObject) params[3];
                 token = (String) params[4];
                 return OkHttp.doTokenPut(url,pobj,token);
+            case ConnectManager.GET_PHOTO_LIST_BY_UID:
+            case ConnectManager.GET_MORE_PHOTO_LIST_BY_UID:
+                try{
+                    pobj = (JSONObject) params[3];
+                    token = (String) params[4];
+                    return OkHttp.doTokenGet(url,token,pobj.getInt("offset"),pobj.getInt("limit"));
+                }catch (Exception e) {
+
+                }
+                return "";
+            case ConnectManager.GET_PRIVACY_POLICY:
+                return OkHttp.doTokenGet(url);
             case ConnectManager.DOWNLOAD_IMAGE:// 此case 无效 直接调用okhttp
                 return null;
             default:

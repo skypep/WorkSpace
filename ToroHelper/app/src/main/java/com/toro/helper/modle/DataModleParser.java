@@ -4,6 +4,7 @@ import com.toro.helper.modle.data.LocationInfo;
 import com.toro.helper.modle.data.ToroLoginUserData;
 import com.toro.helper.modle.photo.PhotoData;
 import com.toro.helper.modle.photo.PhotoItem;
+import com.toro.helper.utils.StringUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -93,5 +94,15 @@ public class DataModleParser {
 
         }
         return datas;
+    }
+
+    public static String parserPrivacyPolicyContent(String jsonString) {
+        try{
+            JSONObject obj = new JSONObject(jsonString);
+            return obj.getString("privacyPolicy");
+        } catch (Exception e) {
+
+        }
+        return "";
     }
 }

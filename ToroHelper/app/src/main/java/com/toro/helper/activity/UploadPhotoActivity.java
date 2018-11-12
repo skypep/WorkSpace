@@ -53,7 +53,6 @@ public class UploadPhotoActivity extends ToroActivity implements View.OnClickLis
     private Button submitBt;
     private RecyclerView recyclerView,memberRecycler;
     private ArrayList<String> images;
-    private ArrayList<String> lubanImages;
     private PhotoEditAdapter adapter;
     private TextView memberEmpty;
 
@@ -152,6 +151,7 @@ public class UploadPhotoActivity extends ToroActivity implements View.OnClickLis
     }
 
     private void submit() {
+        submitBt.setClickable(false);
         showProgress(0);
         uploadImages(images);
     }
@@ -253,6 +253,11 @@ public class UploadPhotoActivity extends ToroActivity implements View.OnClickLis
         }
     };
 
+    private void submitFinish() {
+        submitBt.setClickable(true);
+        progressView.hide(UploadPhotoActivity.this);
+    }
+
     @Override
     public boolean bindData(final int tag, final Object object) {
         switch (tag) {
@@ -273,20 +278,21 @@ public class UploadPhotoActivity extends ToroActivity implements View.OnClickLis
                             }
                             ConnectManager.getInstance().submitPhotoList(UploadPhotoActivity.this,DataModleParser.parserPhotoItems(data.getEntry()),markUids,"",1,ToroDataModle.getInstance().getLocalData().getToken());
                         } else {
-                            progressView.hide(UploadPhotoActivity.this);
+                            submitFinish();
                             Toast.makeText(UploadPhotoActivity.this,getString(R.string.submit_failed),Toast.LENGTH_LONG).show();
                         }
                     }
                 });
                 break;
             case ConnectManager.SUBMIT_PHOTO_LIST:
-                progressView.hide(this);
+                submitFinish();
                 boolean status = super.bindData(tag,object);
                 if(!status) {
                     Toast.makeText(UploadPhotoActivity.this,getString(R.string.submit_failed),Toast.LENGTH_LONG).show();
                     return status;
                 } else {
                     Toast.makeText(UploadPhotoActivity.this,getString(R.string.submit_sucsses),Toast.LENGTH_LONG).show();
+                    ToroDataModle.getInstance().updateToroFamilyPhotoList();
                     Intent intent = new Intent();
                     intent.putExtra(MyPhotoActivity.UPLOAD_REQUEST_EXTRA, true);
                     setResult(RESULT_OK, intent);
