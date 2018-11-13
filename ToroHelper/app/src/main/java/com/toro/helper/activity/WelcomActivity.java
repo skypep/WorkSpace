@@ -39,7 +39,9 @@ public class WelcomActivity extends ToroActivity {
          * 自动登陆成功，获取登陆用户信息
          */
         if(!ToroDataModle.getInstance().getLocalData().isAgreenPrivacyPolicy()) {
-            ConnectManager.getInstance().updatePrivacyPolicy(this);
+//            ConnectManager.getInstance().updatePrivacyPolicy(this);
+            startActivity(PrivacyPolicyActivity.createIntent(this));
+            finish();
         }else if(StringUtils.isEmpty(token)) {
             delayToLoginActivity();
         } else if(isQuickLogin) {

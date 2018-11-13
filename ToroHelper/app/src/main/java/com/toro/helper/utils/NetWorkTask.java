@@ -49,6 +49,8 @@ public class NetWorkTask extends AsyncTask<Object, Integer, Object> {
             case ConnectManager.GET_MORE_MEMBER:
             case ConnectManager.GET_HEALTH_DATA:
             case ConnectManager.DELETE_MEMBER_LIST:
+            case ConnectManager.GET_PHOTO_LIST_BY_UID:
+            case ConnectManager.GET_MORE_PHOTO_LIST_BY_UID:
                 pobj = (JSONObject) params[3];
                 token = (String) params[4];
                 return HttpUtils.doTokenPost(url,pobj,token);
@@ -66,16 +68,6 @@ public class NetWorkTask extends AsyncTask<Object, Integer, Object> {
                 pobj = (JSONObject) params[3];
                 token = (String) params[4];
                 return OkHttp.doTokenPut(url,pobj,token);
-            case ConnectManager.GET_PHOTO_LIST_BY_UID:
-            case ConnectManager.GET_MORE_PHOTO_LIST_BY_UID:
-                try{
-                    pobj = (JSONObject) params[3];
-                    token = (String) params[4];
-                    return OkHttp.doTokenGet(url,token,pobj.getInt("offset"),pobj.getInt("limit"));
-                }catch (Exception e) {
-
-                }
-                return "";
             case ConnectManager.GET_PRIVACY_POLICY:
                 return OkHttp.doTokenGet(url);
             case ConnectManager.DOWNLOAD_IMAGE:// 此case 无效 直接调用okhttp

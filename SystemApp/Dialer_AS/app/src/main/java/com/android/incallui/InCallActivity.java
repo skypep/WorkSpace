@@ -49,6 +49,7 @@ import com.android.incallui.call.DialerCall;
 import com.android.incallui.call.DialerCall.State;
 import com.android.incallui.disconnectdialog.DisconnectMessage;
 import com.android.incallui.incall.bindings.InCallBindings;
+import com.android.incallui.incall.impl.InCallFragment;
 import com.android.incallui.incall.protocol.InCallButtonUiDelegate;
 import com.android.incallui.incall.protocol.InCallButtonUiDelegateFactory;
 import com.android.incallui.incall.protocol.InCallScreen;
@@ -813,4 +814,5 @@ public class InCallActivity extends TransactionSafeFragmentActivity
       this.call = call;
     }
   }
+
 }

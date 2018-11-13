@@ -152,7 +152,7 @@ public class ConnectManager {
     /**
      * 获取指定用户的照片
      */
-    private static final String getPhotoListByUidAction = "kinship-api/photograph/uid/";
+    private static final String getPhotoListByUidAction = "kinship-api/photograph/getPhoto";
 
     /**
      * 批量删除照片
@@ -493,9 +493,10 @@ public class ConnectManager {
     private boolean getPhotoListByUid(OnHttpDataUpdateListener listener,int id,int offset,int limit,String token,int tag){
         try{
             JSONObject obj = new JSONObject();
-            obj.put("offset",offset);
-            obj.put("limit",limit);
-            new NetWorkTask().execute(listener, tag,mainUrl + getPhotoListByUidAction + id,obj,token);
+            obj.put("uid",id);
+            obj.put("pageIndex",offset);
+            obj.put("pageSize",limit);
+            new NetWorkTask().execute(listener, tag,mainUrl + getPhotoListByUidAction,obj,token);
             return true;
         } catch (Exception e){
 

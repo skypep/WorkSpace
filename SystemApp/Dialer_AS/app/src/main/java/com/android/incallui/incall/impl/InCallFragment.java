@@ -19,6 +19,7 @@ package com.android.incallui.incall.impl;
 import android.Manifest.permission;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.media.AudioManager;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -65,6 +66,7 @@ import com.android.incallui.incall.protocol.SecondaryInfo;
 import java.util.ArrayList;
 import java.util.List;
 import com.android.dialer.R;// add by liujia
+import com.android.toro.src.utils.AssistantLocalManager;
 
 /** Fragment that shows UI for an ongoing voice call. */
 public class InCallFragment extends Fragment
@@ -432,6 +434,11 @@ public class InCallFragment extends Fragment
     ((SpeakerButtonController) getButtonController(InCallButtonIds.BUTTON_AUDIO))
         .setAudioState(audioState);
     getButtonController(InCallButtonIds.BUTTON_MUTE).setChecked(audioState.isMuted());
+    // liujia add
+    if(AssistantLocalManager.getInstance(getContext()).isOpenLoundspeaker()) {
+      AssistantLocalManager.getInstance(getContext()).setOpenLoundspeaker(false);
+      openLoundspeaker();
+    }
   }
 
   @Override
@@ -547,5 +554,15 @@ public class InCallFragment extends Fragment
 
   private Fragment getLocationFragment() {
     return getChildFragmentManager().findFragmentById(R.id.incall_location_holder);
+  }
+
+  /**
+   * liujia add
+   */
+  public void openLoundspeaker() {
+//    inCallButtonUiDelegate.toggleSpeakerphone();
+    inCallButtonUiDelegate.setAudioRoute(CallAudioState.ROUTE_SPEAKER);
+//    AudioManager audioManager = (AudioManager)getActivity().getSystemService(Context.AUDIO_SERVICE);
+//    audioManager.setSpeakerphoneOn(true);
   }
 }

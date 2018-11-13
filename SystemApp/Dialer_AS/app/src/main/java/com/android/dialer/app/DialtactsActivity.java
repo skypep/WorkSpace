@@ -139,6 +139,9 @@ import com.android.toro.src.ToroActionBar;
 import com.android.toro.src.ToroActionBarController;
 import com.android.toro.src.common.ToroCommonBottomDialog;
 import com.android.toro.src.common.ToroCommonBottomDialogEntity;
+import com.google.wireless.gdata.data.StringUtils;
+
+import static com.android.dialer.app.list.DialtactsPagerAdapter.TAB_INDEX_HISTORY;
 
 /** The dialer tab's title is 'phone', a more common name (see strings.xml). */
 @UsedByReflection(value = "AndroidManifest-app.xml")
@@ -619,7 +622,9 @@ public class DialtactsActivity extends TransactionSafeActivity
             // TODO: make zero-query search results visible
           }
         });
+
     Trace.endSection();
+
   }
 
   @Override
@@ -1122,6 +1127,9 @@ public class DialtactsActivity extends TransactionSafeActivity
     displayFragment(newIntent);
 
     invalidateOptionsMenu();
+
+    // liujia add
+    checkCommand(newIntent);
   }
 
   /** Returns true if the given intent contains a phone number to populate the dialer with */
@@ -1817,6 +1825,48 @@ public class DialtactsActivity extends TransactionSafeActivity
       mToroActionBar.setRightButton(getResources().getString(R.string.toro_select_all),selectAllCallLogListener);
     }
 
+  }
+
+  public static Intent createIntent(Context context,String command) {
+    Intent intent = new Intent();
+    intent.setClass(context,DialtactsActivity.class);
+    intent.putExtra(INTENT_EXTRA_COMMAND,command);
+    return intent;
+  }
+
+  private static final String INTENT_EXTRA_COMMAND = "intent_command";
+  public static final String ASSISTANT_COMMAND_SHOW_CALL_LOG = "show_call_log";
+
+  private void checkCommand(Intent intent) {
+    String command = intent.getStringExtra(INTENT_EXTRA_COMMAND);
+    if(StringUtils.isEmpty(command)) {
+      return;
+    }
+    switch (command) {
+      case ASSISTANT_COMMAND_SHOW_CALL_LOG:
+        showCallLog();
+        break;
+    }
+  }
+
+  private void showCallLog() {
+    if (mIsDialpadShown) {
+      if (TextUtils.isEmpty(mSearchQuery)
+              || (mSmartDialSearchFragment != null
+              && mSmartDialSearchFragment.isVisible()
+              && mSmartDialSearchFragment.getAdapter().getCount() == 0)) {
+
+        exitSearchUi();
+      }
+      hideDialpadFragment(true, false);
+    } else if (isInSearchUi()) {
+      exitSearchUi();
+      DialerUtils.hideInputMethod(mParentLayout);
+    } else if(isEditMode) {
+      exitCalllogEditModle(false);
+    }
+
+    mListsFragment.showTab(TAB_INDEX_HISTORY);
   }
 
   /********************************* liujia add end *********************************************************/
