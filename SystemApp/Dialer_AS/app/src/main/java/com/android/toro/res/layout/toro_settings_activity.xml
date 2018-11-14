@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/search_box_collapsed"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F7FE"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toro_action_bar_height"
+        android:background="#EEF1F6"
+        android:paddingLeft="@dimen/toro_margin_right"
+        android:paddingRight="@dimen/toro_margin_right"
+        >
+
+        <LinearLayout
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/toro_margin_right"
+            android:background="@drawable/toro_action_bar_button_shape"
+            android:orientation="horizontal"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
+                android:src="@drawable/back_drawable"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#666666"
+                android:layout_marginLeft="5dp"
+                android:textSize="18dp"
+                android:text="@string/toro_back"
+                />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:textSize="26dp"
+            android:layout_centerInParent="true"
+            android:layout_toRightOf="@+id/back"
+            android:layout_centerVertical="true"
+            android:text="@string/call_setting"
+            />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:divider="#858D97"
+        android:showDividers="middle"
+        android:paddingRight="@dimen/toro_margin_right"
+        android:paddingLeft="@dimen/toro_margin_right"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toro_action_bar_height"
+            >
+
+            <Switch
+                android:id="@+id/switch_view"
+                android:layout_width="wrap_content"
+                android:switchMinWidth="70dp"
+                android:minWidth="70dp"
+                android:layout_height="44dp"
+                android:paddingLeft="0px"
+                android:paddingRight="0px"
+                android:textSize="0sp"
+                android:textOff=""
+                android:showText="false"
+                android:textOn=""
+                android:thumb="@drawable/toro_switch_thumb"
+                android:track="@drawable/switch_track"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@null"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:textSize="24dp"
+                android:gravity="left|center_vertical"
+                android:layout_toLeftOf="@+id/switch_view"
+                android:layout_centerVertical="true"
+                android:text="@string/receiver_model"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toro_action_bar_height"
+            >
+
+            <ImageView
+                android:id="@+id/in_view1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_in"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:textSize="24dp"
+                android:gravity="left|center_vertical"
+                android:layout_toLeftOf="@+id/in_view1"
+                android:layout_centerVertical="true"
+                android:text="@string/call_transfer"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toro_action_bar_height"
+            >
+
+            <ImageView
+                android:id="@+id/in_view2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_in"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:textSize="24dp"
+                android:gravity="left|center_vertical"
+                android:layout_toLeftOf="@+id/in_view2"
+                android:layout_centerVertical="true"
+                android:text="@string/call_recording"
+                />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
+

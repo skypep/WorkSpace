@@ -55,11 +55,13 @@ public class MyPhotoActivity extends ToroActivity {
     private LinearLayout deleteLayout;
     private String mPhotoPath;
     private boolean[] deleteChecks;
+    private int uid;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_photo_activity);
+        uid = getIntent().getIntExtra("uid",0);
         initView();
         setNormalAction();
         updatePhotoList();
@@ -67,46 +69,28 @@ public class MyPhotoActivity extends ToroActivity {
 
     private void setNormalAction() {
         mainActionBar = findViewById(R.id.main_action_view);
-        mainActionBar.updateView(getResources().getString(R.string.family_photo), R.mipmap.action_back_icon, R.mipmap.icon_action_camera, new View.OnClickListener() {
+        View.OnClickListener rightButtonListener;
+        String title;
+        if(uid == ToroDataModle.getInstance().getLoginUserData().getUid()) {
+            title = getString(R.string.my_family_photo);
+            rightButtonListener = AddPhotoListener;
+            mainActionBar.addRightImage(R.mipmap.edit_my_photo_icon, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    enterEditMode();
+                }
+            });
+        }else {
+            title = ToroDataModle.getInstance().getFamilyMemberData().getMemberInfoByUid(uid).getDisplayName();
+            rightButtonListener = null;
+        }
+        mainActionBar.updateView(title, R.mipmap.action_back_icon, R.mipmap.icon_action_camera, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
-        }, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ArrayList<String> menus = new ArrayList<>();
-                menus.add(getString(R.string.take_photo_by_camera));
-                menus.add(getString(R.string.choose_photo_from_album));
-                IphoneDialogBottomMenu dialog = new IphoneDialogBottomMenu(MyPhotoActivity.this, menus, new MenuItemOnClickListener() {
-                    @Override
-                    public void onClickMenuItem(View v, int item_index, String item) {
-                        if (item.equals(getString(R.string.take_photo_by_camera))) {
-                            CameraUtils.checkPermissionAndCamera(MyPhotoActivity.this, new CameraUtils.OnCameraPermissionListener() {
-                                @Override
-                                public void onHasePermission() {
-                                    mPhotoPath = CameraUtils.openCamera(MyPhotoActivity.this);
-                                }
-                            });
-                        } else if (item.equals(getString(R.string.choose_photo_from_album))) {
-                            ImageSelector.builder()
-                                    .useCamera(true) // 设置是否使用拍照
-                                    .setSingle(false)  //设置是否单选
-                                    .setViewImage(true) //是否点击放大图片查看,，默认为true
-                                    .setMaxSelectCount(AppConfig.PhotoMaxCoun) // 图片的最大选择数量，小于等于0时，不限数量。
-                                    .start(MyPhotoActivity.this, CameraUtils.PHOTO_REQUEST_CODE); // 打开相册
-                        }
-                    }
-                });
-                dialog.show();
-            }
-        });
-        mainActionBar.addRightImage(R.mipmap.edit_my_photo_icon, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                enterEditMode();
-            }
-        });
+        }, rightButtonListener);
+
         mainActionBar.removeRightText();
     }
 
@@ -146,6 +130,36 @@ public class MyPhotoActivity extends ToroActivity {
         deleteLayout.setVisibility(View.GONE);
     }
 
+    private View.OnClickListener AddPhotoListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            ArrayList<String> menus = new ArrayList<>();
+            menus.add(getString(R.string.take_photo_by_camera));
+            menus.add(getString(R.string.choose_photo_from_album));
+            IphoneDialogBottomMenu dialog = new IphoneDialogBottomMenu(MyPhotoActivity.this, menus, new MenuItemOnClickListener() {
+                @Override
+                public void onClickMenuItem(View v, int item_index, String item) {
+                    if (item.equals(getString(R.string.take_photo_by_camera))) {
+                        CameraUtils.checkPermissionAndCamera(MyPhotoActivity.this, new CameraUtils.OnCameraPermissionListener() {
+                            @Override
+                            public void onHasePermission() {
+                                mPhotoPath = CameraUtils.openCamera(MyPhotoActivity.this);
+                            }
+                        });
+                    } else if (item.equals(getString(R.string.choose_photo_from_album))) {
+                        ImageSelector.builder()
+                                .useCamera(true) // 设置是否使用拍照
+                                .setSingle(false)  //设置是否单选
+                                .setViewImage(true) //是否点击放大图片查看,，默认为true
+                                .setMaxSelectCount(AppConfig.PhotoMaxCoun) // 图片的最大选择数量，小于等于0时，不限数量。
+                                .start(MyPhotoActivity.this, CameraUtils.PHOTO_REQUEST_CODE); // 打开相册
+                    }
+                }
+            });
+            dialog.show();
+        }
+    };
+
     private void showPhotoList() {
         if(photoData == null || photoData.getPhotoDatas().size() < 1) {
             showEmptyHint();
@@ -171,11 +185,11 @@ public class MyPhotoActivity extends ToroActivity {
 
     private void loadPhotoList(){
         showProgress();
-        ConnectManager.getInstance().loadPhotoListByUid(this,ToroDataModle.getInstance().getLoginUserData().getUid(),0,photoData.getLimit(),ToroDataModle.getInstance().getLocalData().getToken());
+        ConnectManager.getInstance().loadPhotoListByUid(this,uid,1,photoData.getMaxPageCount(),ToroDataModle.getInstance().getLocalData().getToken());
     }
 
     private void loadPhotoMore() {
-        ConnectManager.getInstance().loadPhotoListByUidMore(this,ToroDataModle.getInstance().getLoginUserData().getUid(),photoData.getPhotoDatas().size(),photoData.pageCount, ToroDataModle.getInstance().getLocalData().getToken());
+        ConnectManager.getInstance().loadPhotoListByUidMore(this,uid,photoData.getPageIndex(),photoData.pageCount, ToroDataModle.getInstance().getLocalData().getToken());
     }
 
     private void showEmptyHint() {
@@ -304,9 +318,10 @@ public class MyPhotoActivity extends ToroActivity {
         return status;
     }
 
-    public static Intent createIntent(Context context) {
+    public static Intent createIntent(Context context,int uid) {
         Intent intent = new Intent();
         intent.setClass(context,MyPhotoActivity.class);
+        intent.putExtra("uid",uid);
         return intent;
     }
 }

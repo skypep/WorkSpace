@@ -137,6 +137,7 @@ import java.util.concurrent.TimeUnit;
 import com.android.dialer.R;// add by liujia
 import com.android.toro.src.ToroActionBar;
 import com.android.toro.src.ToroActionBarController;
+import com.android.toro.src.ToroDialerSettingsActivity;
 import com.android.toro.src.common.ToroCommonBottomDialog;
 import com.android.toro.src.common.ToroCommonBottomDialogEntity;
 import com.google.wireless.gdata.data.StringUtils;
@@ -727,7 +728,8 @@ public class DialtactsActivity extends TransactionSafeActivity
   }
 
   protected void handleMenuSettings() {
-    final Intent intent = new Intent(this, DialerSettingsActivity.class);
+//    final Intent intent = new Intent(this, DialerSettingsActivity.class);
+    final Intent intent = new Intent(this, ToroDialerSettingsActivity.class); // liujia fix
     startActivity(intent);
   }
 
@@ -1756,8 +1758,8 @@ public class DialtactsActivity extends TransactionSafeActivity
     } else if(tabIndex == DialtactsPagerAdapter.TAB_INDEX_HISTORY) {
       mToroActionBar.setTitleText(getResources().getString(R.string.tab_history));
       mToroActionBar.setLeftButton(getResources().getString(R.string.toro_edit),editCallLogListener);
-//      mToroActionBar.setRightImageButton(R.drawable.toro_settings,settingClickHandler);
-      mToroActionBar.setRightImageButton(0,null);
+      mToroActionBar.setRightImageButton(R.drawable.toro_settings,settingClickHandler);
+//      mToroActionBar.setRightImageButton(0,null);
     } else if(tabIndex == DialtactsPagerAdapter.TAB_INDEX_ALL_CONTACTS) {
       mToroActionBar.setTitleText(getResources().getString(R.string.tab_all_contacts));
       mToroActionBar.setLeftButton(getResources().getString(R.string.toro_add),addContactListener);

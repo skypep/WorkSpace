@@ -32,5 +32,9 @@
     <string name="hint">提示</string>
     <string name="locationing">正在获取位置...</string>
     <string name="get_location_failed">获取位置信息失败</string>
+    <string name="call_setting">通话设置</string>
+    <string name="receiver_model">听筒模式</string>
+    <string name="call_transfer">来电转接</string>
+    <string name="call_recording">通话录音</string>
 
 </resources>

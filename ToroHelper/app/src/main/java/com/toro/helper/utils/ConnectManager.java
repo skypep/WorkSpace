@@ -310,8 +310,8 @@ public class ConnectManager {
     private boolean updatePhotoList(OnHttpDataUpdateListener listener,int tag,int offset,int limit,String token) {
         try{
             JSONObject obj = new JSONObject();
-            obj.put("offset",offset);
-            obj.put("limit",limit);
+            obj.put("pageIndex",offset);
+            obj.put("pageSize",limit);
             new NetWorkTask().execute(listener, tag,mainUrl + getPhotoListAction,obj,token);
             return true;
         } catch (Exception e){
@@ -384,8 +384,8 @@ public class ConnectManager {
     public boolean getFamilyMemberList(OnHttpDataUpdateListener listener,int tag,int offset,int limit,String token) {
         try{
             JSONObject obj = new JSONObject();
-            obj.put("offset",offset);
-            obj.put("limit",limit);
+            obj.put("pageIndex",offset);
+            obj.put("pageSize",limit);
             new NetWorkTask().execute(listener, tag,mainUrl + familyMenberListAction,obj,token);
             return true;
         } catch (Exception e){

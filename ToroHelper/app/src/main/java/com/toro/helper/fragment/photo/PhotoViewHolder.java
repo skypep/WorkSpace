@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.toro.helper.R;
+import com.toro.helper.activity.MyPhotoActivity;
 import com.toro.helper.activity.PhotoPreviewActivity;
 import com.toro.helper.app.AppConfig;
 import com.toro.helper.modle.photo.PhotoData;
@@ -20,6 +21,7 @@ import com.toro.helper.utils.ImageLoad;
 import com.toro.helper.view.RecyclerItemDecoration;
 import com.toro.helper.view.RoundnessImageView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -61,12 +63,20 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
         recyclerView.setRecycledViewPool(viewPool);
     }
 
-    public void init(boolean needLoad,PhotoData data) {
+    public void init(boolean needLoad,final PhotoData data) {
         nameText.setText(data.getUserinfo().getName());
         timeText.setText(data.getGmtUpdated());
         adapter.update(needLoad,data.getPhotos());
         if(needLoad) {
             ImageLoad.GlidLoad(headImg,data.getUserinfo().getHeadPhoto(),R.mipmap.default_head);
+            headImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    List<PhotoItem> photos = new ArrayList<>();
+                    photos.add(data.getUserinfo().getHeadPhoto());
+                    mContext.startActivity(PhotoPreviewActivity.createIntent(mContext,photos,0));
+                }
+            });
         }else {
             headImg.setImageResource(R.mipmap.default_head);
         }
@@ -77,7 +87,12 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
         }
         inAction.setVisibility(View.VISIBLE);
         selectAction.setVisibility(View.GONE);
-
+        inAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mContext.startActivity(MyPhotoActivity.createIntent(mContext,data.getUserinfo().getUid()));
+            }
+        });
     }
 
     public void initEditMode(int index,boolean isSelected,View.OnClickListener listener) {

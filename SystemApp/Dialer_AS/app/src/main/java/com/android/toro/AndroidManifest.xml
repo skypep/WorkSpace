@@ -29,6 +29,14 @@
         android:name="com.android.toro.src.calllog.ToroCallDetailsActivity"
         android:theme="@style/DialerThemeBase.NoActionBar">
     </activity>
+
+    <activity
+        android:label="@string/call_details"
+        android:exported="false"
+        android:name=".ToroDialerSettingsActivity"
+        android:theme="@style/DialerThemeBase.NoActionBar">
+    </activity>
+
     <service android:name=".AssistantService" android:exported="true">
       <intent-filter>
         <action android:name="android.intent.action.ASSISTANT_SERVICE" />

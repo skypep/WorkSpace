@@ -56,4 +56,8 @@ public class PhotoUserInfo {
     public void setHeadPhoto(PhotoItem headPhoto) {
         this.headPhoto = headPhoto;
     }
+
+    public int getUid() {
+        return uid;
+    }
 }

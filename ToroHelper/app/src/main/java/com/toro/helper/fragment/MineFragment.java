@@ -73,7 +73,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener,L
         View setting4 = rootView.findViewById(R.id.setting_item4);
 
         setItemView(setting1,R.string.family_member_manager,R.mipmap.family_member_manager_icon,null);
-        setItemView(setting2,R.string.family_photo,R.mipmap.my_photo_icon,null);
+        setItemView(setting2,R.string.my_family_photo,R.mipmap.my_photo_icon,null);
         setItemView(setting3,R.string.sms_mode,R.mipmap.sms_mode_icon,null);
         setItemView(setting4,R.string.setting,R.mipmap.setting_icon,null);
 
@@ -121,7 +121,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener,L
                 startActivity(FamilyMemberManagerActivity.createIntent(getContext()));
                 break;
             case R.id.setting_item2:
-                startActivity(MyPhotoActivity.createIntent(getContext()));
+                startActivity(MyPhotoActivity.createIntent(getContext(),ToroDataModle.getInstance().getLoginUserData().getUid()));
                 break;
             case R.id.setting_item3:
                 break;

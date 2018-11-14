@@ -64,20 +64,20 @@ public class ToroDataModle {
     }
 
     public void updateToroFamilyPhotoList() {
-        ConnectManager.getInstance().loadFamilyPhotoList(httpDataUpdateListener,0,familyPhotoData.getLimit(), getLocalData().getToken());
+        ConnectManager.getInstance().loadFamilyPhotoList(httpDataUpdateListener,1,familyPhotoData.getMaxPageCount(), getLocalData().getToken());
     }
 
     public void updateMoreFamilyPhotoList() {
-        ConnectManager.getInstance().loadFamilyPhotoMore(httpDataUpdateListener,familyPhotoData.getPhotoDatas().size(),familyPhotoData.pageCount, getLocalData().getToken());
+        ConnectManager.getInstance().loadFamilyPhotoMore(httpDataUpdateListener,familyPhotoData.getPageIndex(),familyPhotoData.pageCount, getLocalData().getToken());
     }
 
 
     public void updateToroFamilyMemberList() {
-        ConnectManager.getInstance().loadFamilyMemberList(httpDataUpdateListener,0,familyMemberData.getLimit(), getLocalData().getToken());
+        ConnectManager.getInstance().loadFamilyMemberList(httpDataUpdateListener,1,familyMemberData.getMaxPageCount(), getLocalData().getToken());
     }
 
     public void updateMoreFamilyMemberList() {
-        ConnectManager.getInstance().loadMoreFamilyMemberList(httpDataUpdateListener,familyMemberData.getFamilyMemberDatas().size(),familyMemberData.pageCount, getLocalData().getToken());
+        ConnectManager.getInstance().loadMoreFamilyMemberList(httpDataUpdateListener,familyMemberData.getPageIndex(),familyMemberData.pageCount, getLocalData().getToken());
     }
 
     public void chnageLoginUserData(String result) {

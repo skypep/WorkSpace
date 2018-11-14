@@ -23,13 +23,51 @@ public class FamilyMemberData {
 
     public void appendPhotoDatas(List<FamilyMemberInfo> datas) {
         this.familyMemberDatas.addAll(datas);
+        if(datas == null || datas.size() < 1) {
+            return;
+        }
+        if(datas.size() == pageCount) {
+            this.familyMemberDatas.addAll(datas);
+        } else {
+            for(FamilyMemberInfo newData:datas) {
+                for(int i = 0;i < this.familyMemberDatas.size(); i ++) {
+                    FamilyMemberInfo oldData = this.familyMemberDatas.get(i);
+                    if(newData.getId() == oldData.getId()) {
+                        break;
+                    }
+                    if(i == this.familyMemberDatas.size() - 1) {
+                        this.familyMemberDatas.add(newData);
+                    }
+                }
+            }
+        }
     }
 
-    public int getLimit() {
+//    public int getLimit() {
+//        if(familyMemberDatas == null || familyMemberDatas.size() < 1){
+//            return pageCount;
+//        }else {
+//            return familyMemberDatas.size()>pageCount?familyMemberDatas.size():pageCount;
+//        }
+//    }
+
+    public int getMaxPageCount() {
         if(familyMemberDatas == null || familyMemberDatas.size() < 1){
             return pageCount;
-        }else {
-            return familyMemberDatas.size()>pageCount?familyMemberDatas.size():pageCount;
+        } else {
+            int count = familyMemberDatas.size()/pageCount; // 当前刷了几页
+            if(familyMemberDatas.size()%pageCount != 0) {
+                count = count + 1;
+            }
+            return count * pageCount;
+        }
+    }
+
+    public int getPageIndex() {
+        if(familyMemberDatas == null || familyMemberDatas.size() < 1){
+            return 1;
+        } else {
+            return (familyMemberDatas.size() / pageCount) + 1;
         }
     }
 
@@ -37,6 +75,20 @@ public class FamilyMemberData {
         try{
             for(FamilyMemberInfo info :familyMemberDatas){
                 if(info.getId() == id) {
+                    return info;
+                }
+            }
+        }catch (Exception e){
+
+        }
+
+        return null;
+    }
+
+    public FamilyMemberInfo getMemberInfoByUid(int uid) {
+        try{
+            for(FamilyMemberInfo info :familyMemberDatas){
+                if(info.getUserInfo().getUid() == uid) {
                     return info;
                 }
             }

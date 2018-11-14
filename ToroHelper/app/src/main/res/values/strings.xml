@@ -67,7 +67,7 @@
     <string name="nick_name">昵称</string>
     <string name="have_no_nick_name">暂无昵称</string>
     <string name="family_member_manager">家庭成员管理</string>
-    <string name="family_photo">我的照片</string>
+    <string name="my_family_photo">我的照片</string>
     <string name="sms_mode">短信模式</string>
     <string name="setting">设置</string>
     <string name="edit_personal_details">修改个人信息</string>
