@@ -99,14 +99,12 @@ public class FamilyMemberFragment extends BaseFragment implements FamilyMemberDa
             emptyHint.setVisibility(View.GONE);
             adapter.updatePhotoDatas(memberData.getFamilyMemberDatas());
         }
-        if(memberData.getFamilyMemberDatas().size() % memberData.pageCount == 0) {
-            recyclerView.setLoadMoreListener(new AutoLoadRecyclerView.onLoadMoreListener() {
-                @Override
-                public void loadMore() {
-                    ToroDataModle.getInstance().updateMoreFamilyMemberList();
-                }
-            });
-        }
+        recyclerView.setLoadMoreListener(new AutoLoadRecyclerView.onLoadMoreListener() {
+            @Override
+            public void loadMore() {
+                ToroDataModle.getInstance().updateMoreFamilyMemberList();
+            }
+        });
     }
 
     private View.OnClickListener agreenListener = new View.OnClickListener() {

@@ -36,12 +36,7 @@ public class ToroActionBar extends FrameLayout {
         leftButton = findViewById(R.id.toro_action_left_button);
         rightButton = findViewById(R.id.toro_action_right_button);
         rightImageButton = findViewById(R.id.toro_action_right_image_button);
-        this.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-            }
-        });
         super.onFinishInflate();
     }
 
@@ -59,7 +54,6 @@ public class ToroActionBar extends FrameLayout {
     public void setRightButton(String text,OnClickListener listener) {
         rightButton.setVisibility(View.VISIBLE);
         rightImageButton.setVisibility(View.GONE);
-        int wid = rightButton.getWidth();
         rightButton.setText(text);
         if(listener != null) {
             rightButton.setOnClickListener(listener);

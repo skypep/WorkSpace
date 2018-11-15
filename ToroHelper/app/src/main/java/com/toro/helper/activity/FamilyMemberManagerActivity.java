@@ -237,6 +237,12 @@ public class FamilyMemberManagerActivity extends ToroActivity implements FamilyM
             emptyHint.setVisibility(View.GONE);
             adapter.updatePhotoDatas(memberData.getFamilyMemberDatas());
         }
+        recyclerView.setLoadMoreListener(new AutoLoadRecyclerView.onLoadMoreListener() {
+            @Override
+            public void loadMore() {
+                ToroDataModle.getInstance().updateMoreFamilyMemberList();
+            }
+        });
     }
 
     private void showMemberList() {

@@ -22,7 +22,6 @@ public class FamilyMemberData {
     }
 
     public void appendPhotoDatas(List<FamilyMemberInfo> datas) {
-        this.familyMemberDatas.addAll(datas);
         if(datas == null || datas.size() < 1) {
             return;
         }

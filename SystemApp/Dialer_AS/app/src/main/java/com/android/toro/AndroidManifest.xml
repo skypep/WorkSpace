@@ -22,6 +22,9 @@
       <!--android:protectionLevel="signature" />-->
   <!--<uses-permission android:name="toro.dialer.assistant.permission" />-->
 
+  <uses-permission android:name="android.permission.OP_READ_PHONE_STATE"/>
+  <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+
   <application android:theme="@style/Theme.AppCompat">
     <activity
         android:label="@string/call_details"

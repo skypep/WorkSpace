@@ -122,7 +122,7 @@ public class RongyunManager {
         public void onChanged(ConnectionStatus connectionStatus) {
             if(connectionStatusListeners != null){
                 for(RongYunListener.ConnectionStatusListener listener : connectionStatusListeners) {
-//                    listener.onChanged(connectionStatus.name());
+                    listener.onChanged(connectionStatus.name());
                 }
             }
         }

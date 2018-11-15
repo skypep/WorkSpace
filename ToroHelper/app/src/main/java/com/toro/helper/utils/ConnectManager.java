@@ -212,6 +212,7 @@ public class ConnectManager {
             JSONObject obj = new JSONObject();
             obj.put("phone",phoneNum);
             obj.put("captcha",scode);
+            obj.put("userType",USER_TYPE);
             new NetWorkTask().execute(listener,QUICK_LOGIN,mainUrl + quickLoginAction,obj);
             return true;
         } catch (Exception e){

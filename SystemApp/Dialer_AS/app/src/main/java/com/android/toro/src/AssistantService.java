@@ -12,7 +12,7 @@ import com.android.dialer.callintent.CallInitiationType;
 import com.android.dialer.callintent.CallIntentBuilder;
 import com.android.dialer.util.DialerUtils;
 import com.android.incallui.InCallActivity;
-import com.android.toro.src.utils.AssistantLocalManager;
+import com.android.toro.src.utils.ToroLocalDataManager;
 
 import java.lang.reflect.Method;
 
@@ -69,7 +69,7 @@ public class AssistantService extends Service {
      * 用扬声器接听电话
      */
     private void answerByLoundspeaker() {
-        AssistantLocalManager.getInstance(this).setOpenLoundspeaker(true);
+        ToroLocalDataManager.getInstance(this).setAssintantOpenLoundspeaker(true);
         answer();
     }
 
@@ -96,7 +96,7 @@ public class AssistantService extends Service {
      * @param number
      */
     private void callByLoundSpeaker(String number) {
-        AssistantLocalManager.getInstance(this).setOpenLoundspeaker(true);
+        ToroLocalDataManager.getInstance(this).setAssintantOpenLoundspeaker(true);
         call(number);
     }
 

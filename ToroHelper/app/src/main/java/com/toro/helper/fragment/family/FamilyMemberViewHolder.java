@@ -47,12 +47,6 @@ public class FamilyMemberViewHolder extends RecyclerView.ViewHolder {
             headImageView.setImageResource(R.mipmap.default_head);
         }
         nameTextView.setText(data.getDisplayName());
-//        rightLayout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
 
         if(data.getStatus() == 1) {
             agreenBt.setVisibility(View.VISIBLE);
@@ -72,6 +66,7 @@ public class FamilyMemberViewHolder extends RecyclerView.ViewHolder {
             statusTextView.setVisibility(View.VISIBLE);
             statusTextView.setText(data.getStatusStringRes());
         }
+        ListRightLayout.setVisibility(View.VISIBLE);
     }
 
     public void initEditMode(int index,boolean isSelected,View.OnClickListener listener) {

@@ -121,7 +121,9 @@ public class MineFragment extends BaseFragment implements View.OnClickListener,L
                 startActivity(FamilyMemberManagerActivity.createIntent(getContext()));
                 break;
             case R.id.setting_item2:
-                startActivity(MyPhotoActivity.createIntent(getContext(),ToroDataModle.getInstance().getLoginUserData().getUid()));
+                if(ToroDataModle.getInstance().getLoginUserData()!= null) {
+                    startActivity(MyPhotoActivity.createIntent(getContext(),ToroDataModle.getInstance().getLoginUserData().getUid()));
+                }
                 break;
             case R.id.setting_item3:
                 break;

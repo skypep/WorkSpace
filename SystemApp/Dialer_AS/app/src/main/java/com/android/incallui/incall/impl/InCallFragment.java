@@ -19,7 +19,6 @@ package com.android.incallui.incall.impl;
 import android.Manifest.permission;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.media.AudioManager;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -66,7 +65,7 @@ import com.android.incallui.incall.protocol.SecondaryInfo;
 import java.util.ArrayList;
 import java.util.List;
 import com.android.dialer.R;// add by liujia
-import com.android.toro.src.utils.AssistantLocalManager;
+import com.android.toro.src.utils.ToroLocalDataManager;
 
 /** Fragment that shows UI for an ongoing voice call. */
 public class InCallFragment extends Fragment
@@ -428,6 +427,7 @@ public class InCallFragment extends Fragment
   @Override
   public void setVideoPaused(boolean isPaused) {}
 
+  private boolean isFirst = true;// liujia add
   @Override
   public void setAudioState(CallAudioState audioState) {
     LogUtil.i("InCallFragment.setAudioState", "audioState: " + audioState);
@@ -435,9 +435,16 @@ public class InCallFragment extends Fragment
         .setAudioState(audioState);
     getButtonController(InCallButtonIds.BUTTON_MUTE).setChecked(audioState.isMuted());
     // liujia add
-    if(AssistantLocalManager.getInstance(getContext()).isOpenLoundspeaker()) {
-      AssistantLocalManager.getInstance(getContext()).setOpenLoundspeaker(false);
-      openLoundspeaker();
+    if(isFirst) {
+      isFirst = false;
+      if(ToroLocalDataManager.getInstance(getContext()).isAssintantOpenLoundspeaker()) {
+        ToroLocalDataManager.getInstance(getContext()).setAssintantOpenLoundspeaker(false);
+        openLoundspeaker();
+        return;
+      }
+      if(ToroLocalDataManager.getInstance(getContext()).isLoundspeakerMode()) {
+        openLoundspeaker();
+      }
     }
   }
 
