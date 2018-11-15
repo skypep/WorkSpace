@@ -16,19 +16,18 @@
 
 package com.android.incallui;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.AppTask;
 import android.app.ActivityManager.TaskDescription;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
@@ -56,6 +55,7 @@ import com.android.dialer.logging.Logger;
 import com.android.dialer.logging.ScreenEvent;
 import com.android.dialer.util.ViewUtil;
 import com.android.incallui.audiomode.AudioModeProvider;
+import com.android.incallui.BottomSheetHelper;
 import com.android.incallui.call.CallList;
 import com.android.incallui.call.DialerCall;
 import com.android.incallui.call.DialerCall.State;
@@ -174,12 +174,12 @@ public class InCallActivityCommon {
         WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
             | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
             | WindowManager.LayoutParams.FLAG_IGNORE_CHEEK_PRESSES;
-
+    Intent intent = inCallActivity.getIntent();
     inCallActivity.getWindow().addFlags(flags);
 
     inCallActivity.setContentView(R.layout.incall_screen);
 
-    internalResolveIntent(inCallActivity.getIntent());
+    internalResolveIntent(intent);
 
     boolean isLandscape =
         inCallActivity.getResources().getConfiguration().orientation
@@ -212,15 +212,16 @@ public class InCallActivityCommon {
           }
         });
 
+    if (intent.hasExtra(INTENT_EXTRA_SHOW_DIALPAD)) {
+        boolean showDialpad = intent.getBooleanExtra(INTENT_EXTRA_SHOW_DIALPAD, false);
+        showDialpadRequest = showDialpad ? DIALPAD_REQUEST_SHOW : DIALPAD_REQUEST_HIDE;
+        animateDialpadOnShow = false;
+    }
+
     if (icicle != null) {
       // If the dialpad was shown before, set variables indicating it should be shown and
       // populated with the previous DTMF text.  The dialpad is actually shown and populated
       // in onResume() to ensure the hosting fragment has been inflated and is ready to receive it.
-      if (icicle.containsKey(INTENT_EXTRA_SHOW_DIALPAD)) {
-        boolean showDialpad = icicle.getBoolean(INTENT_EXTRA_SHOW_DIALPAD);
-        showDialpadRequest = showDialpad ? DIALPAD_REQUEST_SHOW : DIALPAD_REQUEST_HIDE;
-        animateDialpadOnShow = false;
-      }
       dtmfTextToPreopulate = icicle.getString(DIALPAD_TEXT_KEY);
 
       SelectPhoneAccountDialogFragment dialogFragment =
@@ -324,7 +325,12 @@ public class InCallActivityCommon {
   public void onStop() {
     enableInCallOrientationEventListener(false);
     InCallPresenter.getInstance().updateIsChangingConfigurations();
-    InCallPresenter.getInstance().onActivityStopped();
+    Activity activity = InCallPresenter.getInstance().getActivity();
+    if (activity == null || activity == inCallActivity) {
+      InCallPresenter.getInstance().onActivityStopped();
+    } else {
+      LogUtil.i("InCallActivityCommon.onStop", "Another activity already set.Ignore.");
+    }
   }
 
   public void onDestroy() {
@@ -551,6 +557,9 @@ public class InCallActivityCommon {
           "dismissing InternationalCallOnWifiDialogFragment");
       internationalCallOnWifiFragment.dismiss();
     }
+
+    InCallCsRedialHandler.getInstance().dismissPendingDialogs();
+    BottomSheetHelper.getInstance().dismissBottomSheet();
   }
 
   private void showErrorDialog(Dialog dialog, CharSequence message) {
@@ -737,6 +746,7 @@ public class InCallActivityCommon {
           inCallActivity.getDialpadContainerId(), new DialpadFragment(), TAG_DIALPAD_FRAGMENT);
     } else {
       transaction.show(dialpadFragment);
+      dialpadFragment.setUserVisibleHint(true);
     }
 
     transaction.commitAllowingStateLoss();
@@ -753,18 +763,19 @@ public class InCallActivityCommon {
       return;
     }
 
-    Fragment fragment = fragmentManager.findFragmentByTag(TAG_DIALPAD_FRAGMENT);
-    if (fragment != null) {
+    DialpadFragment dialpadFragment = getDialpadFragment();
+    if (dialpadFragment != null) {
       FragmentTransaction transaction = fragmentManager.beginTransaction();
-      transaction.hide(fragment);
+      transaction.hide(dialpadFragment);
       transaction.commitAllowingStateLoss();
       fragmentManager.executePendingTransactions();
+      dialpadFragment.setUserVisibleHint(false);
     }
   }
 
   public boolean isDialpadVisible() {
     DialpadFragment dialpadFragment = getDialpadFragment();
-    return dialpadFragment != null && dialpadFragment.isVisible();
+    return dialpadFragment != null && dialpadFragment.getUserVisibleHint();
   }
 
   /** Returns the {@link DialpadFragment} that's shown by this activity, or {@code null} */
@@ -794,7 +805,7 @@ public class InCallActivityCommon {
   }
 
   public boolean hasPendingDialogs() {
-    return dialog != null;
+    return dialog != null || InCallCsRedialHandler.getInstance().hasPendingDialogs();
   }
 
   private void internalResolveIntent(Intent intent) {

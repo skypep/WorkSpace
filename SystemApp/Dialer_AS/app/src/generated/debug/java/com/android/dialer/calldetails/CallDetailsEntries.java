@@ -73,16 +73,30 @@ public  final class CallDetailsEntries extends
     long getDataUsage();
 
     /**
-     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 7;</code>
+     * <code>optional string account_id = 7;</code>
+     */
+    boolean hasAccountId();
+    /**
+     * <code>optional string account_id = 7;</code>
+     */
+    java.lang.String getAccountId();
+    /**
+     * <code>optional string account_id = 7;</code>
+     */
+    com.google.protobuf.ByteString
+        getAccountIdBytes();
+
+    /**
+     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 8;</code>
      */
     java.util.List<com.android.dialer.enrichedcall.historyquery.proto.HistoryResult> 
         getHistoryResultsList();
     /**
-     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 7;</code>
+     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 8;</code>
      */
     com.android.dialer.enrichedcall.historyquery.proto.HistoryResult getHistoryResults(int index);
     /**
-     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 7;</code>
+     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 8;</code>
      */
     int getHistoryResultsCount();
   }
@@ -95,6 +109,7 @@ public  final class CallDetailsEntries extends
       // @@protoc_insertion_point(message_implements:com.android.dialer.calldetails.CallDetailsEntries.CallDetailsEntry)
       CallDetailsEntryOrBuilder {
     private CallDetailsEntry() {
+      accountId_ = "";
       historyResults_ = emptyProtobufList();
     }
     private int bitField0_;
@@ -272,35 +287,86 @@ public  final class CallDetailsEntries extends
       dataUsage_ = 0L;
     }
 
-    public static final int HISTORY_RESULTS_FIELD_NUMBER = 7;
+    public static final int ACCOUNT_ID_FIELD_NUMBER = 7;
+    private java.lang.String accountId_;
+    /**
+     * <code>optional string account_id = 7;</code>
+     */
+    public boolean hasAccountId() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional string account_id = 7;</code>
+     */
+    public java.lang.String getAccountId() {
+      return accountId_;
+    }
+    /**
+     * <code>optional string account_id = 7;</code>
+     */
+    public com.google.protobuf.ByteString
+        getAccountIdBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(accountId_);
+    }
+    /**
+     * <code>optional string account_id = 7;</code>
+     */
+    private void setAccountId(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+      accountId_ = value;
+    }
+    /**
+     * <code>optional string account_id = 7;</code>
+     */
+    private void clearAccountId() {
+      bitField0_ = (bitField0_ & ~0x00000040);
+      accountId_ = getDefaultInstance().getAccountId();
+    }
+    /**
+     * <code>optional string account_id = 7;</code>
+     */
+    private void setAccountIdBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+      accountId_ = value.toStringUtf8();
+    }
+
+    public static final int HISTORY_RESULTS_FIELD_NUMBER = 8;
     private com.google.protobuf.Internal.ProtobufList<com.android.dialer.enrichedcall.historyquery.proto.HistoryResult> historyResults_;
     /**
-     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 7;</code>
+     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 8;</code>
      */
     public java.util.List<com.android.dialer.enrichedcall.historyquery.proto.HistoryResult> getHistoryResultsList() {
       return historyResults_;
     }
     /**
-     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 7;</code>
+     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 8;</code>
      */
     public java.util.List<? extends com.android.dialer.enrichedcall.historyquery.proto.HistoryResultOrBuilder> 
         getHistoryResultsOrBuilderList() {
       return historyResults_;
     }
     /**
-     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 7;</code>
+     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 8;</code>
      */
     public int getHistoryResultsCount() {
       return historyResults_.size();
     }
     /**
-     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 7;</code>
+     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 8;</code>
      */
     public com.android.dialer.enrichedcall.historyquery.proto.HistoryResult getHistoryResults(int index) {
       return historyResults_.get(index);
     }
     /**
-     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 7;</code>
+     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 8;</code>
      */
     public com.android.dialer.enrichedcall.historyquery.proto.HistoryResultOrBuilder getHistoryResultsOrBuilder(
         int index) {
@@ -314,7 +380,7 @@ public  final class CallDetailsEntries extends
     }
 
     /**
-     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 7;</code>
+     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 8;</code>
      */
     private void setHistoryResults(
         int index, com.android.dialer.enrichedcall.historyquery.proto.HistoryResult value) {
@@ -325,7 +391,7 @@ public  final class CallDetailsEntries extends
       historyResults_.set(index, value);
     }
     /**
-     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 7;</code>
+     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 8;</code>
      */
     private void setHistoryResults(
         int index, com.android.dialer.enrichedcall.historyquery.proto.HistoryResult.Builder builderForValue) {
@@ -333,7 +399,7 @@ public  final class CallDetailsEntries extends
       historyResults_.set(index, builderForValue.build());
     }
     /**
-     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 7;</code>
+     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 8;</code>
      */
     private void addHistoryResults(com.android.dialer.enrichedcall.historyquery.proto.HistoryResult value) {
       if (value == null) {
@@ -343,7 +409,7 @@ public  final class CallDetailsEntries extends
       historyResults_.add(value);
     }
     /**
-     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 7;</code>
+     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 8;</code>
      */
     private void addHistoryResults(
         int index, com.android.dialer.enrichedcall.historyquery.proto.HistoryResult value) {
@@ -354,7 +420,7 @@ public  final class CallDetailsEntries extends
       historyResults_.add(index, value);
     }
     /**
-     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 7;</code>
+     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 8;</code>
      */
     private void addHistoryResults(
         com.android.dialer.enrichedcall.historyquery.proto.HistoryResult.Builder builderForValue) {
@@ -362,7 +428,7 @@ public  final class CallDetailsEntries extends
       historyResults_.add(builderForValue.build());
     }
     /**
-     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 7;</code>
+     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 8;</code>
      */
     private void addHistoryResults(
         int index, com.android.dialer.enrichedcall.historyquery.proto.HistoryResult.Builder builderForValue) {
@@ -370,7 +436,7 @@ public  final class CallDetailsEntries extends
       historyResults_.add(index, builderForValue.build());
     }
     /**
-     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 7;</code>
+     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 8;</code>
      */
     private void addAllHistoryResults(
         java.lang.Iterable<? extends com.android.dialer.enrichedcall.historyquery.proto.HistoryResult> values) {
@@ -379,13 +445,13 @@ public  final class CallDetailsEntries extends
           values, historyResults_);
     }
     /**
-     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 7;</code>
+     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 8;</code>
      */
     private void clearHistoryResults() {
       historyResults_ = emptyProtobufList();
     }
     /**
-     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 7;</code>
+     * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 8;</code>
      */
     private void removeHistoryResults(int index) {
       ensureHistoryResultsIsMutable();
@@ -412,8 +478,11 @@ public  final class CallDetailsEntries extends
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         output.writeInt64(6, dataUsage_);
       }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeString(7, getAccountId());
+      }
       for (int i = 0; i < historyResults_.size(); i++) {
-        output.writeMessage(7, historyResults_.get(i));
+        output.writeMessage(8, historyResults_.get(i));
       }
       unknownFields.writeTo(output);
     }
@@ -447,9 +516,13 @@ public  final class CallDetailsEntries extends
         size += com.google.protobuf.CodedOutputStream
           .computeInt64Size(6, dataUsage_);
       }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(7, getAccountId());
+      }
       for (int i = 0; i < historyResults_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(7, historyResults_.get(i));
+          .computeMessageSize(8, historyResults_.get(i));
       }
       size += unknownFields.getSerializedSize();
       memoizedSerializedSize = size;
@@ -713,25 +786,71 @@ public  final class CallDetailsEntries extends
       }
 
       /**
-       * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 7;</code>
+       * <code>optional string account_id = 7;</code>
+       */
+      public boolean hasAccountId() {
+        return instance.hasAccountId();
+      }
+      /**
+       * <code>optional string account_id = 7;</code>
+       */
+      public java.lang.String getAccountId() {
+        return instance.getAccountId();
+      }
+      /**
+       * <code>optional string account_id = 7;</code>
+       */
+      public com.google.protobuf.ByteString
+          getAccountIdBytes() {
+        return instance.getAccountIdBytes();
+      }
+      /**
+       * <code>optional string account_id = 7;</code>
+       */
+      public Builder setAccountId(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setAccountId(value);
+        return this;
+      }
+      /**
+       * <code>optional string account_id = 7;</code>
+       */
+      public Builder clearAccountId() {
+        copyOnWrite();
+        instance.clearAccountId();
+        return this;
+      }
+      /**
+       * <code>optional string account_id = 7;</code>
+       */
+      public Builder setAccountIdBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setAccountIdBytes(value);
+        return this;
+      }
+
+      /**
+       * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 8;</code>
        */
       public java.util.List<com.android.dialer.enrichedcall.historyquery.proto.HistoryResult> getHistoryResultsList() {
         return java.util.Collections.unmodifiableList(
             instance.getHistoryResultsList());
       }
       /**
-       * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 7;</code>
+       * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 8;</code>
        */
       public int getHistoryResultsCount() {
         return instance.getHistoryResultsCount();
       }/**
-       * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 7;</code>
+       * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 8;</code>
        */
       public com.android.dialer.enrichedcall.historyquery.proto.HistoryResult getHistoryResults(int index) {
         return instance.getHistoryResults(index);
       }
       /**
-       * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 7;</code>
+       * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 8;</code>
        */
       public Builder setHistoryResults(
           int index, com.android.dialer.enrichedcall.historyquery.proto.HistoryResult value) {
@@ -740,7 +859,7 @@ public  final class CallDetailsEntries extends
         return this;
       }
       /**
-       * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 7;</code>
+       * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 8;</code>
        */
       public Builder setHistoryResults(
           int index, com.android.dialer.enrichedcall.historyquery.proto.HistoryResult.Builder builderForValue) {
@@ -749,7 +868,7 @@ public  final class CallDetailsEntries extends
         return this;
       }
       /**
-       * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 7;</code>
+       * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 8;</code>
        */
       public Builder addHistoryResults(com.android.dialer.enrichedcall.historyquery.proto.HistoryResult value) {
         copyOnWrite();
@@ -757,7 +876,7 @@ public  final class CallDetailsEntries extends
         return this;
       }
       /**
-       * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 7;</code>
+       * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 8;</code>
        */
       public Builder addHistoryResults(
           int index, com.android.dialer.enrichedcall.historyquery.proto.HistoryResult value) {
@@ -766,7 +885,7 @@ public  final class CallDetailsEntries extends
         return this;
       }
       /**
-       * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 7;</code>
+       * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 8;</code>
        */
       public Builder addHistoryResults(
           com.android.dialer.enrichedcall.historyquery.proto.HistoryResult.Builder builderForValue) {
@@ -775,7 +894,7 @@ public  final class CallDetailsEntries extends
         return this;
       }
       /**
-       * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 7;</code>
+       * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 8;</code>
        */
       public Builder addHistoryResults(
           int index, com.android.dialer.enrichedcall.historyquery.proto.HistoryResult.Builder builderForValue) {
@@ -784,7 +903,7 @@ public  final class CallDetailsEntries extends
         return this;
       }
       /**
-       * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 7;</code>
+       * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 8;</code>
        */
       public Builder addAllHistoryResults(
           java.lang.Iterable<? extends com.android.dialer.enrichedcall.historyquery.proto.HistoryResult> values) {
@@ -793,7 +912,7 @@ public  final class CallDetailsEntries extends
         return this;
       }
       /**
-       * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 7;</code>
+       * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 8;</code>
        */
       public Builder clearHistoryResults() {
         copyOnWrite();
@@ -801,7 +920,7 @@ public  final class CallDetailsEntries extends
         return this;
       }
       /**
-       * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 7;</code>
+       * <code>repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 8;</code>
        */
       public Builder removeHistoryResults(int index) {
         copyOnWrite();
@@ -849,6 +968,9 @@ public  final class CallDetailsEntries extends
           dataUsage_ = visitor.visitLong(
               hasDataUsage(), dataUsage_,
               other.hasDataUsage(), other.dataUsage_);
+          accountId_ = visitor.visitString(
+              hasAccountId(), accountId_,
+              other.hasAccountId(), other.accountId_);
           historyResults_= visitor.visitList(historyResults_, other.historyResults_);
           if (visitor == com.google.protobuf.GeneratedMessageLite.MergeFromVisitor
               .INSTANCE) {
@@ -906,6 +1028,12 @@ public  final class CallDetailsEntries extends
                   break;
                 }
                 case 58: {
+                  String s = input.readString();
+                  bitField0_ |= 0x00000040;
+                  accountId_ = s;
+                  break;
+                }
+                case 66: {
                   if (!historyResults_.isModifiable()) {
                     historyResults_ =
                         com.google.protobuf.GeneratedMessageLite.mutableCopy(historyResults_);

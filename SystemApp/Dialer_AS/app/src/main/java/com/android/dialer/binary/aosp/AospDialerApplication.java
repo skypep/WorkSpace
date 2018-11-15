@@ -36,6 +36,7 @@ public class AospDialerApplication extends DialerApplication {
     return DaggerAospDialerRootComponent.builder().contextModule(new ContextModule(this)).build();
   }
 
+// liujia add
   @Override
   protected void attachBaseContext(Context base)
   {

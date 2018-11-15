@@ -113,17 +113,17 @@ public final class CallLogListItemViewHolder extends RecyclerView.ViewHolder
   /** The root view of the call log list item */
   public final View rootView;
   /** The quick contact badge for the contact. */
-//  public final DialerQuickContactBadge quickContactView;
+//  public final DialerQuickContactBadge quickContactView; liujia delete
   /** The primary action view of the entry. */
   public final View primaryActionView;
   /** The details of the phone call. */
   public final PhoneCallDetailsViews phoneCallDetailsViews;
   /** The text of the header for a day grouping. */
-//  public final TextView dayGroupHeader;
+//  public final TextView dayGroupHeader; liujia delete
   /** The view containing the details for the call log row, including the action buttons. */
-  public final LinearLayout callLogEntryView;
+  public final LinearLayout callLogEntryView;// liujia fix
   /** The actionable view which places a call to the number corresponding to the call log row. */
-  public final ImageView toroActionButtonView;
+  public final ImageView toroActionButtonView;// liujia fix
 
   public final ImageView toroCallTypeIcon;
   public final ImageView toroEditRadioIcon;
@@ -157,8 +157,8 @@ public final class CallLogListItemViewHolder extends RecyclerView.ViewHolder
   public View callWithNoteButtonView;
   public View callComposeButtonView;
   public View sendVoicemailButtonView;
-//  public ImageView workIconView;
-//  public ImageView checkBoxView;
+//  public ImageView workIconView; liujia delete
+//  public ImageView checkBoxView; liujia delete
   /**
    * The row Id for the first call associated with the call log entry. Used as a key for the map
    * used to track which call log entries have the action button section expanded.

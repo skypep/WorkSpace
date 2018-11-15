@@ -126,6 +126,7 @@ public abstract class IntentProvider {
     };
   }
 
+// liujia add
   public static IntentProvider getToroCallDetailIntentProvider(
           CallDetailsEntries callDetailsEntries, DialerContact contact, Integer blockId,PhoneCallDetails details,long startRowID) {
     return new IntentProvider() {

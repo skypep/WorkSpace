@@ -26,7 +26,6 @@ import com.android.dialer.logging.DialerImpression;
 import com.android.dialer.logging.Logger;
 import com.android.dialer.util.DialerUtils;
 import com.android.dialer.util.IntentUtil;
-import com.google.gson.JsonObject;
 import com.google.wireless.gdata.data.StringUtils;
 import com.iwith.assistantlib.PieAssistant;
 import com.iwith.assistantlib.bean.Request;

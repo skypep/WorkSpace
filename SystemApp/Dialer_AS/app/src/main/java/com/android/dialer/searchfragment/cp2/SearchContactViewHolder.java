@@ -41,8 +41,6 @@ import com.android.dialer.R;// fixed by liujia back com.android.dialer.searchfra
 import com.android.dialer.telecom.TelecomUtil;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import com.android.dialer.R;// add by liujia
-
 
 /** ViewHolder for a contact row. */
 public final class SearchContactViewHolder extends ViewHolder implements OnClickListener {

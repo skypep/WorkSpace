@@ -92,6 +92,7 @@ const int CallDetailsEntries_CallDetailsEntry::kFeaturesFieldNumber;
 const int CallDetailsEntries_CallDetailsEntry::kDateFieldNumber;
 const int CallDetailsEntries_CallDetailsEntry::kDurationFieldNumber;
 const int CallDetailsEntries_CallDetailsEntry::kDataUsageFieldNumber;
+const int CallDetailsEntries_CallDetailsEntry::kAccountIdFieldNumber;
 const int CallDetailsEntries_CallDetailsEntry::kHistoryResultsFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
@@ -117,6 +118,7 @@ void CallDetailsEntries_CallDetailsEntry::SharedCtor() {
   _cached_size_ = 0;
   _unknown_fields_.UnsafeSetDefault(
       &::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  account_id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&call_id_, 0, reinterpret_cast<char*>(&data_usage_) -
     reinterpret_cast<char*>(&call_id_) + sizeof(data_usage_));
 }
@@ -129,6 +131,7 @@ CallDetailsEntries_CallDetailsEntry::~CallDetailsEntries_CallDetailsEntry() {
 void CallDetailsEntries_CallDetailsEntry::SharedDtor() {
   _unknown_fields_.DestroyNoArena(
       &::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  account_id_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 void CallDetailsEntries_CallDetailsEntry::SetCachedSize(int size) const {
@@ -169,7 +172,12 @@ void CallDetailsEntries_CallDetailsEntry::Clear() {
            ZR_HELPER_(last) - ZR_HELPER_(first) + sizeof(last));\
 } while (0)
 
-  ZR_(call_id_, data_usage_);
+  if (_has_bits_[0 / 32] & 127u) {
+    ZR_(call_id_, data_usage_);
+    if (has_account_id()) {
+      account_id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    }
+  }
 
 #undef ZR_HELPER_
 #undef ZR_
@@ -280,13 +288,26 @@ bool CallDetailsEntries_CallDetailsEntry::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(58)) goto parse_history_results;
+        if (input->ExpectTag(58)) goto parse_account_id;
         break;
       }
 
-      // repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 7;
+      // optional string account_id = 7;
       case 7: {
         if (tag == 58) {
+         parse_account_id:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_account_id()));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(66)) goto parse_history_results;
+        break;
+      }
+
+      // repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 8;
+      case 8: {
+        if (tag == 66) {
          parse_history_results:
           DO_(input->IncrementRecursionDepth());
          parse_loop_history_results:
@@ -295,7 +316,7 @@ bool CallDetailsEntries_CallDetailsEntry::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(58)) goto parse_loop_history_results;
+        if (input->ExpectTag(66)) goto parse_loop_history_results;
         input->UnsafeDecrementRecursionDepth();
         if (input->ExpectAtEnd()) goto success;
         break;
@@ -356,10 +377,16 @@ void CallDetailsEntries_CallDetailsEntry::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt64(6, this->data_usage(), output);
   }
 
-  // repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 7;
+  // optional string account_id = 7;
+  if (has_account_id()) {
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      7, this->account_id(), output);
+  }
+
+  // repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 8;
   for (unsigned int i = 0, n = this->history_results_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessage(
-      7, this->history_results(i), output);
+      8, this->history_results(i), output);
   }
 
   output->WriteRaw(unknown_fields().data(),
@@ -371,7 +398,7 @@ size_t CallDetailsEntries_CallDetailsEntry::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:com.android.dialer.calldetails.CallDetailsEntries.CallDetailsEntry)
   size_t total_size = 0;
 
-  if (_has_bits_[0 / 32] & 63u) {
+  if (_has_bits_[0 / 32] & 127u) {
     // optional int64 call_id = 1;
     if (has_call_id()) {
       total_size += 1 +
@@ -414,8 +441,15 @@ size_t CallDetailsEntries_CallDetailsEntry::ByteSizeLong() const {
           this->data_usage());
     }
 
+    // optional string account_id = 7;
+    if (has_account_id()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->account_id());
+    }
+
   }
-  // repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 7;
+  // repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 8;
   {
     unsigned int count = this->history_results_size();
     total_size += 1UL * count;
@@ -471,6 +505,10 @@ void CallDetailsEntries_CallDetailsEntry::UnsafeMergeFrom(const CallDetailsEntri
     if (from.has_data_usage()) {
       set_data_usage(from.data_usage());
     }
+    if (from.has_account_id()) {
+      set_has_account_id();
+      account_id_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.account_id_);
+    }
   }
   if (!from.unknown_fields().empty()) {
     mutable_unknown_fields()->append(from.unknown_fields());
@@ -500,6 +538,7 @@ void CallDetailsEntries_CallDetailsEntry::InternalSwap(CallDetailsEntries_CallDe
   std::swap(date_, other->date_);
   std::swap(duration_, other->duration_);
   std::swap(data_usage_, other->data_usage_);
+  account_id_.Swap(&other->account_id_);
   history_results_.UnsafeArenaSwap(&other->history_results_);
   std::swap(_has_bits_[0], other->_has_bits_[0]);
   _unknown_fields_.Swap(&other->_unknown_fields_);
@@ -866,7 +905,61 @@ void CallDetailsEntries_CallDetailsEntry::set_data_usage(::google::protobuf::int
   // @@protoc_insertion_point(field_set:com.android.dialer.calldetails.CallDetailsEntries.CallDetailsEntry.data_usage)
 }
 
-// repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 7;
+// optional string account_id = 7;
+bool CallDetailsEntries_CallDetailsEntry::has_account_id() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+void CallDetailsEntries_CallDetailsEntry::set_has_account_id() {
+  _has_bits_[0] |= 0x00000040u;
+}
+void CallDetailsEntries_CallDetailsEntry::clear_has_account_id() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+void CallDetailsEntries_CallDetailsEntry::clear_account_id() {
+  account_id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  clear_has_account_id();
+}
+const ::std::string& CallDetailsEntries_CallDetailsEntry::account_id() const {
+  // @@protoc_insertion_point(field_get:com.android.dialer.calldetails.CallDetailsEntries.CallDetailsEntry.account_id)
+  return account_id_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void CallDetailsEntries_CallDetailsEntry::set_account_id(const ::std::string& value) {
+  set_has_account_id();
+  account_id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:com.android.dialer.calldetails.CallDetailsEntries.CallDetailsEntry.account_id)
+}
+void CallDetailsEntries_CallDetailsEntry::set_account_id(const char* value) {
+  set_has_account_id();
+  account_id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:com.android.dialer.calldetails.CallDetailsEntries.CallDetailsEntry.account_id)
+}
+void CallDetailsEntries_CallDetailsEntry::set_account_id(const char* value, size_t size) {
+  set_has_account_id();
+  account_id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:com.android.dialer.calldetails.CallDetailsEntries.CallDetailsEntry.account_id)
+}
+::std::string* CallDetailsEntries_CallDetailsEntry::mutable_account_id() {
+  set_has_account_id();
+  // @@protoc_insertion_point(field_mutable:com.android.dialer.calldetails.CallDetailsEntries.CallDetailsEntry.account_id)
+  return account_id_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* CallDetailsEntries_CallDetailsEntry::release_account_id() {
+  // @@protoc_insertion_point(field_release:com.android.dialer.calldetails.CallDetailsEntries.CallDetailsEntry.account_id)
+  clear_has_account_id();
+  return account_id_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void CallDetailsEntries_CallDetailsEntry::set_allocated_account_id(::std::string* account_id) {
+  if (account_id != NULL) {
+    set_has_account_id();
+  } else {
+    clear_has_account_id();
+  }
+  account_id_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), account_id);
+  // @@protoc_insertion_point(field_set_allocated:com.android.dialer.calldetails.CallDetailsEntries.CallDetailsEntry.account_id)
+}
+
+// repeated .com.android.dialer.enrichedcall.historyquery.proto.HistoryResult history_results = 8;
 int CallDetailsEntries_CallDetailsEntry::history_results_size() const {
   return history_results_.size();
 }

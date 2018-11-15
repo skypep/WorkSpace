@@ -34,12 +34,13 @@ import com.android.incallui.answerproximitysensor.PseudoScreenState;
 import com.android.incallui.call.CallList;
 import com.android.incallui.call.DialerCall;
 import com.android.incallui.call.DialerCallListener;
+import com.android.incallui.InCallPresenter.InCallDetailsListener;
 
 /** Manages changes for an incoming call screen. */
 public class AnswerScreenPresenter
-    implements AnswerScreenDelegate, DialerCall.CannedTextResponsesLoadedListener {
+    implements AnswerScreenDelegate, DialerCall.CannedTextResponsesLoadedListener,
+    InCallDetailsListener {
   private static final int ACCEPT_REJECT_CALL_TIME_OUT_IN_MILLIS = 5000;
-
   @NonNull private final Context context;
   @NonNull private final AnswerScreen answerScreen;
   @NonNull private final DialerCall call;
@@ -55,6 +56,7 @@ public class AnswerScreenPresenter
       answerScreen.setTextResponses(call.getCannedSmsResponses());
     }
     call.addCannedTextResponsesLoadedListener(this);
+    InCallPresenter.getInstance().addDetailsListener(this);
 
     PseudoScreenState pseudoScreenState = InCallPresenter.getInstance().getPseudoScreenState();
     if (AnswerProximitySensor.shouldUse(context, call)) {
@@ -74,6 +76,7 @@ public class AnswerScreenPresenter
   @Override
   public void onAnswerScreenUnready() {
     call.removeCannedTextResponsesLoadedListener(this);
+    InCallPresenter.getInstance().removeDetailsListener(this);
   }
 
   @Override
@@ -104,13 +107,18 @@ public class AnswerScreenPresenter
                 DialerImpression.Type.VIDEO_CALL_REQUEST_ACCEPTED,
                 call.getUniqueCallId(),
                 call.getTimeAddedMs());
-        call.getVideoTech().acceptVideoRequest();
+        if (!InCallLowBatteryListener.getInstance().onChangeToVideoCall(call)) {
+            call.getVideoTech().acceptVideoRequest();
+        }
       }
     } else {
       if (answerVideoAsAudio) {
         call.answer(VideoProfile.STATE_AUDIO_ONLY);
       } else {
-        call.answer();
+        if (!InCallLowBatteryListener.getInstance().onAnswerIncomingCall(call,
+                call.getVideoState())) {
+            call.answer();
+        }
       }
     }
     addTimeoutCheck();
@@ -174,6 +182,17 @@ public class AnswerScreenPresenter
     InCallActivity activity = (InCallActivity) answerScreen.getAnswerScreenFragment().getActivity();
     if (activity != null) {
       activity.updateWindowBackgroundColor(progress);
+    }
+  }
+
+  @Override
+  public void onDetailsChanged(DialerCall dialerCall, android.telecom.Call.Details details) {
+    // Only update if the changes are for the current call
+    LogUtil.v(
+        "AnswerScreenPresenter.onDetailsChanged",
+        "call: %s, details: %s", dialerCall, details);
+    if (dialerCall != null && dialerCall.equals(call)) {
+      answerScreen.updateAnswerScreenUi();
     }
   }
 

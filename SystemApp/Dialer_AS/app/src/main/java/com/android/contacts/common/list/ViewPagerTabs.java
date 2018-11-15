@@ -275,11 +275,11 @@ public class ViewPagerTabs extends HorizontalScrollView implements ViewPager.OnP
     }
 
     if (mPrevSelected >= 0 && mPrevSelected < tabStripChildCount) {
-//      mTabStrip.getChildAt(mPrevSelected).setSelected(false);
+//      mTabStrip.getChildAt(mPrevSelected).setSelected(false); liujia fixed
       setTabSelected(mTabStrip.getChildAt(mPrevSelected),false);
     }
     final View selectedChild = mTabStrip.getChildAt(position);
-//    selectedChild.setSelected(true);
+//    selectedChild.setSelected(true); liujia fixed
     setTabSelected(selectedChild,true);
 
     // Update scroll position

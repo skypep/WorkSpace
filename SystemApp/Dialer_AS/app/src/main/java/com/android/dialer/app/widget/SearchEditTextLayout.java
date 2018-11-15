@@ -272,7 +272,7 @@ public class SearchEditTextLayout extends FrameLayout {
 
     mSearchIcon.setVisibility(collapsedViewVisibility);
     mCollapsedSearchBox.setVisibility(collapsedViewVisibility);
-    mVoiceSearchButtonView.setVisibility(collapsedViewVisibility);
+    mVoiceSearchButtonView.setVisibility(View.GONE);
     mOverflowButtonView.setVisibility(collapsedViewVisibility);
     mBackButtonView.setVisibility(expandedViewVisibility);
     // TODO: Prevents keyboard from jumping up in landscape mode after exiting the

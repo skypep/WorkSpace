@@ -310,7 +310,7 @@ public class CallLogFragment extends Fragment
     mRecyclerView.setHasFixedSize(true);
     mLayoutManager = new LinearLayoutManager(getActivity());
     mRecyclerView.setLayoutManager(mLayoutManager);
-    mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+    mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL)); // liujia add
     PerformanceReport.logOnScrollStateChange(mRecyclerView);
     mEmptyListView = (EmptyContentView) view.findViewById(R.id.empty_list_view);
     mEmptyListView.setImage(R.drawable.empty_call_log);

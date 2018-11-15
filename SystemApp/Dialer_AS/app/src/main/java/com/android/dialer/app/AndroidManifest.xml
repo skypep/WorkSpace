@@ -111,7 +111,7 @@
       </intent-filter>
     </receiver>
     <!-- Handles voicemail notifications from telephony. Requires O -->
-    <receiver android:name="com.android.dialer.app.voicemail.LegacyVoicemailNotificationReceiver"
+    <receiver android:name=".voicemail.LegacyVoicemailNotificationReceiver"
       android:directBootAware="true">
       <intent-filter>
         <action android:name="android.telephony.action.SHOW_VOICEMAIL_NOTIFICATION"/>
@@ -130,5 +130,15 @@
         android:name="android.support.FILE_PROVIDER_PATHS"
         android:resource="@xml/file_paths"/>
     </provider>
+
+    <activity
+        android:name="com.android.dialer.app.settings.SpeedDialListActivity"
+        android:theme="@style/SpeedDialtactsTheme"
+        android:label="@string/speed_dial_settings" >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN"/>
+        </intent-filter>
+    </activity>
+
   </application>
 </manifest>

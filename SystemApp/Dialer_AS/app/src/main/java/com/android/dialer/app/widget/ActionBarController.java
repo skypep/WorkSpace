@@ -141,6 +141,7 @@ public class ActionBarController {
     }
   }
 
+// liujia add
   public void setVisable(boolean visable) {
     mSearchBox.setVisible(visable);
   }

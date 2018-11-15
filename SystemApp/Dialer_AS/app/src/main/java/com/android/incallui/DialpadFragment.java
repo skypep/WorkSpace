@@ -198,6 +198,7 @@ public class DialpadFragment extends BaseFragment<DialpadPresenter, DialpadUi>
     mDtmfDialerField.setText(PhoneNumberUtilsCompat.createTtsSpannable(text));
   }
 
+// liujia add
   @Override
   public void setVisible(boolean on) {
     if (on) {

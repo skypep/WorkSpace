@@ -58,6 +58,7 @@ import java.util.List;
 import com.android.dialer.R;// add by liujia
 import android.util.Log;
 import android.content.ComponentName;
+
 /**
  * Helper class to listen for some magic character sequences that are handled specially by the
  * dialer.

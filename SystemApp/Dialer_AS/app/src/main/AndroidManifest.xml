@@ -14,15 +14,16 @@
 -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    coreApp="true"
-    package="com.android.dialer"
-    android:versionCode="150000"
-    android:versionName="11.0">
+  coreApp="true"
+  package="com.android.dialer"
+  android:versionCode="150000"
+  android:versionName="11.0"
+  xmlns:tools="http://schemas.android.com/tools"
+    >
 
   <uses-sdk
-      android:minSdkVersion="23"
-      android:targetSdkVersion="26"/>
+    android:minSdkVersion="23"
+    android:targetSdkVersion="26"/>
 
   <uses-permission android:name="android.permission.CALL_PHONE"/>
   <uses-permission android:name="android.permission.READ_CONTACTS"/>
@@ -39,6 +40,7 @@
   <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/>
   <uses-permission android:name="android.permission.NFC"/>
   <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+  <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE" />
   <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
   <uses-permission android:name="android.permission.MODIFY_PHONE_STATE"/>
   <uses-permission android:name="android.permission.WAKE_LOCK"/>
@@ -104,84 +106,12 @@
   <uses-permission android:name="com.oppo.launcher.permission.WRITE_SETTINGS"/>
 
   <application
-      android:hardwareAccelerated="true"
-      android:icon="@mipmap/ic_launcher_phone"
-      android:label="@string/applicationLabel"
-      android:name="com.android.dialer.binary.aosp.AospDialerApplication"
-      android:supportsRtl="true"
-      android:usesCleartextTraffic="false"
-      tools:replace="android:label"
-      >
-
-    <activity
-      android:exported="false"
-      android:label="@string/manage_blocked_numbers_label"
-      android:name="com.android.dialer.app.filterednumber.BlockedNumbersSettingsActivity"
-      android:parentActivityName="com.android.dialer.app.settings.DialerSettingsActivity"
-      android:theme="@style/ManageBlockedNumbersStyle">
-      <intent-filter>
-        <action android:name="com.android.dialer.action.BLOCKED_NUMBERS_SETTINGS"/>
-        <category android:name="android.intent.category.DEFAULT"/>
-      </intent-filter>
-    </activity>
-
-    <activity
-      android:label="@string/call_log_activity_title"
-      android:name="com.android.dialer.app.calllog.CallLogActivity"
-      android:theme="@style/DialtactsThemeWithoutActionBarOverlay">
-    </activity>
-
-    <receiver android:name="com.android.dialer.app.calllog.CallLogReceiver">
-      <intent-filter>
-        <action android:name="android.intent.action.NEW_VOICEMAIL"/>
-        <data
-          android:host="com.android.voicemail"
-          android:mimeType="vnd.android.cursor.item/voicemail"
-          android:scheme="content"
-          />
-      </intent-filter>
-      <intent-filter android:priority="100">
-        <action android:name="android.intent.action.BOOT_COMPLETED"/>
-      </intent-filter>
-    </receiver>
-
-    <activity
-        android:name="com.android.dialer.app.calllog.CallLogNotificationsActivity"
-        android:theme="@style/Theme.AppCompat.Translucent">
-    </activity>
-
-    <service
-      android:directBootAware="true"
-      android:exported="false"
-      android:name="com.android.dialer.app.calllog.CallLogNotificationsService"
-      />
-
-    <receiver
-      android:directBootAware="true"
-      android:name="com.android.dialer.app.calllog.MissedCallNotificationReceiver">
-      <intent-filter>
-        <action android:name="android.telecom.action.SHOW_MISSED_CALLS_NOTIFICATION"/>
-      </intent-filter>
-    </receiver>
-    <!-- Handles voicemail notifications from telephony. Requires O -->
-    <receiver android:name="com.android.dialer.app.voicemail.LegacyVoicemailNotificationReceiver"
-      android:directBootAware="true">
-      <intent-filter>
-        <action android:name="android.telephony.action.SHOW_VOICEMAIL_NOTIFICATION"/>
-      </intent-filter>
-      <intent-filter>
-        <action android:name="com.android.voicemail.VoicemailClient.ACTION_SHOW_LEGACY_VOICEMAIL" />
-      </intent-filter>
-    </receiver>
-
-    <provider
-      android:authorities="com.android.dialer.files"
-      android:exported="false"
-      android:grantUriPermissions="true"
-      android:name="android.support.v4.content.FileProvider">
-      <meta-data
-        android:name="android.support.FILE_PROVIDER_PATHS"
-        android:resource="@xml/file_paths"/>
-    </provider>
+    android:hardwareAccelerated="true"
+    android:icon="@mipmap/ic_launcher_phone"
+    android:label="@string/applicationLabel"
+    android:name="com.android.dialer.binary.aosp.AospDialerApplication"
+    android:supportsRtl="true"
+    android:usesCleartextTraffic="false"
+    tools:replace="android:label">
   </application>
 </manifest>

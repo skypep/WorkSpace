@@ -27,7 +27,11 @@ allprojects {
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         maven { url 'http://192.168.8.249:6969/repository/maven-public/' }
     }
-
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs.add('-Xbootclasspath/p:E://GitCode/WorkSpace/SystemApp/Dialer_AS/app/libs/framwork/framework.jar')
+        }
+    }
 }
 
 task clean(type: Delete) {

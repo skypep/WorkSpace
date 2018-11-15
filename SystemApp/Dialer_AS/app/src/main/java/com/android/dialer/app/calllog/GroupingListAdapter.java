@@ -131,7 +131,7 @@ abstract class GroupingListAdapter extends RecyclerView.Adapter {
 
   /**
    * Given the position of a list item, returns the the first item in the group of items
-   * corresponding to that position.{0=4, 4=2, 6=1, 7=1, 8=2, 10=4}
+   * corresponding to that position.
    */
   public Object getItem(int listPosition) {
     if (mCursor == null || listPosition < 0 || listPosition >= mGroupMetadata.size()) {

@@ -26,6 +26,7 @@
          - Local: dialer_theme_color         Android Source: theme_color
          - Local: dialer_theme_color_dark    Android Source: dialer_settings_color_dark
        -->
+       <!-- liujia fixed -->
   <color name="dialer_theme_color">#4A4F57</color>
   <color name="dialer_theme_color_dark">#2B2B33</color>
 
@@ -59,8 +60,7 @@
   <color name="notification_action_answer_video">#097138</color>
 
   <!-- Background color of action bars -->
-  <!--liujia fixed from @color/dialer_theme_color to #4A4F57-->
-  <color name="actionbar_background_color">@color/toro_action_bar_bg</color>
+  <color name="actionbar_background_color">@color/dialer_theme_color</color>
 
   <!-- Background color of title bars in recents -->
   <color name="titlebar_in_recents_background_color">@color/dialer_theme_color_dark</color>

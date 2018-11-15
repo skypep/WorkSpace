@@ -56,6 +56,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnDragListener;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView.OnScrollListener;
@@ -129,6 +130,7 @@ import com.android.dialer.util.PermissionsUtil;
 import com.android.dialer.util.TouchPointManager;
 import com.android.dialer.util.TransactionSafeActivity;
 import com.android.dialer.util.ViewUtil;
+import com.android.incallui.QtiCallUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -251,6 +253,9 @@ public class DialtactsActivity extends TransactionSafeActivity
   private FloatingActionButtonController mFloatingActionButtonController;
   private boolean mWasConfigurationChange;
   private long timeTabSelected;
+
+  private PhoneNumberInteraction mPhoneNumberInteraction;
+  private Uri mUri;
 
   private P13nLogger mP13nLogger;
   private P13nRanker mP13nRanker;
@@ -401,6 +406,10 @@ public class DialtactsActivity extends TransactionSafeActivity
   protected void onCreate(Bundle savedInstanceState) {
     Trace.beginSection(TAG + " onCreate");
     super.onCreate(savedInstanceState);
+
+    // add by heyinshen begin
+    getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+    // add by heyinshen end
 
     mFirstLaunch = true;
     isLastTabEnabled = ConfigProviderBindings.get(this).getBoolean("last_tab_enabled", false);
@@ -606,8 +615,6 @@ public class DialtactsActivity extends TransactionSafeActivity
         LogUtil.i("DialtactsActivity.onResume", "clearing all new voicemails");
         CallLogNotificationsService.markAllNewVoicemailsAsOld(this);
       }
-    } else {
-
     }
 
     mFirstLaunch = false;
@@ -623,9 +630,7 @@ public class DialtactsActivity extends TransactionSafeActivity
             // TODO: make zero-query search results visible
           }
         });
-
     Trace.endSection();
-
   }
 
   @Override
@@ -779,6 +784,14 @@ public class DialtactsActivity extends TransactionSafeActivity
       handleMenuSettings();
       Logger.get(this).logScreenView(ScreenEvent.Type.SETTINGS, this);
       return true;
+    } else if (resId == R.id.menu_4g_conference_call) {
+      try {
+       QtiCallUtils.openConferenceUriDialerOr4gConferenceDialer(this);
+      } catch (ActivityNotFoundException e) {
+        LogUtil.e("DialtactsActivity.onMenuItemClick", "Activity not found. " + e);
+      } finally {
+        return true;
+      }
     } else if (resId == R.id.menu_new_ui_launcher_shortcut) {
       MainComponent.get(this).getMain().createNewUiLauncherShortcut(this);
       return true;
@@ -1307,7 +1320,6 @@ public class DialtactsActivity extends TransactionSafeActivity
           || (mSmartDialSearchFragment != null
               && mSmartDialSearchFragment.isVisible()
               && mSmartDialSearchFragment.getAdapter().getCount() == 0)) {
-
         exitSearchUi();
       }
       hideDialpadFragment(true, false);
@@ -1474,8 +1486,9 @@ public class DialtactsActivity extends TransactionSafeActivity
   public void onPickDataUri(
       Uri dataUri, boolean isVideoCall, CallSpecificAppData callSpecificAppData) {
     mClearSearchOnPause = true;
-    PhoneNumberInteraction.startInteractionForPhoneCall(
-        DialtactsActivity.this, dataUri, isVideoCall, callSpecificAppData);
+    mUri = dataUri;
+    mPhoneNumberInteraction = PhoneNumberInteraction.startInteractionForPhoneCall(
+        DialtactsActivity.this, mUri, isVideoCall, callSpecificAppData);
   }
 
   @Override
@@ -1601,15 +1614,15 @@ public class DialtactsActivity extends TransactionSafeActivity
   @Override
   public void onRequestPermissionsResult(
       int requestCode, String[] permissions, int[] grantResults) {
-    // This should never happen; it should be impossible to start an interaction without the
-    // contacts permission from the Dialtacts activity.
-    Assert.fail(
-        String.format(
-            Locale.US,
-            "Permissions requested unexpectedly: %d/%s/%s",
-            requestCode,
-            Arrays.toString(permissions),
-            Arrays.toString(grantResults)));
+    //If request is cancelled, the result arrays are empty.
+    if ((requestCode == PhoneNumberInteraction.REQUEST_CALL_PHONE
+        || requestCode == PhoneNumberInteraction.REQUEST_READ_CONTACTS)
+        && grantResults.length > 0 && grantResults[0]
+        == PackageManager.PERMISSION_GRANTED)  {
+      if (mPhoneNumberInteraction != null && mUri != null) {
+        mPhoneNumberInteraction.startInteraction(mUri);
+      }
+    }
   }
 
   @Override
@@ -1650,6 +1663,9 @@ public class DialtactsActivity extends TransactionSafeActivity
       } else {
         simulatorMenuItem.setVisible(false);
       }
+
+      final MenuItem conferDialerOption = menu.findItem(R.id.menu_4g_conference_call);
+      conferDialerOption.setVisible(false);
 
       Main dialtacts = MainComponent.get(context).getMain();
       menu.findItem(R.id.menu_new_ui_launcher_shortcut)
@@ -1758,8 +1774,8 @@ public class DialtactsActivity extends TransactionSafeActivity
     } else if(tabIndex == DialtactsPagerAdapter.TAB_INDEX_HISTORY) {
       mToroActionBar.setTitleText(getResources().getString(R.string.tab_history));
       mToroActionBar.setLeftButton(getResources().getString(R.string.toro_edit),editCallLogListener);
-      mToroActionBar.setRightImageButton(R.drawable.toro_settings,settingClickHandler);
-//      mToroActionBar.setRightImageButton(0,null);
+//      mToroActionBar.setRightImageButton(R.drawable.toro_settings,settingClickHandler);
+      mToroActionBar.setRightImageButton(0,null);
     } else if(tabIndex == DialtactsPagerAdapter.TAB_INDEX_ALL_CONTACTS) {
       mToroActionBar.setTitleText(getResources().getString(R.string.tab_all_contacts));
       mToroActionBar.setLeftButton(getResources().getString(R.string.toro_add),addContactListener);
