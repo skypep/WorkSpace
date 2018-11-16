@@ -16,7 +16,7 @@ import com.android.toro.src.utils.ToroLocalDataManager;
  * Create By liujia
  * on 2018/11/14.
  **/
-public class ToroDialerSettingsActivity extends AppCompatActivity {
+public class ToroDialerSettingsActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,9 +39,18 @@ public class ToroDialerSettingsActivity extends AppCompatActivity {
         modeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                ToroLocalDataManager.getInstance(getApplicationContext()).setLoundspeakerMode(isChecked);
+                ToroLocalDataManager.getInstance(getApplicationContext()).setLoundspeakerMode(!isChecked);
             }
         });
+        findViewById(R.id.back).setOnClickListener(this);
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.back:
+                finish();
+                break;
+        }
+    }
 }

@@ -121,6 +121,7 @@
 
     <string name="location_refresh_failed">位置刷新失败</string>
     <string name="coerce_sigin_out">您的账号在另外的设备登陆，您被强制下线</string>
+    <string name="active">激活</string>
 
     <string-array name="calendar_week">
         <item>周日</item>

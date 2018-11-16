@@ -51,6 +51,8 @@ public class ConnectManager {
     public static final int DELETE_MEMBER_LIST = 29;
     public static final int GET_MORE_PHOTO_LIST_BY_UID = 30;
     public static final int GET_PRIVACY_POLICY = 31;
+    public static final int GET_MEMBER_STATUS = 32;
+    public static final int ACTIVE_MEMBER = 33;
 
     private static final String mainUrl = "http://120.78.174.86:8888/";
 
@@ -184,7 +186,20 @@ public class ConnectManager {
      */
     private static final String deleteFamilyMemberAction = "kinship-api/member/batchDelete";
 
+    /**
+     * 用户协议
+     */
     private static final String getPrivacyPolicyAction = "kinship-api/law";
+
+    /**
+     * 查看用户在不在线
+     */
+    private static final String getMemberStatusAction = "kinship-api/phoneStatus/getStatys";
+
+    /**
+     * 激活用户
+     */
+    private static final String activeMemberAction = "kinship-api/phoneStatus/activateUpload";
 
     private static ConnectManager instance;
 
@@ -582,5 +597,29 @@ public class ConnectManager {
 
     public void updatePrivacyPolicy(OnHttpDataUpdateListener listener) {
         new NetWorkTask().execute(listener, GET_PRIVACY_POLICY,mainUrl + getPrivacyPolicyAction);
+    }
+
+    public boolean getMemberStatus(OnHttpDataUpdateListener listener,String phone,String token) {
+        try{
+            JSONObject obj = new JSONObject();
+            obj.put("phone",phone);
+            new NetWorkTask().execute(listener, GET_MEMBER_STATUS,mainUrl + getMemberStatusAction,obj,token);
+            return true;
+        } catch (Exception e){
+
+        }
+        return false;
+    }
+
+    public boolean activeMember(OnHttpDataUpdateListener listener,String phone,String token) {
+        try{
+            JSONObject obj = new JSONObject();
+            obj.put("phone",phone);
+            new NetWorkTask().execute(listener, ACTIVE_MEMBER,mainUrl + activeMemberAction,obj,token);
+            return true;
+        } catch (Exception e){
+
+        }
+        return false;
     }
 }

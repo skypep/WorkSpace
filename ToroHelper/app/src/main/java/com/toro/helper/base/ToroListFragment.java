@@ -93,7 +93,7 @@ public abstract class ToroListFragment extends BaseFragment implements OnHttpDat
             recyclerView.setVisibility(View.VISIBLE);
             loadingProgress.setVisibility(View.GONE);
             emptyHint.setVisibility(View.GONE);
-            adapter.updatePhotoDatas(getDatas());
+            adapter.updateDatas(getDatas());
         }
     }
 

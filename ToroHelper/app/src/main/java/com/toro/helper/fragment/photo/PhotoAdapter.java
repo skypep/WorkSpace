@@ -71,6 +71,11 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         notifyDataSetChanged();
     }
 
+    public void updateEditMode(boolean[]deleteChecks,List<PhotoData> photoDatas) {
+        this.deleteChecks = deleteChecks;
+        updatePhotoDatas(photoDatas);
+    }
+
     public void exitEditMode() {
         isEditMode = false;
         notifyDataSetChanged();

@@ -59,6 +59,11 @@ public class FamilyMemberAdapter extends ToroListAdapter {
         notifyDataSetChanged();
     }
 
+    public void updateEditMode(boolean[]deleteChecks,List<FamilyMemberInfo> datas) {
+        this.deleteChecks = deleteChecks;
+        super.updateDatas(datas);
+    }
+
     public void exitEditMode() {
         isEditMode = false;
         notifyDataSetChanged();

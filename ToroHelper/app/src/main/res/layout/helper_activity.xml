@@ -88,11 +88,12 @@
 
             </LinearLayout>
 
-            <FrameLayout
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/horizontal_margin_m"
                 android:layout_marginTop="@dimen/vertical_margin_m"
+                android:orientation="horizontal"
                 >
 
                 <ImageView
@@ -104,16 +105,18 @@
                     />
 
                 <TextView
+                    android:id="@+id/active"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="3dp"
                     android:textSize="@dimen/text_size_l"
                     android:textColor="#FFFFFF"
                     android:visibility="gone"
+                    android:text="@string/active"
                     android:background="@color/main_color"
                     />
 
-            </FrameLayout>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"

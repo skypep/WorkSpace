@@ -813,31 +813,20 @@ public class CallLogAdapter extends GroupingListAdapter
             DateUtils.FORMAT_ABBREV_RELATIVE);
     views.toroCallDateText.setText(callDateText);
     int type = c.getInt(CallLogQuery.CALL_TYPE);
-//    switch (type) {
-//      case CallLog.Calls.INCOMING_TYPE:
-//      case CallLog.Calls.REJECTED_TYPE:
-//      case CallLog.Calls.BLOCKED_TYPE:
-//        views.toroCallTypeIcon.setImageResource(R.drawable.toro_in_call);
-//        break;
-//      case CallLog.Calls.OUTGOING_TYPE:
-//        views.toroCallTypeIcon.setImageResource(R.drawable.toro_out_call);
-//        break;
-//      case CallLog.Calls.MISSED_TYPE:
-//        views.toroCallTypeIcon.setImageResource(R.drawable.toro_miss_call);
-//        break;
-//    }
     switch (type) {
       case AppCompatConstants.CALLS_INCOMING_TYPE:
       case AppCompatConstants.CALLS_ANSWERED_EXTERNALLY_TYPE:
       case AppCompatConstants.CALLS_BLOCKED_TYPE:
       case AppCompatConstants.CALLS_REJECTED_TYPE:
+      case AppCompatConstants.INCOMING_IMS_TYPE:
         views.toroCallTypeIcon.setImageResource(R.drawable.toro_in_call);
         break;
       case AppCompatConstants.CALLS_OUTGOING_TYPE:
-      case 1001:
+      case AppCompatConstants.OUTGOING_IMS_TYPE:
         views.toroCallTypeIcon.setImageResource(R.drawable.toro_out_call);
         break;
       case AppCompatConstants.CALLS_MISSED_TYPE:
+      case AppCompatConstants.MISSED_IMS_TYPE:
         views.toroCallTypeIcon.setImageResource(R.drawable.toro_miss_call);
         break;
       case AppCompatConstants.CALLS_VOICEMAIL_TYPE:

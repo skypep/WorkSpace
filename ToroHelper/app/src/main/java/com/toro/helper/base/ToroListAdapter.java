@@ -39,7 +39,7 @@ public abstract class ToroListAdapter extends RecyclerView.Adapter<RecyclerView.
         this.datas = datas;
     }
 
-    public void updatePhotoDatas(List<?> datas) {
+    public void updateDatas(List<?> datas) {
         this.datas = datas;
         notifyDataSetChanged();
     }

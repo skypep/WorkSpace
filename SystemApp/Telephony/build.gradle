@@ -23,7 +23,7 @@ allprojects {
     }
     gradle.projectsEvaluated {
         tasks.withType(JavaCompile) {
-            options.compilerArgs.add('-Xbootclasspath/p:app/libs/framework/toro.jar')
+            options.compilerArgs.add('-Xbootclasspath/p:E://GitCode/WorkSpace/SystemApp/Telephony/app/libs/framework/toro.jar')
         }
     }
 }

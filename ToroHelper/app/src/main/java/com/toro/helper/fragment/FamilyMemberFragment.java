@@ -24,8 +24,6 @@ import com.toro.helper.utils.ConnectManager;
 import com.toro.helper.view.AutoLoadRecyclerView;
 import com.toro.helper.view.RecyclerItemDecoration;
 
-import java.util.List;
-
 /**
  * Create By liujia
  * on 2018/10/27.
@@ -97,7 +95,7 @@ public class FamilyMemberFragment extends BaseFragment implements FamilyMemberDa
             recyclerView.setVisibility(View.VISIBLE);
             loadingProgress.setVisibility(View.GONE);
             emptyHint.setVisibility(View.GONE);
-            adapter.updatePhotoDatas(memberData.getFamilyMemberDatas());
+            adapter.updateDatas(memberData.getFamilyMemberDatas());
         }
         recyclerView.setLoadMoreListener(new AutoLoadRecyclerView.onLoadMoreListener() {
             @Override

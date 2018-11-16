@@ -6,13 +6,10 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -52,6 +49,7 @@ public class FamilyMemberManagerActivity extends ToroActivity implements FamilyM
     private MainActionBar mainActionBar;
     private boolean[] deleteChecks;
     private LinearLayout deleteLayout;
+    private boolean editMode = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -127,6 +125,7 @@ public class FamilyMemberManagerActivity extends ToroActivity implements FamilyM
     }
 
     private void enterEditMode() {
+        editMode = true;
         mainActionBar.removeAddRightImage();
         mainActionBar.updateView(getResources().getString(R.string.edit), 0, 0, null, null);
         mainActionBar.addRightText(getString(R.string.cancel), new View.OnClickListener() {
@@ -135,14 +134,27 @@ public class FamilyMemberManagerActivity extends ToroActivity implements FamilyM
                 exitEditMode();
             }
         });
-        deleteChecks = new boolean[memberData.getFamilyMemberDatas().size()];
-        adapter.enterEditMode(deleteChecks,onCheckClickListener);
+        adapter.enterEditMode(getDeleteChecks(memberData.getFamilyMemberDatas().size()),onCheckClickListener);
     }
 
     private void exitEditMode() {
+        editMode = false;
         setNormalAction();
         adapter.exitEditMode();
         deleteLayout.setVisibility(View.GONE);
+    }
+
+    private boolean[] getDeleteChecks(int size) {
+        if(deleteChecks == null) {
+            deleteChecks = new boolean[size];
+        } else {
+            boolean [] temp = deleteChecks;
+            deleteChecks = new boolean[size];
+            for(int i = 0; i < temp.length; i++) {
+                deleteChecks[i] = temp[i];
+            }
+        }
+        return deleteChecks;
     }
 
     private void changeDeleteLayout() {
@@ -235,7 +247,11 @@ public class FamilyMemberManagerActivity extends ToroActivity implements FamilyM
             recyclerView.setVisibility(View.VISIBLE);
             loadingProgress.setVisibility(View.GONE);
             emptyHint.setVisibility(View.GONE);
-            adapter.updatePhotoDatas(memberData.getFamilyMemberDatas());
+            if(editMode) {
+                adapter.updateEditMode(getDeleteChecks(memberData.getFamilyMemberDatas().size()),memberData.getFamilyMemberDatas());
+            } else {
+                adapter.updateDatas(memberData.getFamilyMemberDatas());
+            }
         }
         recyclerView.setLoadMoreListener(new AutoLoadRecyclerView.onLoadMoreListener() {
             @Override
@@ -252,7 +268,7 @@ public class FamilyMemberManagerActivity extends ToroActivity implements FamilyM
             recyclerView.setVisibility(View.VISIBLE);
             loadingProgress.setVisibility(View.GONE);
             emptyHint.setVisibility(View.GONE);
-            adapter.updatePhotoDatas(memberData.getFamilyMemberDatas());
+            adapter.updateDatas(memberData.getFamilyMemberDatas());
         }
 
     }

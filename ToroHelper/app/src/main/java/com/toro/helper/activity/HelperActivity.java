@@ -46,6 +46,7 @@ public class HelperActivity extends ToroActivity implements View.OnClickListener
     private ImageView refreshImage;
     private List<LocationInfo> locationInfos;
     private int connectCount = 0;
+    private TextView activeTx;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,6 +75,7 @@ public class HelperActivity extends ToroActivity implements View.OnClickListener
         mainActionBar = findViewById(R.id.main_action_view);
         headImageView = findViewById(R.id.head_img);
         nameText = findViewById(R.id.name_text);
+        activeTx = findViewById(R.id.active);
 
         refreshImage = findViewById(R.id.refresh_img);
         refreshImage.setOnClickListener(this);
@@ -92,6 +94,7 @@ public class HelperActivity extends ToroActivity implements View.OnClickListener
         setting2.setOnClickListener(this);
         setting3.setOnClickListener(this);
         setting4.setOnClickListener(this);
+        activeTx.setOnClickListener(this);
 
     }
 
@@ -126,6 +129,8 @@ public class HelperActivity extends ToroActivity implements View.OnClickListener
         ConnectManager.getInstance().getUserPhoneStatus(this,userInfo.getId(), ToroDataModle.getInstance().getLocalData().getToken());
         connectCount++;
         ConnectManager.getInstance().getTracData(this,userInfo.getUserInfo().getSn());
+        connectCount++;
+        ConnectManager.getInstance().getMemberStatus(this,userInfo.getUserInfo().getPhone(),ToroDataModle.getInstance().getLocalData().getToken());
     }
 
     private void updateLocation() {
@@ -167,7 +172,6 @@ public class HelperActivity extends ToroActivity implements View.OnClickListener
         }
     }
 
-
     public static Intent createIntent(Context context, FamilyMemberInfo memberInfo) {
         Intent intent = new Intent();
         intent.setClass(context,HelperActivity.class);
@@ -193,6 +197,12 @@ public class HelperActivity extends ToroActivity implements View.OnClickListener
             case R.id.refresh_img:
                 refreshPhoneStatus();
                 break;
+            case R.id.active:
+                activeTx.setVisibility(View.GONE);
+                startRefreshAnim();
+                connectCount++;
+                ConnectManager.getInstance().activeMember(this,userInfo.getUserInfo().getPhone(),ToroDataModle.getInstance().getLocalData().getToken());
+                break;
         }
     }
 
@@ -203,6 +213,7 @@ public class HelperActivity extends ToroActivity implements View.OnClickListener
             stopRefreshAnim();
         }
         boolean status = super.bindData(tag, object);
+
         if(status) {
             BaseResponeData data = DataModleParser.parserBaseResponeData((String) object);
             switch (tag) {
@@ -212,6 +223,16 @@ public class HelperActivity extends ToroActivity implements View.OnClickListener
                     locationInfos = DataModleParser.parserLocations(data.getEntry());
                     updateLocation();
                     break;
+                case ConnectManager.GET_MEMBER_STATUS:
+                    activeTx.setVisibility(View.GONE);
+                    break;
+                case ConnectManager.ACTIVE_MEMBER:
+                    activeTx.setVisibility(View.GONE);
+                    break;
+            }
+        }else {
+            if(tag == ConnectManager.GET_MEMBER_STATUS || tag == ConnectManager.ACTIVE_MEMBER) {
+                activeTx.setVisibility(View.VISIBLE);
             }
         }
         return status;

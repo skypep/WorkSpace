@@ -56,6 +56,7 @@ public class MyPhotoActivity extends ToroActivity {
     private String mPhotoPath;
     private boolean[] deleteChecks;
     private int uid;
+    private boolean editMode = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -112,6 +113,10 @@ public class MyPhotoActivity extends ToroActivity {
     }
 
     private void enterEditMode() {
+        editMode = true;
+        if(photoData == null || photoData.getPhotoDatas() == null || photoData.getPhotoDatas().size() < 1) {
+            return;
+        }
         mainActionBar.removeAddRightImage();
         mainActionBar.updateView(getResources().getString(R.string.edit), 0, 0, null, null);
         mainActionBar.addRightText(getString(R.string.cancel), new View.OnClickListener() {
@@ -120,11 +125,11 @@ public class MyPhotoActivity extends ToroActivity {
                 exitEditMode();
             }
         });
-        deleteChecks = new boolean[photoData.getPhotoDatas().size()];
-        adapter.enterEditMode(deleteChecks,onCheckClickListener);
+        adapter.enterEditMode(getDeleteChecks(photoData.getPhotoDatas().size()),onCheckClickListener);
     }
 
     private void exitEditMode() {
+        editMode = false;
         setNormalAction();
         adapter.exitEditMode();
         deleteLayout.setVisibility(View.GONE);
@@ -167,7 +172,12 @@ public class MyPhotoActivity extends ToroActivity {
             recyclerView.setVisibility(View.VISIBLE);
             loadingProgress.setVisibility(View.GONE);
             emptyHint.setVisibility(View.GONE);
-            adapter.updatePhotoDatas(photoData.getPhotoDatas());
+            if(editMode) {
+                adapter.updateEditMode(getDeleteChecks(photoData.getPhotoDatas().size()),photoData.getPhotoDatas());
+            } else {
+                adapter.updatePhotoDatas(photoData.getPhotoDatas());
+            }
+
         }
         recyclerView.setLoadMoreListener(new AutoLoadRecyclerView.onLoadMoreListener() {
             @Override
@@ -176,6 +186,19 @@ public class MyPhotoActivity extends ToroActivity {
             }
         });
 
+    }
+
+    private boolean[] getDeleteChecks(int size) {
+        if(deleteChecks == null) {
+            deleteChecks = new boolean[size];
+        } else {
+            boolean [] temp = deleteChecks;
+            deleteChecks = new boolean[size];
+            for(int i = 0; i < temp.length; i++) {
+                deleteChecks[i] = temp[i];
+            }
+        }
+        return deleteChecks;
     }
 
     private void updatePhotoList() {

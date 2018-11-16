@@ -51,6 +51,8 @@ public class NetWorkTask extends AsyncTask<Object, Integer, Object> {
             case ConnectManager.DELETE_MEMBER_LIST:
             case ConnectManager.GET_PHOTO_LIST_BY_UID:
             case ConnectManager.GET_MORE_PHOTO_LIST_BY_UID:
+            case ConnectManager.ACTIVE_MEMBER:
+            case ConnectManager.GET_MEMBER_STATUS:
                 pobj = (JSONObject) params[3];
                 token = (String) params[4];
                 return HttpUtils.doTokenPost(url,pobj,token);
