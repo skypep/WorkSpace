@@ -186,7 +186,12 @@ final class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     int index = -1;
     int sum = 0;
     while (sum <= position) {
-      sum += counts[++index];
+      if(index == counts.length - 1){ //  liujia add this if  by sim卡存了号码时，进入电话 这里会超出out of index array
+        sum += counts[--index];
+      }else{
+        sum += counts[++index];
+      }
+
     }
     return headers[index];
   }

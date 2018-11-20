@@ -125,12 +125,10 @@ public class HelperActivity extends ToroActivity implements View.OnClickListener
 
     private void refreshPhoneStatus() {
         startRefreshAnim();
-        connectCount++;
-        ConnectManager.getInstance().getUserPhoneStatus(this,userInfo.getId(), ToroDataModle.getInstance().getLocalData().getToken());
-        connectCount++;
-        ConnectManager.getInstance().getTracData(this,userInfo.getUserInfo().getSn());
-        connectCount++;
-        ConnectManager.getInstance().getMemberStatus(this,userInfo.getUserInfo().getPhone(),ToroDataModle.getInstance().getLocalData().getToken());
+        ConnectAction(TYPE_PHONE_STATUS);
+        ConnectAction(TYPE_TRAC_DATA);
+        ConnectAction(TYPE_MEMBER_STATUS);
+        ConnectAction(TYPE_ACTIVE_MEMBER);
     }
 
     private void updateLocation() {
@@ -200,6 +198,30 @@ public class HelperActivity extends ToroActivity implements View.OnClickListener
             case R.id.active:
                 activeTx.setVisibility(View.GONE);
                 startRefreshAnim();
+                ConnectAction(TYPE_ACTIVE_MEMBER);
+                break;
+        }
+    }
+
+    private static final int TYPE_PHONE_STATUS = 1;
+    private static final int TYPE_TRAC_DATA = 2;
+    private static final int TYPE_MEMBER_STATUS = 3;
+    private static final int TYPE_ACTIVE_MEMBER = 4;
+    private void ConnectAction(int type) {
+        switch (type) {
+            case TYPE_PHONE_STATUS:
+                connectCount++;
+                ConnectManager.getInstance().getUserPhoneStatus(this,userInfo.getId(), ToroDataModle.getInstance().getLocalData().getToken());
+                break;
+            case TYPE_TRAC_DATA:
+                connectCount++;
+                ConnectManager.getInstance().getTracData(this,userInfo.getUserInfo().getSn());
+                break;
+            case TYPE_MEMBER_STATUS:
+                connectCount++;
+                ConnectManager.getInstance().getMemberStatus(this,userInfo.getUserInfo().getPhone(),ToroDataModle.getInstance().getLocalData().getToken());
+                break;
+            case TYPE_ACTIVE_MEMBER:
                 connectCount++;
                 ConnectManager.getInstance().activeMember(this,userInfo.getUserInfo().getPhone(),ToroDataModle.getInstance().getLocalData().getToken());
                 break;
@@ -228,6 +250,8 @@ public class HelperActivity extends ToroActivity implements View.OnClickListener
                     break;
                 case ConnectManager.ACTIVE_MEMBER:
                     activeTx.setVisibility(View.GONE);
+                    startRefreshAnim();
+                    ConnectAction(TYPE_TRAC_DATA);
                     break;
             }
         }else {

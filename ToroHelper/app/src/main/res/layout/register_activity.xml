@@ -83,7 +83,7 @@
             android:layout_marginRight="@dimen/horizontal_margin"
             android:inputType="textPassword"
             android:hint="@string/login_pwd_hint"
-            android:drawableRight="@mipmap/pwd_trans_display"
+            android:drawableRight="@mipmap/pwd_trans_hide"
             android:textSize="18dp"
             />
 
@@ -105,7 +105,7 @@
             android:layout_marginRight="@dimen/horizontal_margin"
             android:inputType="textPassword"
             android:hint="@string/confirm_pwd"
-            android:drawableRight="@mipmap/pwd_trans_display"
+            android:drawableRight="@mipmap/pwd_trans_hide"
             android:textSize="18dp"
             />
 

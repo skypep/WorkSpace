@@ -402,9 +402,15 @@ public class ListsFragment extends Fragment implements OnPageChangeListener, Lis
 
   public boolean hasFrequents() {
     Fragment page = mAdapter.getItem(mAdapter.getRtlPosition(TAB_INDEX_HISTORY));
-    return page instanceof OldSpeedDialFragment
-        ? ((OldSpeedDialFragment) page).hasFrequents()
-        : ((SpeedDialFragment) page).hasFrequents();
+    // liujia add try catch
+    try{
+      return page instanceof OldSpeedDialFragment
+              ? ((OldSpeedDialFragment) page).hasFrequents()
+              : ((SpeedDialFragment) page).hasFrequents();
+    }catch (Exception e) {
+      return false;
+    }
+
   }
 
   public RemoveView getRemoveView() {

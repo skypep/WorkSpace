@@ -54,12 +54,12 @@ public class ResetPassword extends ToroActivity implements View.OnClickListener 
             public void onDrawableRightClick(View view) {
                 if(showPwd1) {
                     pwdEdit1.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                    Drawable rightDrawable = getResources().getDrawable(R.mipmap.pwd_trans_display);
+                    Drawable rightDrawable = getResources().getDrawable(R.mipmap.pwd_trans_hide);
                     rightDrawable.setBounds(0, 0, rightDrawable.getMinimumWidth(), rightDrawable.getMinimumHeight());
                     pwdEdit1.setCompoundDrawables(null, null, rightDrawable, null);
                 } else {
                     pwdEdit1.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                    Drawable rightDrawable = getResources().getDrawable(R.mipmap.pwd_trans_hide);
+                    Drawable rightDrawable = getResources().getDrawable(R.mipmap.pwd_trans_display);
                     rightDrawable.setBounds(0, 0, rightDrawable.getMinimumWidth(), rightDrawable.getMinimumHeight());
                     pwdEdit1.setCompoundDrawables(null, null, rightDrawable, null);
                 }

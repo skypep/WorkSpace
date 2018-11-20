@@ -135,6 +135,15 @@ public class MyPhotoActivity extends ToroActivity {
         deleteLayout.setVisibility(View.GONE);
     }
 
+    @Override
+    public void onBackPressed() {
+        if(editMode) {
+            exitEditMode();
+        }else {
+            super.onBackPressed();
+        }
+    }
+
     private View.OnClickListener AddPhotoListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {

@@ -1775,7 +1775,7 @@ public class DialtactsActivity extends TransactionSafeActivity
       mToroActionBar.setTitleText(getResources().getString(R.string.tab_history));
       mToroActionBar.setLeftButton(getResources().getString(R.string.toro_edit),editCallLogListener);
       mToroActionBar.setRightImageButton(R.drawable.toro_settings,settingClickHandler);
-//      mToroActionBar.setRightImageButton(0,null);
+      mToroActionBar.setRightImageButton(0,null);
     } else if(tabIndex == DialtactsPagerAdapter.TAB_INDEX_ALL_CONTACTS) {
       mToroActionBar.setTitleText(getResources().getString(R.string.tab_all_contacts));
       mToroActionBar.setLeftButton(getResources().getString(R.string.toro_add),addContactListener);

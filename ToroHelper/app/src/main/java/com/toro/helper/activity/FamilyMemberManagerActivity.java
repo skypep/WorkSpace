@@ -144,6 +144,15 @@ public class FamilyMemberManagerActivity extends ToroActivity implements FamilyM
         deleteLayout.setVisibility(View.GONE);
     }
 
+    @Override
+    public void onBackPressed() {
+        if(editMode) {
+            exitEditMode();
+        }else {
+            super.onBackPressed();
+        }
+    }
+
     private boolean[] getDeleteChecks(int size) {
         if(deleteChecks == null) {
             deleteChecks = new boolean[size];

@@ -88,6 +88,6 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return photoDatas.size();
+        return photoDatas == null? 0 : photoDatas.size();
     }
 }

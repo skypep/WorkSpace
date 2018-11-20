@@ -1,13 +1,17 @@
 package com.toro.helper.activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.os.EnvironmentCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -51,6 +55,11 @@ public class PhotoPreviewActivity extends ToroActivity {
 
     private static final String EXTRA_POSITION = "extra_position";
     private static final String EXTRA_LIST = "extra_list";
+
+    /**
+     * 保存图片需要存储空间权限
+     */
+    private static String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     private ViewPager viewPager;
     private TextView headText;
@@ -136,7 +145,10 @@ public class PhotoPreviewActivity extends ToroActivity {
         IphoneDialogBottomMenu dialog = new IphoneDialogBottomMenu(PhotoPreviewActivity.this,menus,new MenuItemOnClickListener() {
             @Override
             public void onClickMenuItem(View v, int item_index, String item) {
-                if(item.equals(getString(R.string.save_photo_to_disc))) {
+                if(!checkPermission()) {
+                    ActivityCompat.requestPermissions(PhotoPreviewActivity.this,
+                            permissions, 0);
+                }else if(item.equals(getString(R.string.save_photo_to_disc))) {
                     photoView.buildDrawingCache(true);
                     photoView.buildDrawingCache();
                     Bitmap bitmap = photoView.getDrawingCache();
@@ -164,6 +176,17 @@ public class PhotoPreviewActivity extends ToroActivity {
             }
         });
         dialog.show();
+    }
+
+    private boolean checkPermission(){
+        for(String permission:permissions) {
+            int hasCameraPermission = ContextCompat.checkSelfPermission(getApplication(),
+                    permission);
+            if(hasCameraPermission != PackageManager.PERMISSION_GRANTED){
+                return false;
+            }
+        }
+        return true;
     }
 
     private String saveBitmapGallery(Bitmap bitmap) {

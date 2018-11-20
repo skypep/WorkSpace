@@ -28,6 +28,7 @@ import com.toro.helper.modle.BaseResponeData;
 import com.toro.helper.modle.DataModleParser;
 import com.toro.helper.modle.FamilyMemberInfo;
 import com.toro.helper.modle.data.LocationInfo;
+import com.toro.helper.modle.data.ToroDataModle;
 import com.toro.helper.utils.ConnectManager;
 import com.toro.helper.view.MainActionBar;
 
@@ -92,7 +93,7 @@ public class TracActivity extends ToroActivity {
 
     private void refreshTrac() {
         startRefreshAnim();
-        ConnectManager.getInstance().getTracData(this,userInfo.getUserInfo().getSn());
+        ConnectManager.getInstance().activeMember(this,userInfo.getUserInfo().getPhone(), ToroDataModle.getInstance().getLocalData().getToken());
     }
 
     private void updateTrac() {
@@ -127,9 +128,18 @@ public class TracActivity extends ToroActivity {
         boolean status = super.bindData(tag, object);
         stopRefreshAnim();
         if(status) {
-            BaseResponeData data = DataModleParser.parserBaseResponeData((String) object);
-            locationInfos = DataModleParser.parserLocations(data.getEntry());
-            updateTrac();
+            switch (tag) {
+                case ConnectManager.GET_TRAC_DATA:
+                    BaseResponeData data = DataModleParser.parserBaseResponeData((String) object);
+                    locationInfos = DataModleParser.parserLocations(data.getEntry());
+                    updateTrac();
+                    break;
+                case ConnectManager.ACTIVE_MEMBER:
+                    startRefreshAnim();
+                    ConnectManager.getInstance().getTracData(this,userInfo.getUserInfo().getSn());
+                    break;
+            }
+
         }
         return status;
     }

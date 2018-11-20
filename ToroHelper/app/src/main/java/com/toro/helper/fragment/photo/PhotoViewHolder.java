@@ -84,15 +84,17 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
             nameText.setVisibility(View.GONE);
             headImg.setVisibility(View.GONE);
             timeText.setTextColor(Color.BLACK);
+            inAction.setVisibility(View.GONE);
+        }else{
+            inAction.setVisibility(View.VISIBLE);
+            inAction.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mContext.startActivity(MyPhotoActivity.createIntent(mContext,data.getUserinfo().getUid()));
+                }
+            });
         }
-        inAction.setVisibility(View.VISIBLE);
         selectAction.setVisibility(View.GONE);
-        inAction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mContext.startActivity(MyPhotoActivity.createIntent(mContext,data.getUserinfo().getUid()));
-            }
-        });
     }
 
     public void initEditMode(int index,boolean isSelected,View.OnClickListener listener) {
