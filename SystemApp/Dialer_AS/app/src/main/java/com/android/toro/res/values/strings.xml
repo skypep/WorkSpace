@@ -33,7 +33,42 @@
     <string name="locationing">locationing</string>
     <string name="get_location_failed">get location failed</string>
     <string name="call_setting">Call Settings</string>
-    <string name="receiver_model">receiver model</string>
-    <string name="call_transfer">Call transfer</string>
-    <string name="call_recording">call recording </string>
+    <!--听筒模式-->
+    <string name="receiver_model_title">receiver model</string>
+    <string name="receiver_model_key">receiver_model_key</string>
+    <!--来电转接-->
+    <string name="call_transfer_title">Call transfer</string>
+    <string name="call_transfer_to">Call transfer to</string>
+    <string name="call_transfer_stop">Call transfer stoped</string>
+    <string name="call_transfer_key">call_transfer_key</string>
+    <string name="all_calls_transferred">All calls are transferred</string>
+    <string name="busy_calls_transferred">Transfer when the line is busy</string>
+    <string name="no_answers_calls_transferred">Transfer when no one answers</string>
+    <string name="unconnect_calls_transferred">Unable to connect transfer</string>
+    <string name="all_calls_transferred_key">Allcalls_are_transferred</string>
+    <string name="busy_calls_transferred_key">Transfer_when_the_line_is_busy</string>
+    <string name="no_answers_calls_transferred_key">Transfer_when_no_one_answers</string>
+    <string name="unconnect_calls_transferred_key">Unable_to_connect_transfer</string>
+    <!--通话录音-->
+    <string name="call_recording_title">Call recording </string>
+    <string name="call_recording_key">call_recording_key </string>
+    <string name="call_recording_object">The recording object</string>
+    <string name="call_recording_all">All calls</string>
+    <string name="call_recording_custom">Custom</string>
+    <string name="call_recording_custom_object">Custom object</string>
+    <string name="call_recording_strange_number">Strange number</string>
+    <string name="call_recording_designated_contact">Designated contact</string>
+    <string name="call_recording_select_count">2 persons selected</string>
+    <string name="call_recording_all_key">call_recording_all_key</string>
+    <string name="call_recording_custom_key">call_recording_custom_key</string>
+    <string name="call_recording_strange_number_key">call_recording_strange_number_key</string>
+    <string name="call_recording_designated_contact_key">call_recording_designated_contact_key</string>
+    <string name="please_input_phone_hint">Please enter the transfer number</string>
+
+    <string name="call_transfer_hint">When switched on, all or certain conditions can be transferred to other calls</string>
+
+    <string name="dialog_button_sure">Confirm</string>
+    <string name="dialog_button_cancel">Cancel</string>
+    <string name="dialog_button_stop">Stop</string>
+    <string name="erro_number">Invalid number</string>
 </resources>

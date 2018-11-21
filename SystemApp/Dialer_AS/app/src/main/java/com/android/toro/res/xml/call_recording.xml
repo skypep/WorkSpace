@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <SwitchPreference
+        android:layout="@layout/toro_switch_preference"
+        android:widgetLayout="@layout/toro_switch"
+        android:key="@string/call_recording_key"
+        android:title="@string/call_recording_title"
+        android:defaultValue="false"
+        android:summary="summary"/>
+
+    <PreferenceCategory
+        android:layout="@layout/toro_preference_category"
+        android:key="recording_object"
+        android:title="@string/call_recording_object"
+        >
+
+        <CheckBoxPreference
+            android:layout="@layout/toro_switch_preference"
+            android:widgetLayout="@layout/toro_check"
+            android:key="@string/call_recording_all_key"
+            android:title="@string/call_recording_all"
+            android:defaultValue="true"
+            />
+
+        <CheckBoxPreference
+            android:layout="@layout/toro_switch_preference"
+            android:widgetLayout="@layout/toro_check"
+            android:key="@string/call_recording_custom_key"
+            android:title="@string/call_recording_custom"
+            android:defaultValue="false"
+            />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:layout="@layout/toro_preference_category"
+        android:key="custom_object"
+        android:title="@string/call_recording_custom_object"
+        >
+
+        <SwitchPreference
+            android:layout="@layout/toro_switch_preference"
+            android:widgetLayout="@layout/toro_switch"
+            android:key="@string/call_recording_strange_number_key"
+            android:title="@string/call_recording_strange_number"
+            android:defaultValue="true"
+            />
+
+        <Preference
+            android:layout="@layout/toro_preference"
+            android:key="@string/call_recording_designated_contact_key"
+            android:title="@string/call_recording_designated_contact"
+            />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

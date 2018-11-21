@@ -90,7 +90,6 @@ import com.android.dialer.app.list.PhoneFavoriteSquareTileView;
 import com.android.dialer.app.list.RegularSearchFragment;
 import com.android.dialer.app.list.SearchFragment;
 import com.android.dialer.app.list.SmartDialSearchFragment;
-import com.android.dialer.app.settings.DialerSettingsActivity;
 import com.android.dialer.app.widget.ActionBarController;
 import com.android.dialer.app.widget.SearchEditTextLayout;
 import com.android.dialer.callcomposer.CallComposerActivity;
@@ -132,18 +131,17 @@ import com.android.dialer.util.TransactionSafeActivity;
 import com.android.dialer.util.ViewUtil;
 import com.android.incallui.QtiCallUtils;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 import com.android.dialer.R;// add by liujia
 import com.android.toro.src.ToroActionBar;
 import com.android.toro.src.ToroActionBarController;
-import com.android.toro.src.ToroDialerSettingsActivity;
+import com.android.toro.src.setting.ToroDialerSettingsActivity;
 import com.android.toro.src.common.ToroCommonBottomDialog;
 import com.android.toro.src.common.ToroCommonBottomDialogEntity;
 import com.google.wireless.gdata.data.StringUtils;
 
+import static com.android.dialer.app.list.DialtactsPagerAdapter.TAB_INDEX_ALL_CONTACTS;
 import static com.android.dialer.app.list.DialtactsPagerAdapter.TAB_INDEX_HISTORY;
 
 /** The dialer tab's title is 'phone', a more common name (see strings.xml). */
@@ -630,6 +628,8 @@ public class DialtactsActivity extends TransactionSafeActivity
             // TODO: make zero-query search results visible
           }
         });
+    // 解决从通讯录进来 编辑按钮消失问题
+    updateToroActionBar(mListsFragment.getCurrentTabIndex());
     Trace.endSection();
   }
 
@@ -1463,7 +1463,7 @@ public class DialtactsActivity extends TransactionSafeActivity
   @Override
   public void showAllContactsTab() {
     if (mListsFragment != null) {
-      mListsFragment.showTab(DialtactsPagerAdapter.TAB_INDEX_ALL_CONTACTS);
+      mListsFragment.showTab(TAB_INDEX_ALL_CONTACTS);
     }
   }
 
@@ -1775,8 +1775,8 @@ public class DialtactsActivity extends TransactionSafeActivity
       mToroActionBar.setTitleText(getResources().getString(R.string.tab_history));
       mToroActionBar.setLeftButton(getResources().getString(R.string.toro_edit),editCallLogListener);
       mToroActionBar.setRightImageButton(R.drawable.toro_settings,settingClickHandler);
-      mToroActionBar.setRightImageButton(0,null);
-    } else if(tabIndex == DialtactsPagerAdapter.TAB_INDEX_ALL_CONTACTS) {
+//      mToroActionBar.setRightImageButton(0,null);
+    } else if(tabIndex == TAB_INDEX_ALL_CONTACTS) {
       mToroActionBar.setTitleText(getResources().getString(R.string.tab_all_contacts));
       mToroActionBar.setLeftButton(getResources().getString(R.string.toro_add),addContactListener);
       mToroActionBar.setRightButton(getResources().getString(R.string.toro_edit),editContactListener);
@@ -1856,6 +1856,13 @@ public class DialtactsActivity extends TransactionSafeActivity
   public static final String ASSISTANT_COMMAND_SHOW_CALL_LOG = "show_call_log";
 
   private void checkCommand(Intent intent) {
+    /**
+     * 检查是否联系人跳过来
+     */
+    int value = intent.getIntExtra("EXTRA_SHOW_TAB",0);
+    if(value == 1) {
+      showContact();
+    }
     String command = intent.getStringExtra(INTENT_EXTRA_COMMAND);
     if(StringUtils.isEmpty(command)) {
       return;
@@ -1885,6 +1892,26 @@ public class DialtactsActivity extends TransactionSafeActivity
     }
 
     mListsFragment.showTab(TAB_INDEX_HISTORY);
+  }
+
+  private void showContact() {
+    if (mIsDialpadShown) {
+      if (TextUtils.isEmpty(mSearchQuery)
+              || (mSmartDialSearchFragment != null
+              && mSmartDialSearchFragment.isVisible()
+              && mSmartDialSearchFragment.getAdapter().getCount() == 0)) {
+
+        exitSearchUi();
+      }
+      hideDialpadFragment(true, false);
+    } else if (isInSearchUi()) {
+      exitSearchUi();
+      DialerUtils.hideInputMethod(mParentLayout);
+    } else if(isEditMode) {
+      exitCalllogEditModle(false);
+    }
+
+    mListsFragment.showTab(TAB_INDEX_ALL_CONTACTS);
   }
 
   /********************************* liujia add end *********************************************************/

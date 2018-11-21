@@ -36,7 +36,21 @@
     <activity
         android:label="@string/call_details"
         android:exported="false"
-        android:name=".ToroDialerSettingsActivity"
+        android:name=".setting.ToroDialerSettingsActivity"
+        android:theme="@style/DialerThemeBase.NoActionBar">
+    </activity>
+
+    <activity
+        android:label="@string/call_details"
+        android:exported="false"
+        android:name=".setting.CallTransferActivity"
+        android:theme="@style/DialerThemeBase.NoActionBar">
+    </activity>
+
+    <activity
+        android:label="@string/call_details"
+        android:exported="false"
+        android:name=".setting.CallRecordingActivity"
         android:theme="@style/DialerThemeBase.NoActionBar">
     </activity>
 

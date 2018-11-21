@@ -542,7 +542,7 @@ public class InCallFragment extends Fragment
         openLoundspeaker();
         return;
       }
-      if(ToroLocalDataManager.getInstance(getContext()).isLoundspeakerMode()) {
+      if(!ToroLocalDataManager.getInstance(getContext()).isReceiverMode()) {
         openLoundspeaker();
       }
     }

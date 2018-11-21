@@ -33,8 +33,26 @@
     <string name="locationing">正在获取位置...</string>
     <string name="get_location_failed">获取位置信息失败</string>
     <string name="call_setting">通话设置</string>
-    <string name="receiver_model">听筒模式</string>
-    <string name="call_transfer">来电转接</string>
-    <string name="call_recording">通话录音</string>
-
+    <string name="receiver_model_title">听筒模式</string>
+    <string name="call_transfer_title">来电转接</string>
+    <string name="call_transfer_to">转移到</string>
+    <string name="call_transfer_stop">已停用</string>
+    <string name="all_calls_transferred">全部来电转接</string>
+    <string name="busy_calls_transferred">占线时转接</string>
+    <string name="no_answers_calls_transferred">无人接听时转接</string>
+    <string name="unconnect_calls_transferred">无法接通时转接</string>
+    <string name="call_recording_title">通话录音</string>
+    <string name="call_recording_object">录音对象</string>
+    <string name="call_recording_all">全部通话</string>
+    <string name="call_recording_custom">自定义</string>
+    <string name="call_recording_custom_object">自定义对象</string>
+    <string name="call_recording_strange_number">陌生号码</string>
+    <string name="call_recording_designated_contact">指定联系人</string>
+    <string name="call_recording_select_count">已选中2人</string>
+    <string name="call_transfer_hint">开启后,可将全部或者特定条件下的来电转接到其他电话上</string>
+    <string name="please_input_phone_hint">请输入对方手机号</string>
+    <string name="dialog_button_sure">确定</string>
+    <string name="dialog_button_cancel">取消</string>
+    <string name="dialog_button_stop">停用</string>
+    <string name="erro_number">无效号码</string>
 </resources>

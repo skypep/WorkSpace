@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <SwitchPreference
+        android:layout="@layout/toro_switch_preference"
+        android:widgetLayout="@layout/toro_switch"
+        android:key="@string/call_transfer_key"
+        android:title="@string/call_transfer_title"
+        android:defaultValue="false"
+        android:summary="summary"/>
+
+    <Preference
+        android:layout="@layout/toro_hint_preference"
+        android:key="toro_hint_no_need_key"
+        android:title="@string/call_transfer_hint"
+        />
+
+    <PreferenceCategory
+        android:layout="@layout/toro_none_preference"
+        android:key="transfer_type"
+        >
+        <com.android.toro.src.setting.ToroTransferDialogPreference
+            android:layout="@layout/toro_preference_dialog"
+            android:key="@string/all_calls_transferred_key"
+            android:title="@string/all_calls_transferred"
+            android:summary="@string/call_transfer_stop"
+            />
+        <com.android.toro.src.setting.ToroTransferDialogPreference
+            android:layout="@layout/toro_preference_dialog"
+            android:key="@string/busy_calls_transferred_key"
+            android:title="@string/busy_calls_transferred"
+            android:summary="@string/call_transfer_stop"
+            />
+        <com.android.toro.src.setting.ToroTransferDialogPreference
+            android:layout="@layout/toro_preference_dialog"
+            android:key="@string/no_answers_calls_transferred_key"
+            android:title="@string/no_answers_calls_transferred"
+            android:summary="@string/call_transfer_stop"
+            />
+        <com.android.toro.src.setting.ToroTransferDialogPreference
+            android:layout="@layout/toro_preference_dialog"
+            android:key="@string/unconnect_calls_transferred_key"
+            android:title="@string/unconnect_calls_transferred"
+            android:summary="@string/call_transfer_stop"
+            />
+    </PreferenceCategory>
+
+</PreferenceScreen>

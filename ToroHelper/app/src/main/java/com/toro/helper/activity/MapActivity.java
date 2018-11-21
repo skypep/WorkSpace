@@ -55,6 +55,7 @@ public class MapActivity extends ToroActivity implements View.OnClickListener {
     private MapView mapView;
     private ImageView refreshImage;
     private List<LocationInfo> locationInfos;
+    private LocationInfo locationInfo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -111,11 +112,12 @@ public class MapActivity extends ToroActivity implements View.OnClickListener {
             Toast.makeText(this,R.string.location_refresh_failed,Toast.LENGTH_LONG).show();
             return;
         }
+        locationInfo = locationInfos.get(locationInfos.size() - 1);
         AMap aMap = mapView.getMap();
-        toroInfoWindow.setPioTitle(locationInfos.get(locationInfos.size() - 1).getPoiTitle());
-        toroInfoWindow.setTime(locationInfos.get(locationInfos.size() - 1).getTime());
+        toroInfoWindow.setPioTitle(locationInfo.getPoiTitle());
+        toroInfoWindow.setTime(locationInfo.getTime());
         aMap.setInfoWindowAdapter(toroInfoWindow);
-        LatLng curLatLng = locationInfos.get(locationInfos.size() - 1).getLatLng();
+        LatLng curLatLng = locationInfo.getLatLng();
         if(marker == null) {
             marker = aMap.addMarker(new MarkerOptions().position(curLatLng).snippet("DefaultMarker").icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
                     .decodeResource(getResources(),R.mipmap.map_mark_icon))));
@@ -162,7 +164,10 @@ public class MapActivity extends ToroActivity implements View.OnClickListener {
                 PhoneUtils.call(this,userInfo.getUserInfo().getPhone());
                 break;
             case R.id.action_navigation_layout:
-                mapJumpLayout.showMapJumpLayout(114.2180350000,22.7211940000,userInfo.getDisplayName());
+                if(locationInfo != null) {
+                    mapJumpLayout.showMapJumpLayout(locationInfo.getLatLng().longitude,locationInfo.getLatLng().latitude,userInfo.getDisplayName());
+                }else {
+                }
                 break;
             case R.id.action_safeguard_layout:
                 startActivity(SafeguardActivity.createIntent(this,userInfo.getId()));
