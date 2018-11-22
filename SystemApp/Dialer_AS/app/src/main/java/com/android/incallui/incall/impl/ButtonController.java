@@ -32,6 +32,8 @@ import com.android.incallui.incall.protocol.InCallScreenDelegate;
 import com.android.incallui.speakerbuttonlogic.SpeakerButtonInfo;
 import com.android.incallui.speakerbuttonlogic.SpeakerButtonInfo.IconSize;
 import com.android.dialer.R;// add by liujia
+import com.android.toro.src.record.CallRecordListener;
+import com.android.toro.src.record.RecordManager1;
 
 /** Manages a single button. */
 interface ButtonController {
@@ -559,6 +561,112 @@ interface ButtonController {
     @Override
     public void onClick(View view) {
       inCallScreenDelegate.onSecondaryInfoClicked();
+    }
+  }
+
+  /********************  liujia add for call recording */
+  class RecordingButtonController
+          implements ButtonController, OnCheckedChangeListener, OnClickListener,CallRecordListener {
+
+    @NonNull private final InCallButtonUiDelegate delegate;
+    private boolean isEnabled;
+    private boolean isAllowed;
+    private boolean isChecked;
+    private CheckableLabeledButton button;
+
+    @StringRes private int label = R.string.recording;
+    @DrawableRes private int icon = R.drawable.call_recording;
+    private boolean checkable;
+    private String phoneNum;
+
+    public RecordingButtonController(@NonNull InCallButtonUiDelegate delegate) {
+      this.delegate = delegate;
+    }
+
+    @Override
+    public boolean isEnabled() {
+      return isEnabled;
+    }
+
+    @Override
+    public void setEnabled(boolean isEnabled) {
+      this.isEnabled = isEnabled;
+      if (button != null) {
+        button.setEnabled(isEnabled && isAllowed);
+      }
+    }
+
+    public void setPhoneNum(String number) {
+      this.phoneNum = number;
+    }
+
+    @Override
+    public boolean isAllowed() {
+      return isAllowed;
+    }
+
+    @Override
+    public void setAllowed(boolean isAllowed) {
+      this.isAllowed = isAllowed;
+      if (button != null) {
+        button.setEnabled(isEnabled && isAllowed);
+      }
+    }
+
+    @Override
+    public void setChecked(boolean isChecked) {
+      this.isChecked = isChecked;
+      if (button != null) {
+        button.setChecked(isChecked);
+      }
+    }
+
+    @Override
+    public int getInCallButtonId() {
+      return InCallButtonIds.BUTTON_RECORDING;
+    }
+
+    @Override
+    public void setButton(CheckableLabeledButton button) {
+      this.button = button;
+      if (button != null) {
+        button.setEnabled(isEnabled && isAllowed);
+        button.setVisibility(View.VISIBLE);
+        button.setChecked(isChecked);
+        button.setOnClickListener(checkable ? null : this);
+        button.setOnCheckedChangeListener(checkable ? this : null);
+        button.setLabelText(label);
+        button.setIconDrawable(icon);
+        button.setShouldShowMoreIndicator(false);
+      }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(RecordManager1.getInstance().isRecording()) {
+          RecordManager1.getInstance().stop();
+        } else {
+          RecordManager1.getInstance().start(delegate.getContext(),phoneNum);
+        }
+    }
+
+    public void updateStatu() {
+      setChecked(RecordManager1.getInstance().isRecording());
+    }
+
+    @Override
+    public void onCheckedChanged(CheckableLabeledButton checkableLabeledButton, boolean isChecked) {
+      updateStatu();
+    }
+
+    @Override
+    public void onRecordStart() {
+      setChecked(true);
+    }
+
+    @Override
+    public void onRecordStop() {
+      setChecked(false);
     }
   }
 }

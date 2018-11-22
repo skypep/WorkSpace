@@ -74,12 +74,16 @@ import com.android.incallui.incall.protocol.InCallScreenDelegateFactory;
 import com.android.incallui.incall.protocol.PrimaryCallState;
 import com.android.incallui.incall.protocol.PrimaryInfo;
 import com.android.incallui.incall.protocol.SecondaryInfo;
+import com.android.toro.src.record.RecordManager1;
 import com.android.voicemail.impl.SubscriptionInfoHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 import com.android.dialer.R;// add by liujia
 import com.android.toro.src.utils.ToroLocalDataManager;
+
+import static com.android.incallui.call.DialerCall.State.ACTIVE;
+import static com.android.incallui.call.DialerCall.State.DISCONNECTED;
 
 /** Fragment that shows UI for an ongoing voice call. */
 public class InCallFragment extends Fragment
@@ -137,6 +141,7 @@ public class InCallFragment extends Fragment
         || id == InCallButtonIds.BUTTON_UPGRADE_TO_VIDEO
         || id == InCallButtonIds.BUTTON_ADD_CALL
         || id == InCallButtonIds.BUTTON_MERGE
+        || id == InCallButtonIds.BUTTON_RECORDING
         || id == InCallButtonIds.BUTTON_MANAGE_VOICE_CONFERENCE;
   }
 
@@ -219,6 +224,14 @@ public class InCallFragment extends Fragment
     super.onResume();
     inCallButtonUiDelegate.refreshMuteState();
     inCallScreenDelegate.onInCallScreenResumed();
+    // liujia add
+    try{
+      ButtonController.RecordingButtonController recordingButtonController = (ButtonController.RecordingButtonController) getButtonController(InCallButtonIds.BUTTON_RECORDING);
+      RecordManager1.getInstance().addRecordListener(recordingButtonController);
+      recordingButtonController.updateStatu();
+    }catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   @Override
@@ -243,6 +256,10 @@ public class InCallFragment extends Fragment
     buttonControllers.add(
         new ButtonController.SwitchToSecondaryButtonController(inCallScreenDelegate));
 
+    /** liujia add ***/
+    buttonControllers.add(
+            new ButtonController.RecordingButtonController(inCallButtonUiDelegate));
+
     inCallScreenDelegate.onInCallScreenDelegateInit(this);
     inCallScreenDelegate.onInCallScreenReady();
   }
@@ -251,6 +268,13 @@ public class InCallFragment extends Fragment
   public void onPause() {
     super.onPause();
     inCallScreenDelegate.onInCallScreenPaused();
+    // liujia add
+    try{
+      ButtonController.RecordingButtonController recordingButtonController = (ButtonController.RecordingButtonController) getButtonController(InCallButtonIds.BUTTON_RECORDING);
+      RecordManager1.getInstance().removeRecordListener(recordingButtonController);
+    }catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   @Override
@@ -318,6 +342,13 @@ public class InCallFragment extends Fragment
       }
       dialpadView.setLayoutParams(params);
     }
+    // liujia add
+    try{
+      ButtonController.RecordingButtonController recordingButtonController = (ButtonController.RecordingButtonController) getButtonController(InCallButtonIds.BUTTON_RECORDING);
+      recordingButtonController.setPhoneNum(primaryInfo.number);
+    }catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   private void setAdapterMedia(MultimediaData multimediaData) {
@@ -380,6 +411,12 @@ public class InCallFragment extends Fragment
     updateButtonStates();
     if (mVbButton != null) {
       updateVbByCall(primaryCallState.state);
+    }
+    // liujia mark
+    if(primaryCallState.state == DISCONNECTED) { // 挂断了
+      RecordManager1.getInstance().stop();
+    } else if(primaryCallState.state == ACTIVE){ // 接通了
+
     }
   }
 
@@ -715,7 +752,7 @@ private boolean isVbAvailable() {
   private void updateVbByCall(int state) {
     updateVbButton();
 
-    if (DialerCall.State.ACTIVE == state) {
+    if (ACTIVE == state) {
       mVbButton.setVisibility(View.VISIBLE);
     } else {
       mVbButton.setVisibility(View.GONE);

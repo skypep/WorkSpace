@@ -64,6 +64,8 @@ class ButtonChooserFactory {
     mapping.put(
         InCallButtonIds.BUTTON_SWITCH_TO_SECONDARY, MappingInfo.builder(5).setSlotOrder(0).build());
     mapping.put(InCallButtonIds.BUTTON_HOLD, MappingInfo.builder(5).setSlotOrder(10).build());
+    // liujia add
+    mapping.put(InCallButtonIds.BUTTON_RECORDING, MappingInfo.builder(6).setSlotOrder(6).build());
 
     return new ButtonChooser(new MappedButtonConfig(mapping));
   }
@@ -82,6 +84,8 @@ class ButtonChooserFactory {
             .setSlotOrder(Integer.MAX_VALUE)
             .setMutuallyExclusiveButton(InCallButtonIds.BUTTON_SWAP)
             .build());
+    // liujia add
+    mapping.put(InCallButtonIds.BUTTON_RECORDING, MappingInfo.builder(6).setSlotOrder(6).build());
 
     return new ButtonChooser(new MappedButtonConfig(mapping));
   }
@@ -104,6 +108,9 @@ class ButtonChooserFactory {
         MappingInfo.builder(5).setSlotOrder(0).build());
     mapping.put(InCallButtonIds.BUTTON_HOLD, MappingInfo.builder(5).setSlotOrder(5).build());
 
+    // liujia add
+    mapping.put(InCallButtonIds.BUTTON_RECORDING, MappingInfo.builder(6).setSlotOrder(6).build());
+
     return new ButtonChooser(new MappedButtonConfig(mapping));
   }
 
@@ -114,6 +121,8 @@ class ButtonChooserFactory {
     mapping.put(InCallButtonIds.BUTTON_AUDIO, MappingInfo.builder(2).build());
     mapping.put(InCallButtonIds.BUTTON_MERGE, MappingInfo.builder(3).setSlotOrder(0).build());
     mapping.put(InCallButtonIds.BUTTON_ADD_CALL, MappingInfo.builder(3).build());
+    // liujia add
+    mapping.put(InCallButtonIds.BUTTON_RECORDING, MappingInfo.builder(6).build());
     return mapping;
   }
 }

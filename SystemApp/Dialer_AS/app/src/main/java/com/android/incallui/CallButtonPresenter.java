@@ -487,6 +487,9 @@ public class CallButtonPresenter
     mInCallButtonUi.showButton(InCallButtonIds.BUTTON_DIALPAD, true);
     mInCallButtonUi.showButton(InCallButtonIds.BUTTON_MERGE, showMerge);
 
+    // liujia add
+    mInCallButtonUi.showButton(InCallButtonIds.BUTTON_RECORDING, true);
+
     mInCallButtonUi.updateButtonStates();
     if (BottomSheetHelper.getInstance().shallShowMoreButton(getActivity())) {
       BottomSheetHelper.getInstance().updateMap();

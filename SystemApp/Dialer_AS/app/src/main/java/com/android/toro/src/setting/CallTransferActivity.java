@@ -84,12 +84,16 @@ public class CallTransferActivity extends ToroSettingActivity {
             transferPreference = (SwitchPreference) findPreference(getString(R.string.call_transfer_key));
             typeAllPreference = (ToroTransferDialogPreference) findPreference(getString(R.string.all_calls_transferred_key));
             typeAllPreference.setContactOnclickListener(new ContactOnclickListener(getString(R.string.all_calls_transferred_key)));
+
             typeBusyPreference = (ToroTransferDialogPreference) findPreference(getString(R.string.busy_calls_transferred_key));
             typeBusyPreference.setContactOnclickListener(new ContactOnclickListener(getString(R.string.busy_calls_transferred_key)));
+
             typeNoAnswerPreference = (ToroTransferDialogPreference) findPreference(getString(R.string.no_answers_calls_transferred_key));
             typeNoAnswerPreference.setContactOnclickListener(new ContactOnclickListener(getString(R.string.no_answers_calls_transferred_key)));
+
             typeUnconnectPreference = (ToroTransferDialogPreference) findPreference(getString(R.string.unconnect_calls_transferred_key));
             typeUnconnectPreference.setContactOnclickListener(new ContactOnclickListener(getString(R.string.unconnect_calls_transferred_key)));
+
             updateTransferTypePreference();
             transferPreference.setOnPreferenceChangeListener(this);
         }
@@ -111,6 +115,10 @@ public class CallTransferActivity extends ToroSettingActivity {
                     transferTypeIsShow = false;
                 }
             }
+            typeAllPreference.updateSummary();
+            typeBusyPreference.updateSummary();
+            typeNoAnswerPreference.updateSummary();
+            typeUnconnectPreference.updateSummary();
         }
 
         private boolean getTransferValue() {
@@ -121,11 +129,15 @@ public class CallTransferActivity extends ToroSettingActivity {
         public boolean onPreferenceChange(Preference preference, Object newValue) {
             if(preference.getKey().equals(getString(R.string.call_transfer_key))) {
                 transferPreference.setChecked((boolean)newValue);
+                if(!(boolean)newValue){
+                    typeAllPreference.clear();
+                    typeBusyPreference.clear();
+                    typeNoAnswerPreference.clear();
+                    typeUnconnectPreference.clear();
+                    Intent intent = new Intent(Intent.ACTION_CALL,Uri.parse("tel:%23%23002%23"));
+                    startActivity(intent);
+                }
                 updateTransferTypePreference();
-                typeAllPreference.clear();
-                typeBusyPreference.clear();
-                typeNoAnswerPreference.clear();
-                typeUnconnectPreference.clear();
             }
             return false;
         }

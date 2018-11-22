@@ -71,4 +71,5 @@
     <string name="dialog_button_cancel">Cancel</string>
     <string name="dialog_button_stop">Stop</string>
     <string name="erro_number">Invalid number</string>
+    <string name="recording">Record</string>
 </resources>

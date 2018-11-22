@@ -72,6 +72,7 @@ public class ToroTransferDialogPreference extends DialogPreference {
                 transfer(phoneEdit.getText().toString());
             }
         });
+        updateView();
         return view;
     }
 
@@ -88,7 +89,6 @@ public class ToroTransferDialogPreference extends DialogPreference {
         if(StringUtils.isEmpty(phone)){
             phoneEdit.setText("");
             stop.setEnabled(false);
-            setSummary(getContext().getString(R.string.call_transfer_stop));
         }else{
             phoneEdit.setText(phone);
             stop.setEnabled(true);
@@ -99,6 +99,15 @@ public class ToroTransferDialogPreference extends DialogPreference {
                     unTransfer();
                 }
             });
+        }
+        updateSummary();
+    }
+
+    public void updateSummary(){
+        String phone = ToroLocalDataManager.getInstance(getContext()).getStringByKey(getKey(),"");
+        if(StringUtils.isEmpty(phone)){
+            setSummary(getContext().getString(R.string.call_transfer_stop));
+        }else{
             setSummary(phone);
         }
     }
@@ -130,13 +139,13 @@ public class ToroTransferDialogPreference extends DialogPreference {
         String key = getKey();
         Intent intent;
         if(key.equals(getContext().getString(com.android.dialer.R.string.all_calls_transferred_key))) {
-            intent = new Intent(Intent.ACTION_CALL,Uri.parse("tel:##21#"));// 始终进行呼叫转移
+            intent = new Intent(Intent.ACTION_CALL,Uri.parse("tel:%23%2321%23"));// 始终进行呼叫转移
         }else if(key.equals(getContext().getString(com.android.dialer.R.string.no_answers_calls_transferred_key))) {
-            intent = new Intent(Intent.ACTION_CALL,Uri.parse("tel:##61#"));// 无应答时进行呼叫转移
+            intent = new Intent(Intent.ACTION_CALL,Uri.parse("tel:%23%2361%23"));// 无应答时进行呼叫转移
         }else if(key.equals(getContext().getString(com.android.dialer.R.string.busy_calls_transferred_key))) {
-            intent = new Intent(Intent.ACTION_CALL,Uri.parse("tel:##67#"));// 占线时进行呼叫转移
+            intent = new Intent(Intent.ACTION_CALL,Uri.parse("tel:%23%2367%23"));// 占线时进行呼叫转移
         }else if(key.equals(getContext().getString(com.android.dialer.R.string.unconnect_calls_transferred_key))) {
-            intent = new Intent(Intent.ACTION_CALL,Uri.parse("tel:##62#"));// 无法接通时进行呼叫转移
+            intent = new Intent(Intent.ACTION_CALL,Uri.parse("tel:%23%2362%23"));// 无法接通时进行呼叫转移
         }else{
             return;
         }

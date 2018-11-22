@@ -176,6 +176,7 @@ dependencies {
     implementation project(':dialer.app')
     implementation 'com.iwith.assistantlib:pie:0.0.1-SNAPSHOT'
     compileOnly files('libs/framwork/framework.jar')
+    implementation 'com.github.aykuttasil:CallRecorder:1.5.0'
 }
 
 //编写编译任务，调用plugin编译生成java文件
