@@ -1,6 +1,11 @@
 package com.android.toro.src.utils;
 
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.ContactsContract;
 import android.support.v4.view.ViewCompat;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,5 +31,43 @@ public class ToroUtils {
             ViewCompat.setFitsSystemWindows(mChildView, false);
             ViewCompat.requestApplyInsets(mChildView);
         }
+    }
+
+    public static String getToroPhoneNum(String num) {
+        try{
+            String phoneNumber = num;
+            if (phoneNumber.startsWith("+86")) {
+                phoneNumber = phoneNumber.replace("+86", "");
+            }
+            phoneNumber = phoneNumber.replace(" ", "");
+            phoneNumber = phoneNumber.replace("-", "");
+            return phoneNumber;
+        } catch (Exception e) {
+
+        }
+        return num;
+    }
+
+    public static boolean isContact(Context context, String number) {
+        boolean result = false;
+        Cursor cursor = null;
+
+        try {
+            ContentResolver resolver = context.getContentResolver();
+            Uri uri = ContactsContract.PhoneLookup.CONTENT_FILTER_URI.buildUpon().appendPath(number).build();
+            cursor = resolver.query(uri, null, null, null, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                result = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return result;
     }
 }

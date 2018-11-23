@@ -139,6 +139,7 @@ import com.android.toro.src.ToroActionBarController;
 import com.android.toro.src.setting.ToroDialerSettingsActivity;
 import com.android.toro.src.common.ToroCommonBottomDialog;
 import com.android.toro.src.common.ToroCommonBottomDialogEntity;
+import com.android.toro.src.utils.PermissionManager;
 import com.google.wireless.gdata.data.StringUtils;
 
 import static com.android.dialer.app.list.DialtactsPagerAdapter.TAB_INDEX_ALL_CONTACTS;
@@ -613,6 +614,8 @@ public class DialtactsActivity extends TransactionSafeActivity
         LogUtil.i("DialtactsActivity.onResume", "clearing all new voicemails");
         CallLogNotificationsService.markAllNewVoicemailsAsOld(this);
       }
+      // liujia add
+      PermissionManager.checkPermission(this);
     }
 
     mFirstLaunch = false;
@@ -1621,6 +1624,17 @@ public class DialtactsActivity extends TransactionSafeActivity
         == PackageManager.PERMISSION_GRANTED)  {
       if (mPhoneNumberInteraction != null && mUri != null) {
         mPhoneNumberInteraction.startInteraction(mUri);
+      }
+    } else if(requestCode == PermissionManager.RECORD_PERMISSION_REQUEST_CODE) {
+      for (int i = 0; i < grantResults.length; i++) {
+        if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+          //判断是否勾选禁止后不再询问
+          boolean showRequestPermission = ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i]);
+          if (showRequestPermission) {
+            Toast.makeText(this,R.string.permission_failed,Toast.LENGTH_LONG).show();
+            finish();
+          }
+        }
       }
     }
   }

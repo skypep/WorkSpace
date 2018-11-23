@@ -56,4 +56,7 @@
     <string name="dialog_button_stop">停用</string>
     <string name="erro_number">无效号码</string>
     <string name="recording">录音</string>
+    <string name="get_contact_failed">获取联系人失败</string>
+    <string name="un_des_contact">未指定</string>
+    <string name="permission_failed">您拒绝了必要的权限，应用即将退出</string>
 </resources>

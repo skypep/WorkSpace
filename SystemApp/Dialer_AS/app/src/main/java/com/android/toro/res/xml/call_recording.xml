@@ -50,7 +50,7 @@
             />
 
         <Preference
-            android:layout="@layout/toro_preference"
+            android:layout="@layout/toro_preference_summary"
             android:key="@string/call_recording_designated_contact_key"
             android:title="@string/call_recording_designated_contact"
             />

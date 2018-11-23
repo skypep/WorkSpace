@@ -33,7 +33,7 @@ import com.android.incallui.speakerbuttonlogic.SpeakerButtonInfo;
 import com.android.incallui.speakerbuttonlogic.SpeakerButtonInfo.IconSize;
 import com.android.dialer.R;// add by liujia
 import com.android.toro.src.record.CallRecordListener;
-import com.android.toro.src.record.RecordManager1;
+import com.android.toro.src.record.RecordManager;
 
 /** Manages a single button. */
 interface ButtonController {
@@ -598,6 +598,9 @@ interface ButtonController {
 
     public void setPhoneNum(String number) {
       this.phoneNum = number;
+      if(RecordManager.getInstance().needOpenRecord(delegate.getContext(),phoneNum)){
+        RecordManager.getInstance().start(delegate.getContext(),number);
+      }
     }
 
     @Override
@@ -643,15 +646,15 @@ interface ButtonController {
 
     @Override
     public void onClick(View v) {
-        if(RecordManager1.getInstance().isRecording()) {
-          RecordManager1.getInstance().stop();
+        if(RecordManager.getInstance().isRecording()) {
+          RecordManager.getInstance().stop();
         } else {
-          RecordManager1.getInstance().start(delegate.getContext(),phoneNum);
+          RecordManager.getInstance().start(delegate.getContext(),phoneNum);
         }
     }
 
     public void updateStatu() {
-      setChecked(RecordManager1.getInstance().isRecording());
+      setChecked(RecordManager.getInstance().isRecording());
     }
 
     @Override

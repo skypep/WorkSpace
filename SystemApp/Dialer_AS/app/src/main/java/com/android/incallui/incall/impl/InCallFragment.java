@@ -16,7 +16,6 @@
 
 package com.android.incallui.incall.impl;
 
-import android.app.Activity;
 import android.Manifest.permission;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -24,12 +23,12 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
 import android.media.AudioManager;
 import android.provider.Settings;
 import android.telecom.CallAudioState;
@@ -59,7 +58,6 @@ import com.android.incallui.audioroute.AudioRouteSelectorDialogFragment.AudioRou
 import com.android.incallui.contactgrid.ContactGridManager;
 import com.android.incallui.call.CallList;
 import com.android.incallui.call.DialerCall;
-import com.android.incallui.call.DialerCall.State;
 import com.android.incallui.hold.OnHoldFragment;
 import com.android.incallui.incall.impl.ButtonController.SpeakerButtonController;
 import com.android.incallui.incall.impl.InCallButtonGridFragment.OnButtonGridCreatedListener;
@@ -74,7 +72,7 @@ import com.android.incallui.incall.protocol.InCallScreenDelegateFactory;
 import com.android.incallui.incall.protocol.PrimaryCallState;
 import com.android.incallui.incall.protocol.PrimaryInfo;
 import com.android.incallui.incall.protocol.SecondaryInfo;
-import com.android.toro.src.record.RecordManager1;
+import com.android.toro.src.record.RecordManager;
 import com.android.voicemail.impl.SubscriptionInfoHelper;
 
 import java.util.ArrayList;
@@ -227,7 +225,7 @@ public class InCallFragment extends Fragment
     // liujia add
     try{
       ButtonController.RecordingButtonController recordingButtonController = (ButtonController.RecordingButtonController) getButtonController(InCallButtonIds.BUTTON_RECORDING);
-      RecordManager1.getInstance().addRecordListener(recordingButtonController);
+      RecordManager.getInstance().addRecordListener(recordingButtonController);
       recordingButtonController.updateStatu();
     }catch (Exception e) {
       e.printStackTrace();
@@ -271,7 +269,7 @@ public class InCallFragment extends Fragment
     // liujia add
     try{
       ButtonController.RecordingButtonController recordingButtonController = (ButtonController.RecordingButtonController) getButtonController(InCallButtonIds.BUTTON_RECORDING);
-      RecordManager1.getInstance().removeRecordListener(recordingButtonController);
+      RecordManager.getInstance().removeRecordListener(recordingButtonController);
     }catch (Exception e) {
       e.printStackTrace();
     }
@@ -414,7 +412,7 @@ public class InCallFragment extends Fragment
     }
     // liujia mark
     if(primaryCallState.state == DISCONNECTED) { // 挂断了
-      RecordManager1.getInstance().stop();
+      RecordManager.getInstance().stop();
     } else if(primaryCallState.state == ACTIVE){ // 接通了
 
     }
@@ -574,14 +572,7 @@ public class InCallFragment extends Fragment
     // liujia add
     if(isFirst) {
       isFirst = false;
-      if(ToroLocalDataManager.getInstance(getContext()).isAssintantOpenLoundspeaker()) {
-        ToroLocalDataManager.getInstance(getContext()).setAssintantOpenLoundspeaker(false);
-        openLoundspeaker();
-        return;
-      }
-      if(!ToroLocalDataManager.getInstance(getContext()).isReceiverMode()) {
-        openLoundspeaker();
-      }
+      checkLoudSpeaker();
     }
   }
 
@@ -791,10 +782,20 @@ private boolean isVbAvailable() {
 
     return mVolumeBoostEnabled;
   }
-  
-  /**
-   * liujia add
-   */
+
+  /***************************  liujia  add  ************************/
+
+  private void checkLoudSpeaker() {
+    if(ToroLocalDataManager.getInstance(getContext()).isAssintantOpenLoundspeaker()) {
+      ToroLocalDataManager.getInstance(getContext()).setAssintantOpenLoundspeaker(false);
+      openLoundspeaker();
+      return;
+    }
+    if(!ToroLocalDataManager.getInstance(getContext()).isReceiverMode()) {
+      openLoundspeaker();
+    }
+  }
+
   public void openLoundspeaker() {
 //    inCallButtonUiDelegate.toggleSpeakerphone();
     inCallButtonUiDelegate.setAudioRoute(CallAudioState.ROUTE_SPEAKER);

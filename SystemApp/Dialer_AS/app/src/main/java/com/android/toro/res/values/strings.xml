@@ -72,4 +72,7 @@
     <string name="dialog_button_stop">Stop</string>
     <string name="erro_number">Invalid number</string>
     <string name="recording">Record</string>
+    <string name="get_contact_failed">Failed to get contact</string>
+    <string name="un_des_contact">Unspecified</string>
+    <string name="permission_failed">You have denied the necessary permissions and the application is about to exit</string>
 </resources>
