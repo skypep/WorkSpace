@@ -53,6 +53,6 @@ public abstract class ToroListAdapter extends RecyclerView.Adapter<RecyclerView.
 
     @Override
     public int getItemCount() {
-        return datas.size();
+        return datas == null? 0 : datas.size();
     }
 }

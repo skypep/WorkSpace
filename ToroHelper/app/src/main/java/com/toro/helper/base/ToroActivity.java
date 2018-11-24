@@ -1,5 +1,8 @@
 package com.toro.helper.base;
 
+import android.content.pm.ActivityInfo;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
@@ -33,5 +36,11 @@ public class ToroActivity extends AppCompatActivity implements OnHttpDataUpdateL
         }
         Toast.makeText(this,getString(R.string.unknow_error),Toast.LENGTH_LONG).show();
         return false;
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 }

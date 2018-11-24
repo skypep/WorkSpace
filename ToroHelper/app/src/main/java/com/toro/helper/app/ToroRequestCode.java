@@ -9,4 +9,5 @@ public class ToroRequestCode {
 
     public static final int UPLOAD_REQUEST_CODE = 0x0021;
     public static final int CONTACT_REQUEST_CODE = 0x0022;
+    public static final int ALL_PERMISSION_REQUEST_CODE = 0x23;
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">亲连助手</string>
+    <string name="app_name">陪伴助手</string>
     <string name="app_copy_right">版权所有@ 深圳市小达人网络科技有限公司 2018</string>
 
     <string name="main_tab_photo_text">家庭相册</string>
@@ -44,6 +44,7 @@
     <string name="upload_progress_text_format">正在提交(%1$s)</string>
     <string name="upload_finish_submit_progress_text">提交完成，正在发布</string>
     <string name="submit_sucsses">提交成功</string>
+    <string name="photo_is_empty">提交的照片不能为空</string>
     <string name="submit_failed">提交失败</string>
     <string name="empty_photo_hint">还没有照片哦!</string>
     <string name="empty_family_hint">家庭成员为空哦!</string>
@@ -118,6 +119,7 @@
     <string name="health_data">健康数据</string>
     <string name="member_is_not_old_man">对方不是老年端，不允许此操作</string>
     <string name="luban_image_error">图片压缩异常</string>
+    <string name="permission_failed">您拒绝了必要的权限，应用即将退出</string>
 
     <string name="location_refresh_failed">位置刷新失败</string>
     <string name="coerce_sigin_out">您的账号在另外的设备登陆，您被强制下线</string>

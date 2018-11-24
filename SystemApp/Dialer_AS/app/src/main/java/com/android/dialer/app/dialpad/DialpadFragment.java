@@ -74,6 +74,7 @@ import android.widget.TextView;
 import com.android.contacts.common.dialog.CallSubjectDialog;
 import com.android.contacts.common.util.StopWatch;
 import com.android.contacts.common.widget.FloatingActionButtonController;
+import com.android.dialer.BuildConfig;
 import com.android.dialer.animation.AnimUtils;
 import com.android.dialer.app.DialtactsActivity;
 import com.android.dialer.R;// fixed by liujia delete app
@@ -98,6 +99,10 @@ import com.android.dialer.util.DialerUtils;
 import com.android.dialer.util.PermissionsUtil;
 import com.android.toro.src.ToroDialpadFloatingController;
 import com.android.incallui.QtiCallUtils;
+import com.iwith.assistantlib.PieAssistant;
+import com.iwith.assistantlib.bean.Request;
+import com.iwith.assistantlib.remote.AssistantCallback;
+
 import java.util.HashSet;
 import java.util.List;
 
@@ -1164,6 +1169,32 @@ public class DialpadFragment extends Fragment
       return;
     }
 
+    // liujia add
+    boolean open = Settings.Global.getInt(getContext().getContentResolver(), "toro_read_dialer", 0) == 1;
+    if(open) {
+      try{
+        Request request = new Request();
+        request.version = 1;
+        //请求方法
+        request.method = "tts";
+        request.params.put("text",tone+"");
+        request.exts.put("appId", BuildConfig.APPLICATION_ID);
+        PieAssistant.request(request, new AssistantCallback() {
+          @Override
+          public void onResponse(String s) {
+          }
+
+          @Override
+          public void onFailure(Throwable throwable) {
+          }
+        });
+      }catch (Exception e) {
+
+      }
+
+      return;
+    }
+
     // Also do nothing if the phone is in silent mode.
     // We need to re-check the ringer mode for *every* playTone()
     // call, rather than keeping a local flag that's updated in
@@ -1194,6 +1225,13 @@ public class DialpadFragment extends Fragment
     if (!mDTMFToneEnabled) {
       return;
     }
+
+    // liujia add
+    boolean open = Settings.Global.getInt(getContext().getContentResolver(), "toro_read_dialer", 0) == 1;
+    if(open) {
+      return;
+    }
+
     synchronized (mToneGeneratorLock) {
       if (mToneGenerator == null) {
         LogUtil.w("DialpadFragment.stopTone", "mToneGenerator == null");

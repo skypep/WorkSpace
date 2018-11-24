@@ -40,10 +40,13 @@
     </activity>
 
     <activity
-        android:label="@string/call_details"
-        android:exported="false"
+        android:exported="true"
         android:name=".setting.ToroDialerSettingsActivity"
         android:theme="@style/DialerThemeBase.NoActionBar">
+      <intent-filter>
+        <action android:name="android.intent.action.ToroCallSetting" />
+        <category android:name="android.intent.category.DEFAULT" />
+      </intent-filter>
     </activity>
 
     <activity

@@ -151,6 +151,10 @@ public class UploadPhotoActivity extends ToroActivity implements View.OnClickLis
     }
 
     private void submit() {
+        if(images == null || images.size() < 1) {
+            Toast.makeText(this,R.string.photo_is_empty,Toast.LENGTH_LONG).show();
+            return;
+        }
         submitBt.setClickable(false);
         showProgress(0);
         uploadImages(images);
@@ -245,6 +249,9 @@ public class UploadPhotoActivity extends ToroActivity implements View.OnClickLis
                 if(index >=0 && index < images.size()) {
                     images.remove(index);
                     adapter.updateListData(images);
+                    if(images.size() < 1) {
+                        submitBt.setEnabled(false);
+                    }
                 }
             }catch (Exception e){
 

@@ -142,6 +142,7 @@ public class FamilyMemberManagerActivity extends ToroActivity implements FamilyM
         setNormalAction();
         adapter.exitEditMode();
         deleteLayout.setVisibility(View.GONE);
+        deleteChecks = null;
     }
 
     @Override
@@ -159,7 +160,8 @@ public class FamilyMemberManagerActivity extends ToroActivity implements FamilyM
         } else {
             boolean [] temp = deleteChecks;
             deleteChecks = new boolean[size];
-            for(int i = 0; i < temp.length; i++) {
+            int count = temp.length >= deleteChecks.length ? deleteChecks.length:temp.length;
+            for(int i = 0; i < count; i++) {
                 deleteChecks[i] = temp[i];
             }
         }

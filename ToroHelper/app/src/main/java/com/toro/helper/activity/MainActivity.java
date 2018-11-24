@@ -7,10 +7,12 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.Toast;
 
 import com.toro.helper.BuildConfig;
 import com.toro.helper.R;
@@ -26,6 +28,7 @@ import com.toro.helper.modle.FamilyUserInfo;
 import com.toro.helper.modle.data.ToroDataModle;
 import com.toro.helper.utils.CameraUtils;
 import com.toro.helper.utils.ConnectManager;
+import com.toro.helper.utils.PermissionManager;
 import com.toro.helper.utils.StringUtils;
 import com.toro.helper.view.ChangeColorIconWithTextView;
 import com.toro.helper.view.MainActionBar;
@@ -140,6 +143,7 @@ public class MainActivity extends ToroActivity implements
     @Override
     protected void onResume() {
         super.onResume();
+        PermissionManager.checkPermission(this);
     }
 
     @Override
@@ -414,6 +418,17 @@ public class MainActivity extends ToroActivity implements
             } else {
                 //拒绝权限，弹出提示框。
                 CameraUtils.showExceptionDialog(this,false);
+            }
+        } else if (requestCode == ToroRequestCode.ALL_PERMISSION_REQUEST_CODE){
+            for (int i = 0; i < grantResults.length; i++) {
+                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                    //判断是否勾选禁止后不再询问
+                    boolean showRequestPermission = ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, permissions[i]);
+                    if (showRequestPermission) {
+                        Toast.makeText(this,R.string.permission_failed,Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                }
             }
         }
     }

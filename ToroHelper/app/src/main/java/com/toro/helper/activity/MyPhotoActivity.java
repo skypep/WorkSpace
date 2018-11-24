@@ -133,6 +133,7 @@ public class MyPhotoActivity extends ToroActivity {
         setNormalAction();
         adapter.exitEditMode();
         deleteLayout.setVisibility(View.GONE);
+        deleteChecks = null;
     }
 
     @Override
@@ -203,7 +204,8 @@ public class MyPhotoActivity extends ToroActivity {
         } else {
             boolean [] temp = deleteChecks;
             deleteChecks = new boolean[size];
-            for(int i = 0; i < temp.length; i++) {
+            int count = temp.length >= deleteChecks.length ? deleteChecks.length:temp.length;
+            for(int i = 0; i < count; i++) {
                 deleteChecks[i] = temp[i];
             }
         }
