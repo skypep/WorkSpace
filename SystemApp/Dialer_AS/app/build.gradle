@@ -9,8 +9,8 @@ android {
         applicationId "com.android.dialer"
         minSdkVersion 23
         targetSdkVersion 27
-        versionCode 9
-        versionName "1.0.9"
+        versionCode 10
+        versionName "1.0.10"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -73,8 +73,6 @@ android {
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/NOTICE.txt'
     }
-
-
 }
 
 dependencies {

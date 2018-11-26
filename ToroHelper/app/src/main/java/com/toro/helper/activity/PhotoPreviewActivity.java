@@ -1,11 +1,15 @@
 package com.toro.helper.activity;
 
 import android.Manifest;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -46,6 +50,8 @@ import java.util.List;
 import java.util.Locale;
 
 import helper.phone.toro.com.imageselector.utils.ImageSelector;
+
+import static android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
 /**
  * Create By liujia
@@ -191,7 +197,10 @@ public class PhotoPreviewActivity extends ToroActivity {
 
     private String saveBitmapGallery(Bitmap bitmap) {
         try{
-            return MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "Toro", "Toro Photo");
+            String result = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "Toro", "Toro Photo");
+            File file1 = new File(getRealPathFromURI(Uri.parse(result),this));
+            updatePhotoMedia(file1,this);
+            return result;
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -219,6 +228,24 @@ public class PhotoPreviewActivity extends ToroActivity {
             e.printStackTrace();
         }
         return "";
+    }
+
+    //更新图库
+    private static void updatePhotoMedia(File file ,Context context){
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        intent.setData(Uri.fromFile(file));
+        context.sendBroadcast(intent);
+    }
+    //得到绝对地址
+    private static String getRealPathFromURI(Uri contentUri,Context context) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String fileStr = cursor.getString(column_index);
+        cursor.close();
+        return fileStr;
     }
 
     public static Intent createIntent(Context context,List<PhotoItem> photos,int position) {

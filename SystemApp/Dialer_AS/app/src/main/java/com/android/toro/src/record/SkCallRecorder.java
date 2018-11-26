@@ -34,14 +34,23 @@ public class SkCallRecorder extends ToroCallRecord {
         StringBuilder fileName = new StringBuilder();
         fileName.append(phoneNum).append("_")
                 .append(System.currentTimeMillis() + "")
-                .append(".amr");
+                .append(".toro");
 
         String path = rootPath + "/CallRecord" + File.separator
-                + fileName.toString();
+                + "." + fileName.toString();
 
         File file = new File(rootPath + "/CallRecord");
         if(!file.exists()) {
             file.mkdirs();
+        }
+
+        File nomediaFile = new File(rootPath + "/CallRecord/" + ".nomedia");
+        if(!nomediaFile.exists()) {
+            try{
+                nomediaFile.createNewFile();
+            }catch (Exception e) {
+
+            }
         }
 
         recorder.setOutputFile(path);
@@ -49,7 +58,7 @@ public class SkCallRecorder extends ToroCallRecord {
         try{
             recorder.prepare(); // 预期准备
         }catch (Exception e) {
-
+            e.printStackTrace();
         }
 
     }
