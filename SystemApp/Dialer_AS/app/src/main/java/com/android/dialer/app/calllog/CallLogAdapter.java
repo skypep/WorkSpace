@@ -841,7 +841,7 @@ public class CallLogAdapter extends GroupingListAdapter
     }
     if(isEditModle) {
       views.toroActionButtonView.setVisibility(View.GONE);
-      views.toroCallTypeIcon.setVisibility(View.GONE);
+//      views.toroCallTypeIcon.setVisibility(View.GONE);
       views.toroEditRadioIcon.setVisibility(View.VISIBLE);
     } else {
       views.toroActionButtonView.setVisibility(View.VISIBLE);

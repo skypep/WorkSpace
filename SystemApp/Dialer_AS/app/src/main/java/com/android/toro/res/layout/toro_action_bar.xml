@@ -93,21 +93,27 @@
             android:gravity="center_vertical"
             >
 
-            <!--android:background="@color/toro_action_button_selector"-->
-            <!--android:backgroundTint="@color/toro_action_button_selector"-->
-            <Button
+            <com.android.toro.src.view.ActionButton
                 android:id="@+id/toro_action_left_button"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/toro_action_bar_button_height"
-                android:text="@string/toro_edit"
-                android:textSize="@dimen/toro_action_bar_button_text_size"
-                android:textColor="@color/toro_action_bar_text"
-                android:background="@drawable/toro_action_bar_button_shape"
+                android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:singleLine="true"
-                android:padding="2dp"
                 />
+
+            <!--<Button-->
+                <!--android:id="@+id/toro_action_left_button"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="@dimen/toro_action_bar_button_height"-->
+                <!--android:text="@string/toro_edit"-->
+                <!--android:textSize="@dimen/toro_action_bar_button_text_size"-->
+                <!--android:textColor="@color/toro_action_bar_text"-->
+                <!--android:background="@drawable/toro_action_bar_button_shape"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:singleLine="true"-->
+                <!--android:padding="2dp"-->
+                <!--/>-->
 
             <TextView
                 android:id="@+id/toro_action_title"
@@ -137,20 +143,29 @@
                     android:scaleType="center"
                     android:textColor="@color/toro_action_bar_text"
                     android:src="@drawable/toro_settings"
-                    android:background="@drawable/toro_action_bar_button_shape"
+                    android:background="@drawable/action_button_selector"
                     android:layout_gravity="right"
                     />
-                <Button
+
+                <com.android.toro.src.view.ActionButton
                     android:id="@+id/toro_action_right_button"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textSize="@dimen/toro_action_bar_button_text_size"
-                    android:singleLine="true"
-                    android:scaleType="center"
-                    android:textColor="@color/toro_action_bar_text"
-                    android:background="@drawable/toro_action_bar_button_shape"
-                    android:padding="2dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
                     />
+
+                <!--<Button-->
+                    <!--android:id="@+id/toro_action_right_button"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:textSize="@dimen/toro_action_bar_button_text_size"-->
+                    <!--android:singleLine="true"-->
+                    <!--android:scaleType="center"-->
+                    <!--android:textColor="@color/toro_action_bar_text"-->
+                    <!--android:background="@drawable/toro_action_bar_button_shape"-->
+                    <!--android:padding="2dp"-->
+                    <!--/>-->
 
             </FrameLayout>
 

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:id="@+id/button_layout"
+        android:clickable="true"
+        android:background="@drawable/action_button_selector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_centerInParent="true"
+            >
+
+            <ImageView
+                android:id="@+id/icon"
+                android:src="@drawable/ic_arrow_left"
+                android:layout_width="14px"
+                android:layout_height="24px"
+                android:layout_marginRight="16px"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#E1E3E5"
+                android:textSize="32px"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</merge>

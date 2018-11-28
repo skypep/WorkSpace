@@ -54,4 +54,15 @@
     <dimen name="toro_common_dialog_text_size">24sp</dimen>
     <dimen name="toro_common_panding">28dp</dimen>
     <dimen name="toro_common_radio">6dp</dimen>
+    
+    <!-- 遵照标注，重新起航 -->
+    <dimen name="dp8">8dp</dimen>
+    <dimen name="dp10.4">10.4dp</dimen>
+    <dimen name="dp15.6">15.6dp</dimen>
+    <dimen name="dp16">16dp</dimen>
+    <dimen name="dp17.6">17.6dp</dimen>
+    <dimen name="dp18">18dp</dimen>
+    <dimen name="dp26">26dp</dimen>
+    <dimen name="dp28">28dp</dimen>
+    <dimen name="dp80">80dp</dimen>
 </resources>

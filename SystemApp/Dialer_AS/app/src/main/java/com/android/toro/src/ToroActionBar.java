@@ -15,12 +15,13 @@ import android.widget.TextView;
 import com.android.dialer.R;
 import com.android.dialer.animation.AnimUtils;
 import com.android.dialer.util.DialerUtils;
+import com.android.toro.src.view.ActionButton;
 
 public class ToroActionBar extends FrameLayout {
 
     private TextView titleView;
-    private Button leftButton;
-    private Button rightButton;
+    private ActionButton leftButton;
+    private ActionButton rightButton;
     private ImageButton rightImageButton;
 
     protected boolean mIsFadedOut = false;

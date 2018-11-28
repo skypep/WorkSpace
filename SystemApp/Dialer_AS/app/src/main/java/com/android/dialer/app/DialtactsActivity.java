@@ -657,20 +657,25 @@ public class DialtactsActivity extends TransactionSafeActivity
   @Override
   protected void onStop() {
     super.onStop();
-    boolean timeoutElapsed =
-        SystemClock.elapsedRealtime() - timeTabSelected >= HISTORY_TAB_SEEN_TIMEOUT;
-    boolean isOnHistoryTab =
-        mListsFragment.getCurrentTabIndex() == DialtactsPagerAdapter.TAB_INDEX_HISTORY;
-    if (isOnHistoryTab
-        && timeoutElapsed
-        && !isChangingConfigurations()
-        && !getSystemService(KeyguardManager.class).isKeyguardLocked()) {
-      mListsFragment.markMissedCallsAsReadAndRemoveNotifications();
+    try{
+      boolean timeoutElapsed =
+              SystemClock.elapsedRealtime() - timeTabSelected >= HISTORY_TAB_SEEN_TIMEOUT;
+      boolean isOnHistoryTab =
+              mListsFragment.getCurrentTabIndex() == DialtactsPagerAdapter.TAB_INDEX_HISTORY;
+      if (isOnHistoryTab
+              && timeoutElapsed
+              && !isChangingConfigurations()
+              && !getSystemService(KeyguardManager.class).isKeyguardLocked()) {
+        mListsFragment.markMissedCallsAsReadAndRemoveNotifications();
+      }
+      DialerUtils.getDefaultSharedPreferenceForDeviceProtectedStorageContext(this)
+              .edit()
+              .putInt(KEY_LAST_TAB, mListsFragment.getCurrentTabIndex())
+              .apply();
+    } catch (Exception e) {
+
     }
-    DialerUtils.getDefaultSharedPreferenceForDeviceProtectedStorageContext(this)
-        .edit()
-        .putInt(KEY_LAST_TAB, mListsFragment.getCurrentTabIndex())
-        .apply();
+
   }
 
   @Override
@@ -1781,7 +1786,7 @@ public class DialtactsActivity extends TransactionSafeActivity
   };
 
   private void updateToroActionBar(int tabIndex) {
-    if(tabIndex == EDIT_MODE) {
+    if(isEditMode || tabIndex == EDIT_MODE) {
       mToroActionBar.setTitleText(getResources().getString(R.string.toro_edit));
       mToroActionBar.setLeftButton(getResources().getString(R.string.toro_cancel),cancelEditCallLogListener);
       mToroActionBar.setRightButton(getResources().getString(R.string.toro_select_all),selectAllCallLogListener);

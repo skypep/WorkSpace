@@ -30,9 +30,9 @@
     <!--电话主界面顶部action bar 按钮按下颜色-->
     <color name="toro_action_bar_button_pressed">#9C5721</color>
     <!--电话主界面顶部action bar 背景颜色-->
-    <color name="toro_action_bar_bg">#4A4F57</color>
+    <color name="toro_action_bar_bg">#242424</color>
     <!--状态栏颜色-->
-    <color name="toro_statu_bar_bg">#2B2B33</color>
+    <color name="toro_statu_bar_bg">#000000</color>
     <!--电话主界面敌工部action bar 文字颜色-->
     <color name="toro_action_bar_text">#E1E3E5</color>
     <!--拨号盘底部两边button的颜色normal-->

@@ -27,8 +27,8 @@
          - Local: dialer_theme_color_dark    Android Source: dialer_settings_color_dark
        -->
        <!-- liujia fixed -->
-  <color name="dialer_theme_color">#4A4F57</color>
-  <color name="dialer_theme_color_dark">#2B2B33</color>
+  <color name="dialer_theme_color">#242424</color>
+  <color name="dialer_theme_color_dark">#000000</color>
 
   <color name="dialer_snackbar_action_text_color">#4285F4</color>
   <color name="dialer_theme_color_20pct">#332A56C6</color>

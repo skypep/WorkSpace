@@ -14,17 +14,20 @@ import android.widget.TextView;
 
 import com.android.dialer.R;
 import com.android.toro.src.utils.ToroUtils;
+import com.android.toro.src.view.ActionButton;
 
 public class ToroCallDetailsToolbar extends RelativeLayout {
 
     private final TextView titleView;
-    private final Button backButton;
+    private final ActionButton backButton;
 
     public ToroCallDetailsToolbar(Context context, @Nullable AttributeSet attributeSet) {
         super(context, attributeSet);
         inflate(context, R.layout.toro_dialer_toolbar, this);
         titleView = (TextView) findViewById(R.id.title);
         backButton = findViewById(R.id.toro_toolbar_back);
+        backButton.setText(R.string.toro_back);
+        backButton.showBackIcon(true);
     }
 
     public void setBackListener(OnClickListener listener){

@@ -129,7 +129,7 @@ public class PhoneCallDetailsHelper {
       }
     }
     if (!TextUtils.isEmpty(accountLabel)) {
-      views.callAccountLabel.setVisibility(View.VISIBLE);
+//      views.callAccountLabel.setVisibility(View.VISIBLE); // liujia add 不显示多卡信息
       views.callAccountLabel.setText(accountLabel);
       int color = mCallLogCache.getAccountColor(details.accountHandle);
       if (color == PhoneAccount.NO_HIGHLIGHT_COLOR) {
@@ -368,23 +368,32 @@ public class PhoneCallDetailsHelper {
   private void setDetailText(
       PhoneCallDetailsViews views, Integer callCount, PhoneCallDetails details) {
     // Combine the count (if present) and the date.
-    CharSequence dateText = details.callLocationAndDate;
-    final CharSequence text;
+//    CharSequence dateText = details.callLocationAndDate;
+//    final CharSequence dataText;
 //    if (callCount != null) {
-//      text = mResources.getString(R.string.call_log_item_count_and_date, callCount, dateText);
+//      dataText = mResources.getString(R.string.call_log_item_count_and_date, callCount, dateText);
 //    } else {
-//      text = dateText;
+//      dataText = dateText;
 //    }
     // liujia add
-    if(TextUtils.isEmpty(details.getPreferredName())) {
-      if(TextUtils.isEmpty(details.geocode)) {
-        text = mContext.getResources().getString(R.string.toro_unknow);
-      } else {
-        text = details.geocode;
-      }
+  CharSequence callDateText = DateUtils.getRelativeTimeSpanString(
+          details.date,
+          System.currentTimeMillis(),
+          DateUtils.MINUTE_IN_MILLIS,
+          DateUtils.FORMAT_ABBREV_RELATIVE);
+    final CharSequence geocodeText;
+    //曾今说过的联系人下面显示号码的事，大家都忘了，改吧
+//    if(TextUtils.isEmpty(details.getPreferredName())) {
+//
+//    } else {
+//      text = details.displayNumber;
+//    }
+    if(TextUtils.isEmpty(details.geocode)) {
+      geocodeText = mContext.getResources().getString(R.string.toro_unknow);
     } else {
-      text = details.displayNumber;
+      geocodeText = details.geocode;
     }
+    final CharSequence text = callDateText + " | " + geocodeText;
 
     if (details.callTypes[0] == Calls.VOICEMAIL_TYPE && details.duration > 0) {
       views.callLocationAndDate.setText(

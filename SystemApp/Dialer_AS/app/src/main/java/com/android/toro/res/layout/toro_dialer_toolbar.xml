@@ -24,15 +24,23 @@
         android:gravity="center_vertical"
         >
 
-        <Button
+        <!--<Button-->
+            <!--android:id="@+id/toro_toolbar_back"-->
+            <!--android:layout_width="@dimen/toro_action_bar_button_width"-->
+            <!--android:layout_height="@dimen/toro_action_bar_button_height"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginLeft="@dimen/toro_margin_right"-->
+            <!--android:background="@drawable/toro_action_bar_button_shape"-->
+            <!--android:text="@string/toro_back"-->
+            <!--/>-->
+        <com.android.toro.src.view.ActionButton
             android:id="@+id/toro_toolbar_back"
-            android:layout_width="@dimen/toro_action_bar_button_width"
-            android:layout_height="@dimen/toro_action_bar_button_height"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/toro_margin_right"
-            android:background="@drawable/toro_action_bar_button_shape"
-            android:text="@string/toro_back"
             />
 
         <TextView

@@ -23,50 +23,33 @@
         android:id="@+id/primary_action_view"
         android:background="?android:attr/selectableItemBackground"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="@dimen/call_log_start_margin"
-        android:paddingEnd="@dimen/call_log_outer_margin"
-        android:paddingTop="@dimen/call_log_vertical_padding"
-        android:paddingBottom="@dimen/call_log_vertical_padding"
-        android:gravity="center_vertical"
+        android:layout_height="@dimen/dp80"
+        android:paddingLeft="@dimen/dp18"
+        android:paddingRight="@dimen/dp17.6"
         android:focusable="true"
         android:nextFocusRight="@+id/call_back_action"
         >
 
-        <RelativeLayout
-            android:id="@+id/toro_left_layout"
-            android:layout_alignParentLeft="true"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/call_log_list_item_primary_action_dimen"
-            >
-
           <ImageView
-              android:id="@+id/call_type_icon"
-              android:scaleType="fitCenter"
+              android:id="@+id/toro_call_edit_radio"
               android:layout_centerVertical="true"
-              android:layout_width="@dimen/toro_calllog_left_img_size"
-              android:layout_height="@dimen/toro_calllog_left_img_size"
+              android:scaleType="fitCenter"
+              android:layout_width="@dimen/dp28"
+              android:layout_height="@dimen/dp28"
+              android:src="@drawable/toro_radio_un_selected"
+              android:layout_marginRight="@dimen/dp16"
+              android:visibility="gone"
               />
-
-            <ImageView
-                android:id="@+id/toro_call_edit_radio"
-                android:layout_centerVertical="true"
-                android:scaleType="fitCenter"
-                android:layout_width="@dimen/toro_calllog_left_img_size"
-                android:layout_height="@dimen/toro_calllog_left_img_size"
-                android:src="@drawable/toro_radio_un_selected"
-                android:visibility="gone"
-                />
-
-        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/toro_right_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             >
+
         <TextView
             android:id="@+id/toro_call_date_text"
             android:layout_width="wrap_content"
@@ -76,81 +59,97 @@
             android:textColor="@color/toro_calllog_date_text"
             android:textSize="@dimen/call_log_detail_text_size"
             android:text="Text"
+            android:visibility="gone"
             android:singleLine="true"/>
 
         <ImageView
           android:id="@+id/primary_action_button"
-          android:layout_width="@dimen/call_log_list_item_primary_action_dimen"
-          android:layout_height="@dimen/call_log_list_item_primary_action_dimen"
+          android:layout_width="@dimen/dp26"
+          android:layout_height="@dimen/dp26"
           android:layout_gravity="center_vertical"
           android:background="?android:attr/selectableItemBackgroundBorderless"
-          android:scaleType="center"
+          android:scaleType="fitCenter"
             android:src="@drawable/toro_more"
           />
         </LinearLayout>
 
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_toRightOf="@+id/toro_call_edit_radio"
+          android:layout_toLeftOf="@+id/toro_right_layout"
+          android:layout_centerVertical="true"
+          android:orientation="vertical"
+          >
+
           <LinearLayout
-              android:layout_width="wrap_content"
+              android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_toRightOf="@+id/toro_left_layout"
-              android:layout_toLeftOf="@+id/toro_right_layout"
-              android:layout_centerVertical="true"
-              android:orientation="vertical"
+              android:orientation="horizontal"
+              android:layout_marginBottom="@dimen/dp8"
               android:gravity="center_vertical"
-              android:layout_marginStart="@dimen/call_log_list_item_info_margin_start">
+              >
+
+              <ImageView
+                  android:id="@+id/call_type_icon"
+                  android:scaleType="fitCenter"
+                  android:layout_width="@dimen/dp15.6"
+                  android:layout_height="@dimen/dp15.6"
+                  android:layout_marginRight="@dimen/dp10.4"
+                  />
 
               <TextView
                   android:id="@+id/name"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:layout_marginBottom="@dimen/call_log_name_margin_bottom"
-                  android:layout_marginEnd="@dimen/call_log_icon_margin"
-                  android:textColor="@color/call_log_primary_color"
+                  android:textColor="#000000"
                   android:textSize="@dimen/call_log_primary_text_size"
                   android:singleLine="true"/>
 
-              <LinearLayout
-                  android:id="@+id/call_type"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:orientation="horizontal">
+          </LinearLayout>
 
-                  <TextView
-                      android:id="@+id/call_location_and_date"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:layout_marginEnd="@dimen/call_log_icon_margin"
-                      android:layout_gravity="center_vertical"
-                      android:textColor="@color/call_log_detail_color"
-                      android:textSize="@dimen/call_log_detail_text_size"
-                      android:singleLine="true"/>
-
-              </LinearLayout>
+          <LinearLayout
+              android:id="@+id/call_type"
+              android:layout_marginLeft="@dimen/dp26"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal">
 
               <TextView
-                  android:id="@+id/call_account_label"
+                  android:id="@+id/call_location_and_date"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:layout_marginTop="@dimen/call_log_call_account_margin_bottom"
-                  android:layout_marginEnd="@dimen/call_log_icon_margin"
-                  android:textColor="?android:textColorSecondary"
+                  android:layout_gravity="center_vertical"
+                  android:textColor="@color/call_log_detail_color"
                   android:textSize="@dimen/call_log_detail_text_size"
-                  android:visibility="gone"
                   android:singleLine="true"/>
 
-              <TextView
-                  android:id="@+id/voicemail_transcription"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_marginTop="@dimen/call_log_icon_margin"
-                  android:textColor="@color/call_log_voicemail_transcript_color"
-                  android:textSize="@dimen/call_log_voicemail_transcription_text_size"
-                  android:ellipsize="marquee"
-                  android:visibility="gone"
-                  android:singleLine="false"
-                  android:maxLines="10"/>
-
           </LinearLayout>
+
+          <TextView
+              android:id="@+id/call_account_label"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="@dimen/call_log_call_account_margin_bottom"
+              android:layout_marginEnd="@dimen/call_log_icon_margin"
+              android:textColor="?android:textColorSecondary"
+              android:textSize="@dimen/call_log_detail_text_size"
+              android:visibility="gone"
+              android:singleLine="true"/>
+
+          <TextView
+              android:id="@+id/voicemail_transcription"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="@dimen/call_log_icon_margin"
+              android:textColor="@color/call_log_voicemail_transcript_color"
+              android:textSize="@dimen/call_log_voicemail_transcription_text_size"
+              android:ellipsize="marquee"
+              android:visibility="gone"
+              android:singleLine="false"
+              android:maxLines="10"/>
+
+      </LinearLayout>
 
       </RelativeLayout>
 
