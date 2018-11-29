@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2008 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/mobile_networks"
+    >
+
+    <PreferenceCategory
+        android:layout="@layout/toro_preference_category"
+        android:key="operator_network_setup"
+        android:title="@string/operator_network_setup"/>
+
+    <ListPreference
+        android:layout="@layout/toro_preference"
+        android:key="preferred_network_mode_key"
+        android:title="@string/network_type_select"
+        android:summary="@string/preferred_network_mode_summary"
+        android:entries="@array/preferred_network_mode_choices"
+        android:entryValues="@array/preferred_network_mode_values"
+        android:dialogTitle="@string/network_type_select" />
+
+    <SwitchPreference
+        android:layout="@layout/toro_switch_preference"
+        android:widgetLayout="@layout/toro_switch"
+        android:key="button_auto_select_key"
+        android:title="@string/automatic_operator_select"
+        android:persistent="false"/>
+
+</PreferenceScreen>

@@ -407,7 +407,7 @@ public class DialtactsActivity extends TransactionSafeActivity
     super.onCreate(savedInstanceState);
 
     // add by heyinshen begin
-    getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+//    getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED); // liujia delete 不要覆盖锁屏
     // add by heyinshen end
 
     mFirstLaunch = true;

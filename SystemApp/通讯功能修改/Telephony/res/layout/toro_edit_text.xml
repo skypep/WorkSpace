@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- liujia add -->
+<com.android.phone.CustomEditText
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/phone_edit"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:background="@drawable/toro_dialog_edit_shape"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginTop="10dp"
+    android:inputType="number"
+    android:hint="@string/toro_please_input_phone_hint"
+    android:drawableRight="@drawable/toro_dialog_contact_icon"
+    />
