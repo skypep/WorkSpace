@@ -4,6 +4,7 @@ import android.content.Context;
 import android.preference.PreferenceManager;
 
 import com.android.dialer.R;
+import com.android.toro.src.contact.ToroContact;
 import com.android.toro.src.utils.ToroLocalDataManager;
 import com.android.toro.src.utils.ToroUtils;
 import com.google.wireless.gdata.data.StringUtils;
@@ -100,10 +101,16 @@ public class RecordManager {
                 return true;
             } else{
                 //自定义
-                String customNum = ToroLocalDataManager.getInstance(context).getStringByKey(context.getString(R.string.call_recording_designated_contact_key),"");
-                if(ToroUtils.getToroPhoneNum(phoneNum).equals(customNum)) { // 是否为指定联系人
-                    return true;
+//                String customNum = ToroLocalDataManager.getInstance(context).getStringByKey(context.getString(R.string.call_recording_designated_contact_key),"");
+                List<ToroContact> contacts = ToroLocalDataManager.getInstance(context).getContactsByKey(context.getString(R.string.call_recording_designated_contact_key));
+                for(ToroContact contact : contacts) {
+                    for(String customNum : contact.getNumber()) {
+                        if(ToroUtils.getToroPhoneNum(phoneNum).equals(customNum)) { // 是否为指定联系人
+                            return true;
+                        }
+                    }
                 }
+
                 if(PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.call_recording_strange_number_key),false)){
                     // 是否陌生号码
                     if(!ToroUtils.isContact(context,phoneNum)) {

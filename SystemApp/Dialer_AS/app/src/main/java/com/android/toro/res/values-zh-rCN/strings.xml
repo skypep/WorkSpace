@@ -48,7 +48,7 @@
     <string name="call_recording_custom_object">自定义对象</string>
     <string name="call_recording_strange_number">陌生号码</string>
     <string name="call_recording_designated_contact">指定联系人</string>
-    <string name="call_recording_select_count">已选中2人</string>
+    <string name="call_recording_select_count">已选中%1$d人</string>
     <string name="call_transfer_hint">开启后,可将全部或者特定条件下的来电转接到其他电话上</string>
     <string name="please_input_phone_hint">请输入对方手机号</string>
     <string name="dialog_button_sure">确定</string>
@@ -59,4 +59,6 @@
     <string name="get_contact_failed">获取联系人失败</string>
     <string name="un_des_contact">未指定</string>
     <string name="permission_failed">您拒绝了必要的权限，应用即将退出</string>
+    <string name="toro_contact_pick">联系人选择</string>
+    <string name="toro_select_finish_format">完成</string>
 </resources>

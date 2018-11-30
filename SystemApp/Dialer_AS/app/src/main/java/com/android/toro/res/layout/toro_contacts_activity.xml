@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+  >
+
+  <include layout="@layout/toro_common_title2"/>
+
+  <FrameLayout
+
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+      <LinearLayout
+          android:id="@+id/toro_calllog_delete_view"
+          android:background="@color/toro_tab_normal_backgroud"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:layout_alignParentBottom="true"
+          >
+
+        <TextView
+            android:id="@+id/toro_select_finish"
+            android:layout_marginLeft="@dimen/toro_margin_right"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/floating_action_button_height"
+            android:textColor="@color/toro_calllog_delete_text_color"
+            android:textSize="@dimen/toro_tab_text_size"
+            android:gravity="center"
+            android:visibility="gone"
+            />
+
+      </LinearLayout>
+
+      <android.support.v7.widget.RecyclerView
+          android:id="@+id/recycler_view"
+          android:layout_above="@+id/toro_calllog_delete_view"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:overScrollMode="never"
+          android:scrollbars="none"
+          android:background="@color/background_dialer_light"/>
+
+    </RelativeLayout>
+
+
+    <!-- Scrollbars are always on the right side of the screen. Layouts should use Rights/Left instead
+         of Start/End -->
+    <com.android.toro.src.contact.ToroFastScroller
+        android:id="@+id/fast_scroller"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="8dp"
+        android:clipChildren="false"
+        android:visibility="gone">
+
+      <TextView
+          android:id="@+id/fast_scroller_container"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_toLeftOf="@+id/fast_scroller_scroll_bar"
+          android:gravity="center"
+          android:textSize="48sp"
+          android:textColor="@color/background_dialer_white"
+          android:visibility="gone"
+          android:background="@drawable/fast_scroller_container_background"/>
+
+      <ImageView
+          android:id="@+id/fast_scroller_scroll_bar"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="8dp"
+          android:layout_alignParentRight="true"
+          android:paddingRight="16dp"
+          android:src="@drawable/fast_scroller_scroll_bar" />
+    </com.android.toro.src.contact.ToroFastScroller>
+
+    <!-- Anchored header view -->
+    <include layout="@layout/toro_contact_header"
+        />
+
+    <com.android.dialer.widget.EmptyContentView
+        android:id="@+id/empty_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+  </FrameLayout>
+
+</LinearLayout>

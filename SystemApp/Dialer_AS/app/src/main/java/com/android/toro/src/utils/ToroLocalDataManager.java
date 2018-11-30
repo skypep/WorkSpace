@@ -5,6 +5,15 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.android.dialer.R;
+import com.android.toro.src.contact.ToroContact;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Create By liujia
@@ -51,5 +60,51 @@ public class ToroLocalDataManager {
 
     public void setStringByKey(String key,String value) {
         pre.edit().putString(key,value).apply();
+    }
+
+    public void setContactsByKey(String key,List<ToroContact> contacts) {
+        try{
+            JSONArray array = new JSONArray();
+            for(int i = 0; i < contacts.size(); i ++) {
+                ToroContact contact = contacts.get(i);
+                JSONObject obj = new JSONObject();
+                obj.put("contactID",contact.getContactID());
+                JsonArray phones = new JsonArray();
+                for(String phone : contact.getNumber()){
+                    phones.add(phone);
+                }
+                obj.put("phones",phones);
+                array.put(i,obj.toString());
+            }
+            pre.edit().putString(key,array.toString()).apply();
+        }catch (Exception e) {
+
+        }
+
+    }
+
+    public List<ToroContact> getContactsByKey(String key) {
+        List<ToroContact> contacts = new ArrayList<>();
+        try{
+            String result = pre.getString(key,"");
+            JSONArray array = new JSONArray(result);
+            for(int i = 0; i < array.length(); i ++) {
+                ToroContact contact = new ToroContact();
+                JSONObject obj = new JSONObject(array.getString(i));
+                JSONArray numberAray = new JSONArray(obj.getString("phones"));
+                List<String> phones = new ArrayList<>();
+                for(int j = 0; j < numberAray.length(); j ++) {
+                    String phone = numberAray.getString(j);
+                    phones.add(phone);
+                }
+                contact.setContactID(obj.getLong("contactID"));
+                contact.setNumber(phones);
+                contacts.add(contact);
+            }
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return contacts;
     }
 }

@@ -14,81 +14,94 @@
  * limitations under the License.
  */
 
-package com.android.dialer.contactsfragment;
+package com.android.toro.src.contact;
 
-import android.app.Fragment;
+import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Context;
+import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.ContactsContract.Contacts;
 import android.support.annotation.Nullable;
-import android.support.v13.app.FragmentCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Recycler;
 import android.support.v7.widget.RecyclerView.State;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnScrollChangeListener;
-import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
+
 import com.android.contacts.common.preference.ContactsPreferences;
 import com.android.contacts.common.preference.ContactsPreferences.ChangeListener;
-import com.android.dialer.app.DialtactsActivity;
 import com.android.dialer.common.Assert;
-import com.android.dialer.common.LogUtil;
 import com.android.dialer.performancereport.PerformanceReport;
 import com.android.dialer.util.DialerUtils;
 import com.android.dialer.util.IntentUtil;
 import com.android.dialer.util.PermissionsUtil;
 import com.android.dialer.widget.EmptyContentView;
 import com.android.dialer.widget.EmptyContentView.OnEmptyViewActionButtonClickedListener;
-import java.util.Arrays;
-import com.android.dialer.R;// add by liujia
+
+import com.android.dialer.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /** Fragment containing a list of all contacts. */
-public class ContactsFragment extends Fragment
+public class ToroContactsPickActivity extends Activity
     implements LoaderCallbacks<Cursor>,
         OnScrollChangeListener,
         OnEmptyViewActionButtonClickedListener,
         ChangeListener {
 
   public static final int READ_CONTACTS_PERMISSION_REQUEST_CODE = 1;
+  public static final String PICK_CONTACT_EXTRA = "pick_result";
 
-  private FastScroller fastScroller;
+  private ToroFastScroller toroFastScroller;
   private TextView anchoredHeader;
   private RecyclerView recyclerView;
   private LinearLayoutManager manager;
-  private ContactsAdapter adapter;
+  private ToroContactsAdapter adapter;
   private EmptyContentView emptyContentView;
 
   private ContactsPreferences contactsPrefs;
+  private TextView selectFinishView;
 
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    contactsPrefs = new ContactsPreferences(getContext());
+    contactsPrefs = new ContactsPreferences(this);
     contactsPrefs.registerChangeListener(this);
-  }
+    Window window = getWindow();
+    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+    window.setStatusBarColor(Color.rgb(0xF5,0xF7,0xFE));
+    window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+    setContentView(R.layout.toro_contacts_activity);
+    ((TextView)findViewById(R.id.tv_title)).setText(getString(R.string.toro_contact_pick));
+    findViewById(R.id.ll_back).setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        finish();
+      }
+    });
+    toroFastScroller = findViewById(R.id.fast_scroller);
+    anchoredHeader = findViewById(R.id.header);
+    recyclerView = findViewById(R.id.recycler_view);
+    recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));// liujia add
 
-  @Nullable
-  @Override
-  public View onCreateView(
-      LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_contacts, container, false);
-    fastScroller = view.findViewById(R.id.fast_scroller);
-    anchoredHeader = view.findViewById(R.id.header);
-    recyclerView = view.findViewById(R.id.recycler_view);
-    recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));// liujia add
-
-    emptyContentView = view.findViewById(R.id.empty_list_view);
+    emptyContentView = findViewById(R.id.empty_list_view);
     emptyContentView.setImage(R.drawable.empty_contacts);
     emptyContentView.setActionClickedListener(this);
 
-    if (PermissionsUtil.hasContactsReadPermissions(getContext())) {
+    selectFinishView = findViewById(R.id.toro_select_finish);
+
+    if (PermissionsUtil.hasContactsReadPermissions(this)) {
       getLoaderManager().initLoader(0, null, this);
     } else {
       emptyContentView.setDescription(R.string.permission_no_contacts);
@@ -96,14 +109,11 @@ public class ContactsFragment extends Fragment
       emptyContentView.setVisibility(View.VISIBLE);
     }
 
-    return view;
   }
 
   @Override
   public void onChange() {
-    if (getActivity() != null && isAdded()) {
-      getLoaderManager().restartLoader(0, null, this);
-    }
+    getLoaderManager().restartLoader(0, null, this);
   }
 
   /** @return a loader according to sort order and display order. */
@@ -116,8 +126,8 @@ public class ContactsFragment extends Fragment
 
     String sortKey = sortOrderPrimary ? Contacts.SORT_KEY_PRIMARY : Contacts.SORT_KEY_ALTERNATIVE;
     return displayOrderPrimary
-        ? ContactsCursorLoader.createInstanceDisplayNamePrimary(getContext(), sortKey)
-        : ContactsCursorLoader.createInstanceDisplayNameAlternative(getContext(), sortKey);
+        ? ToroContactsCursorLoader.createInstanceDisplayNamePrimary(this, sortKey)
+        : ToroContactsCursorLoader.createInstanceDisplayNameAlternative(this, sortKey);
   }
 
   @Override
@@ -130,18 +140,18 @@ public class ContactsFragment extends Fragment
     } else {
       emptyContentView.setVisibility(View.GONE);
       recyclerView.setVisibility(View.VISIBLE);
-      adapter = new ContactsAdapter(getContext(), cursor);
+      adapter = new ToroContactsAdapter(this, cursor,onSelectChangeListener,getOldList());
       manager =
-          new LinearLayoutManager(getContext()) {
+          new LinearLayoutManager(this) {
             @Override
             public void onLayoutChildren(Recycler recycler, State state) {
               super.onLayoutChildren(recycler, state);
               int itemsShown = findLastVisibleItemPosition() - findFirstVisibleItemPosition() + 1;
               if (adapter.getItemCount() > itemsShown) {
-                fastScroller.setVisibility(View.VISIBLE);
-                recyclerView.setOnScrollChangeListener(ContactsFragment.this);
+                toroFastScroller.setVisibility(View.VISIBLE);
+                recyclerView.setOnScrollChangeListener(ToroContactsPickActivity.this);
               } else {
-                fastScroller.setVisibility(View.GONE);
+                toroFastScroller.setVisibility(View.GONE);
               }
             }
           };
@@ -149,13 +159,13 @@ public class ContactsFragment extends Fragment
       adapter.setOnSearchClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-          ((DialtactsActivity)getActivity()).onToroSearchClick();
+//          ((DialtactsActivity)getActivity()).onToroSearchClick();
         }
       });
       recyclerView.setLayoutManager(manager);
       recyclerView.setAdapter(adapter);
       PerformanceReport.logOnScrollStateChange(recyclerView);
-      fastScroller.setup(adapter, manager);
+      toroFastScroller.setup(adapter, manager);
     }
   }
 
@@ -179,7 +189,7 @@ public class ContactsFragment extends Fragment
    */
   @Override
   public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-    fastScroller.updateContainerAndScrollBarPosition(recyclerView);
+    toroFastScroller.updateContainerAndScrollBarPosition(recyclerView);
     int firstVisibleItem = manager.findFirstVisibleItemPosition();
     int firstCompletelyVisible = manager.findFirstCompletelyVisibleItemPosition();
     if (firstCompletelyVisible == RecyclerView.NO_POSITION) {
@@ -208,8 +218,8 @@ public class ContactsFragment extends Fragment
     }
   }
 
-  private ContactViewHolder getContactHolder(int position) {
-    return ((ContactViewHolder) recyclerView.findViewHolderForAdapterPosition(position));
+  private ToroContactViewHolder getContactHolder(int position) {
+    return ((ToroContactViewHolder) recyclerView.findViewHolderForAdapterPosition(position));
   }
 
   @Override
@@ -217,20 +227,20 @@ public class ContactsFragment extends Fragment
     if (emptyContentView.getActionLabel() == R.string.permission_single_turn_on) {
       String[] deniedPermissions =
           PermissionsUtil.getPermissionsCurrentlyDenied(
-              getContext(), PermissionsUtil.allContactsGroupPermissionsUsedInDialer);
+              this, PermissionsUtil.allContactsGroupPermissionsUsedInDialer);
       if (deniedPermissions.length > 0) {
-        LogUtil.i(
-            "ToroContactsPickActivity.onEmptyViewActionButtonClicked",
-            "Requesting permissions: " + Arrays.toString(deniedPermissions));
-        FragmentCompat.requestPermissions(
-            this, deniedPermissions, READ_CONTACTS_PERMISSION_REQUEST_CODE);
+//        LogUtil.i(
+//            "ToroContactsPickActivity.onEmptyViewActionButtonClicked",
+//            "Requesting permissions: " + Arrays.toString(deniedPermissions));
+//        FragmentCompat.requestPermissions(
+//            this, deniedPermissions, READ_CONTACTS_PERMISSION_REQUEST_CODE);
       }
 
     } else if (emptyContentView.getActionLabel()
         == R.string.all_contacts_empty_add_contact_action) {
       // Add new contact
       DialerUtils.startActivityWithErrorToast(
-          getContext(), IntentUtil.getNewContactIntent(), R.string.add_contact_not_available);
+          this, IntentUtil.getNewContactIntent(), R.string.add_contact_not_available);
     } else {
       throw Assert.createIllegalStateFailException("Invalid empty content view action label.");
     }
@@ -246,5 +256,51 @@ public class ContactsFragment extends Fragment
         getLoaderManager().initLoader(0, null, this);
       }
     }
+  }
+
+  private ToroContactsAdapter.OnSelectChangeListener onSelectChangeListener = new ToroContactsAdapter.OnSelectChangeListener() {
+
+    @Override
+    public void OnSelectChange(int count) {
+      selectFinishView.setVisibility(View.VISIBLE);
+      selectFinishView.setText(getString(R.string.toro_select_finish_format) + " (" + count + ")");
+      selectFinishView.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          finish();
+        }
+      });
+    }
+  };
+
+  @Override
+  public void finish() {
+    ArrayList<ToroContact> resultList;
+    if(adapter == null) {
+      resultList = getOldList();
+    } else {
+      resultList = adapter.getSelectedContacts();
+    }
+    Intent intent = new Intent();
+    Bundle bundle = new Bundle();
+    bundle.putParcelableArrayList(PICK_CONTACT_EXTRA,resultList);
+    intent.putExtras(bundle);
+    setResult(RESULT_OK, intent);
+    super.finish();
+  }
+
+  private ArrayList<ToroContact> getOldList() {
+    return getIntent().getParcelableArrayListExtra(PICK_CONTACT_EXTRA);
+  }
+
+  private List<ToroContact> oldList;
+
+  public static Intent createIntent(Context context, ArrayList<ToroContact> contacts) {
+    Intent intent = new Intent();
+    Bundle bundle = new Bundle();
+    bundle.putParcelableArrayList(PICK_CONTACT_EXTRA, contacts);
+    intent.setClass(context,ToroContactsPickActivity.class);
+    intent.putExtras(bundle);
+    return intent;
   }
 }

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
@@ -15,10 +16,13 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
 import android.provider.ContactsContract;
+import android.util.SparseArray;
 import android.widget.Toast;
 
 import com.android.contacts.common.model.Contact;
 import com.android.dialer.R;
+import com.android.toro.src.contact.ToroContact;
+import com.android.toro.src.contact.ToroContactsPickActivity;
 import com.android.toro.src.utils.ToroLocalDataManager;
 import com.android.toro.src.utils.ToroUtils;
 import com.google.wireless.gdata.data.StringUtils;
@@ -52,11 +56,13 @@ public class CallRecordingActivity extends ToroSettingActivity {
     public static class CallRecordingFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener,Preference.OnPreferenceClickListener {
 
         private static final int REQUEST_CODE_PICK = 0x12;
+        private static final int REQUEST_CODE_MUTI_PICK = 0x13;
         private PreferenceCategory recordObjPreference,customObjPreference;
         private SwitchPreference recordPreference;
         private CheckBoxPreference allRecordPreference,customRecordPreference;
         private Preference desContactPreference;
         private boolean recordObjIsShow = true,customObjIsShow = true;
+        private List<ToroContact> toroContacts;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -72,8 +78,11 @@ public class CallRecordingActivity extends ToroSettingActivity {
             allRecordPreference.setOnPreferenceChangeListener(this);
             customRecordPreference.setOnPreferenceChangeListener(this);
             desContactPreference.setOnPreferenceClickListener(this);
-            if(!StringUtils.isEmpty(ToroLocalDataManager.getInstance(getContext()).getStringByKey(getString(R.string.call_recording_designated_contact_key),""))){
-                desContactPreference.setSummary(ToroLocalDataManager.getInstance(getContext()).getStringByKey(getString(R.string.call_recording_designated_contact_key),""));
+            toroContacts = ToroLocalDataManager.getInstance(getContext()).getContactsByKey(getString(R.string.call_recording_designated_contact_key));
+            if(toroContacts != null && toroContacts.size() > 0){
+                String countFormat = getResources().getString(R.string.call_recording_select_count);
+                String count = String.format(countFormat,toroContacts.size());
+                desContactPreference.setSummary(count);
             } else {
                 desContactPreference.setSummary(getString(R.string.un_des_contact));
             }
@@ -145,6 +154,18 @@ public class CallRecordingActivity extends ToroSettingActivity {
             desContactPreference.setSummary(phoneNum);
         }
 
+        private void setDesContacts(List<ToroContact> contacts) {
+            toroContacts = contacts;
+            if(toroContacts != null && toroContacts.size() > 0){
+                String countFormat = getResources().getString(R.string.call_recording_select_count);
+                String count = String.format(countFormat,contacts.size());
+                desContactPreference.setSummary(count);
+            } else {
+                desContactPreference.setSummary(getString(R.string.un_des_contact));
+            }
+            ToroLocalDataManager.getInstance(getContext()).setContactsByKey(getString(R.string.call_recording_designated_contact_key),contacts);
+        }
+
         @Override
         public void onActivityResult(int requestCode, int resultCode, Intent data) {
             super.onActivityResult(requestCode, resultCode, data);
@@ -160,12 +181,25 @@ public class CallRecordingActivity extends ToroSettingActivity {
                     e.printStackTrace();
                     Toast.makeText(getContext(), R.string.get_contact_failed, Toast.LENGTH_SHORT).show();
                 }
+            }else if(requestCode == REQUEST_CODE_MUTI_PICK && data != null) {
+                try{
+                    ArrayList<ToroContact> contacts = data.getParcelableArrayListExtra(ToroContactsPickActivity.PICK_CONTACT_EXTRA);
+                    if(contacts == null) {
+                        return;
+                    }
+                    setDesContacts(contacts);
+                }catch (Exception e){
+                    e.printStackTrace();
+                    Toast.makeText(getContext(), R.string.get_contact_failed, Toast.LENGTH_SHORT).show();
+                }
+
             }
         }
 
         private void launchMultiplePhonePicker() {
-            Intent intent=new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
-            startActivityForResult(intent, REQUEST_CODE_PICK);
+//            Intent intent=new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+//            startActivityForResult(intent, REQUEST_CODE_PICK);
+            startActivityForResult(ToroContactsPickActivity.createIntent(getContext(), (ArrayList<ToroContact>) toroContacts),REQUEST_CODE_MUTI_PICK);
         }
     }
 }

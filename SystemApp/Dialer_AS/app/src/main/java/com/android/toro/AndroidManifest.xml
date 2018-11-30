@@ -63,6 +63,10 @@
         android:theme="@style/DialerThemeBase.NoActionBar">
     </activity>
 
+    <activity android:name=".contact.ToroContactsPickActivity"
+        android:theme="@style/DialerThemeBase.NoActionBar"
+        />
+
     <service android:name=".AssistantService" android:exported="true">
       <intent-filter>
         <action android:name="android.intent.action.ASSISTANT_SERVICE" />

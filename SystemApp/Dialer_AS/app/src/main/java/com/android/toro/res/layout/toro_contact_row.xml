@@ -16,42 +16,61 @@
  -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="@dimen/row_height"
+    android:orientation="horizontal"
+    >
 
-    <include layout="@layout/toro_row_header"/>
+    <ImageView
+        android:id="@+id/select_img"
+        android:layout_width="@dimen/dp28"
+        android:layout_height="@dimen/dp28"
+        android:scaleType="fitCenter"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/toro_radio_un_selected"
+        android:layout_gravity="center_vertical"
+        />
 
-    <LinearLayout
-        android:id="@+id/click_target"
+    <FrameLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/toro_row_height"
-        android:layout_marginStart="@dimen/toro_margin_right"
-        android:layout_marginEnd="@dimen/toro_margin_right"
-        android:paddingTop="@dimen/row_top_bottom_padding"
-        android:paddingBottom="@dimen/row_top_bottom_padding"
-        android:paddingStart="@dimen/row_start_padding"
-        android:gravity="center_vertical"
-        android:background="?android:attr/selectableItemBackground">
+        android:layout_height="@dimen/row_height">
 
-        <QuickContactBadge
-            android:id="@+id/photo"
-            android:layout_width="@dimen/photo_size"
-            android:layout_height="@dimen/photo_size"
-            android:clickable="false"/>
+        <include layout="@layout/header"/>
 
-        <TextView
-            android:id="@+id/contact_name"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/click_target"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingStart="@dimen/text_padding_start"
-            android:paddingEnd="@dimen/text_padding_end"
-            android:maxLines="1"
-            android:ellipsize="end"
+            android:layout_marginStart="@dimen/header_width"
+            android:layout_marginEnd="@dimen/row_end_margin"
+            android:paddingTop="@dimen/row_top_bottom_padding"
+            android:paddingBottom="@dimen/row_top_bottom_padding"
+            android:paddingStart="@dimen/row_start_padding"
             android:gravity="center_vertical"
-            android:textSize="@dimen/text_size"
-            android:textColor="@color/dialer_primary_text_color"
-            android:fontFamily="sans-serif"/>
-    </LinearLayout>
+            android:background="?android:attr/selectableItemBackground">
+
+            <QuickContactBadge
+                android:id="@+id/photo"
+                android:layout_width="@dimen/photo_size"
+                android:layout_height="@dimen/photo_size"
+                android:clickable="false"/>
+
+            <TextView
+                android:id="@+id/contact_name"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingStart="@dimen/text_padding_start"
+                android:paddingEnd="@dimen/text_padding_end"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/text_size"
+                android:textColor="@color/dialer_primary_text_color"
+                android:fontFamily="sans-serif"/>
+        </LinearLayout>
+    </FrameLayout>
+
 </LinearLayout>
